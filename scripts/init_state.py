@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Z plné přestavby (data/state.pkl + matches.parquet + raw/flashscore) vytvoří kompaktní stav state/ pro denní aktualizace."""
-import os, sys, json, glob, pickle
+import os, sys
 import pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import export, state_io
@@ -18,10 +18,9 @@ if __name__ == '__main__':
     seen = sorted({(min(a, b), max(a, b), int(d)) for a, b, d in zip(rec.winner_id, rec.loser_id, rec.day)})
     tml = df[df.source == 'tml']
     tml_keys = {f'{a}|{b}|{c}|{d}' for a, b, c, d in zip(tml.tourney_id, tml.winner_name, tml.loser_name, tml['round'])}
+    # fs_ids neseedujeme všemi st=3 z raw — full build nemusí všechny započítat
+    # (TML má přednost / W/O). daily.py je doplní; jinak by se nezapočtené navždy přeskočily.
     fs_ids = {}
-    for f in glob.glob(os.path.join(ROOT, 'raw', 'flashscore', '*.json')):
-        for e in json.load(open(f)):
-            if e['st'] == 3: fs_ids[e['id']] = int(e['ts'] // 86400)
     cutoffs = {k: v['cutoff'] for k, v in tmlrep.items() if isinstance(v, dict) and 'cutoff' in v}
     meta = dict(day_end=day_end, gap_start=gap_start, coverage=cov, tml=tmlrep, tml_cutoffs=cutoffs,
                 seen=[list(x) for x in seen], fs_ids=fs_ids, full_build=pd.Timestamp.now().strftime('%Y-%m-%d %H:%M'), updates=[])

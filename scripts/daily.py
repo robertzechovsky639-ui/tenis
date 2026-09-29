@@ -48,6 +48,15 @@ def tml_rows(P, meta, tml_keys):
         keys = [tml_key(str(a), str(b), str(c), str(e)) for a, b, c, e in zip(d.tourney_id, d.winner_name, d.loser_name, d['round'])]
         d = d[[k not in tml_keys for k in keys]]
         if not len(d): continue
+        # Walkovery / neplatné skóre finalize stejně vyhodí — klíč musíme uložit tady,
+        # jinak se stejné řádky hlásí jako tml_rows při každém běhu a applied zůstane 0.
+        sc = d['score'].astype(str)
+        bad = sc.str.contains(r'W/O|w/o|Walkover|DEF|Def\.|unfinished|nan|Played and', regex=True, case=False) | (sc.str.strip() == '')
+        if bad.any():
+            for a, b, c, e in zip(d.loc[bad, 'tourney_id'], d.loc[bad, 'winner_name'], d.loc[bad, 'loser_name'], d.loc[bad, 'round']):
+                tml_keys.add(tml_key(str(a), str(b), str(c), str(e)))
+            d = d.loc[~bad].copy()
+        if not len(d): continue
         d = dmod.std_frame(d, g, kind, 'tml'); pref = 'a' if g == 'M' else 'w'
         def res(tid, name):
             if g == 'W' and (pref + str(tid)) in P and dmod.norm_name(P[pref + str(tid)].get('name', '')) == dmod.norm_name(name): return pref + str(tid)
