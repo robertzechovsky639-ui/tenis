@@ -15777,6 +15777,21 @@
 "M_quali": 3,
 "W_main": 9
 }
+},
+{
+"applied": 0,
+"at": "2026-09-29 05:13 CEST",
+"by_level": {},
+"dup_skipped": 0,
+"enriched": 0,
+"fs_new_events": 0,
+"new_players": 0,
+"tml_rows": {
+"M_chall": 5,
+"M_main": 6,
+"M_quali": 3,
+"W_main": 9
+}
 }
 ]
 }
