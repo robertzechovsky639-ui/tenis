@@ -91,7 +91,7 @@ with sync_playwright() as p:
         pg.screenshot(path=f'{out}/3_zive_challenger_itf.png')
     first = {r['id']: r['t'] for r in rows}
     marker = pg.evaluate("(() => { const v = document.querySelector('#v-zapasy'); v._mark = 1; const f = v.querySelector('.tg'); if (f) f._mark = 1; return !!f; })()")
-    t_end = time.time() + (watch if rows else 25); changes = {}; polls0 = pg.evaluate('S.l365.polls')
+    t0w = time.time(); t_end = t0w + (watch if rows else 25); changes = {}; polls0 = pg.evaluate('S.l365.polls')
     while time.time() < t_end:
         time.sleep(10)
         cur = pg.evaluate("""[...document.querySelectorAll('#v-zapasy .mr')].map(el => [el.dataset.ev, el.querySelector('.mrow').innerText.replace(/\\s+/g, ' ')])""")
@@ -103,7 +103,8 @@ with sync_playwright() as p:
     print(f'365scores dotazů během sledování: {polls}, stav:', pg.evaluate('JSON.stringify(S.l365)'))
     print('změny skóre v řádcích:')
     for i, ts in changes.items(): print('  ', i, pg.evaluate(f"S.byId['{i}'].code"), pg.evaluate(f"Object.keys(S.byId['{i}'].srcs||{{}}).join('+')"), ' -> '.join(ts))
-    check('průběžné dotazy na 365scores (~20 s)', polls >= max(1, int((watch if rows else 25) / 20) - 2), f'{polls}')
+    el = time.time() - t0w
+    check('průběžné dotazy na 365scores (~20 s)', polls >= max(1, int(el / 20) - 1), f'{polls} dotazů za {el:.0f} s')
     if lowlive: check('živé Challenger/ITF skóre se změnilo v řádku', any(pg.evaluate(f"S.byId['{i}'].code") <= 3 for i in changes), f'{len(changes)} změn')
     if marker: print('řádky záplatovány na místě (bez překreslení seznamu):', kept)
     pg.screenshot(path=f'{out}/4_zive_po.png')

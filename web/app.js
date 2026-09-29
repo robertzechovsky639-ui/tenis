@@ -136,7 +136,7 @@ function espnEvents(j, tour) {
         const sd = String(stt.shortDetail || stt.detail || ''); const m = /(\d)(st|nd|rd|th) Set/i.exec(sd);
         out.push({ id: 'e' + c.id, ts: Math.floor(Date.parse(c.date || c.startDate) / 1000), st, det: /RETIR/i.test(nm) ? 8 : 3, win, sets, h: P(cs[0]), a: P(cs[1]), g,
           lvl: code === 6 ? 'G' : code >= 4 ? 'A' : 'CH', code, q, surface: ti ? ti[0] : 'Hard', tname: city || ev.name, round: c.round?.displayName || '',
-          live: st === 2 ? (m ? m[1] + '. set' : 'Živě') : '', src: 'ESPN' });
+          live: st === 2 ? (m ? m[1] + '. set' : sets.length ? sets.length + '. set' : 'Živě') : '', src: 'ESPN' });
       }
     }
   }
@@ -263,6 +263,7 @@ function mergeInto(ex, e, sw) {
   // stav zpět (živě -> plán, konec -> živě) smí vrátit jen ten zdroj, který ho nastavil (jiný zdroj se jen zpožďuje)
   const fwd = e.st > ex.st, back = e.st < ex.st && ex.stSrc && ex.stSrc !== e.src;
   if (!back && (RANK[e.src] >= RANK[ex.src] || fwd)) {
+    if (e.st === 2 && ex.st === 2 && (!e.live || e.live === 'Živě') && /set/.test(ex.live || '')) e = { ...e, live: ex.live };   // obecné „Živě“ nepřepíše „2. set“
     if (ex.st !== e.st || JSON.stringify(ex.sets) !== JSON.stringify(sets) || ex.win !== win || JSON.stringify(ex.pts || null) !== JSON.stringify(pts) || (ex.srv || 0) !== srv || (ex.live || '') !== (e.live || '')) changed = true;
     if (e.st !== ex.st || !ex.stSrc) ex.stSrc = e.src;
     // body v gemu/podání posílá jen 365scores (a Sofascore): zdroj bez nich je nemaže, dokud se nezmění gemy
