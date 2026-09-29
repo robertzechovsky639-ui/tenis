@@ -15,3 +15,4 @@ trainset/
 # web/data/: generuje scripts/daily.py (resp. export.py); v repu jen model
 web/data/*
 !web/data/model.json
+!web/data/hits.json

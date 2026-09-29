@@ -377,7 +377,7 @@ async function lowTick(force) {
    oce = předzápasové srovnání, ole = kurzy v průběhu (in-play). VALUE se počítá jen z předzápasových. */
 const ODDS_URL = (id, live) => `https://global.ds.lsapp.eu/odds/pq_graphql?_hash=${live ? 'ole' : 'oce'}&eventId=${encodeURIComponent(id)}&projectId=2&geoIpCode=CZ&geoIpSubdivisionCode=CZ10`;
 const BOOKS = { 49: 'Tipsport.cz', 46: 'iFortuna.cz', 45: 'Chance.cz', 657: 'Betano.cz' };
-const ODDS_TTL = 5 * 60 * 1000, ODDS_LIVE_TTL = 20000, VALUE_TH = 0.10, VALUE_EV = 0.03;
+const ODDS_TTL = 5 * 60 * 1000, ODDS_LIVE_TTL = 20000, VALUE_TH = 0.15, VALUE_EV = 0.05, VALUE_N = 3;
 function bookName(id) { return BOOKS[id] || ('sázkovka ' + id); }
 /* řádky HOME_AWAY / FULL_TIME jedné odpovědi (oce i ole mají stejný tvar položek) */
 function oddsRows(list, e, names) {
@@ -466,7 +466,10 @@ function valueOf(e) {
   // kurz < 1.05 = zápas nejspíš už běží / kurz je zastaralý → value nehodnotíme
   if (Math.min(o.avg[0], o.avg[1]) < 1.05) return { im: im.p, margin: im.margin, edge: d, side: 0, stale: true };
   const evH = e._p * o.max[0] - 1, evA = (1 - e._p) * o.max[1] - 1;
-  return { im: im.p, margin: im.margin, edge: d, evH, evA, side: d >= VALUE_TH && evH >= VALUE_EV ? 1 : -d >= VALUE_TH && evA >= VALUE_EV ? 2 : 0 };
+  // jasná převaha: aspoň 15 p. b., návratnost při nejlepším kurzu ≥ 5 % a průměr aspoň ze 3 kanceláří
+  const books = o.n || (o.books && o.books.length) || 0;
+  const ok = books >= VALUE_N;
+  return { im: im.p, margin: im.margin, edge: d, evH, evA, side: ok && d >= VALUE_TH && evH >= VALUE_EV ? 1 : ok && -d >= VALUE_TH && evA >= VALUE_EV ? 2 : 0 };
 }
 /* ---------- hráči a stavy ---------- */
 function pName(i) { return i < S.N ? S.idx.n[i] : S.extra[i - S.N].name; }
@@ -862,7 +865,7 @@ function oddsTab(e, na, nb) {
     <tr><td>Implikovaná pravděpodobnost (bez marže)</td><td>${pct(im.p)}</td><td>${pct(1 - im.p)}</td></tr>
     ${p != null ? `<tr><td>Model</td><td><b>${pct(p)}</b></td><td><b>${pct(1 - p)}</b></td></tr><tr><td>Rozdíl model − trh</td><td class="${v && v.side === 1 ? 'best' : ''}">${((p - im.p) * 100).toFixed(1)} p. b.</td><td class="${v && v.side === 2 ? 'best' : ''}">${((im.p - p) * 100).toFixed(1)} p. b.</td></tr>
     <tr><td>Očekávaná návratnost při nejlepším kurzu</td><td>${ev(p, mkt.max[0])} %</td><td>${ev(1 - p, mkt.max[1])} %</td></tr>` : ''}</table>
-    <div class="kv2"><span>Marže sázkových kanceláří</span><b>${(im.margin * 100).toFixed(1)} %</b><span>Práh pro „value“</span><b>model ≥ trh + ${VALUE_TH * 100} p. b. a návratnost ≥ ${VALUE_EV * 100} %</b></div>
+    <div class="kv2"><span>Marže sázkových kanceláří</span><b>${(im.margin * 100).toFixed(1)} %</b><span>Práh pro „value“</span><b>model ≥ trh + ${VALUE_TH * 100} p. b., návratnost ≥ ${VALUE_EV * 100} % a aspoň ${VALUE_N} kanceláře</b></div>
     ${v && v.side ? `<div class="valbox">VALUE: ${esc(v.side === 1 ? na : nb)} (model ${pct(v.side === 1 ? p : 1 - p)} vs. trh ${pct(v.side === 1 ? im.p : 1 - im.p)})</div>` : e.st === 1 && p != null ? '<p class="note">Model se od trhu neliší o víc než práh – žádná „value“.</p>' : ''}
     <p class="note">Trh bývá přesnější než samotný model (model nevidí zranění, motivaci ani aktuální formu mimo data). Velký rozdíl často znamená chybějící informaci v modelu, ne chybu trhu.</p></div>${gam}`;
 }
@@ -1051,7 +1054,7 @@ async function renderPredTop() {
   const val = up.filter(e => { const v = valueOf(e); return v && v.side; }).sort((a, b) => Math.abs(valueOf(b).edge) - Math.abs(valueOf(a).edge));
   const conf = up.filter(e => e._p != null).sort((a, b) => Math.abs(b._p - 0.5) - Math.abs(a._p - 0.5)).slice(0, 8);
   el.innerHTML = `<div class="ph sm"><h2>NEJJISTĚJŠÍ TIPY · dnes a zítra</h2></div>${conf.length ? groupsHtml(conf) : '<div class="empty">—</div>'}
-    <div class="ph sm"><h2>VALUE · model vs. kurzy</h2></div>${val.length ? groupsHtml(val.slice(0, 10)) : '<div class="empty">Žádný zápas nepřekračuje práh ' + VALUE_TH * 100 + ' p. b. (kurzy ze snímku; živé se načítají při zobrazení zápasu).</div>'}
+    <div class="ph sm"><h2>VALUE · model vs. kurzy</h2></div>${val.length ? groupsHtml(val.slice(0, 10)) : '<div class="empty">Žádný zápas nepřekračuje práh ' + VALUE_TH * 100 + ' p. b. při aspoň ' + VALUE_N + ' kancelářích (jen předzápasové kurzy).</div>'}
     <p class="note gam">18+ Predikce i „value“ jsou statistické odhady, ne jistota. Sázení je riskantní a může vést k závislosti – hrajte zodpovědně.</p>`;
   observeOdds(el);
 }
@@ -1118,7 +1121,27 @@ function retrainCard(m) {
    ${mi ? `<div class="kv"><div>Nasazený model</div><div><b>${esc(mi.version)}</b>, natrénován ${esc(mi.trained_at)}</div><div>Data tréninku</div><div>${esc(mi.train_start)} – ${esc(mi.train_end)} (${(mi.n_train || 0).toLocaleString('cs-CZ')})</div><div>Stromů / kalibrace</div><div>${mi.trees} / a = ${mi.cal}</div></div>` : ''}
    ${H.length ? `<div class="tscroll"><table class="rt"><tr><th>Datum</th><th>Holdout</th><th>Přesnost</th><th>Log loss</th><th>Brier</th><th>Rozhodnutí</th></tr>${H.map(e => `<tr><td>${esc(e.date.slice(0, 10))}</td><td>${esc(e.holdout)}<br><small>n = ${e.n_holdout.toLocaleString('cs-CZ')}</small></td>${cell(e, 'acc')}${cell(e, 'logloss')}${cell(e, 'brier')}<td>${e.deployed ? '<b class="pos">nasazeno</b>' : '<b class="neg">ponecháno</b>'}<br><small>${esc(e.decision)}</small></td></tr>`).join('')}</table></div><p class="note">Vlevo současný model, vpravo kandidát (${esc(H[0].compared || '')}).</p>` : '<p class="note">Zatím žádné týdenní přetrénování.</p>'}</div>`;
 }
+const SURF_HIT = { Hard: 'Tvrdý', Clay: 'Antuka', Grass: 'Tráva', Carpet: 'Koberec' };
+const GRP_HIT = { tour: 'ATP/WTA', chall: 'Challenger / WTA 125', itf: 'ITF' };
+function pct1(h, n) { return n ? (h / n * 100).toFixed(1).replace('.', ',') + ' %' : '—'; }
+function hitsCard() {
+  const H = S.hits;
+  if (H == null) return `<div class="card" id="hits"><h2>Jak model trefuje</h2><p class="note">Načítám výsledky…</p></div>`;
+  if (!H) return '';
+  const d = s => { const [y, m, da] = s.split('-'); return `${+da}. ${+m}. ${y}`; };
+  const row = r => `<div class="hit"><div><b>${esc(r.name)}</b><small>${esc(SURF_HIT[r.surface] || r.surface)}${r.group ? ' · ' + esc(GRP_HIT[r.group] || r.group) : ''}</small></div><div class="hn"><b>${pct1(r.hits, r.n)}</b><small>${r.n.toLocaleString('cs-CZ')} zápasů</small></div></div>`;
+  const surf = (H.by_surface || []).map(r => `<div class="hs"><b>${pct1(r.hits, r.n)}</b><small>${esc(SURF_HIT[r.surface] || r.surface)} · ${r.n.toLocaleString('cs-CZ')}</small></div>`).join('');
+  return `<div class="card" id="hits"><h2>Jak model trefuje</h2>
+   <p class="note">Skutečné dohrané zápasy ${esc(d(H.period_from))} – ${esc(d(H.period_to))} (${H.n.toLocaleString('cs-CZ')}), které tenhle model při hodnocení neviděl (trénink do 31. 12. 2025). Nasazený model byl 29. 9. dotrénován i na nich, proto je tabulka poctivější odhad než číslo po dotrénování. Zásah = favorit modelu (nad 50 %) zápas vyhrál. Skreče nejsou zahrnuté.</p>
+   <div class="hsum"><div class="hs big"><b>${pct1(H.hits, H.n)}</b><small>celkem · ${H.n.toLocaleString('cs-CZ')}</small></div>${surf}</div>
+   <h3>Podle turnaje</h3>
+   <p class="note">Jen turnaje s aspoň ${H.min_n} zápasy v tomhle okně, včetně kvalifikace. Seřazeno podle počtu zápasů.</p>
+   <div class="hits">${(H.tournaments || []).map(row).join('')}</div>
+   ${H.other && H.other.n ? `<p class="note">Dalších ${H.other.tournaments} turnajů má méně než ${H.min_n} zápasů (${H.other.n.toLocaleString('cs-CZ')} zápasů dohromady, úspěšnost ${pct1(H.other.hits, H.other.n)}). Malý počet zápasů úspěšnost rozhází, proto nejsou v seznamu.</p>` : ''}
+   </div>`;
+}
 function renderModel() {
+  if (S.hits == null && !S.hitsP) S.hitsP = getJSON('data/hits.json').then(h => { S.hits = h; if ((location.hash || '').slice(1) === 'model') renderModel(); }).catch(() => { S.hits = false; });
   const m = S.meta, mt = m.metrics; const v = $('#v-model');
   const tbl = (k, title) => { const r = mt.metrics[k]; if (!r) return ''; const ks = ['rank_baseline', 'elo_only', 'gelo_only', 'logreg', 'old_model', 'v1_newdata', 'ensemble'].filter(x => r[x]);
     const best = { acc: Math.max(...ks.map(x => r[x].acc)), logloss: Math.min(...ks.map(x => r[x].logloss)), brier: Math.min(...ks.map(x => r[x].brier)) };
@@ -1138,6 +1161,7 @@ function renderModel() {
    <details><summary>Kalibrace</summary><table><tr><th>Předpověď</th><th>n</th><th>Průměr předp.</th><th>Skutečnost</th></tr>${mt.calibration.map(c => `<tr><td>${c.bin}</td><td>${c.n}</td><td>${c.pred ?? '—'}</td><td>${c.obs ?? '—'}</td></tr>`).join('')}</table></details>
    <details><summary>Nejdůležitější příznaky (LightGBM)</summary><table>${mt.importance.slice(0, 15).map(([f, g]) => `<tr><td>${esc(FEAT_CS[f] || f)}</td><td>${(g * 100).toFixed(1)} %</td></tr>`).join('')}</table></details></div>
    ${retrainCard(m)}
+   ${hitsCard()}
    <div class="card"><h2>Data</h2><table><tr><th>Kategorie</th><th style="text-align:left">Zdroj: rozsah (počet zápasů)</th></tr>${cov}</table>
    <p class="note">Sackmannovy repozitáře tennis_atp/tennis_wta jsou od léta 2026 offline; použit veřejný archiv (snapshot do ${fmtDate(m.gap_start)}). ATP/WTA okruh a Challengery jsou doplněny z TennisMyLife až do buildu. ITF, WTA 125 a kvalifikace Challengerů mají mezeru mezi snapshotem a posledními 7 dny před buildem (u těchto hráčů je neutralizována únava).</p></div>
    <div class="card"><h2>Živá data a aktualizace</h2>
@@ -1150,7 +1174,7 @@ function renderModel() {
    <div>Dokončené zápasy z živých zdrojů</div><div>${L.finished}</div><div>Už obsaženo v buildu / duplicity</div><div>${L.dup}</div>
    <div>Nově započteno do Elo</div><div>${L.applied}</div><div>Neznámí hráči v živých datech</div><div>${L.unknown}</div></div>
    <p class="note">Flashscore feed pokrývá všechny úrovně, ale vyžaduje hlavičku x-fsign a CORS preflight povoluje jen vlastním doménám Flashscore – z prohlížeče proto nejde. Živé Challenger/WTA 125 bere aplikace z 365scores (CORS *), ITF ze Sofascore (funguje z běžných sítí, z datacenter ne); jinak ITF jen ze snímku buildu. Kurzy Flashscore CORS povolují, ale potřebují ID zápasu ze snímku; zápasy ESPN se se snímkem párují podle dvojice hráčů. Bez nového buildu se neaktualizuje žebříček, statistiky podání/příjmu a samotný model.</p></div>
-   <div class="card"><h2>Kurzy a zodpovědné hraní</h2><p>„Value“ se zvýrazní, když pravděpodobnost modelu převýší implikovanou pravděpodobnost trhu (průměrný kurz, marže odečtena) aspoň o ${VALUE_TH * 100} procentních bodů a očekávaná návratnost při nejlepším kurzu je aspoň ${VALUE_EV * 100} %. Model se od trhu liší v průměru o ~8 p. b. (korelace 0,90), proto je práh přísnější. Na testu 2025–26 má model přesnost ~70 %; trh bývá přesnější, protože vidí informace, které model nemá.</p>
+   <div class="card"><h2>Kurzy a zodpovědné hraní</h2><p>„Value“ se zvýrazní jen před začátkem zápasu a jen z předzápasových kurzů (živý kurz v průběhu se nepočítá). Model musí být nad trhem (průměrný kurz bez marže) aspoň o ${VALUE_TH * 100} procentních bodů, očekávaná návratnost při nejlepším kurzu aspoň ${VALUE_EV * 100} % a průměr musí být aspoň ze ${VALUE_N} kanceláří. Práh je přísný schválně: model se od trhu liší v průměru o ~8 p. b. Na testu 2025–26 má přesnost ~70 %; trh bývá přesnější, protože vidí informace, které model nemá.</p>
    <p class="note gam">18+ Aplikace není sázková kancelář ani sázkové poradenství. Sázení je riskantní a může vést k závislosti. Sázejte jen částky, které si můžete dovolit prohrát, stanovte si limity a při potížích vyhledejte odbornou pomoc.</p></div>
    <div class="card"><p class="note">Zdroje: Jeff Sackmann – tennis_atp / tennis_wta (CC BY-NC-SA 4.0, archiv Aneeshers/tennis-sackmann-archive), TennisMyLife (stats.tennismylife.org), veřejný feed a kurzové srovnání Flashscore, ESPN (živé skóre, fotky hráčů), vlajky flagcdn.com. Aplikace je nekomerční. Predikce jsou odhady, ne záruky.</p></div>`;
 }
