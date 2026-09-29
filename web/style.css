@@ -243,3 +243,6 @@ em.pos{color:var(--live)!important}em.neg{color:var(--red)!important}
 .sv.on::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--live);box-shadow:0 0 5px var(--live)}
 .g.pt{width:21px;color:var(--live);font-weight:800;background:rgba(47,224,137,.10);border-radius:4px}
 .svd{font-style:normal;color:var(--live);font-size:8px;margin:0 3px;vertical-align:1px}
+
+.odds.inplay .ol{color:var(--live)}
+.ars{display:inline-flex;gap:1px}

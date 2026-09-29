@@ -201,7 +201,8 @@ async function loadSnapshot() {
     return up.matches.map(m => ({ id: 'f' + m.id, fsid: m.id, ts: m.ts, st: m.st, det: m.det, win: m.win || 0, sets: m.sets || [],
       h: { name: m.h, slug: m.hs || '', c: m.hc || '', pid: m.hp }, a: { name: m.a, slug: m.as || '', c: m.ac || '', pid: m.ap },
       g: m.g, lvl: m.lvl, code: m.code, q: m.q, surface: m.s, tname: m.t.replace(/\s*\(.*?\)\s*$/, ''), country: (/\((.*?)\)/.exec(m.t) || [])[1] || '',
-      hi: m.hi ?? null, ai: m.ai ?? null, oddsV: m.odds ? { avg: [m.odds[0], m.odds[1]], max: [m.odds[2], m.odds[3]], n: m.odds[4], snap: true } : null, src: 'snapshot', stSrc: m.st === 3 ? 'snapshot' : undefined }));
+      hi: m.hi ?? null, ai: m.ai ?? null, oddsV: m.odds ? { avg: [m.odds[0], m.odds[1]], max: [m.odds[2], m.odds[3]], n: m.odds[4], snap: true } : null,
+      oddsPrem: m.odds ? { avg: [m.odds[0], m.odds[1]], max: [m.odds[2], m.odds[3]], n: m.odds[4], snap: true } : null, src: 'snapshot', stSrc: m.st === 3 ? 'snapshot' : undefined }));
   } catch (e) { return []; }
 }
 
@@ -372,27 +373,59 @@ async function lowTick(force) {
   } finally { S.lowBusy = false; }
 }
 
-/* ---------- živé kurzy: Flashscore odds (global.ds.lsapp.eu, CORS *, bez klíče) ---------- */
-const ODDS_URL = id => `https://global.ds.lsapp.eu/odds/pq_graphql?_hash=oce&eventId=${encodeURIComponent(id)}&projectId=2&geoIpCode=CZ&geoIpSubdivisionCode=CZ10`;
-const ODDS_TTL = 5 * 60 * 1000, VALUE_TH = 0.10, VALUE_EV = 0.03;
-function parseOdds(j, e) {
-  const f = j?.data?.findOddsByEventId; if (!f) return null;
-  const names = {}; for (const b of (f.settings?.bookmakers || [])) if (b.bookmaker) names[b.bookmaker.id] = b.bookmaker.name;
+/* ---------- kurzy: Flashscore (global.ds.lsapp.eu, CORS *, bez klíče, bez hlavičky) ----------
+   oce = předzápasové srovnání, ole = kurzy v průběhu (in-play). VALUE se počítá jen z předzápasových. */
+const ODDS_URL = (id, live) => `https://global.ds.lsapp.eu/odds/pq_graphql?_hash=${live ? 'ole' : 'oce'}&eventId=${encodeURIComponent(id)}&projectId=2&geoIpCode=CZ&geoIpSubdivisionCode=CZ10`;
+const BOOKS = { 49: 'Tipsport.cz', 46: 'iFortuna.cz', 45: 'Chance.cz', 657: 'Betano.cz' };
+const ODDS_TTL = 5 * 60 * 1000, ODDS_LIVE_TTL = 20000, VALUE_TH = 0.10, VALUE_EV = 0.03;
+function bookName(id) { return BOOKS[id] || ('sázkovka ' + id); }
+/* řádky HOME_AWAY / FULL_TIME jedné odpovědi (oce i ole mají stejný tvar položek) */
+function oddsRows(list, e, names) {
   const books = [];
-  for (const o of (f.odds || [])) {
+  for (const o of (list || [])) {
     if (o.bettingType !== 'HOME_AWAY' || o.bettingScope !== 'FULL_TIME') continue;
     const it = (o.odds || []).filter(x => x.value && x.active !== false); if (it.length < 2) continue;
     let h = it.find(x => x.eventParticipantId && x.eventParticipantId === e.h.pid), a = it.find(x => x.eventParticipantId && x.eventParticipantId === e.a.pid);
     if (!h || !a) { if (e.h.pid || e.a.pid) continue; [h, a] = it; }
     const vh = parseFloat(h.value), va = parseFloat(a.value); if (!(vh > 1 && va > 1)) continue;
-    books.push({ name: names[o.bookmakerId] || ('#' + o.bookmakerId), h: vh, a: va, oh: parseFloat(h.opening) || null, oa: parseFloat(a.opening) || null });
+    books.push({ id: o.bookmakerId, name: (names && names[o.bookmakerId]) || bookName(o.bookmakerId), h: vh, a: va, oh: parseFloat(h.opening) || null, oa: parseFloat(a.opening) || null });
   }
-  if (!books.length) return { books, n: 0, t: Date.now() };
+  return books;
+}
+function packOdds(books, extra) {
+  if (!books.length) return { books, n: 0, t: Date.now(), ...extra };
   const avg = [0, 1].map(k => books.reduce((s, b) => s + (k ? b.a : b.h), 0) / books.length);
   const max = [Math.max(...books.map(b => b.h)), Math.max(...books.map(b => b.a))];
   const ob = books.filter(b => b.oh && b.oa);
   const openAvg = ob.length ? [ob.reduce((s, b) => s + b.oh, 0) / ob.length, ob.reduce((s, b) => s + b.oa, 0) / ob.length] : null;
-  return { books, avg, max, openAvg, n: books.length, t: Date.now(), live: true };
+  return { books, avg, max, openAvg, n: books.length, t: Date.now(), live: true, ...extra };
+}
+function parseOdds(j, e) {
+  const f = j?.data?.findOddsByEventId; if (!f) return null;
+  const names = {}; for (const b of (f.settings?.bookmakers || [])) if (b.bookmaker) names[b.bookmaker.id] = b.bookmaker.name;
+  return packOdds(oddsRows(f.odds, e, names), {});
+}
+function parseLiveOdds(j, e) {
+  const f = j?.data?.findLiveOddsById?.current; if (!f) return null;
+  const books = oddsRows(f.odds, e, null);
+  // nabídka bez aktivních cen = pozastaveno (kurz neschováváme za předzápasový)
+  return packOdds(books, { inplay: true, suspended: !books.length });
+}
+/* šipka „od otevření“ u živého kurzu míří na předzápasový kurz, pokud ho máme */
+function withPrem(o, e) {
+  const p = e.oddsPrem; if (!o || !o.inplay || !p || !p.avg) return o;
+  o.preAvg = p.avg; o.openAvg = p.avg.slice();   // šipka průměru proti předzápasovému kurzu, ne proti otevíracímu
+  for (const b of o.books) { const q = (p.books || []).find(x => (x.id && x.id === b.id) || x.name === b.name); if (q) { b.oh = q.h; b.oa = q.a; } }
+  return o;
+}
+/* předzápasový kurz jednou (oce), ať je živý kurz s čím porovnat, i když zápas už běží při otevření stránky */
+function ensurePrem(e) {
+  if (!e.fsid || (e.oddsPrem && e.oddsPrem.avg)) return Promise.resolve(e.oddsPrem);
+  if (e._premP) return e._premP;
+  e._premP = getJSON(ODDS_URL(e.fsid, false), 12000).then(j => { const o = parseOdds(j, e);
+    if (o && o.n) e.oddsPrem = { avg: o.avg.slice(), max: o.max.slice(), n: o.n, books: o.books.map(b => ({ ...b })), snap: false };
+    if (e.oddsV && e.oddsV.inplay) withPrem(e.oddsV, e); return e.oddsPrem; }).catch(() => null);
+  return e._premP;
 }
 const sgn = (a, b) => (a == null || b == null || Math.abs(a - b) < 0.005) ? 0 : (a > b ? 1 : -1);
 /* porovnání s naposledy viděnými kurzy: směr poslední změny se drží, dokud nepřijde další změna */
@@ -405,20 +438,31 @@ function diffOdds(o, prev) {
 }
 const oddsQ = []; let oddsRun = 0;
 function fetchOdds(e, prio, ttl = ODDS_TTL) {
-  if (!e.fsid) return Promise.resolve(e.oddsV);
-  const c = S.odds[e.fsid]; if (c && Date.now() - c.t < ttl) return c.p;
+  if (!e.fsid || e.st === 3) return Promise.resolve(e.oddsV);
+  const inplay = e.st === 2; if (inplay) ttl = Math.min(ttl || ODDS_LIVE_TTL, ODDS_LIVE_TTL);
+  const key = e.fsid + (inplay ? '#L' : '');
+  const c = S.odds[key]; if (c && Date.now() - c.t < ttl) return c.p;
   const p = new Promise((res) => { const job = () => { oddsRun++;
-      getJSON(ODDS_URL(e.fsid), 12000).then(j => { const o = parseOdds(j, e);
-          if (o && o.n) { e.oddsV = diffOdds(o, e.oddsV); S.live.oddsOk = (S.live.oddsOk || 0) + 1; } else if (o) { e.oddsNone = true; } res(e.oddsV); })
-        .catch(err => { S.live.oddsErr = (S.live.oddsErr || 0) + 1; delete S.odds[e.fsid]; res(e.oddsV); })
+      getJSON(ODDS_URL(e.fsid, inplay), 12000).then(j => { const o = inplay ? parseLiveOdds(j, e) : parseOdds(j, e);
+          if (o && o.n) {
+            if (!inplay) e.oddsPrem = { avg: o.avg.slice(), max: o.max.slice(), n: o.n, books: o.books.map(b => ({ ...b })), snap: false };
+            else if (!e.oddsPrem && e.oddsV && e.oddsV.avg && !e.oddsV.inplay) e.oddsPrem = e.oddsV;
+            e.oddsV = diffOdds(withPrem(o, e), e.oddsV); e.oddsNone = false; S.live.oddsOk = (S.live.oddsOk || 0) + 1; if (inplay) S.live.oddsLive = (S.live.oddsLive || 0) + 1;
+            if (inplay && !e.oddsPrem) ensurePrem(e);
+          } else if (o && inplay && o.suspended) { e.oddsV = o; if (!e.oddsPrem) ensurePrem(e); }
+          else if (o && !inplay) { e.oddsNone = true; }
+          res(e.oddsV); })
+        .catch(err => { S.live.oddsErr = (S.live.oddsErr || 0) + 1; delete S.odds[key]; res(e.oddsV); })
         .finally(() => { oddsRun--; const n = oddsQ.shift(); if (n) n(); }); };
-    if (oddsRun < 3) job(); else prio ? oddsQ.unshift(job) : oddsQ.push(job); });
-  S.odds[e.fsid] = { t: Date.now(), p }; return p;
+    if (oddsRun < (inplay ? 4 : 3)) job(); else prio ? oddsQ.unshift(job) : oddsQ.push(job); });
+  S.odds[key] = { t: Date.now(), p }; return p;
 }
 function implied(o) { if (!o || !o.avg) return null; const ih = 1 / o.avg[0], ia = 1 / o.avg[1]; return { p: ih / (ih + ia), margin: ih + ia - 1 }; }
+/* VALUE jen z předzápasového kurzu (snímek nebo oce) a jen dokud zápas nezačal – živý kurz se do ní nepočítá */
 function valueOf(e) {
-  if (e.st !== 1 || e._p == null || !e.oddsV || !e.oddsV.avg) return null;
-  const o = e.oddsV, im = implied(o); const d = e._p - im.p;
+  const o = e.oddsPrem && e.oddsPrem.avg ? e.oddsPrem : e.oddsV;
+  if (e.st !== 1 || e._p == null || !o || !o.avg || o.inplay) return null;
+  const im = implied(o); const d = e._p - im.p;
   // kurz < 1.05 = zápas nejspíš už běží / kurz je zastaralý → value nehodnotíme
   if (Math.min(o.avg[0], o.avg[1]) < 1.05) return { im: im.p, margin: im.margin, edge: d, side: 0, stale: true };
   const evH = e._p * o.max[0] - 1, evA = (1 - e._p) * o.max[1] - 1;
@@ -570,21 +614,27 @@ function statusCell(e) {
 /* šipka u kurzu: poslední změna od minulého načtení (výrazná), jinak změna od otevření (slabší). Zelená ▲ = kurz roste, červená ▼ = klesá */
 function arrowOf(o, k) {
   const ld = o.lastDir ? o.lastDir[k] : 0;
-  if (ld) return `<i class="ar ${ld > 0 ? 'up' : 'dn'} last" title="od posledního načtení">${ld > 0 ? '▲' : '▼'}</i>`;
-  const od = o.openAvg ? sgn(o.avg[k], o.openAvg[k]) : 0;
-  return od ? `<i class="ar ${od > 0 ? 'up' : 'dn'}" title="od otevření">${od > 0 ? '▲' : '▼'}</i>` : '<i class="ar"></i>';
+  const ref = o.inplay && o.preAvg ? o.preAvg : o.openAvg;
+  const od = ref ? sgn(o.avg[k], ref[k]) : 0;
+  const up = d => d > 0 ? '▲' : '▼';
+  const faint = od ? `<i class="ar ${od > 0 ? 'up' : 'dn'}" title="${o.inplay ? 'proti předzápasovému kurzu' : 'od otevření'}">${up(od)}</i>` : '<i class="ar"></i>';
+  const bold = ld ? `<i class="ar ${ld > 0 ? 'up' : 'dn'} last" title="od posledního načtení">${up(ld)}</i>` : '<i class="ar"></i>';
+  if (o.inplay) return `<span class="ars">${faint}${bold}</span>`;
+  return ld ? bold : faint;
 }
+function oddsLabel(o) { return o && o.inplay ? `živě ⌀ ${o.n}× <i class="dot"></i>` : `kurz ⌀ ${o.n}× ${o && o.live ? '<i class="dot"></i>' : ''}`; }
 function oddsHtml(e) {
   if (e.st === 3) return '';
   const o = e.oddsV;
   if (!o || !o.avg) {
-    if (e.st !== 1 || !e.fsid) return '';
-    // rezervované místo (žádný posun layoutu, až kurzy dorazí)
-    return `<div class="odds ph"><span class="od" data-k="1"><span class="v">${e.oddsNone ? '—' : '···'}</span><i class="ar"></i></span><span class="ol">${e.oddsNone ? 'bez kurzů' : 'kurzy…'}</span><span class="od" data-k="2"><span class="v">${e.oddsNone ? '—' : '···'}</span><i class="ar"></i></span></div>`;
+    if (!e.fsid || (e.st !== 1 && e.st !== 2)) return '';
+    const lab = e.st === 2 ? (o && o.suspended ? 'živě pozastaveno' : 'živě…') : (e.oddsNone ? 'bez kurzů' : 'kurzy…');
+    const dash = (e.st === 2 && o && o.suspended) || e.oddsNone;
+    return `<div class="odds ph"><span class="od" data-k="1"><span class="v">${dash ? '—' : '···'}</span><i class="ar"></i></span><span class="ol">${lab}</span><span class="od" data-k="2"><span class="v">${dash ? '—' : '···'}</span><i class="ar"></i></span></div>`;
   }
   const v = valueOf(e);
   const c = k => `<span class="od ${v && v.side === k ? 'val' : ''}" data-k="${k}"><span class="v">${o.avg[k - 1].toFixed(2)}</span>${arrowOf(o, k - 1)}${v && v.side === k ? '<em>VALUE</em>' : ''}</span>`;
-  return `<div class="odds">${c(1)}<span class="ol">kurz ⌀ ${o.n}× ${o.live ? '<i class="dot"></i>' : ''}</span>${c(2)}</div>`;
+  return `<div class="odds${o.inplay ? ' inplay' : ''}">${c(1)}<span class="ol">${oddsLabel(o)}</span>${c(2)}</div>`;
 }
 function probHtml(e) {
   if (e.st === 3 || e._p == null) return '';
@@ -647,7 +697,7 @@ async function renderMatches(keep) {
   else if (!list.length) h += `<div class="empty">Žádné zápasy pro tento výběr.${F.favOnly ? '<br><small>Přidejte si hráče do oblíbených hvězdičkou v detailu zápasu.</small>' : ''}</div>`;
   else h += groupsHtml(list);
   const sc = S.live.srcCount || {};
-  h += `<p class="note">Zdroje: ${Object.entries(sc).map(([k, n]) => `${k === 'snapshot' ? 'snímek z buildu ' + esc(S.live.snapshot || '') : k} (${n})`).join(', ') || '—'}. Živé skóre: ATP/WTA z ESPN (45 s), Challenger/WTA 125 z 365scores (20 s)${S.live.sofa ? ', ITF ze Sofascore (20 s)' : ', ITF jen ze snímku buildu (Sofascore z této sítě neodpovídá)'}. Procenta = odhad modelu před zápasem.</p>
+  h += `<p class="note">Zdroje: ${Object.entries(sc).map(([k, n]) => `${k === 'snapshot' ? 'snímek z buildu ' + esc(S.live.snapshot || '') : k} (${n})`).join(', ') || '—'}. Živé skóre: ATP/WTA z ESPN (45 s), Challenger/WTA 125 z 365scores (20 s)${S.live.sofa ? ', ITF ze Sofascore (20 s)' : ', ITF jen ze snímku buildu (Sofascore z této sítě neodpovídá)'}. Živé kurzy v průběhu (Tipsport, iFortuna, Chance, Betano – jen kdo je vypsal) se berou každých 20 s u zobrazených zápasů. VALUE je vždy z předzápasového kurzu. Procenta = odhad modelu před zápasem.</p>
    <p class="note gam">18+ Kurzy slouží jen pro srovnání s modelem. Sázení je riskantní a může vést k závislosti – hrajte zodpovědně, jen s penězi, které si můžete dovolit prohrát.</p>`;
   v.innerHTML = h;
   if (keep) window.scrollTo(0, y);
@@ -660,17 +710,21 @@ function observeOdds(root) {
   if (!('IntersectionObserver' in window)) return;
   if (!oddsObs) oddsObs = new IntersectionObserver(ents => { for (const en of ents) { const id = en.target.dataset.ev;
       if (!en.isIntersecting) { S.visible.delete(id); continue; }
-      S.visible.add(id); const e = S.byId[id]; if (!e || e.st !== 1 || !e.fsid) continue;
-      if (e.oddsV && e.oddsV.live && Date.now() - e.oddsV.t < ODDS_VIS_TTL) continue;
-      fetchOdds(e, false, ODDS_VIS_TTL).then(() => updateRowOdds(e)); } }, { rootMargin: '150px' });
+      S.visible.add(id); const e = S.byId[id]; if (!e || e.st === 3 || !e.fsid) continue;
+      const ttl = e.st === 2 ? ODDS_LIVE_TTL : ODDS_VIS_TTL;
+      if (e.st === 2 ? (e.oddsV && e.oddsV.inplay && Date.now() - e.oddsV.t < ttl) : (e.oddsV && e.oddsV.live && Date.now() - e.oddsV.t < ttl)) continue;
+      fetchOdds(e, false, ttl).then(() => updateRowOdds(e)); } }, { rootMargin: '150px' });
   for (const el of root.querySelectorAll('.mr[data-fs]')) oddsObs.observe(el);
 }
 function oddsTick() {
   if (document.hidden || !S.all) return;
-  if (S.detail) { const e = S.byId[S.detail.id]; if (e && e.fsid && e.st !== 3) fetchOdds(e, true, ODDS_OPEN_TTL).then(() => { updateRowOdds(e); refreshDetailOdds(e); }); }
-  for (const id of [...S.visible]) { const e = S.byId[id]; if (!e || e.st !== 1 || !e.fsid) continue;
+  const want = e => { if (!e || !e.fsid || e.st === 3) return 0; if (e.st === 2) return !(e.oddsV && e.oddsV.inplay) || Date.now() - e.oddsV.t >= ODDS_LIVE_TTL; return !e.oddsV || !e.oddsV.live || Date.now() - e.oddsV.t >= ODDS_VIS_TTL; };
+  if (S.detail) { const e = S.byId[S.detail.id]; if (want(e) || (e && e.fsid && e.st === 1 && S.detail.tab === 'kurzy')) fetchOdds(e, true, e.st === 2 ? ODDS_LIVE_TTL : ODDS_OPEN_TTL).then(() => { updateRowOdds(e); refreshDetailOdds(e); }); }
+  const v = (location.hash || '#zapasy').slice(1);
+  if (v !== 'zapasy' && v !== 'oblibene' && !S.detail) return;
+  for (const id of [...S.visible]) { const e = S.byId[id]; if (!want(e)) continue;
     if (!document.querySelector(`.mr[data-ev="${CSS.escape(id)}"]`)) { S.visible.delete(id); continue; }
-    if (!e.oddsV || !e.oddsV.live || Date.now() - e.oddsV.t >= ODDS_VIS_TTL) fetchOdds(e, false, ODDS_VIS_TTL).then(() => updateRowOdds(e)); }
+    fetchOdds(e, false, e.st === 2 ? ODDS_LIVE_TTL : ODDS_VIS_TTL).then(() => updateRowOdds(e)); }
 }
 /* plynulá změna čísla (bez skoku) */
 function tweenNum(el, to) {
@@ -692,12 +746,12 @@ function updateRowOdds(e) {
     for (const k of [1, 2]) {
       const pill = box.querySelector(`.od[data-k="${k}"]`); if (!pill) continue;
       tweenNum(pill.querySelector('.v'), o.avg[k - 1]);
-      const tmp = document.createElement('i'); tmp.innerHTML = arrowOf(o, k - 1); pill.querySelector('.ar').replaceWith(tmp.firstElementChild);
+      const tmp = document.createElement('span'); tmp.innerHTML = arrowOf(o, k - 1); const cur = pill.querySelector('.ars') || pill.querySelector('.ar'); if (cur) cur.replaceWith(tmp.firstElementChild);
       const isVal = !!(v && v.side === k); pill.classList.toggle('val', isVal);
       const em = pill.querySelector('em'); if (isVal && !em) pill.insertAdjacentHTML('beforeend', '<em>VALUE</em>'); if (!isVal && em) em.remove();
       if (o.chg) flash(pill, o.chg[k - 1]);
     }
-    const ol = box.querySelector('.ol'); if (ol) ol.innerHTML = `kurz ⌀ ${o.n}× ${o.live ? '<i class="dot"></i>' : ''}`;
+    const ol = box.querySelector('.ol'); if (ol) ol.innerHTML = oddsLabel(o);
   }
 }
 function refreshDetailOdds(e) {
@@ -725,6 +779,8 @@ function onLiveChange(newFin) {
   if (v === 'oblibene') renderFav();
   if (S.detail) { const e = S.byId[S.detail.id]; if (e) { $('#d-score').innerHTML = scoreBlock(e); if (newFin && S.detail.tab === 'stat') showDTab('stat'); } }
   if (newFin && v === 'hraci' && S.profI != null && $('#hp .prof')) showProfile(S.profI, $('#hp'), true);
+  for (const id of new Set([...S.visible, ...(S.detail ? [S.detail.id] : [])])) { const e = S.byId[id];
+    if (e && e.st === 2 && e.fsid && !(e.oddsV && e.oddsV.inplay)) fetchOdds(e, true, ODDS_LIVE_TTL).then(() => { updateRowOdds(e); if (S.detail && S.detail.id === id) refreshDetailOdds(e); }); }
 }
 function updateStatus() {
   const st = $('#status'); if (!st || !S.meta) return;
@@ -765,7 +821,7 @@ async function showDTab(k) {
     const v = valueOf(e);
     let h = '';
     if (e.st !== 3 && e._p != null) h += `<div class="card"><h3>Predikce modelu</h3><div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div>
-      ${e.oddsV && e.oddsV.avg ? `<div class="kv2"><span>Průměrný kurz</span><b>${e.oddsV.avg[0].toFixed(2)} / ${e.oddsV.avg[1].toFixed(2)}</b><span>Trh (bez marže)</span><b>${v ? pct(v.im) + ' / ' + pct(1 - v.im) : '—'}</b></div>${v && v.side ? `<div class="valbox">VALUE: ${esc(v.side === 1 ? na : nb)} – model o ${(Math.abs(v.edge) * 100).toFixed(1)} p. b. výš než trh</div>` : ''}` : e.fsid && e.st === 1 ? '<p class="note">Načítám kurzy…</p>' : ''}
+      ${e.oddsV && e.oddsV.avg ? `<div class="kv2"><span>${e.oddsV.inplay ? 'Živý kurz (průměr)' : 'Průměrný kurz'}</span><b>${e.oddsV.avg[0].toFixed(2)} / ${e.oddsV.avg[1].toFixed(2)}</b><span>${e.st === 1 ? 'Trh (bez marže)' : 'Před zápasem'}</span><b>${e.st === 1 && v ? pct(v.im) + ' / ' + pct(1 - v.im) : e.oddsPrem && e.oddsPrem.avg ? e.oddsPrem.avg[0].toFixed(2) + ' / ' + e.oddsPrem.avg[1].toFixed(2) : '—'}</b></div>${v && v.side ? `<div class="valbox">VALUE: ${esc(v.side === 1 ? na : nb)} – model o ${(Math.abs(v.edge) * 100).toFixed(1)} p. b. výš než předzápasový trh</div>` : ''}` : e.fsid && e.st !== 3 ? '<p class="note">Načítám kurzy…</p>' : ''}
       <div class="row"><button class="btn sec" data-dtab="predikce">Podrobná predikce ›</button><button class="btn ai" data-ask="${esc(e.id)}">✦ Zeptat se AI</button></div></div>`;
     if (e.st === 3) h += `<div class="card"><h3>Výsledek</h3><p><b>${esc(e.win === 1 ? na : nb)}</b> vyhrál${e.g === 'W' ? 'a' : ''} ${e.sets.map(s => e.win === 1 ? `${s[0]}–${s[1]}` : `${s[1]}–${s[0]}`).join(', ')}${e.det === 8 ? ' (skreč)' : ''}.</p></div>`;
     if (e.sets.length) h += `<div class="card"><h3>Sety</h3><table class="st"><tr><th></th>${e.sets.map((s, k) => `<th>${k + 1}.</th>`).join('')}</tr>${[0, 1].map(sd => `<tr><td>${esc(sd ? nb : na)}</td>${e.sets.map(s => `<td class="${s[sd] > s[1 - sd] ? 'w' : ''}">${s[sd]}${s.length > 2 && Math.min(s[0], s[1]) >= 6 ? `<sup>${s[2 + sd]}</sup>` : ''}</td>`).join('')}</tr>`).join('')}</table></div>`;
@@ -793,18 +849,19 @@ function oddsTab(e, na, nb) {
   const gam = '<p class="note gam">18+ Kurzy jsou orientační a mohou se kdykoli změnit. Model se může mýlit – „value“ není jistá výhra. Sázení je riskantní a může vést k závislosti; hrajte zodpovědně, stanovte si limit a při potížích vyhledejte odbornou pomoc.</p>';
   const o = e.oddsV;
   if (!e.fsid && !o) return `<div class="card"><h3>Kurzy</h3><p>Pro tento zápas nejsou kurzy k dispozici – zápas nemá ID ve Flashscore (zdroj kurzů). Kurzy fungují pro zápasy ze snímku buildu a zápasy ESPN, které se s ním podařilo spárovat.</p></div>${gam}`;
-  if (!o || !o.avg) return `<div class="card"><h3>Kurzy</h3><p>${e.st === 3 ? 'Zápas skončil – kurzy už nejsou nabízeny.' : 'Sázkové kanceláře zatím na tento zápas kurzy nevypsaly.'}</p></div>${gam}`;
-  const im = implied(o), p = e._p; const v = valueOf(e);
+  if (!o || !o.avg) return `<div class="card"><h3>${o && o.inplay ? 'Živé kurzy' : 'Kurzy'}</h3><p>${e.st === 3 ? 'Zápas skončil – kurzy už nejsou nabízeny.' : o && o.suspended ? 'Sázkové kanceláře živý kurz dočasně pozastavily.' : 'Sázkové kanceláře zatím na tento zápas kurzy nevypsaly.'}</p></div>${gam}`;
+  const prem = o.inplay && e.oddsPrem && e.oddsPrem.avg ? e.oddsPrem : null;
+  const mkt = prem || o; const im = implied(mkt), p = e.st === 1 ? e._p : null; const v = valueOf(e);
   const rows = (o.books || []).map(b => `<tr><td>${esc(b.name)}</td>${oddsCell(b.h, b.oh, b.lh, b.ch, b.h === o.max[0])}${oddsCell(b.a, b.oa, b.la, b.ca, b.a === o.max[1])}</tr>`).join('');
   const ev = (pp, odd) => ((pp * odd - 1) * 100).toFixed(1);
-  return `<div class="card"><h3>Kurzy na vítěze (${o.live ? '<i class="dot"></i>živě, ' + new Date(o.t).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' }) : 'snímek z buildu ' + esc(S.live.snapshot || '')})</h3>
+  return `<div class="card"><h3>${o.inplay ? 'Živé kurzy v průběhu' : 'Kurzy na vítěze'} (${o.live ? '<i class="dot"></i>' + (o.inplay ? 'v průběhu, ' : 'živě, ') + new Date(o.t).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' }) : 'snímek z buildu ' + esc(S.live.snapshot || '')})</h3>
     <table class="ot"><tr><th>Sázková kancelář</th><th>${esc(na)}</th><th>${esc(nb)}</th></tr>${rows || `<tr><td colspan="3" class="note">Jednotlivé kanceláře jsou jen v živých datech.</td></tr>`}
     <tr class="sum"><td>Průměr (${o.n})</td>${oddsCell(o.avg[0], o.openAvg && o.openAvg[0], o.lastDir && o.lastDir[0], o.chg && o.chg[0])}${oddsCell(o.avg[1], o.openAvg && o.openAvg[1], o.lastDir && o.lastDir[1], o.chg && o.chg[1])}</tr><tr class="sum"><td>Nejlepší</td><td>${o.max[0].toFixed(2)}</td><td>${o.max[1].toFixed(2)}</td></tr></table>
-    <p class="note"><i class="ar up">▲</i> kurz roste, <i class="ar dn">▼</i> klesá. 1. šipka = proti otevíracímu kurzu, 2. šipka v kroužku = proti naposledy načtené hodnotě. Obnovuje se automaticky každých ~20 s, dokud je detail otevřený. Zdroj: veřejné kurzové srovnání Flashscore (bez klíče), kanceláře pro CZ.</p></div>
-    <div class="card"><h3>Model vs. trh</h3><table><tr><th></th><th>${esc(na)}</th><th>${esc(nb)}</th></tr>
+    <p class="note"><i class="ar up">▲</i> kurz roste, <i class="ar dn">▼</i> klesá. ${o.inplay ? '1. šipka = proti předzápasovému kurzu, 2. (v kroužku) = proti minulému načtení živého kurzu. Obnovuje se každých 20 s, dokud je zápas živý a stránka viditelná.' : '1. šipka = proti otevíracímu kurzu, 2. šipka v kroužku = proti naposledy načtené hodnotě. Obnovuje se automaticky každých ~20 s, dokud je detail otevřený.'} Zdroj: veřejné kurzové srovnání Flashscore (bez klíče), kanceláře pro CZ${o.inplay ? ' – jen ty, které vypsaly kurz v průběhu' : ''}.</p></div>
+    <div class="card"><h3>${prem ? 'Model vs. předzápasový trh' : 'Model vs. trh'}</h3>${prem ? `<p class="note">VALUE se počítá jen z předzápasového kurzu (⌀ ${prem.avg[0].toFixed(2)} / ${prem.avg[1].toFixed(2)}), ne z pohybujícího se živého kurzu.</p>` : ''}<table><tr><th></th><th>${esc(na)}</th><th>${esc(nb)}</th></tr>
     <tr><td>Implikovaná pravděpodobnost (bez marže)</td><td>${pct(im.p)}</td><td>${pct(1 - im.p)}</td></tr>
     ${p != null ? `<tr><td>Model</td><td><b>${pct(p)}</b></td><td><b>${pct(1 - p)}</b></td></tr><tr><td>Rozdíl model − trh</td><td class="${v && v.side === 1 ? 'best' : ''}">${((p - im.p) * 100).toFixed(1)} p. b.</td><td class="${v && v.side === 2 ? 'best' : ''}">${((im.p - p) * 100).toFixed(1)} p. b.</td></tr>
-    <tr><td>Očekávaná návratnost při nejlepším kurzu</td><td>${ev(p, o.max[0])} %</td><td>${ev(1 - p, o.max[1])} %</td></tr>` : ''}</table>
+    <tr><td>Očekávaná návratnost při nejlepším kurzu</td><td>${ev(p, mkt.max[0])} %</td><td>${ev(1 - p, mkt.max[1])} %</td></tr>` : ''}</table>
     <div class="kv2"><span>Marže sázkových kanceláří</span><b>${(im.margin * 100).toFixed(1)} %</b><span>Práh pro „value“</span><b>model ≥ trh + ${VALUE_TH * 100} p. b. a návratnost ≥ ${VALUE_EV * 100} %</b></div>
     ${v && v.side ? `<div class="valbox">VALUE: ${esc(v.side === 1 ? na : nb)} (model ${pct(v.side === 1 ? p : 1 - p)} vs. trh ${pct(v.side === 1 ? im.p : 1 - im.p)})</div>` : e.st === 1 && p != null ? '<p class="note">Model se od trhu neliší o víc než práh – žádná „value“.</p>' : ''}
     <p class="note">Trh bývá přesnější než samotný model (model nevidí zranění, motivaci ani aktuální formu mimo data). Velký rozdíl často znamená chybějící informaci v modelu, ne chybu trhu.</p></div>${gam}`;
@@ -1089,7 +1146,7 @@ function renderModel() {
    <div>365scores – živé skóre Challenger/WTA 125</div><div>${S.l365.ok && !S.l365.err ? '✅ funguje' : S.l365.err ? '⚠️ nedostupné' : '…'}${S.l365.polls ? ` · ${S.l365.polls}× obnoveno, ${S.l365.upd} změn skóre` : ''}</div>
    <div>Sofascore (všechny úrovně)</div><div>${L.sofa ? '✅ funguje' : '⚠️ z této sítě blokováno'}</div>
    <div>Snímek z buildu (Flashscore, Challenger/ITF + kurzy)</div><div>${esc(L.snapshot || '—')}</div>
-   <div>Živé kurzy (Flashscore odds, CORS)</div><div>${L.oddsOk ? `✅ načteno ${L.oddsOk}×` : L.oddsErr ? '⚠️ nedostupné – použit snímek' : 'načítají se u zobrazených zápasů'}</div>
+   <div>Kurzy Flashscore (předzápas oce + v průběhu ole, CORS)</div><div>${L.oddsOk ? `✅ načteno ${L.oddsOk}×${L.oddsLive ? `, z toho ${L.oddsLive}× v průběhu` : ''}` : L.oddsErr ? '⚠️ nedostupné – použit snímek' : 'načítají se u zobrazených zápasů'}</div>
    <div>Dokončené zápasy z živých zdrojů</div><div>${L.finished}</div><div>Už obsaženo v buildu / duplicity</div><div>${L.dup}</div>
    <div>Nově započteno do Elo</div><div>${L.applied}</div><div>Neznámí hráči v živých datech</div><div>${L.unknown}</div></div>
    <p class="note">Flashscore feed pokrývá všechny úrovně, ale vyžaduje hlavičku x-fsign a CORS preflight povoluje jen vlastním doménám Flashscore – z prohlížeče proto nejde. Živé Challenger/WTA 125 bere aplikace z 365scores (CORS *), ITF ze Sofascore (funguje z běžných sítí, z datacenter ne); jinak ITF jen ze snímku buildu. Kurzy Flashscore CORS povolují, ale potřebují ID zápasu ze snímku; zápasy ESPN se se snímkem párují podle dvojice hráčů. Bez nového buildu se neaktualizuje žebříček, statistiky podání/příjmu a samotný model.</p></div>
