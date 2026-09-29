@@ -11,6 +11,10 @@ permissions:
   pages: write
   id-token: write
 
+defaults:
+  run:
+    shell: bash   # = bash -eo pipefail (chyba daily.py se neschová za | tee)
+
 concurrency:
   group: daily-update
   cancel-in-progress: false
