@@ -1,0 +1,84 @@
+[
+ {
+  "date": "2026-09-29 03:06 CEST",
+  "holdout": "2026-07-08 – 2026-09-29",
+  "n_holdout": 4366,
+  "old": {
+   "n": 4366,
+   "acc": 0.6674,
+   "logloss": 0.612,
+   "brier": 0.2109
+  },
+  "new": {
+   "n": 4366,
+   "acc": 0.6697,
+   "logloss": 0.6079,
+   "brier": 0.21
+  },
+  "compared": "současný model přímo (trénink do 2025-12-31)",
+  "by_group": {
+   "tour": {
+    "n": 1702,
+    "old": {
+     "n": 1702,
+     "acc": 0.6839,
+     "logloss": 0.5884,
+     "brier": 0.2016
+    },
+    "new": {
+     "n": 1702,
+     "acc": 0.6851,
+     "logloss": 0.5843,
+     "brier": 0.2006
+    }
+   },
+   "chall": {
+    "n": 1978,
+    "old": {
+     "n": 1978,
+     "acc": 0.6441,
+     "logloss": 0.6377,
+     "brier": 0.2219
+    },
+    "new": {
+     "n": 1978,
+     "acc": 0.6456,
+     "logloss": 0.6349,
+     "brier": 0.2214
+    }
+   },
+   "itf": {
+    "n": 686,
+    "old": {
+     "n": 686,
+     "acc": 0.6939,
+     "logloss": 0.5966,
+     "brier": 0.2023
+    },
+    "new": {
+     "n": 686,
+     "acc": 0.7012,
+     "logloss": 0.5888,
+     "brier": 0.2003
+    }
+   }
+  },
+  "candidate": {
+   "train": "2011-07-09 – 2026-07-07",
+   "n_train": 772072,
+   "iterations": 401,
+   "cal": 0.91,
+   "w_gbm": 1.0
+  },
+  "decision": "nasazeno – kandidát lepší v log loss i Brier",
+  "deployed": true,
+  "final": {
+   "train": "2011-10-01 – 2026-09-29",
+   "n_train": 763378,
+   "trees": 421,
+   "cal": 0.91,
+   "w_gbm": 1.0
+  },
+  "runtime_s": 106
+ }
+]
