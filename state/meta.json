@@ -21,7 +21,7 @@
 "flashscore": [
 "20260922",
 "20260929",
-426
+427
 ],
 "sackmann": [
 "20000101",
@@ -168,6 +168,7 @@
 "2mYUUUTP": 20719,
 "2ogE8zJ0": 20719,
 "2qQ6TO76": 20719,
+"2sgni1ae": 20725,
 "2smygl2S": 20719,
 "2suplt6S": 20718,
 "2yMKAwr2": 20721,
@@ -1237,6 +1238,7 @@
 "pO5qoEH7": 20718,
 "pOiXC00M": 20720,
 "pQnE2uJt": 20719,
+"pQnTHvxS": 20725,
 "pSBAvfFs": 20718,
 "pSJ1q2Bs": 20720,
 "pSTjm38O": 20721,
@@ -11933,6 +11935,11 @@
 20718
 ],
 [
+"a212244",
+"a212944",
+20725
+],
+[
 "a212269",
 "a213361",
 20720
@@ -16388,6 +16395,18 @@
 "dup_skipped": 0,
 "enriched": 0,
 "fs_new_events": 0,
+"new_players": 0,
+"tml_rows": {}
+},
+{
+"applied": 1,
+"at": "2026-09-29 13:04 CEST",
+"by_level": {
+"M_itf": 1
+},
+"dup_skipped": 1,
+"enriched": 0,
+"fs_new_events": 2,
 "new_players": 0,
 "tml_rows": {}
 }
