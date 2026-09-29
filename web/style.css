@@ -238,3 +238,8 @@ em.pos{color:var(--live)!important}em.neg{color:var(--red)!important}
 .fchart .pinfo{padding:0 12px}
 
 .tscroll{overflow-x:auto;margin:8px -4px}.rt{font-size:11.5px;min-width:520px}.rt td,.rt th{padding:5px 4px;vertical-align:top}.rt small{color:var(--mut)}
+/* živé skóre Flashscore: tečka podání + body v gemu */
+.sv{width:7px;display:inline-flex;align-items:center;justify-content:center}
+.sv.on::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--live);box-shadow:0 0 5px var(--live)}
+.g.pt{width:21px;color:var(--live);font-weight:800;background:rgba(47,224,137,.10);border-radius:4px}
+.svd{font-style:normal;color:var(--live);font-size:8px;margin:0 3px;vertical-align:1px}
