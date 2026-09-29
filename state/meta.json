@@ -32,8 +32,8 @@
 "M_tour": {
 "flashscore": [
 "20260924",
-"20260928",
-6
+"20260929",
+7
 ],
 "sackmann": [
 "20000103",
@@ -786,6 +786,7 @@
 "WbW3CgtA": 20723,
 "Wbz1G3K8": 20722,
 "Wd7hFuy9": 20718,
+"WdDDlcIl": 20725,
 "WffayVfJ": 20720,
 "Wh158uAT": 20720,
 "WhDNfTBF": 20718,
@@ -4872,6 +4873,11 @@
 "a126774",
 "a206499",
 20695
+],
+[
+"a126774",
+"a208014",
+20725
 ],
 [
 "a126774",
@@ -15785,6 +15791,23 @@
 "dup_skipped": 0,
 "enriched": 0,
 "fs_new_events": 0,
+"new_players": 0,
+"tml_rows": {
+"M_chall": 5,
+"M_main": 6,
+"M_quali": 3,
+"W_main": 9
+}
+},
+{
+"applied": 1,
+"at": "2026-09-29 05:19 CEST",
+"by_level": {
+"M_tour": 1
+},
+"dup_skipped": 0,
+"enriched": 0,
+"fs_new_events": 1,
 "new_players": 0,
 "tml_rows": {
 "M_chall": 5,
