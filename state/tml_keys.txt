@@ -1082,6 +1082,9 @@
 2026-3009|Sebastian Baez|Rodrigo Pacheco Mendez|R16
 2026-3009|Stan Wawrinka|Dalibor Svrcina|R32
 2026-3009|Vit Kopriva|Gauthier Onclin|R16
+2026-3013|Alex Bolt|Semen Pankin|R32
+2026-3013|Luka Pavlovic|Akira Santillan|R32
+2026-3013|Yanki Erel|Arthur Weber|R32
 2026-3021|Alvaro Guillen Meza|Radu Mihai Papoe|R32
 2026-3021|Andrej Nedic|Alan Fernando Rubio Fierros|R32
 2026-3021|Andrej Nedic|Max Alcala Gurri|QF
