@@ -756,6 +756,11 @@ function updateRowOdds(e) {
     }
     const ol = box.querySelector('.ol'); if (ol) ol.innerHTML = oddsLabel(o);
   }
+  // filtr VALUE drží řádek i potom, co čerstvý předzápasový kurz spadne pod práh
+  if (S.filt.st === 'value' && !S.detail && (location.hash || '#zapasy').slice(1) === 'zapasy') {
+    const listed = !!document.querySelector(`#v-zapasy .mr[data-ev="${CSS.escape(e.id)}"]`);
+    if (listed !== passFilt(e, 'value') && !S.refilt) { S.refilt = true; renderMatches(true).finally(() => { S.refilt = false; }); }
+  }
 }
 function refreshDetailOdds(e) {
   if (!S.detail || S.byId[S.detail.id] !== e) return;
