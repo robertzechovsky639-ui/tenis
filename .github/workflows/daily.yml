@@ -1,0 +1,67 @@
+name: Denní aktualizace dat a nasazení
+
+on:
+  schedule:
+    - cron: '17 3 * * *'    # 05:17 letního času v Praze (04:17 v zimě)
+    - cron: '17 15 * * *'   # 17:17 letního času v Praze (16:17 v zimě)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: daily-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      TZ: Europe/Prague
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Instalace závislostí
+        run: pip install -r requirements-ci.txt
+      - name: Stažení nových výsledků a rozpisu + aktualizace ratingů (bez přetrénování)
+        run: python scripts/daily.py 2>&1 | tee update.log
+      - name: Kontrola dat a parity JS == Python
+        run: |
+          python scripts/check_data.py
+          node scripts/parity_test.js
+      - name: Sestavení webu
+        run: bash scripts/make_dist.sh
+      - name: Commit aktualizovaného stavu
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state
+          if git diff --cached --quiet; then echo "Stav beze změn"; else
+            git commit -q -m "Denní aktualizace dat $(date '+%Y-%m-%d %H:%M %Z')"
+            git pull --rebase -q && git push -q
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: update
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

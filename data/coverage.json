@@ -1,0 +1,121 @@
+{
+ "M|chall|flashscore": {
+  "n": 103,
+  "first": "20260922",
+  "last": "20260928"
+ },
+ "M|chall|sackmann": {
+  "n": 158379,
+  "first": "20000124",
+  "last": "20260601"
+ },
+ "M|chall|tml": {
+  "n": 2543,
+  "first": "20260608",
+  "last": "20260928"
+ },
+ "M|itf|flashscore": {
+  "n": 404,
+  "first": "20260922",
+  "last": "20260928"
+ },
+ "M|itf|sackmann": {
+  "n": 419166,
+  "first": "20000101",
+  "last": "20260601"
+ },
+ "M|tour|flashscore": {
+  "n": 6,
+  "first": "20260924",
+  "last": "20260928"
+ },
+ "M|tour|sackmann": {
+  "n": 110997,
+  "first": "20000103",
+  "last": "20260525"
+ },
+ "M|tour|tml": {
+  "n": 1716,
+  "first": "20260518",
+  "last": "20260928"
+ },
+ "W|chall|flashscore": {
+  "n": 113,
+  "first": "20260922",
+  "last": "20260928"
+ },
+ "W|chall|sackmann": {
+  "n": 11130,
+  "first": "20000304",
+  "last": "20260602"
+ },
+ "W|itf|flashscore": {
+  "n": 309,
+  "first": "20260922",
+  "last": "20260927"
+ },
+ "W|itf|sackmann": {
+  "n": 438849,
+  "first": "19991227",
+  "last": "20260601"
+ },
+ "W|tour|flashscore": {
+  "n": 27,
+  "first": "20260922",
+  "last": "20260928"
+ },
+ "W|tour|sackmann": {
+  "n": 112502,
+  "first": "20000103",
+  "last": "20260525"
+ },
+ "W|tour|tml": {
+  "n": 946,
+  "first": "20260608",
+  "last": "20260927"
+ },
+ "_tml_mapping": {
+  "2026.csv+ongoing_tourneys.csv": {
+   "cutoff": 20260525,
+   "rows": 1097,
+   "max": 20260928,
+   "exact": 310,
+   "ambig": 4,
+   "new": 18,
+   "id": 0
+  },
+  "2026_challenger.csv+challenger_ongoing_tourneys.csv": {
+   "cutoff": 20260601,
+   "rows": 2548,
+   "max": 20260928,
+   "exact": 619,
+   "ambig": 12,
+   "new": 36,
+   "id": 0
+  },
+  "2026_atp_quali.csv": {
+   "cutoff": 20260517,
+   "rows": 628,
+   "max": 20260928,
+   "exact": 324,
+   "ambig": 2,
+   "new": 12,
+   "id": 0
+  },
+  "2026_wta.csv+wta_ongoing_tourneys.csv": {
+   "cutoff": 20260525,
+   "rows": 955,
+   "max": 20260927,
+   "exact": 423,
+   "ambig": 0,
+   "new": 10,
+   "id": 0
+  },
+  "flashscore": {
+   "events": 1269,
+   "added": 962,
+   "dup": 307,
+   "unknown_players": 78
+  }
+ }
+}

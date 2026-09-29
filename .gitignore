@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+raw/
+dist/
+deploy-*.json
+update.log
+# data/: jen model a metriky (vše ostatní se generuje plnou přestavbou)
+data/*
+!data/gbm.txt
+!data/metrics.json
+!data/coverage.json
+# web/data/: generuje scripts/daily.py (resp. export.py); v repu jen model
+web/data/*
+!web/data/model.json

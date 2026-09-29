@@ -1,0 +1,8374 @@
+{
+"M|abidjan ch": [
+"Hard",
+3
+],
+"M|acapulco": [
+"Hard",
+4
+],
+"M|acapulco ch": [
+"Hard",
+3
+],
+"M|adelaide": [
+"Hard",
+4
+],
+"M|aix en provence ch": [
+"Clay",
+3
+],
+"M|alicante ch": [
+"Clay",
+3
+],
+"M|almaty": [
+"Hard",
+4
+],
+"M|amersfoort ch": [
+"Clay",
+3
+],
+"M|antalya ch": [
+"Clay",
+3
+],
+"M|antofagasta ch": [
+"Clay",
+3
+],
+"M|antwerp": [
+"Hard",
+4
+],
+"M|astana": [
+"Hard",
+3
+],
+"M|astana ch": [
+"Hard",
+3
+],
+"M|asuncion": [
+"Clay",
+3
+],
+"M|asuncion ch": [
+"Clay",
+3
+],
+"M|athens": [
+"Hard",
+4
+],
+"M|athens ch": [
+"Hard",
+3
+],
+"M|atlanta": [
+"Hard",
+4
+],
+"M|auckland": [
+"Hard",
+4
+],
+"M|augsburg": [
+"Clay",
+3
+],
+"M|augsburg ch": [
+"Clay",
+3
+],
+"M|australian open": [
+"Hard",
+6
+],
+"M|bad waltersdorf ch": [
+"Clay",
+3
+],
+"M|banja luka": [
+"Clay",
+4
+],
+"M|banja luka ch": [
+"Clay",
+3
+],
+"M|barcelona": [
+"Clay",
+4
+],
+"M|barcelona ch": [
+"Clay",
+3
+],
+"M|bari": [
+"Clay",
+3
+],
+"M|barletta ch": [
+"Clay",
+3
+],
+"M|barranquilla ch": [
+"Hard",
+3
+],
+"M|basel": [
+"Hard",
+4
+],
+"M|bastad": [
+"Clay",
+4
+],
+"M|baton rouge ch": [
+"Hard",
+3
+],
+"M|beijing": [
+"Hard",
+4
+],
+"M|belgrade": [
+"Hard",
+4
+],
+"M|bengaluru ch": [
+"Hard",
+3
+],
+"M|bergamo ch": [
+"Hard",
+3
+],
+"M|biel bienne ch": [
+"Hard",
+3
+],
+"M|biella ch": [
+"Clay",
+3
+],
+"M|birmingham ch": [
+"Grass",
+3
+],
+"M|blois ch": [
+"Clay",
+3
+],
+"M|bloomfield hills": [
+"Hard",
+3
+],
+"M|bloomfield hills ch": [
+"Hard",
+3
+],
+"M|bogota": [
+"Clay",
+3
+],
+"M|bogota ch": [
+"Clay",
+3
+],
+"M|bonn": [
+"Clay",
+3
+],
+"M|bonn ch": [
+"Clay",
+3
+],
+"M|bordeaux ch": [
+"Clay",
+3
+],
+"M|braga ch": [
+"Clay",
+3
+],
+"M|brasilia ch": [
+"Clay",
+3
+],
+"M|brasov": [
+"Clay",
+3
+],
+"M|brasov ch": [
+"Clay",
+3
+],
+"M|bratislava": [
+"Clay",
+3
+],
+"M|bratislava ch": [
+"Hard",
+3
+],
+"M|braunschweig": [
+"Clay",
+3
+],
+"M|braunschweig ch": [
+"Clay",
+3
+],
+"M|brazzaville ch": [
+"Clay",
+3
+],
+"M|brest ch": [
+"Hard",
+3
+],
+"M|brisbane": [
+"Hard",
+4
+],
+"M|brisbane ch": [
+"Hard",
+3
+],
+"M|brownsburg": [
+"Hard",
+3
+],
+"M|brussels": [
+"Hard",
+4
+],
+"M|bucaramanga ch": [
+"Clay",
+3
+],
+"M|bucharest": [
+"Clay",
+4
+],
+"M|buenos aires": [
+"Clay",
+3
+],
+"M|buenos aires ch": [
+"Clay",
+3
+],
+"M|buenos aires challenger": [
+"Clay",
+3
+],
+"M|buenos aires tigre ch": [
+"Clay",
+3
+],
+"M|bunschoten": [
+"Clay",
+3
+],
+"M|bunschoten ch": [
+"Clay",
+3
+],
+"M|burnie ch": [
+"Hard",
+3
+],
+"M|busan ch": [
+"Hard",
+3
+],
+"M|cagliari ch": [
+"Clay",
+3
+],
+"M|calgary ch": [
+"Hard",
+3
+],
+"M|cali ch": [
+"Clay",
+3
+],
+"M|campinas ch": [
+"Clay",
+3
+],
+"M|canada masters": [
+"Hard",
+5
+],
+"M|canberra ch": [
+"Hard",
+3
+],
+"M|cancun": [
+"Hard",
+3
+],
+"M|cancun ch": [
+"Hard",
+3
+],
+"M|cap cana ch": [
+"Hard",
+3
+],
+"M|cary": [
+"Hard",
+3
+],
+"M|cary ch": [
+"Hard",
+3
+],
+"M|cassis": [
+"Hard",
+3
+],
+"M|cassis ch": [
+"Hard",
+3
+],
+"M|cattolica": [
+"Clay",
+3
+],
+"M|centurion ch": [
+"Hard",
+3
+],
+"M|cervia ch": [
+"Clay",
+3
+],
+"M|cesenatico ch": [
+"Hard",
+3
+],
+"M|champaign ch": [
+"Hard",
+3
+],
+"M|charleston ch": [
+"Hard",
+3
+],
+"M|charlottesville ch": [
+"Hard",
+3
+],
+"M|chengdu": [
+"Hard",
+4
+],
+"M|chennai ch": [
+"Hard",
+3
+],
+"M|cherbourg ch": [
+"Hard",
+3
+],
+"M|chicago ch": [
+"Hard",
+3
+],
+"M|chisinau ch": [
+"Clay",
+3
+],
+"M|cincinnati masters": [
+"Hard",
+5
+],
+"M|citta di biella": [
+"Clay",
+3
+],
+"M|cleveland ch": [
+"Hard",
+3
+],
+"M|columbus ch": [
+"Hard",
+3
+],
+"M|columbus challenger": [
+"Hard",
+3
+],
+"M|como": [
+"Clay",
+3
+],
+"M|como ch": [
+"Clay",
+3
+],
+"M|concepcion ch": [
+"Clay",
+3
+],
+"M|coquimbo ch": [
+"Clay",
+3
+],
+"M|cordenons": [
+"Clay",
+3
+],
+"M|cordenons ch": [
+"Clay",
+3
+],
+"M|cordoba": [
+"Clay",
+4
+],
+"M|cordoba ch": [
+"Clay",
+3
+],
+"M|costa do sauipe ch": [
+"Clay",
+3
+],
+"M|cuernavaca ch": [
+"Hard",
+3
+],
+"M|curitiba ch": [
+"Clay",
+3
+],
+"M|dallas": [
+"Hard",
+4
+],
+"M|danderyd ch": [
+"Hard",
+3
+],
+"M|davis cup finals f aus vs ita": [
+"Hard",
+4
+],
+"M|davis cup finals f ita vs esp": [
+"Hard",
+4
+],
+"M|davis cup finals f ita vs ned": [
+"Hard",
+4
+],
+"M|davis cup finals qf arg vs ger": [
+"Hard",
+4
+],
+"M|davis cup finals qf can vs fin": [
+"Hard",
+4
+],
+"M|davis cup finals qf cze vs aus": [
+"Hard",
+4
+],
+"M|davis cup finals qf esp vs cze": [
+"Hard",
+4
+],
+"M|davis cup finals qf fra vs bel": [
+"Hard",
+4
+],
+"M|davis cup finals qf ger vs can": [
+"Hard",
+4
+],
+"M|davis cup finals qf ita vs arg": [
+"Hard",
+4
+],
+"M|davis cup finals qf ita vs aut": [
+"Hard",
+4
+],
+"M|davis cup finals qf ita vs ned": [
+"Hard",
+4
+],
+"M|davis cup finals qf ned vs esp": [
+"Hard",
+4
+],
+"M|davis cup finals qf srb vs gbr": [
+"Hard",
+4
+],
+"M|davis cup finals qf usa vs aus": [
+"Hard",
+4
+],
+"M|davis cup finals rr aus vs cze": [
+"Hard",
+4
+],
+"M|davis cup finals rr aus vs esp": [
+"Hard",
+4
+],
+"M|davis cup finals rr aus vs fra": [
+"Hard",
+4
+],
+"M|davis cup finals rr aus vs gbr": [
+"Hard",
+4
+],
+"M|davis cup finals rr aus vs sui": [
+"Hard",
+4
+],
+"M|davis cup finals rr bel vs bra": [
+"Hard",
+4
+],
+"M|davis cup finals rr can vs arg": [
+"Hard",
+4
+],
+"M|davis cup finals rr can vs chi": [
+"Hard",
+4
+],
+"M|davis cup finals rr can vs fin": [
+"Hard",
+4
+],
+"M|davis cup finals rr can vs gbr": [
+"Hard",
+4
+],
+"M|davis cup finals rr can vs ita": [
+"Hard",
+4
+],
+"M|davis cup finals rr can vs swe": [
+"Hard",
+4
+],
+"M|davis cup finals rr cro vs fin": [
+"Hard",
+4
+],
+"M|davis cup finals rr cro vs ned": [
+"Hard",
+4
+],
+"M|davis cup finals rr cro vs usa": [
+"Hard",
+4
+],
+"M|davis cup finals rr cze vs esp": [
+"Hard",
+4
+],
+"M|davis cup finals rr cze vs fra": [
+"Hard",
+4
+],
+"M|davis cup finals rr cze vs kor": [
+"Hard",
+4
+],
+"M|davis cup finals rr esp vs cze": [
+"Hard",
+4
+],
+"M|davis cup finals rr esp vs kor": [
+"Hard",
+4
+],
+"M|davis cup finals rr esp vs srb": [
+"Hard",
+4
+],
+"M|davis cup finals rr fin vs arg": [
+"Hard",
+4
+],
+"M|davis cup finals rr fin vs gbr": [
+"Hard",
+4
+],
+"M|davis cup finals rr fra vs esp": [
+"Hard",
+4
+],
+"M|davis cup finals rr fra vs sui": [
+"Hard",
+4
+],
+"M|davis cup finals rr gbr vs arg": [
+"Hard",
+4
+],
+"M|davis cup finals rr gbr vs fra": [
+"Hard",
+4
+],
+"M|davis cup finals rr gbr vs sui": [
+"Hard",
+4
+],
+"M|davis cup finals rr ger vs chi": [
+"Hard",
+4
+],
+"M|davis cup finals rr ger vs svk": [
+"Hard",
+4
+],
+"M|davis cup finals rr ger vs usa": [
+"Hard",
+4
+],
+"M|davis cup finals rr ita vs bel": [
+"Hard",
+4
+],
+"M|davis cup finals rr ita vs bra": [
+"Hard",
+4
+],
+"M|davis cup finals rr ita vs chi": [
+"Hard",
+4
+],
+"M|davis cup finals rr ita vs ned": [
+"Hard",
+4
+],
+"M|davis cup finals rr ita vs swe": [
+"Hard",
+4
+],
+"M|davis cup finals rr ned vs bel": [
+"Hard",
+4
+],
+"M|davis cup finals rr ned vs bra": [
+"Hard",
+4
+],
+"M|davis cup finals rr ned vs fin": [
+"Hard",
+4
+],
+"M|davis cup finals rr ned vs usa": [
+"Hard",
+4
+],
+"M|davis cup finals rr srb vs cze": [
+"Hard",
+4
+],
+"M|davis cup finals rr srb vs kor": [
+"Hard",
+4
+],
+"M|davis cup finals rr svk vs chi": [
+"Hard",
+4
+],
+"M|davis cup finals rr swe vs chi": [
+"Hard",
+4
+],
+"M|davis cup finals rr usa vs chi": [
+"Hard",
+4
+],
+"M|davis cup finals rr usa vs fin": [
+"Hard",
+4
+],
+"M|davis cup finals rr usa vs svk": [
+"Hard",
+4
+],
+"M|davis cup finals sf esp vs ger": [
+"Hard",
+4
+],
+"M|davis cup finals sf fin vs aus": [
+"Hard",
+4
+],
+"M|davis cup finals sf ger vs ned": [
+"Hard",
+4
+],
+"M|davis cup finals sf ita vs aus": [
+"Hard",
+4
+],
+"M|davis cup finals sf ita vs bel": [
+"Hard",
+4
+],
+"M|davis cup finals sf ita vs srb": [
+"Hard",
+4
+],
+"M|davis cup qls r arg vs fin": [
+"Hard",
+4
+],
+"M|davis cup qls r arg vs kaz": [
+"Clay",
+4
+],
+"M|davis cup qls r aus vs bel": [
+"Hard",
+4
+],
+"M|davis cup qls r aus vs ecu": [
+"Clay",
+4
+],
+"M|davis cup qls r aus vs swe": [
+"Hard",
+4
+],
+"M|davis cup qls r aut vs bel": [
+"Clay",
+4
+],
+"M|davis cup qls r aut vs fin": [
+"Clay",
+4
+],
+"M|davis cup qls r bel vs bul": [
+"Clay",
+4
+],
+"M|davis cup qls r bel vs kor": [
+"Hard",
+4
+],
+"M|davis cup qls r bra vs can": [
+"Hard",
+4
+],
+"M|davis cup qls r bra vs fra": [
+"Hard",
+4
+],
+"M|davis cup qls r can vs fra": [
+"Hard",
+4
+],
+"M|davis cup qls r can vs hun": [
+"Hard",
+4
+],
+"M|davis cup qls r can vs kor": [
+"Hard",
+4
+],
+"M|davis cup qls r chi vs bel": [
+"Hard",
+4
+],
+"M|davis cup qls r chi vs esp": [
+"Clay",
+4
+],
+"M|davis cup qls r chi vs per": [
+"Hard",
+4
+],
+"M|davis cup qls r chi vs srb": [
+"Clay",
+4
+],
+"M|davis cup qls r cro vs aut": [
+"Hard",
+4
+],
+"M|davis cup qls r cro vs bel": [
+"Hard",
+4
+],
+"M|davis cup qls r cro vs fra": [
+"Clay",
+4
+],
+"M|davis cup qls r cro vs svk": [
+"Hard",
+4
+],
+"M|davis cup qls r cze vs isr": [
+"Hard",
+4
+],
+"M|davis cup qls r cze vs por": [
+"Clay",
+4
+],
+"M|davis cup qls r cze vs usa": [
+"Hard",
+4
+],
+"M|davis cup qls r den vs cro": [
+"Hard",
+4
+],
+"M|davis cup qls r den vs esp": [
+"Clay",
+4
+],
+"M|davis cup qls r fin vs por": [
+"Hard",
+4
+],
+"M|davis cup qls r fra vs hun": [
+"Hard",
+4
+],
+"M|davis cup qls r fra vs svk": [
+"Hard",
+4
+],
+"M|davis cup qls r gbr vs col": [
+"Clay",
+4
+],
+"M|davis cup qls r gbr vs ecu": [
+"Hard",
+4
+],
+"M|davis cup qls r ger vs cro": [
+"Hard",
+4
+],
+"M|davis cup qls r ger vs isr": [
+"Hard",
+4
+],
+"M|davis cup qls r ger vs jpn": [
+"Hard",
+4
+],
+"M|davis cup qls r ger vs per": [
+"Hard",
+4
+],
+"M|davis cup qls r ger vs sui": [
+"Hard",
+4
+],
+"M|davis cup qls r hun vs aut": [
+"Hard",
+4
+],
+"M|davis cup qls r hun vs ger": [
+"Hard",
+4
+],
+"M|davis cup qls r jpn vs aut": [
+"Hard",
+4
+],
+"M|davis cup qls r jpn vs gbr": [
+"Hard",
+4
+],
+"M|davis cup qls r kaz vs chi": [
+"Clay",
+4
+],
+"M|davis cup qls r kor vs arg": [
+"Hard",
+4
+],
+"M|davis cup qls r kor vs cze": [
+"Hard",
+4
+],
+"M|davis cup qls r kor vs ind": [
+"Hard",
+4
+],
+"M|davis cup qls r ned vs arg": [
+"Hard",
+4
+],
+"M|davis cup qls r ned vs ind": [
+"Hard",
+4
+],
+"M|davis cup qls r ned vs sui": [
+"Hard",
+4
+],
+"M|davis cup qls r ned vs svk": [
+"Hard",
+4
+],
+"M|davis cup qls r nor vs arg": [
+"Hard",
+4
+],
+"M|davis cup qls r nor vs gbr": [
+"Hard",
+4
+],
+"M|davis cup qls r srb vs den": [
+"Hard",
+4
+],
+"M|davis cup qls r srb vs nor": [
+"Hard",
+4
+],
+"M|davis cup qls r srb vs svk": [
+"Clay",
+4
+],
+"M|davis cup qls r sui vs esp": [
+"Hard",
+4
+],
+"M|davis cup qls r swe vs bih": [
+"Hard",
+4
+],
+"M|davis cup qls r swe vs bra": [
+"Hard",
+4
+],
+"M|davis cup qls r swe vs cze": [
+"Hard",
+4
+],
+"M|davis cup qls r tpe vs fra": [
+"Hard",
+4
+],
+"M|davis cup qls r ukr vs usa": [
+"Hard",
+4
+],
+"M|davis cup qls r usa vs cze": [
+"Hard",
+4
+],
+"M|davis cup qls r usa vs hun": [
+"Clay",
+4
+],
+"M|davis cup qls r usa vs tpe": [
+"Hard",
+4
+],
+"M|davis cup qls r usa vs uzb": [
+"Hard",
+4
+],
+"M|davis cup wg po bar vs bol": [
+"Hard",
+4
+],
+"M|davis cup wg po bar vs poc": [
+"Hard",
+4
+],
+"M|davis cup wg po ben vs esa": [
+"Hard",
+4
+],
+"M|davis cup wg po ben vs lat": [
+"Hard",
+4
+],
+"M|davis cup wg po bol vs geo": [
+"Hard",
+4
+],
+"M|davis cup wg po bol vs tha": [
+"Clay",
+4
+],
+"M|davis cup wg po bra vs chn": [
+"Hard",
+4
+],
+"M|davis cup wg po bul vs bih": [
+"Hard",
+4
+],
+"M|davis cup wg po chn vs por": [
+"Hard",
+4
+],
+"M|davis cup wg po chn vs slo": [
+"Hard",
+4
+],
+"M|davis cup wg po col vs bar": [
+"Clay",
+4
+],
+"M|davis cup wg po col vs lux": [
+"Clay",
+4
+],
+"M|davis cup wg po cyp vs mar": [
+"Hard",
+4
+],
+"M|davis cup wg po cyp vs mkd": [
+"Hard",
+4
+],
+"M|davis cup wg po cyp vs tha": [
+"Clay",
+4
+],
+"M|davis cup wg po dom vs bol": [
+"Hard",
+4
+],
+"M|davis cup wg po dom vs lat": [
+"Hard",
+4
+],
+"M|davis cup wg po ecu vs uru": [
+"Hard",
+4
+],
+"M|davis cup wg po egy vs ecu": [
+"Clay",
+4
+],
+"M|davis cup wg po egy vs par": [
+"Hard",
+4
+],
+"M|davis cup wg po egy vs pol": [
+"Clay",
+4
+],
+"M|davis cup wg po esa vs jor": [
+"Hard",
+4
+],
+"M|davis cup wg po esa vs mda": [
+"Hard",
+4
+],
+"M|davis cup wg po esa vs poc": [
+"Hard",
+4
+],
+"M|davis cup wg po est vs jam": [
+"Hard",
+4
+],
+"M|davis cup wg po est vs ven": [
+"Hard",
+4
+],
+"M|davis cup wg po geo vs ber": [
+"Hard",
+4
+],
+"M|davis cup wg po geo vs pol": [
+"Hard",
+4
+],
+"M|davis cup wg po gre vs egy": [
+"Clay",
+4
+],
+"M|davis cup wg po gre vs mex": [
+"Hard",
+4
+],
+"M|davis cup wg po gre vs rou": [
+"Hard",
+4
+],
+"M|davis cup wg po hkg vs fin": [
+"Hard",
+4
+],
+"M|davis cup wg po hkg vs zim": [
+"Hard",
+4
+],
+"M|davis cup wg po ina vs tog": [
+"Hard",
+4
+],
+"M|davis cup wg po ina vs vie": [
+"Hard",
+4
+],
+"M|davis cup wg po ind vs den": [
+"Hard",
+4
+],
+"M|davis cup wg po ind vs tog": [
+"Hard",
+4
+],
+"M|davis cup wg po iri vs est": [
+"Clay",
+4
+],
+"M|davis cup wg po irl vs aut": [
+"Hard",
+4
+],
+"M|davis cup wg po irl vs syr": [
+"Hard",
+4
+],
+"M|davis cup wg po isr vs lat": [
+"Hard",
+4
+],
+"M|davis cup wg po isr vs ltu": [
+"Hard",
+4
+],
+"M|davis cup wg po jam vs bar": [
+"Hard",
+4
+],
+"M|davis cup wg po jam vs nzl": [
+"Hard",
+4
+],
+"M|davis cup wg po jam vs uru": [
+"Hard",
+4
+],
+"M|davis cup wg po kaz vs mon": [
+"Hard",
+4
+],
+"M|davis cup wg po kaz vs pak": [
+"Hard",
+4
+],
+"M|davis cup wg po ksa vs irl": [
+"Hard",
+4
+],
+"M|davis cup wg po lbn vs jpn": [
+"Clay",
+4
+],
+"M|davis cup wg po lbn vs per": [
+"Clay",
+4
+],
+"M|davis cup wg po ltu vs geo": [
+"Hard",
+4
+],
+"M|davis cup wg po lux vs ltu": [
+"Hard",
+4
+],
+"M|davis cup wg po lux vs ukr": [
+"Hard",
+4
+],
+"M|davis cup wg po mar vs col": [
+"Clay",
+4
+],
+"M|davis cup wg po mex vs den": [
+"Clay",
+4
+],
+"M|davis cup wg po mne vs chn": [
+"Hard",
+4
+],
+"M|davis cup wg po mon vs por": [
+"Clay",
+4
+],
+"M|davis cup wg po nam vs est": [
+"Hard",
+4
+],
+"M|davis cup wg po nam vs hkg": [
+"Hard",
+4
+],
+"M|davis cup wg po ngr vs uzb": [
+"Hard",
+4
+],
+"M|davis cup wg po nor vs lat": [
+"Hard",
+4
+],
+"M|davis cup wg po nzl vs bih": [
+"Hard",
+4
+],
+"M|davis cup wg po nzl vs tur": [
+"Hard",
+4
+],
+"M|davis cup wg po pak vs ind": [
+"Grass",
+4
+],
+"M|davis cup wg po pak vs ltu": [
+"Hard",
+4
+],
+"M|davis cup wg po pak vs sen": [
+"Grass",
+4
+],
+"M|davis cup wg po par vs mon": [
+"Clay",
+4
+],
+"M|davis cup wg po par vs rou": [
+"Clay",
+4
+],
+"M|davis cup wg po per vs irl": [
+"Hard",
+4
+],
+"M|davis cup wg po rou vs bul": [
+"Hard",
+4
+],
+"M|davis cup wg po rou vs tha": [
+"Hard",
+4
+],
+"M|davis cup wg po rsa vs lux": [
+"Hard",
+4
+],
+"M|davis cup wg po rsa vs mne": [
+"Hard",
+4
+],
+"M|davis cup wg po rsa vs ngr": [
+"Hard",
+4
+],
+"M|davis cup wg po slo vs ina": [
+"Clay",
+4
+],
+"M|davis cup wg po slo vs tur": [
+"Clay",
+4
+],
+"M|davis cup wg po sui vs tun": [
+"Hard",
+4
+],
+"M|davis cup wg po tha vs pur": [
+"Hard",
+4
+],
+"M|davis cup wg po tog vs ina": [
+"Hard",
+4
+],
+"M|davis cup wg po tpe vs lbn": [
+"Hard",
+4
+],
+"M|davis cup wg po tun vs crc": [
+"Hard",
+4
+],
+"M|davis cup wg po tun vs cyp": [
+"Hard",
+4
+],
+"M|davis cup wg po tun vs ukr": [
+"Hard",
+4
+],
+"M|davis cup wg po tur vs mex": [
+"Hard",
+4
+],
+"M|davis cup wg po tur vs slo": [
+"Hard",
+4
+],
+"M|davis cup wg po ukr vs lbn": [
+"Hard",
+4
+],
+"M|davis cup wg po uru vs mda": [
+"Clay",
+4
+],
+"M|davis cup wg po uzb vs bih": [
+"Hard",
+4
+],
+"M|davis cup wg po uzb vs pol": [
+"Hard",
+4
+],
+"M|davis cup wg po vie vs rsa": [
+"Hard",
+4
+],
+"M|davis cup wg po zim vs mar": [
+"Hard",
+4
+],
+"M|davis cup wg r arg vs ltu": [
+"Clay",
+4
+],
+"M|davis cup wg r arg vs tur": [
+"Hard",
+4
+],
+"M|davis cup wg r aus vs pol": [
+"Hard",
+4
+],
+"M|davis cup wg r aut vs por": [
+"Hard",
+4
+],
+"M|davis cup wg r aut vs tur": [
+"Clay",
+4
+],
+"M|davis cup wg r bar vs pak": [
+"Hard",
+4
+],
+"M|davis cup wg r ber vs mex": [
+"Hard",
+4
+],
+"M|davis cup wg r bih vs ger": [
+"Clay",
+4
+],
+"M|davis cup wg r bol vs hkg": [
+"Clay",
+4
+],
+"M|davis cup wg r bol vs uru": [
+"Clay",
+4
+],
+"M|davis cup wg r bra vs sui": [
+"Hard",
+4
+],
+"M|davis cup wg r bul vs esa": [
+"Clay",
+4
+],
+"M|davis cup wg r bul vs fin": [
+"Clay",
+4
+],
+"M|davis cup wg r bul vs kaz": [
+"Clay",
+4
+],
+"M|davis cup wg r can vs isr": [
+"Hard",
+4
+],
+"M|davis cup wg r chi vs lux": [
+"Clay",
+4
+],
+"M|davis cup wg r cro vs ltu": [
+"Hard",
+4
+],
+"M|davis cup wg r cyp vs mon": [
+"Hard",
+4
+],
+"M|davis cup wg r cyp vs ukr": [
+"Hard",
+4
+],
+"M|davis cup wg r den vs bra": [
+"Hard",
+4
+],
+"M|davis cup wg r den vs bul": [
+"Hard",
+4
+],
+"M|davis cup wg r dom vs egy": [
+"Clay",
+4
+],
+"M|davis cup wg r ecu vs bih": [
+"Clay",
+4
+],
+"M|davis cup wg r egy vs hun": [
+"Clay",
+4
+],
+"M|davis cup wg r esa vs irl": [
+"Clay",
+4
+],
+"M|davis cup wg r esa vs por": [
+"Hard",
+4
+],
+"M|davis cup wg r esa vs rou": [
+"Hard",
+4
+],
+"M|davis cup wg r est vs mex": [
+"Hard",
+4
+],
+"M|davis cup wg r fin vs mon": [
+"Hard",
+4
+],
+"M|davis cup wg r geo vs mex": [
+"Hard",
+4
+],
+"M|davis cup wg r gre vs bra": [
+"Hard",
+4
+],
+"M|davis cup wg r gre vs svk": [
+"Hard",
+4
+],
+"M|davis cup wg r hkg vs ecu": [
+"Hard",
+4
+],
+"M|davis cup wg r hkg vs lat": [
+"Hard",
+4
+],
+"M|davis cup wg r hkg vs uzb": [
+"Hard",
+4
+],
+"M|davis cup wg r ina vs rou": [
+"Hard",
+4
+],
+"M|davis cup wg r ind vs mar": [
+"Hard",
+4
+],
+"M|davis cup wg r irl vs chn": [
+"Hard",
+4
+],
+"M|davis cup wg r isr vs jpn": [
+"Hard",
+4
+],
+"M|davis cup wg r isr vs ukr": [
+"Hard",
+4
+],
+"M|davis cup wg r jpn vs col": [
+"Hard",
+4
+],
+"M|davis cup wg r kaz vs den": [
+"Hard",
+4
+],
+"M|davis cup wg r kaz vs tha": [
+"Hard",
+4
+],
+"M|davis cup wg r kor vs kaz": [
+"Hard",
+4
+],
+"M|davis cup wg r lbn vs bar": [
+"Clay",
+4
+],
+"M|davis cup wg r lbn vs jam": [
+"Clay",
+4
+],
+"M|davis cup wg r lbn vs rsa": [
+"Clay",
+4
+],
+"M|davis cup wg r ltu vs ben": [
+"Hard",
+4
+],
+"M|davis cup wg r lux vs hun": [
+"Hard",
+4
+],
+"M|davis cup wg r mar vs mon": [
+"Clay",
+4
+],
+"M|davis cup wg r mar vs ngr": [
+"Clay",
+4
+],
+"M|davis cup wg r mex vs chn": [
+"Clay",
+4
+],
+"M|davis cup wg r mon vs ecu": [
+"Clay",
+4
+],
+"M|davis cup wg r ned vs col": [
+"Hard",
+4
+],
+"M|davis cup wg r nor vs chn": [
+"Clay",
+4
+],
+"M|davis cup wg r nor vs por": [
+"Hard",
+4
+],
+"M|davis cup wg r nzl vs geo": [
+"Hard",
+4
+],
+"M|davis cup wg r nzl vs jpn": [
+"Hard",
+4
+],
+"M|davis cup wg r nzl vs lux": [
+"Hard",
+4
+],
+"M|davis cup wg r pak vs ina": [
+"Grass",
+4
+],
+"M|davis cup wg r par vs pak": [
+"Clay",
+4
+],
+"M|davis cup wg r per vs nor": [
+"Clay",
+4
+],
+"M|davis cup wg r per vs par": [
+"Clay",
+4
+],
+"M|davis cup wg r per vs por": [
+"Clay",
+4
+],
+"M|davis cup wg r pol vs gbr": [
+"Hard",
+4
+],
+"M|davis cup wg r pol vs kor": [
+"Hard",
+4
+],
+"M|davis cup wg r rou vs chn": [
+"Hard",
+4
+],
+"M|davis cup wg r rsa vs bih": [
+"Hard",
+4
+],
+"M|davis cup wg r rsa vs mar": [
+"Hard",
+4
+],
+"M|davis cup wg r slo vs isr": [
+"Clay",
+4
+],
+"M|davis cup wg r slo vs lux": [
+"Clay",
+4
+],
+"M|davis cup wg r slo vs uru": [
+"Hard",
+4
+],
+"M|davis cup wg r srb vs gre": [
+"Hard",
+4
+],
+"M|davis cup wg r srb vs ltu": [
+"Hard",
+4
+],
+"M|davis cup wg r srb vs tur": [
+"Hard",
+4
+],
+"M|davis cup wg r sui vs ind": [
+"Hard",
+4
+],
+"M|davis cup wg r sui vs per": [
+"Hard",
+4
+],
+"M|davis cup wg r svk vs col": [
+"Hard",
+4
+],
+"M|davis cup wg r svk vs gre": [
+"Clay",
+4
+],
+"M|davis cup wg r swe vs ind": [
+"Hard",
+4
+],
+"M|davis cup wg r swe vs tun": [
+"Hard",
+4
+],
+"M|davis cup wg r tog vs egy": [
+"Hard",
+4
+],
+"M|davis cup wg r tog vs lat": [
+"Hard",
+4
+],
+"M|davis cup wg r tpe vs bih": [
+"Hard",
+4
+],
+"M|davis cup wg r tpe vs nor": [
+"Hard",
+4
+],
+"M|davis cup wg r tpe vs swe": [
+"Hard",
+4
+],
+"M|davis cup wg r tun vs irl": [
+"Clay",
+4
+],
+"M|davis cup wg r tun vs pak": [
+"Hard",
+4
+],
+"M|davis cup wg r ukr vs col": [
+"Hard",
+4
+],
+"M|davis cup wg r ukr vs dom": [
+"Clay",
+4
+],
+"M|davis cup wg r uru vs egy": [
+"Clay",
+4
+],
+"M|davis cup wg r uru vs est": [
+"Clay",
+4
+],
+"M|davis cup wg r uzb vs est": [
+"Hard",
+4
+],
+"M|delray beach": [
+"Hard",
+4
+],
+"M|dobrich ch": [
+"Clay",
+3
+],
+"M|doha": [
+"Hard",
+4
+],
+"M|drummondville ch": [
+"Hard",
+3
+],
+"M|dubai": [
+"Hard",
+4
+],
+"M|dublin": [
+"Grass",
+3
+],
+"M|eastbourne": [
+"Grass",
+4
+],
+"M|estoril": [
+"Clay",
+4
+],
+"M|estoril ch": [
+"Clay",
+3
+],
+"M|eupago porto open": [
+"Hard",
+3
+],
+"M|fairfield ch": [
+"Hard",
+3
+],
+"M|florianopolis ch": [
+"Clay",
+3
+],
+"M|francavilla al mare ch": [
+"Clay",
+3
+],
+"M|geneva": [
+"Clay",
+4
+],
+"M|genoa": [
+"Clay",
+3
+],
+"M|genoa ch": [
+"Clay",
+3
+],
+"M|girona ch": [
+"Clay",
+3
+],
+"M|glasgow ch": [
+"Hard",
+3
+],
+"M|granby": [
+"Hard",
+3
+],
+"M|granby ch": [
+"Hard",
+3
+],
+"M|grodzisk mazowiecki": [
+"Hard",
+3
+],
+"M|grodzisk mazowiecki ch": [
+"Hard",
+3
+],
+"M|gstaad": [
+"Clay",
+4
+],
+"M|guangzhou ch": [
+"Hard",
+3
+],
+"M|guangzhou huangpu ch": [
+"Hard",
+3
+],
+"M|guangzhou huangpu international tennis open": [
+"Hard",
+3
+],
+"M|guayaquil ch": [
+"Clay",
+3
+],
+"M|gwangju ch": [
+"Hard",
+3
+],
+"M|hagen": [
+"Clay",
+3
+],
+"M|hagen ch": [
+"Clay",
+3
+],
+"M|halle": [
+"Grass",
+4
+],
+"M|hamburg": [
+"Clay",
+3
+],
+"M|hamburg ch": [
+"Hard",
+3
+],
+"M|hangzhou": [
+"Hard",
+4
+],
+"M|hangzhou ch": [
+"Hard",
+3
+],
+"M|heilbronn ch": [
+"Clay",
+3
+],
+"M|helsinki ch": [
+"Hard",
+3
+],
+"M|hersonissos ch": [
+"Hard",
+3
+],
+"M|hong kong": [
+"Hard",
+4
+],
+"M|houston": [
+"Clay",
+4
+],
+"M|iasi": [
+"Clay",
+3
+],
+"M|iasi ch": [
+"Clay",
+3
+],
+"M|ibague ch": [
+"Clay",
+3
+],
+"M|ilkley": [
+"Grass",
+3
+],
+"M|ilkley ch": [
+"Grass",
+3
+],
+"M|indian wells ch": [
+"Hard",
+3
+],
+"M|indian wells masters": [
+"Hard",
+5
+],
+"M|islamabad ch": [
+"Hard",
+3
+],
+"M|ismaning ch": [
+"Carpet",
+3
+],
+"M|istanbul": [
+"Hard",
+3
+],
+"M|istanbul ch": [
+"Hard",
+3
+],
+"M|istanbul challenger ted open": [
+"Hard",
+3
+],
+"M|istanbul ttf ch": [
+"Clay",
+3
+],
+"M|itajai ch": [
+"Clay",
+3
+],
+"M|jinan ch": [
+"Hard",
+3
+],
+"M|jingshan ch": [
+"Hard",
+3
+],
+"M|jiujiang ch": [
+"Hard",
+3
+],
+"M|kachreti ch": [
+"Hard",
+3
+],
+"M|karlsruhe ch": [
+"Clay",
+3
+],
+"M|kigali ch": [
+"Clay",
+3
+],
+"M|kingston": [
+"Hard",
+3
+],
+"M|kitzbuhel": [
+"Clay",
+4
+],
+"M|knoxville ch": [
+"Hard",
+3
+],
+"M|kobe ch": [
+"Hard",
+3
+],
+"M|koblenz ch": [
+"Hard",
+3
+],
+"M|kosice ch": [
+"Clay",
+3
+],
+"M|las vegas ch": [
+"Hard",
+3
+],
+"M|laver cup": [
+"Hard",
+4
+],
+"M|leon ch": [
+"Hard",
+3
+],
+"M|les franqueses del valles ch": [
+"Hard",
+3
+],
+"M|lexington": [
+"Hard",
+3
+],
+"M|lexington ch": [
+"Hard",
+3
+],
+"M|liberec": [
+"Clay",
+3
+],
+"M|liberec ch": [
+"Clay",
+3
+],
+"M|liege": [
+"Clay",
+3
+],
+"M|lille ch": [
+"Hard",
+3
+],
+"M|lima ch": [
+"Clay",
+3
+],
+"M|lima los inkas ch": [
+"Clay",
+3
+],
+"M|lincoln": [
+"Hard",
+3
+],
+"M|lincoln ch": [
+"Hard",
+3
+],
+"M|lisbon ch": [
+"Clay",
+3
+],
+"M|little rock ch": [
+"Hard",
+3
+],
+"M|los cabos": [
+"Hard",
+4
+],
+"M|luedenscheid ch": [
+"Clay",
+3
+],
+"M|lugano ch": [
+"Hard",
+3
+],
+"M|lyon": [
+"Clay",
+3
+],
+"M|lyon ch": [
+"Hard",
+3
+],
+"M|m aarhus": [
+"Clay",
+1
+],
+"M|m addis ababa": [
+"Clay",
+1
+],
+"M|m agadir": [
+"Clay",
+0
+],
+"M|m ahmedabad": [
+"Hard",
+0
+],
+"M|m ajaccio": [
+"Hard",
+1
+],
+"M|m ajaccio h": [
+"Hard",
+1
+],
+"M|m aktobe": [
+"Hard",
+0
+],
+"M|m al zahra": [
+"Hard",
+0
+],
+"M|m alaminos": [
+"Clay",
+0
+],
+"M|m alaminos larnaca": [
+"Clay",
+0
+],
+"M|m albuquerque nm": [
+"Hard",
+0
+],
+"M|m alcala de henares": [
+"Hard",
+0
+],
+"M|m aldershot": [
+"Hard",
+1
+],
+"M|m alkmaar": [
+"Clay",
+0
+],
+"M|m allershausen": [
+"Hard",
+0
+],
+"M|m almoradi": [
+"Clay",
+0
+],
+"M|m altamura": [
+"Hard",
+0
+],
+"M|m amstelveen": [
+"Clay",
+0
+],
+"M|m anapoima": [
+"Clay",
+1
+],
+"M|m andong": [
+"Hard",
+0
+],
+"M|m angers": [
+"Clay",
+1
+],
+"M|m ann arbor mi": [
+"Hard",
+0
+],
+"M|m anning": [
+"Clay",
+1
+],
+"M|m anseong": [
+"Hard",
+0
+],
+"M|m antalya": [
+"Clay",
+0
+],
+"M|m arad": [
+"Hard",
+0
+],
+"M|m arequipa": [
+"Clay",
+1
+],
+"M|m arlon": [
+"Clay",
+1
+],
+"M|m astana": [
+"Hard",
+0
+],
+"M|m asuncion": [
+"Clay",
+1
+],
+"M|m austin tx": [
+"Hard",
+1
+],
+"M|m azay le rideau": [
+"Hard",
+0
+],
+"M|m azul": [
+"Clay",
+0
+],
+"M|m bacau": [
+"Clay",
+1
+],
+"M|m bad waltersdorf": [
+"Clay",
+0
+],
+"M|m badalona": [
+"Clay",
+1
+],
+"M|m bagnoles de l orne h": [
+"Clay",
+0
+],
+"M|m bakersfield ca": [
+"Hard",
+1
+],
+"M|m bakio": [
+"Hard",
+1
+],
+"M|m baku": [
+"Hard",
+0
+],
+"M|m bali": [
+"Hard",
+1
+],
+"M|m baotao": [
+"Clay",
+1
+],
+"M|m baotou": [
+"Clay",
+1
+],
+"M|m barueri": [
+"Hard",
+1
+],
+"M|m bastad": [
+"Hard",
+0
+],
+"M|m bath": [
+"Hard",
+1
+],
+"M|m belem": [
+"Hard",
+1
+],
+"M|m belgrade": [
+"Clay",
+1
+],
+"M|m bengaluru": [
+"Hard",
+1
+],
+"M|m benicarlo": [
+"Clay",
+1
+],
+"M|m bergamo": [
+"Clay",
+0
+],
+"M|m bhopal": [
+"Hard",
+1
+],
+"M|m bhubaneswar": [
+"Hard",
+0
+],
+"M|m biella": [
+"Clay",
+1
+],
+"M|m bielsko biala": [
+"Clay",
+0
+],
+"M|m bistrita": [
+"Clay",
+1
+],
+"M|m boca raton": [
+"Clay",
+0
+],
+"M|m boca raton fl": [
+"Clay",
+0
+],
+"M|m bodrum": [
+"Clay",
+1
+],
+"M|m bol": [
+"Clay",
+1
+],
+"M|m bologna": [
+"Clay",
+0
+],
+"M|m bolzano": [
+"Clay",
+1
+],
+"M|m bourg en bresse": [
+"Clay",
+1
+],
+"M|m bragado": [
+"Clay",
+0
+],
+"M|m brasov": [
+"Clay",
+1
+],
+"M|m brazzaville": [
+"Clay",
+1
+],
+"M|m brcko": [
+"Clay",
+0
+],
+"M|m bressuire": [
+"Hard",
+0
+],
+"M|m brisbane": [
+"Hard",
+1
+],
+"M|m brussels": [
+"Clay",
+1
+],
+"M|m bucaramanga": [
+"Clay",
+0
+],
+"M|m bucharest": [
+"Clay",
+0
+],
+"M|m budapest": [
+"Hard",
+0
+],
+"M|m buenos aires": [
+"Clay",
+0
+],
+"M|m burnie": [
+"Hard",
+1
+],
+"M|m buschhausen": [
+"Clay",
+0
+],
+"M|m buzau": [
+"Clay",
+0
+],
+"M|m cadolzburg": [
+"Hard",
+0
+],
+"M|m cairns": [
+"Hard",
+1
+],
+"M|m cairo": [
+"Clay",
+0
+],
+"M|m calabasas ca": [
+"Hard",
+1
+],
+"M|m caloundra": [
+"Hard",
+1
+],
+"M|m caltanissetta": [
+"Clay",
+1
+],
+"M|m canberra": [
+"Clay",
+1
+],
+"M|m cap d agde": [
+"Hard",
+0
+],
+"M|m carnac": [
+"Clay",
+1
+],
+"M|m carrara": [
+"Hard",
+1
+],
+"M|m casablanca": [
+"Clay",
+0
+],
+"M|m caslano": [
+"Clay",
+0
+],
+"M|m castelldefels": [
+"Clay",
+1
+],
+"M|m castellon": [
+"Clay",
+0
+],
+"M|m castelo branco": [
+"Hard",
+1
+],
+"M|m cattolica": [
+"Clay",
+1
+],
+"M|m celje": [
+"Clay",
+0
+],
+"M|m cervia": [
+"Clay",
+1
+],
+"M|m ceska lipa": [
+"Clay",
+1
+],
+"M|m ceuta": [
+"Hard",
+0
+],
+"M|m chacabuco": [
+"Clay",
+1
+],
+"M|m champaign": [
+"Hard",
+1
+],
+"M|m champaign il": [
+"Hard",
+1
+],
+"M|m chandigarh": [
+"Hard",
+0
+],
+"M|m changwon": [
+"Hard",
+1
+],
+"M|m chennai": [
+"Hard",
+1
+],
+"M|m chieti": [
+"Clay",
+0
+],
+"M|m cluj napoca": [
+"Hard",
+0
+],
+"M|m cochabamba": [
+"Hard",
+1
+],
+"M|m columbia sc": [
+"Hard",
+0
+],
+"M|m columbus": [
+"Hard",
+1
+],
+"M|m columbus oh": [
+"Hard",
+1
+],
+"M|m concepcion": [
+"Clay",
+0
+],
+"M|m constanta": [
+"Clay",
+0
+],
+"M|m coquimbo": [
+"Clay",
+1
+],
+"M|m cordoba": [
+"Clay",
+1
+],
+"M|m creteil": [
+"Hard",
+1
+],
+"M|m criciuma": [
+"Clay",
+0
+],
+"M|m cuiaba": [
+"Clay",
+1
+],
+"M|m curitiba": [
+"Clay",
+0
+],
+"M|m curtea de arges": [
+"Clay",
+0
+],
+"M|m daegu": [
+"Hard",
+0
+],
+"M|m dallas": [
+"Hard",
+1
+],
+"M|m dallas tx": [
+"Hard",
+1
+],
+"M|m danderyd": [
+"Hard",
+0
+],
+"M|m darwin": [
+"Hard",
+1
+],
+"M|m davangere": [
+"Hard",
+0
+],
+"M|m deauville": [
+"Clay",
+1
+],
+"M|m decatur": [
+"Hard",
+1
+],
+"M|m denia": [
+"Clay",
+1
+],
+"M|m dharwad": [
+"Hard",
+1
+],
+"M|m doboj": [
+"Clay",
+0
+],
+"M|m doha": [
+"Hard",
+1
+],
+"M|m dublin": [
+"Carpet",
+0
+],
+"M|m dubrovnik": [
+"Clay",
+0
+],
+"M|m duffel": [
+"Hard",
+0
+],
+"M|m east lansing mi": [
+"Hard",
+1
+],
+"M|m edgbaston": [
+"Hard",
+1
+],
+"M|m edmond ok": [
+"Hard",
+0
+],
+"M|m edmonton": [
+"Hard",
+1
+],
+"M|m edwardsville": [
+"Hard",
+1
+],
+"M|m edwardsville il": [
+"Hard",
+1
+],
+"M|m eindhoven": [
+"Clay",
+0
+],
+"M|m elvas": [
+"Hard",
+1
+],
+"M|m esch alzette": [
+"Hard",
+1
+],
+"M|m esch sur alzette": [
+"Clay",
+1
+],
+"M|m eschalzette": [
+"Clay",
+1
+],
+"M|m eupen": [
+"Clay",
+0
+],
+"M|m falun": [
+"Hard",
+1
+],
+"M|m faro": [
+"Hard",
+1
+],
+"M|m fayetteville ar": [
+"Hard",
+0
+],
+"M|m feira de santana": [
+"Hard",
+1
+],
+"M|m figueira da foz": [
+"Hard",
+1
+],
+"M|m foggia": [
+"Clay",
+0
+],
+"M|m forbach": [
+"Hard",
+0
+],
+"M|m forli": [
+"Clay",
+0
+],
+"M|m frankfurt": [
+"Clay",
+0
+],
+"M|m frankfurt am main": [
+"Clay",
+0
+],
+"M|m frascati": [
+"Clay",
+0
+],
+"M|m fuzhou": [
+"Hard",
+1
+],
+"M|m gaborone": [
+"Hard",
+0
+],
+"M|m gandia": [
+"Clay",
+1
+],
+"M|m gentofte": [
+"Clay",
+1
+],
+"M|m getxo": [
+"Clay",
+0
+],
+"M|m gijon": [
+"Clay",
+1
+],
+"M|m gimcheon": [
+"Hard",
+0
+],
+"M|m glasgow": [
+"Hard",
+1
+],
+"M|m gold coast": [
+"Hard",
+1
+],
+"M|m grado": [
+"Clay",
+1
+],
+"M|m grasse": [
+"Clay",
+1
+],
+"M|m grenoble": [
+"Hard",
+0
+],
+"M|m grodzisk mazowiecki": [
+"Clay",
+0
+],
+"M|m guatemala": [
+"Hard",
+0
+],
+"M|m gubbio": [
+"Clay",
+0
+],
+"M|m guiyang": [
+"Hard",
+1
+],
+"M|m gurb": [
+"Clay",
+1
+],
+"M|m gwalior": [
+"Hard",
+0
+],
+"M|m gyula": [
+"Clay",
+0
+],
+"M|m h bacau": [
+"Clay",
+1
+],
+"M|m h bagneres de bigorre": [
+"Hard",
+1
+],
+"M|m h bagnoles de l orne": [
+"Clay",
+0
+],
+"M|m h bastia lucciana": [
+"Clay",
+0
+],
+"M|m h kassel": [
+"Clay",
+1
+],
+"M|m h mulhouse": [
+"Hard",
+1
+],
+"M|m h plaisir": [
+"Hard",
+1
+],
+"M|m h rodez": [
+"Hard",
+1
+],
+"M|m h tauste": [
+"Hard",
+0
+],
+"M|m hamilton": [
+"Hard",
+0
+],
+"M|m hammamet": [
+"Clay",
+1
+],
+"M|m haren": [
+"Clay",
+0
+],
+"M|m harlingen tx": [
+"Hard",
+1
+],
+"M|m harmon": [
+"Hard",
+0
+],
+"M|m hazebrouck": [
+"Hard",
+1
+],
+"M|m heraklion": [
+"Hard",
+0
+],
+"M|m herzlia": [
+"Hard",
+1
+],
+"M|m hillcrest": [
+"Hard",
+0
+],
+"M|m hinode": [
+"Hard",
+0
+],
+"M|m hong kong": [
+"Hard",
+0
+],
+"M|m hradec kralove": [
+"Hard",
+1
+],
+"M|m hrastnik": [
+"Clay",
+0
+],
+"M|m hua hin": [
+"Hard",
+0
+],
+"M|m huamantla": [
+"Hard",
+0
+],
+"M|m huntsville al": [
+"Clay",
+0
+],
+"M|m hurghada": [
+"Hard",
+0
+],
+"M|m huy": [
+"Hard",
+0
+],
+"M|m huzhou": [
+"Hard",
+1
+],
+"M|m hyderabad": [
+"Hard",
+0
+],
+"M|m hyvinkaa": [
+"Clay",
+0
+],
+"M|m ibague": [
+"Clay",
+0
+],
+"M|m idanha a nova": [
+"Hard",
+1
+],
+"M|m indore": [
+"Hard",
+1
+],
+"M|m ipoh perak": [
+"Hard",
+0
+],
+"M|m irvine": [
+"Hard",
+0
+],
+"M|m islamabad": [
+"Hard",
+0
+],
+"M|m ithaca ny": [
+"Hard",
+1
+],
+"M|m jablonec nad nisou": [
+"Clay",
+1
+],
+"M|m jakarta": [
+"Hard",
+1
+],
+"M|m javea": [
+"Clay",
+0
+],
+"M|m joinville": [
+"Clay",
+0
+],
+"M|m kachreti": [
+"Hard",
+1
+],
+"M|m kalaburagi": [
+"Hard",
+1
+],
+"M|m kalmar": [
+"Clay",
+0
+],
+"M|m kamen": [
+"Clay",
+0
+],
+"M|m kampala": [
+"Clay",
+0
+],
+"M|m karuizawa": [
+"Clay",
+0
+],
+"M|m kashiwa": [
+"Hard",
+0
+],
+"M|m kassel": [
+"Clay",
+1
+],
+"M|m kayseri": [
+"Hard",
+0
+],
+"M|m kigali": [
+"Clay",
+1
+],
+"M|m kingston": [
+"Hard",
+0
+],
+"M|m kiseljak": [
+"Clay",
+1
+],
+"M|m kish island": [
+"Clay",
+0
+],
+"M|m klagenfurt": [
+"Clay",
+0
+],
+"M|m klosters": [
+"Hard",
+1
+],
+"M|m koksijde": [
+"Clay",
+1
+],
+"M|m kolkata": [
+"Hard",
+1
+],
+"M|m koszalin": [
+"Clay",
+1
+],
+"M|m kotka": [
+"Clay",
+0
+],
+"M|m kottingbrunn": [
+"Clay",
+0
+],
+"M|m krakow": [
+"Hard",
+0
+],
+"M|m kramsach": [
+"Clay",
+1
+],
+"M|m kranjska gora": [
+"Clay",
+0
+],
+"M|m krsko": [
+"Clay",
+0
+],
+"M|m kuala lumpur": [
+"Hard",
+0
+],
+"M|m kuching": [
+"Hard",
+0
+],
+"M|m kursumlijska banja": [
+"Clay",
+0
+],
+"M|m kutaisi": [
+"Hard",
+0
+],
+"M|m la nucia": [
+"Clay",
+0
+],
+"M|m la paz": [
+"Clay",
+0
+],
+"M|m la plata": [
+"Clay",
+0
+],
+"M|m lajeado": [
+"Clay",
+1
+],
+"M|m lakewood": [
+"Hard",
+0
+],
+"M|m lakewood ca": [
+"Hard",
+0
+],
+"M|m lambermont": [
+"Clay",
+0
+],
+"M|m lannion": [
+"Hard",
+0
+],
+"M|m las palmas de gran canaria": [
+"Clay",
+0
+],
+"M|m las vegas nv": [
+"Hard",
+1
+],
+"M|m launceston": [
+"Hard",
+1
+],
+"M|m lausanne": [
+"Clay",
+1
+],
+"M|m laval": [
+"Hard",
+1
+],
+"M|m les franqueses del valles": [
+"Hard",
+0
+],
+"M|m lesa": [
+"Hard",
+1
+],
+"M|m lexington ky": [
+"Hard",
+0
+],
+"M|m lima": [
+"Clay",
+0
+],
+"M|m limassol": [
+"Hard",
+0
+],
+"M|m litija": [
+"Clay",
+0
+],
+"M|m ljubljana": [
+"Clay",
+0
+],
+"M|m lodz": [
+"Clay",
+0
+],
+"M|m londrina": [
+"Hard",
+1
+],
+"M|m lons le saunier": [
+"Hard",
+0
+],
+"M|m los angeles": [
+"Hard",
+0
+],
+"M|m los angeles ca": [
+"Hard",
+0
+],
+"M|m loughborough": [
+"Hard",
+1
+],
+"M|m louisville": [
+"Hard",
+1
+],
+"M|m louisville ky": [
+"Hard",
+1
+],
+"M|m loule": [
+"Hard",
+1
+],
+"M|m louny": [
+"Clay",
+1
+],
+"M|m luan": [
+"Hard",
+0
+],
+"M|m luanda": [
+"Hard",
+1
+],
+"M|m lucknow": [
+"Hard",
+1
+],
+"M|m lujan": [
+"Clay",
+1
+],
+"M|m luque": [
+"Clay",
+1
+],
+"M|m luzhou": [
+"Hard",
+1
+],
+"M|m maanshan": [
+"Hard",
+1
+],
+"M|m maceio": [
+"Clay",
+1
+],
+"M|m madrid": [
+"Hard",
+0
+],
+"M|m malibu ca": [
+"Hard",
+1
+],
+"M|m malta": [
+"Hard",
+0
+],
+"M|m manacor": [
+"Hard",
+0
+],
+"M|m manama": [
+"Hard",
+1
+],
+"M|m mandya": [
+"Hard",
+1
+],
+"M|m maputo": [
+"Hard",
+1
+],
+"M|m mar del plata": [
+"Clay",
+1
+],
+"M|m marburg": [
+"Clay",
+1
+],
+"M|m maribor": [
+"Hard",
+1
+],
+"M|m maringa": [
+"Clay",
+0
+],
+"M|m marrakech": [
+"Clay",
+1
+],
+"M|m martos": [
+"Hard",
+1
+],
+"M|m mataro": [
+"Clay",
+1
+],
+"M|m mbombela": [
+"Hard",
+0
+],
+"M|m meerbusch": [
+"Clay",
+1
+],
+"M|m melilla": [
+"Hard",
+0
+],
+"M|m mendoza": [
+"Clay",
+1
+],
+"M|m messina": [
+"Clay",
+0
+],
+"M|m metzingen": [
+"Clay",
+1
+],
+"M|m metzinger": [
+"Clay",
+0
+],
+"M|m mildura": [
+"Grass",
+1
+],
+"M|m mistelbach": [
+"Hard",
+0
+],
+"M|m mogi das cruzes": [
+"Clay",
+0
+],
+"M|m monastir": [
+"Hard",
+0
+],
+"M|m montauban": [
+"Clay",
+1
+],
+"M|m montesilvano": [
+"Clay",
+1
+],
+"M|m montreal": [
+"Hard",
+0
+],
+"M|m morelia": [
+"Hard",
+0
+],
+"M|m mosquera": [
+"Clay",
+1
+],
+"M|m most": [
+"Clay",
+1
+],
+"M|m mumbai": [
+"Hard",
+1
+],
+"M|m mungia": [
+"Clay",
+1
+],
+"M|m mungia laukariz": [
+"Hard",
+0
+],
+"M|m muttenz": [
+"Hard",
+1
+],
+"M|m mysuru": [
+"Hard",
+1
+],
+"M|m nakhon pathom": [
+"Hard",
+0
+],
+"M|m nakhon si thammarat": [
+"Hard",
+1
+],
+"M|m naples fl": [
+"Clay",
+0
+],
+"M|m netanya": [
+"Hard",
+1
+],
+"M|m neuquen": [
+"Clay",
+0
+],
+"M|m nevers": [
+"Hard",
+1
+],
+"M|m new delhi": [
+"Hard",
+1
+],
+"M|m nishi tokyo": [
+"Hard",
+0
+],
+"M|m nonthaburi": [
+"Hard",
+0
+],
+"M|m norman": [
+"Hard",
+1
+],
+"M|m norman ok": [
+"Hard",
+0
+],
+"M|m norwich": [
+"Hard",
+1
+],
+"M|m nottingham": [
+"Hard",
+1
+],
+"M|m nova gorica": [
+"Clay",
+0
+],
+"M|m novi sad": [
+"Clay",
+0
+],
+"M|m nussloch": [
+"Carpet",
+1
+],
+"M|m nyiregyhaza": [
+"Hard",
+0
+],
+"M|m oberhaching": [
+"Hard",
+0
+],
+"M|m oegstgeest": [
+"Clay",
+0
+],
+"M|m offenbach": [
+"Hard",
+0
+],
+"M|m olavarria": [
+"Hard",
+0
+],
+"M|m oldenzaal": [
+"Hard",
+1
+],
+"M|m ollersbach": [
+"Clay",
+1
+],
+"M|m opatija": [
+"Clay",
+0
+],
+"M|m oradea": [
+"Clay",
+0
+],
+"M|m orange park fl": [
+"Clay",
+0
+],
+"M|m orlando": [
+"Clay",
+0
+],
+"M|m orlando fl": [
+"Clay",
+0
+],
+"M|m osaka": [
+"Hard",
+0
+],
+"M|m osijek": [
+"Clay",
+0
+],
+"M|m oslo": [
+"Hard",
+0
+],
+"M|m otopeni": [
+"Clay",
+0
+],
+"M|m oviedo": [
+"Clay",
+1
+],
+"M|m padova": [
+"Clay",
+1
+],
+"M|m palm coast fl": [
+"Clay",
+0
+],
+"M|m palmanova": [
+"Clay",
+1
+],
+"M|m papamoa": [
+"Hard",
+0
+],
+"M|m pardubice": [
+"Clay",
+1
+],
+"M|m pazardzhik": [
+"Clay",
+1
+],
+"M|m pensacola fl": [
+"Clay",
+1
+],
+"M|m perth": [
+"Hard",
+1
+],
+"M|m perugia": [
+"Clay",
+0
+],
+"M|m pescara": [
+"Clay",
+0
+],
+"M|m phan thiet": [
+"Hard",
+0
+],
+"M|m pirot": [
+"Hard",
+0
+],
+"M|m pitesti": [
+"Clay",
+1
+],
+"M|m pittsburgh": [
+"Clay",
+0
+],
+"M|m poitiers": [
+"Hard",
+0
+],
+"M|m pontevedra": [
+"Hard",
+0
+],
+"M|m poprad": [
+"Clay",
+0
+],
+"M|m porec": [
+"Clay",
+0
+],
+"M|m portimao": [
+"Hard",
+1
+],
+"M|m porto": [
+"Hard",
+1
+],
+"M|m poznan": [
+"Hard",
+1
+],
+"M|m pozzuoli": [
+"Hard",
+1
+],
+"M|m prague": [
+"Clay",
+1
+],
+"M|m pretoria": [
+"Hard",
+0
+],
+"M|m prijedor": [
+"Clay",
+0
+],
+"M|m pszczyna": [
+"Hard",
+1
+],
+"M|m punta del este": [
+"Clay",
+0
+],
+"M|m qian daohu": [
+"Hard",
+1
+],
+"M|m quillota": [
+"Clay",
+0
+],
+"M|m quinta do lago": [
+"Hard",
+1
+],
+"M|m quito": [
+"Clay",
+0
+],
+"M|m raanana": [
+"Hard",
+0
+],
+"M|m rabat": [
+"Clay",
+1
+],
+"M|m rancho santa fe ca": [
+"Hard",
+0
+],
+"M|m recife": [
+"Clay",
+0
+],
+"M|m reggio emilia": [
+"Clay",
+1
+],
+"M|m reus": [
+"Clay",
+1
+],
+"M|m ribeirao preto": [
+"Clay",
+0
+],
+"M|m rio cuarto": [
+"Clay",
+1
+],
+"M|m rio de janeiro": [
+"Clay",
+1
+],
+"M|m risskovaarhus": [
+"Clay",
+1
+],
+"M|m rochester": [
+"Hard",
+0
+],
+"M|m rochester ny": [
+"Clay",
+0
+],
+"M|m roda de bara": [
+"Hard",
+1
+],
+"M|m roehampton": [
+"Hard",
+1
+],
+"M|m rognac": [
+"Hard",
+0
+],
+"M|m rome": [
+"Clay",
+1
+],
+"M|m rosario": [
+"Clay",
+0
+],
+"M|m rosario santa fe": [
+"Clay",
+1
+],
+"M|m rosbach": [
+"Clay",
+0
+],
+"M|m rovinj": [
+"Clay",
+0
+],
+"M|m saarlouis": [
+"Hard",
+0
+],
+"M|m sabadell": [
+"Clay",
+1
+],
+"M|m saint augustin": [
+"Hard",
+1
+],
+"M|m saint augustin de desmaures": [
+"Hard",
+1
+],
+"M|m saint dizier": [
+"Hard",
+1
+],
+"M|m salta": [
+"Clay",
+0
+],
+"M|m salvador": [
+"Hard",
+1
+],
+"M|m san diego": [
+"Hard",
+0
+],
+"M|m san diego ca": [
+"Hard",
+0
+],
+"M|m san gregorio di catania": [
+"Clay",
+0
+],
+"M|m san jose": [
+"Hard",
+0
+],
+"M|m san salvador de jujuy": [
+"Clay",
+0
+],
+"M|m santa cruz": [
+"Clay",
+0
+],
+"M|m santa cruz do sul": [
+"Clay",
+1
+],
+"M|m santa margherita di pula": [
+"Clay",
+1
+],
+"M|m santa tecla": [
+"Hard",
+0
+],
+"M|m santander": [
+"Hard",
+1
+],
+"M|m santiago": [
+"Clay",
+1
+],
+"M|m santo domingo": [
+"Hard",
+1
+],
+"M|m santo domingo de los tsachilas": [
+"Clay",
+0
+],
+"M|m santo domingo este": [
+"Hard",
+1
+],
+"M|m sanxenxo": [
+"Hard",
+0
+],
+"M|m sao paulo": [
+"Clay",
+1
+],
+"M|m sapporo": [
+"Hard",
+1
+],
+"M|m sarajevo": [
+"Clay",
+1
+],
+"M|m sarreguemines": [
+"Carpet",
+1
+],
+"M|m satu mare": [
+"Clay",
+1
+],
+"M|m segrate": [
+"Clay",
+0
+],
+"M|m selva gardena": [
+"Hard",
+0
+],
+"M|m setubal": [
+"Hard",
+1
+],
+"M|m shanghai": [
+"Hard",
+0
+],
+"M|m sharm elsheikh": [
+"Hard",
+1
+],
+"M|m sheffield": [
+"Hard",
+1
+],
+"M|m shenzhen": [
+"Hard",
+1
+],
+"M|m sherbrooke": [
+"Hard",
+0
+],
+"M|m shymkent": [
+"Clay",
+0
+],
+"M|m singapore": [
+"Hard",
+0
+],
+"M|m sintra": [
+"Hard",
+1
+],
+"M|m sion": [
+"Hard",
+1
+],
+"M|m skopje": [
+"Clay",
+1
+],
+"M|m slobozia": [
+"Clay",
+0
+],
+"M|m slovenj gradec": [
+"Clay",
+0
+],
+"M|m slovenska bistrica": [
+"Clay",
+0
+],
+"M|m sofia": [
+"Clay",
+0
+],
+"M|m south bend": [
+"Hard",
+0
+],
+"M|m southaven": [
+"Hard",
+1
+],
+"M|m southaven ms": [
+"Hard",
+1
+],
+"M|m split": [
+"Clay",
+0
+],
+"M|m stellenbosch": [
+"Hard",
+0
+],
+"M|m store": [
+"Clay",
+0
+],
+"M|m sunderland": [
+"Hard",
+1
+],
+"M|m sunrise fl": [
+"Clay",
+0
+],
+"M|m swan hill": [
+"Grass",
+0
+],
+"M|m szabolcsveresmart": [
+"Hard",
+0
+],
+"M|m szczawno": [
+"Clay",
+0
+],
+"M|m szentendre": [
+"Clay",
+0
+],
+"M|m tabasco": [
+"Hard",
+0
+],
+"M|m tacarigua": [
+"Hard",
+0
+],
+"M|m tainan": [
+"Clay",
+1
+],
+"M|m taipei": [
+"Hard",
+1
+],
+"M|m takasaki": [
+"Hard",
+1
+],
+"M|m tallahassee": [
+"Hard",
+0
+],
+"M|m tallahassee fl": [
+"Hard",
+0
+],
+"M|m tamworth": [
+"Hard",
+1
+],
+"M|m tanagura": [
+"Hard",
+0
+],
+"M|m tanger": [
+"Clay",
+0
+],
+"M|m targu jiu": [
+"Clay",
+0
+],
+"M|m targu mures": [
+"Clay",
+1
+],
+"M|m tarragona": [
+"Clay",
+1
+],
+"M|m tashkent": [
+"Hard",
+0
+],
+"M|m tauranga": [
+"Hard",
+0
+],
+"M|m tavira": [
+"Hard",
+1
+],
+"M|m tbilisi": [
+"Hard",
+1
+],
+"M|m tehran": [
+"Clay",
+0
+],
+"M|m telavi": [
+"Clay",
+0
+],
+"M|m telde": [
+"Clay",
+0
+],
+"M|m telfs": [
+"Clay",
+0
+],
+"M|m the hague": [
+"Hard",
+0
+],
+"M|m tianjin": [
+"Hard",
+1
+],
+"M|m timaru": [
+"Hard",
+1
+],
+"M|m tokyo": [
+"Hard",
+0
+],
+"M|m torello": [
+"Hard",
+0
+],
+"M|m toulouse balma": [
+"Hard",
+1
+],
+"M|m traralgon": [
+"Hard",
+1
+],
+"M|m trelew": [
+"Hard",
+1
+],
+"M|m trento": [
+"Hard",
+1
+],
+"M|m trier": [
+"Clay",
+0
+],
+"M|m trimbach": [
+"Hard",
+1
+],
+"M|m trnava": [
+"Hard",
+1
+],
+"M|m trois rivieres": [
+"Hard",
+0
+],
+"M|m troisdorf": [
+"Clay",
+1
+],
+"M|m trujillo": [
+"Clay",
+1
+],
+"M|m tsaghkadzor": [
+"Clay",
+0
+],
+"M|m tsukuba": [
+"Hard",
+0
+],
+"M|m tucuman": [
+"Clay",
+1
+],
+"M|m tulsa": [
+"Hard",
+1
+],
+"M|m tulsa ok": [
+"Hard",
+1
+],
+"M|m turku": [
+"Hard",
+0
+],
+"M|m ueberlingen": [
+"Hard",
+1
+],
+"M|m umag": [
+"Clay",
+0
+],
+"M|m uriage": [
+"Clay",
+1
+],
+"M|m uslar": [
+"Clay",
+0
+],
+"M|m ust kamenogorsk": [
+"Hard",
+0
+],
+"M|m vaasa": [
+"Hard",
+0
+],
+"M|m vale do lobo": [
+"Hard",
+1
+],
+"M|m valencia": [
+"Clay",
+1
+],
+"M|m valldoreix": [
+"Clay",
+1
+],
+"M|m varnamo": [
+"Clay",
+1
+],
+"M|m vaxjo": [
+"Hard",
+0
+],
+"M|m veigy foncenex": [
+"Carpet",
+0
+],
+"M|m vejle": [
+"Clay",
+0
+],
+"M|m vero beach fl": [
+"Clay",
+0
+],
+"M|m vic": [
+"Clay",
+1
+],
+"M|m vienna": [
+"Hard",
+0
+],
+"M|m vigo": [
+"Clay",
+0
+],
+"M|m vila real de santo antonio": [
+"Hard",
+1
+],
+"M|m villa maria": [
+"Clay",
+1
+],
+"M|m villach": [
+"Clay",
+0
+],
+"M|m villahermosa": [
+"Hard",
+0
+],
+"M|m villavicencio": [
+"Clay",
+1
+],
+"M|m villena": [
+"Hard",
+0
+],
+"M|m villeneuve loubet": [
+"Clay",
+1
+],
+"M|m villeneuve loubet h": [
+"Clay",
+1
+],
+"M|m villers les nancy": [
+"Hard",
+0
+],
+"M|m vilnius": [
+"Hard",
+0
+],
+"M|m vrhnika": [
+"Clay",
+0
+],
+"M|m warmbad villach": [
+"Clay",
+0
+],
+"M|m wellington": [
+"Hard",
+0
+],
+"M|m wels": [
+"Clay",
+0
+],
+"M|m wesley chapel fl": [
+"Hard",
+1
+],
+"M|m weston fl": [
+"Clay",
+0
+],
+"M|m wetzlar": [
+"Clay",
+1
+],
+"M|m wichita": [
+"Hard",
+1
+],
+"M|m wichita ks": [
+"Hard",
+1
+],
+"M|m winston salem nc": [
+"Hard",
+1
+],
+"M|m wodonga": [
+"Grass",
+0
+],
+"M|m wroclaw": [
+"Clay",
+0
+],
+"M|m wuning": [
+"Hard",
+0
+],
+"M|m xalapa": [
+"Hard",
+1
+],
+"M|m xativa": [
+"Clay",
+0
+],
+"M|m yanagawa": [
+"Hard",
+0
+],
+"M|m yanagawa city": [
+"Hard",
+0
+],
+"M|m yerba buena": [
+"Clay",
+1
+],
+"M|m yinchuan": [
+"Hard",
+1
+],
+"M|m ystad": [
+"Clay",
+0
+],
+"M|m zagreb": [
+"Clay",
+0
+],
+"M|m zahra": [
+"Hard",
+0
+],
+"M|m zapopan": [
+"Clay",
+1
+],
+"M|m zaragoza": [
+"Clay",
+1
+],
+"M|m zlatibor": [
+"Clay",
+1
+],
+"M|madrid ch": [
+"Clay",
+3
+],
+"M|madrid masters": [
+"Clay",
+5
+],
+"M|maia ch": [
+"Clay",
+3
+],
+"M|malaga ch": [
+"Hard",
+3
+],
+"M|mallorca": [
+"Grass",
+4
+],
+"M|mallorca ch": [
+"Hard",
+3
+],
+"M|manacor": [
+"Hard",
+3
+],
+"M|manacor ch": [
+"Hard",
+3
+],
+"M|manama ch": [
+"Hard",
+3
+],
+"M|manzanillo ch": [
+"Hard",
+3
+],
+"M|marrakech": [
+"Clay",
+4
+],
+"M|marseille": [
+"Hard",
+4
+],
+"M|maspalomas ch": [
+"Clay",
+3
+],
+"M|matsuyama ch": [
+"Hard",
+3
+],
+"M|mauthausen ch": [
+"Clay",
+3
+],
+"M|medellin ch": [
+"Clay",
+3
+],
+"M|meerbusch ch": [
+"Clay",
+3
+],
+"M|menorca ch": [
+"Clay",
+3
+],
+"M|merida ch": [
+"Clay",
+3
+],
+"M|metepec ch": [
+"Hard",
+3
+],
+"M|metz": [
+"Hard",
+4
+],
+"M|mexico city ch": [
+"Clay",
+3
+],
+"M|miami masters": [
+"Hard",
+5
+],
+"M|milan": [
+"Clay",
+3
+],
+"M|milan ch": [
+"Clay",
+3
+],
+"M|miyazaki ch": [
+"Hard",
+3
+],
+"M|modena ch": [
+"Clay",
+3
+],
+"M|monastir ch": [
+"Hard",
+3
+],
+"M|monte carlo masters": [
+"Clay",
+5
+],
+"M|montechiarugolo ch": [
+"Clay",
+3
+],
+"M|montemar ch": [
+"Clay",
+3
+],
+"M|monterrey ch": [
+"Hard",
+3
+],
+"M|montevideo ch": [
+"Clay",
+3
+],
+"M|montpellier": [
+"Hard",
+4
+],
+"M|monza ch": [
+"Clay",
+3
+],
+"M|morelia ch": [
+"Hard",
+3
+],
+"M|mouilleron le captif ch": [
+"Hard",
+3
+],
+"M|munich": [
+"Clay",
+4
+],
+"M|murcia ch": [
+"Clay",
+3
+],
+"M|naples ch": [
+"Clay",
+3
+],
+"M|new delhi ch": [
+"Hard",
+3
+],
+"M|newport": [
+"Grass",
+3
+],
+"M|newport ch": [
+"Grass",
+3
+],
+"M|next gen finals": [
+"Hard",
+5
+],
+"M|nextgen finals": [
+"Hard",
+5
+],
+"M|nonthaburi ch": [
+"Hard",
+3
+],
+"M|nottingham": [
+"Grass",
+3
+],
+"M|nottingham ch": [
+"Hard",
+3
+],
+"M|noumea ch": [
+"Hard",
+3
+],
+"M|oeiras ch": [
+"Clay",
+3
+],
+"M|olbia ch": [
+"Hard",
+3
+],
+"M|open de vendee": [
+"Hard",
+3
+],
+"M|orleans ch": [
+"Hard",
+3
+],
+"M|ortisei ch": [
+"Hard",
+3
+],
+"M|ostrava ch": [
+"Clay",
+3
+],
+"M|ottignies louvain ch": [
+"Hard",
+3
+],
+"M|ottignies louvain la neuve ch": [
+"Hard",
+3
+],
+"M|palmas del mar ch": [
+"Hard",
+3
+],
+"M|palo alto ch": [
+"Hard",
+3
+],
+"M|paris masters": [
+"Hard",
+5
+],
+"M|paris olympics": [
+"Clay",
+4
+],
+"M|parma": [
+"Clay",
+3
+],
+"M|pau ch": [
+"Hard",
+3
+],
+"M|perugia ch": [
+"Clay",
+3
+],
+"M|phan thiet": [
+"Hard",
+3
+],
+"M|phan thiet ch": [
+"Hard",
+3
+],
+"M|phoenix ch": [
+"Hard",
+3
+],
+"M|piracicaba": [
+"Clay",
+3
+],
+"M|piracicaba ch": [
+"Clay",
+3
+],
+"M|playford ch": [
+"Hard",
+3
+],
+"M|plovdiv": [
+"Clay",
+3
+],
+"M|porto": [
+"Clay",
+3
+],
+"M|porto alegre ch": [
+"Clay",
+3
+],
+"M|porto ch": [
+"Clay",
+3
+],
+"M|poznan": [
+"Clay",
+3
+],
+"M|poznan ch": [
+"Clay",
+3
+],
+"M|pozoblanco": [
+"Hard",
+3
+],
+"M|pozoblanco ch": [
+"Hard",
+3
+],
+"M|prague": [
+"Clay",
+3
+],
+"M|prague ch": [
+"Clay",
+3
+],
+"M|prostejov ch": [
+"Clay",
+3
+],
+"M|puerto vallarta ch": [
+"Hard",
+3
+],
+"M|pune": [
+"Hard",
+4
+],
+"M|pune ch": [
+"Hard",
+3
+],
+"M|punta del este ch": [
+"Clay",
+3
+],
+"M|quebec city": [
+"Hard",
+3
+],
+"M|queen s club": [
+"Grass",
+4
+],
+"M|quimper ch": [
+"Hard",
+3
+],
+"M|quito": [
+"Clay",
+3
+],
+"M|rennes": [
+"Hard",
+3
+],
+"M|rennes ch": [
+"Hard",
+3
+],
+"M|rio de janeiro": [
+"Clay",
+4
+],
+"M|road to the rolex shanghai masters": [
+"Hard",
+3
+],
+"M|roanne ch": [
+"Hard",
+3
+],
+"M|roehampton": [
+"Hard",
+3
+],
+"M|roland garros": [
+"Clay",
+6
+],
+"M|rome ch": [
+"Clay",
+3
+],
+"M|rome ga ch": [
+"Hard",
+3
+],
+"M|rome masters": [
+"Clay",
+5
+],
+"M|rosario ch": [
+"Clay",
+3
+],
+"M|roseto degli abruzzi ch": [
+"Clay",
+3
+],
+"M|rotterdam": [
+"Hard",
+4
+],
+"M|rovereto ch": [
+"Hard",
+3
+],
+"M|royan": [
+"Clay",
+3
+],
+"M|royan ch": [
+"Clay",
+3
+],
+"M|s hertogenbosch": [
+"Grass",
+4
+],
+"M|saint brieuc ch": [
+"Hard",
+3
+],
+"M|saint tropez ch": [
+"Hard",
+3
+],
+"M|saint tropez open": [
+"Hard",
+3
+],
+"M|salinas ch": [
+"Hard",
+3
+],
+"M|salzburg ch": [
+"Clay",
+3
+],
+"M|samsun": [
+"Hard",
+3
+],
+"M|san benedetto del tronto ch": [
+"Clay",
+3
+],
+"M|san diego": [
+"Hard",
+3
+],
+"M|san diego ch": [
+"Hard",
+3
+],
+"M|san luis potosi ch": [
+"Clay",
+3
+],
+"M|san marino": [
+"Clay",
+3
+],
+"M|san marino ch": [
+"Clay",
+3
+],
+"M|san miguel de tucuman": [
+"Clay",
+3
+],
+"M|san miguel de tucuman ch": [
+"Clay",
+3
+],
+"M|sanremo ch": [
+"Clay",
+3
+],
+"M|santa cruz de la sierra ch": [
+"Clay",
+3
+],
+"M|santa fe ch": [
+"Clay",
+3
+],
+"M|santiago": [
+"Clay",
+4
+],
+"M|santiago ch": [
+"Clay",
+3
+],
+"M|santo domingo ch": [
+"Clay",
+3
+],
+"M|santos ch": [
+"Clay",
+3
+],
+"M|sao leopoldo ch": [
+"Clay",
+3
+],
+"M|sao paulo ch": [
+"Clay",
+3
+],
+"M|sarasota ch": [
+"Clay",
+3
+],
+"M|sassuolo ch": [
+"Clay",
+3
+],
+"M|savannah ch": [
+"Clay",
+3
+],
+"M|segovia": [
+"Hard",
+3
+],
+"M|segovia ch": [
+"Hard",
+3
+],
+"M|seoul ch": [
+"Hard",
+3
+],
+"M|seville": [
+"Clay",
+3
+],
+"M|seville ch": [
+"Clay",
+3
+],
+"M|shanghai ch": [
+"Hard",
+3
+],
+"M|shanghai masters": [
+"Hard",
+5
+],
+"M|shenzhen ch": [
+"Hard",
+3
+],
+"M|shenzhen futian ch": [
+"Hard",
+3
+],
+"M|shenzhen longhua ch": [
+"Hard",
+3
+],
+"M|shymkent ch": [
+"Clay",
+3
+],
+"M|sibiu ch": [
+"Clay",
+3
+],
+"M|sion": [
+"Clay",
+3
+],
+"M|sioux falls ch": [
+"Hard",
+3
+],
+"M|skopje ch": [
+"Clay",
+3
+],
+"M|sofia": [
+"Hard",
+4
+],
+"M|sofia ch": [
+"Clay",
+3
+],
+"M|soma bay ch": [
+"Hard",
+3
+],
+"M|split ch": [
+"Clay",
+3
+],
+"M|st brieuc ch": [
+"Hard",
+3
+],
+"M|stockholm": [
+"Hard",
+4
+],
+"M|stuttgart": [
+"Grass",
+4
+],
+"M|sumter ch": [
+"Hard",
+3
+],
+"M|surbiton ch": [
+"Grass",
+3
+],
+"M|suzhou ch": [
+"Hard",
+3
+],
+"M|sydney ch": [
+"Hard",
+3
+],
+"M|szczecin": [
+"Clay",
+3
+],
+"M|szczecin ch": [
+"Clay",
+3
+],
+"M|szekesfehervar ch": [
+"Clay",
+3
+],
+"M|taipei ch": [
+"Hard",
+3
+],
+"M|tallahassee ch": [
+"Clay",
+3
+],
+"M|tampere": [
+"Clay",
+3
+],
+"M|tampere ch": [
+"Clay",
+3
+],
+"M|targu mures": [
+"Clay",
+3
+],
+"M|targu mures ch": [
+"Clay",
+3
+],
+"M|tbilisi ch": [
+"Hard",
+3
+],
+"M|temuco ch": [
+"Hard",
+3
+],
+"M|tenerife ch": [
+"Hard",
+3
+],
+"M|thionville ch": [
+"Hard",
+3
+],
+"M|tiburon ch": [
+"Hard",
+3
+],
+"M|tiburon challenger": [
+"Hard",
+3
+],
+"M|tigre ch": [
+"Clay",
+3
+],
+"M|todi": [
+"Clay",
+3
+],
+"M|todi ch": [
+"Clay",
+3
+],
+"M|tokyo": [
+"Hard",
+4
+],
+"M|tour finals": [
+"Hard",
+5
+],
+"M|trieste": [
+"Clay",
+3
+],
+"M|trieste ch": [
+"Clay",
+3
+],
+"M|troisdorf ch": [
+"Clay",
+3
+],
+"M|troyes": [
+"Clay",
+3
+],
+"M|troyes ch": [
+"Clay",
+3
+],
+"M|tulln": [
+"Clay",
+3
+],
+"M|tulln ch": [
+"Clay",
+3
+],
+"M|tunis ch": [
+"Clay",
+3
+],
+"M|turin ch": [
+"Clay",
+3
+],
+"M|tyler ch": [
+"Hard",
+3
+],
+"M|umag": [
+"Clay",
+4
+],
+"M|united cup": [
+"Hard",
+4
+],
+"M|us open": [
+"Hard",
+6
+],
+"M|valencia ch": [
+"Clay",
+3
+],
+"M|vancouver": [
+"Hard",
+3
+],
+"M|verona ch": [
+"Clay",
+3
+],
+"M|vicenza ch": [
+"Clay",
+3
+],
+"M|vienna": [
+"Hard",
+4
+],
+"M|villa maria ch": [
+"Clay",
+3
+],
+"M|villena ch": [
+"Hard",
+3
+],
+"M|vilnius ch": [
+"Hard",
+3
+],
+"M|vina del mar ch": [
+"Clay",
+3
+],
+"M|waco ch": [
+"Hard",
+3
+],
+"M|washington": [
+"Hard",
+4
+],
+"M|wimbledon": [
+"Grass",
+6
+],
+"M|winnipeg": [
+"Hard",
+3
+],
+"M|winnipeg ch": [
+"Hard",
+3
+],
+"M|winston salem": [
+"Hard",
+5
+],
+"M|winston salem ch": [
+"Hard",
+3
+],
+"M|wuning ch": [
+"Hard",
+3
+],
+"M|wuxi ch": [
+"Hard",
+3
+],
+"M|yokkaichi ch": [
+"Hard",
+3
+],
+"M|yokohama ch": [
+"Hard",
+3
+],
+"M|zadar ch": [
+"Clay",
+3
+],
+"M|zagreb ch": [
+"Clay",
+3
+],
+"M|zhangjiagang": [
+"Hard",
+3
+],
+"M|zhangjiagang ch": [
+"Hard",
+3
+],
+"M|zhuhai": [
+"Hard",
+4
+],
+"M|zhuhai ch": [
+"Hard",
+3
+],
+"M|zug": [
+"Clay",
+3
+],
+"M|zug ch": [
+"Clay",
+3
+],
+"W|abu dhabi": [
+"Hard",
+4
+],
+"W|adana": [
+"Hard",
+3
+],
+"W|adelaide": [
+"Hard",
+4
+],
+"W|andorra": [
+"Hard",
+3
+],
+"W|angers": [
+"Hard",
+3
+],
+"W|ankara": [
+"Hard",
+3
+],
+"W|antalya": [
+"Clay",
+3
+],
+"W|athens": [
+"Hard",
+4
+],
+"W|auckland": [
+"Hard",
+4
+],
+"W|austin": [
+"Hard",
+3
+],
+"W|australian open": [
+"Hard",
+6
+],
+"W|bad homburg": [
+"Grass",
+4
+],
+"W|bari": [
+"Clay",
+3
+],
+"W|barranquilla": [
+"Hard",
+3
+],
+"W|bastad": [
+"Clay",
+3
+],
+"W|beijing": [
+"Hard",
+5
+],
+"W|berlin": [
+"Grass",
+4
+],
+"W|birmingham": [
+"Grass",
+3
+],
+"W|bjk cup finals": [
+"Hard",
+4
+],
+"W|bjk cup g pm bih vs kos": [
+"Clay",
+4
+],
+"W|bjk cup g pm lat vs nor": [
+"Clay",
+4
+],
+"W|bjk cup g pm ltu vs isr": [
+"Clay",
+4
+],
+"W|bjk cup g pm tur vs bul": [
+"Clay",
+4
+],
+"W|bjk cup g po hun vs swe": [
+"Clay",
+4
+],
+"W|bjk cup g ppo est vs gre": [
+"Clay",
+4
+],
+"W|bjk cup g ppo ned vs srb": [
+"Clay",
+4
+],
+"W|bjk cup g ppo por vs geo": [
+"Clay",
+4
+],
+"W|bjk cup g rel egy vs den": [
+"Clay",
+4
+],
+"W|bjk cup g rel mlt vs rsa": [
+"Clay",
+4
+],
+"W|bjk cup g rr arg vs bol": [
+"Clay",
+4
+],
+"W|bjk cup g rr arg vs chi": [
+"Clay",
+4
+],
+"W|bjk cup g rr arg vs col": [
+"Clay",
+4
+],
+"W|bjk cup g rr arg vs gua": [
+"Clay",
+4
+],
+"W|bjk cup g rr arg vs per": [
+"Clay",
+4
+],
+"W|bjk cup g rr bih vs mlt": [
+"Clay",
+4
+],
+"W|bjk cup g rr bih vs por": [
+"Clay",
+4
+],
+"W|bjk cup g rr bol vs gua": [
+"Clay",
+4
+],
+"W|bjk cup g rr bul vs den": [
+"Clay",
+4
+],
+"W|bjk cup g rr bul vs nor": [
+"Clay",
+4
+],
+"W|bjk cup g rr chi vs bol": [
+"Clay",
+4
+],
+"W|bjk cup g rr chi vs gua": [
+"Clay",
+4
+],
+"W|bjk cup g rr chi vs per": [
+"Clay",
+4
+],
+"W|bjk cup g rr chn vs ind": [
+"Hard",
+4
+],
+"W|bjk cup g rr chn vs kor": [
+"Hard",
+4
+],
+"W|bjk cup g rr chn vs tha": [
+"Hard",
+4
+],
+"W|bjk cup g rr chn vs uzb": [
+"Hard",
+4
+],
+"W|bjk cup g rr col vs bol": [
+"Clay",
+4
+],
+"W|bjk cup g rr col vs chi": [
+"Clay",
+4
+],
+"W|bjk cup g rr col vs gua": [
+"Clay",
+4
+],
+"W|bjk cup g rr col vs per": [
+"Clay",
+4
+],
+"W|bjk cup g rr cro vs bul": [
+"Clay",
+4
+],
+"W|bjk cup g rr cro vs den": [
+"Clay",
+4
+],
+"W|bjk cup g rr cro vs nor": [
+"Clay",
+4
+],
+"W|bjk cup g rr den vs nor": [
+"Clay",
+4
+],
+"W|bjk cup g rr est vs geo": [
+"Clay",
+4
+],
+"W|bjk cup g rr est vs irl": [
+"Clay",
+4
+],
+"W|bjk cup g rr est vs kos": [
+"Clay",
+4
+],
+"W|bjk cup g rr est vs rsa": [
+"Clay",
+4
+],
+"W|bjk cup g rr geo vs irl": [
+"Clay",
+4
+],
+"W|bjk cup g rr geo vs kos": [
+"Clay",
+4
+],
+"W|bjk cup g rr geo vs rsa": [
+"Clay",
+4
+],
+"W|bjk cup g rr gre vs bih": [
+"Clay",
+4
+],
+"W|bjk cup g rr gre vs isr": [
+"Clay",
+4
+],
+"W|bjk cup g rr gre vs mlt": [
+"Clay",
+4
+],
+"W|bjk cup g rr gre vs por": [
+"Clay",
+4
+],
+"W|bjk cup g rr hun vs egy": [
+"Clay",
+4
+],
+"W|bjk cup g rr hun vs ned": [
+"Clay",
+4
+],
+"W|bjk cup g rr hun vs tur": [
+"Clay",
+4
+],
+"W|bjk cup g rr ind vs kor": [
+"Hard",
+4
+],
+"W|bjk cup g rr ind vs tha": [
+"Hard",
+4
+],
+"W|bjk cup g rr ind vs uzb": [
+"Hard",
+4
+],
+"W|bjk cup g rr irl vs kos": [
+"Clay",
+4
+],
+"W|bjk cup g rr irl vs rsa": [
+"Clay",
+4
+],
+"W|bjk cup g rr isr vs bih": [
+"Clay",
+4
+],
+"W|bjk cup g rr isr vs mlt": [
+"Clay",
+4
+],
+"W|bjk cup g rr isr vs por": [
+"Clay",
+4
+],
+"W|bjk cup g rr jpn vs chn": [
+"Hard",
+4
+],
+"W|bjk cup g rr jpn vs ind": [
+"Hard",
+4
+],
+"W|bjk cup g rr jpn vs kor": [
+"Hard",
+4
+],
+"W|bjk cup g rr jpn vs tha": [
+"Hard",
+4
+],
+"W|bjk cup g rr jpn vs uzb": [
+"Hard",
+4
+],
+"W|bjk cup g rr kor vs tha": [
+"Hard",
+4
+],
+"W|bjk cup g rr kor vs uzb": [
+"Hard",
+4
+],
+"W|bjk cup g rr lat vs egy": [
+"Clay",
+4
+],
+"W|bjk cup g rr lat vs hun": [
+"Clay",
+4
+],
+"W|bjk cup g rr lat vs ned": [
+"Clay",
+4
+],
+"W|bjk cup g rr lat vs tur": [
+"Clay",
+4
+],
+"W|bjk cup g rr ltu vs est": [
+"Clay",
+4
+],
+"W|bjk cup g rr ltu vs geo": [
+"Clay",
+4
+],
+"W|bjk cup g rr ltu vs irl": [
+"Clay",
+4
+],
+"W|bjk cup g rr ltu vs kos": [
+"Clay",
+4
+],
+"W|bjk cup g rr ltu vs rsa": [
+"Clay",
+4
+],
+"W|bjk cup g rr ned vs egy": [
+"Clay",
+4
+],
+"W|bjk cup g rr per vs bol": [
+"Clay",
+4
+],
+"W|bjk cup g rr per vs gua": [
+"Clay",
+4
+],
+"W|bjk cup g rr por vs mlt": [
+"Clay",
+4
+],
+"W|bjk cup g rr rsa vs kos": [
+"Clay",
+4
+],
+"W|bjk cup g rr srb vs bul": [
+"Clay",
+4
+],
+"W|bjk cup g rr srb vs cro": [
+"Clay",
+4
+],
+"W|bjk cup g rr srb vs den": [
+"Clay",
+4
+],
+"W|bjk cup g rr srb vs nor": [
+"Clay",
+4
+],
+"W|bjk cup g rr srb vs swe": [
+"Clay",
+4
+],
+"W|bjk cup g rr swe vs bul": [
+"Clay",
+4
+],
+"W|bjk cup g rr swe vs cro": [
+"Clay",
+4
+],
+"W|bjk cup g rr swe vs den": [
+"Clay",
+4
+],
+"W|bjk cup g rr swe vs nor": [
+"Clay",
+4
+],
+"W|bjk cup g rr tur vs egy": [
+"Clay",
+4
+],
+"W|bjk cup g rr tur vs ned": [
+"Clay",
+4
+],
+"W|bjk cup g rr uzb vs tha": [
+"Hard",
+4
+],
+"W|bjk cup playoffs": [
+"Hard",
+4
+],
+"W|bjk cup qls r can vs bel": [
+"Hard",
+4
+],
+"W|bjk cup qls r cze vs ukr": [
+"Clay",
+4
+],
+"W|bjk cup qls r esp vs mex": [
+"Clay",
+4
+],
+"W|bjk cup qls r fra vs gbr": [
+"Hard",
+4
+],
+"W|bjk cup qls r ger vs bra": [
+"Clay",
+4
+],
+"W|bjk cup qls r kaz vs pol": [
+"Clay",
+4
+],
+"W|bjk cup qls r rou vs slo": [
+"Clay",
+4
+],
+"W|bjk cup qls r svk vs ita": [
+"Hard",
+4
+],
+"W|bjk cup qls r usa vs aut": [
+"Hard",
+4
+],
+"W|bjk cup qualifiers": [
+"Hard",
+4
+],
+"W|bogota": [
+"Clay",
+4
+],
+"W|brisbane": [
+"Hard",
+4
+],
+"W|bucharest": [
+"Clay",
+3
+],
+"W|budapest": [
+"Clay",
+4
+],
+"W|buenos aires": [
+"Clay",
+3
+],
+"W|caldas da rainha": [
+"Hard",
+3
+],
+"W|cali": [
+"Clay",
+3
+],
+"W|canberra": [
+"Hard",
+3
+],
+"W|cancun": [
+"Hard",
+3
+],
+"W|cancun finals": [
+"Hard",
+5
+],
+"W|changsha": [
+"Clay",
+3
+],
+"W|charleston": [
+"Clay",
+4
+],
+"W|chennai": [
+"Hard",
+4
+],
+"W|chicago": [
+"Hard",
+3
+],
+"W|cincinnati": [
+"Hard",
+5
+],
+"W|cleveland": [
+"Hard",
+4
+],
+"W|cluj napoca": [
+"Hard",
+4
+],
+"W|colina": [
+"Clay",
+3
+],
+"W|contrexeville": [
+"Clay",
+3
+],
+"W|cosenza": [
+"Clay",
+3
+],
+"W|doha": [
+"Hard",
+5
+],
+"W|dubai": [
+"Hard",
+5
+],
+"W|dubrovnik": [
+"Clay",
+3
+],
+"W|eastbourne": [
+"Grass",
+4
+],
+"W|florence": [
+"Clay",
+3
+],
+"W|florianopolis": [
+"Clay",
+3
+],
+"W|gaiba": [
+"Grass",
+3
+],
+"W|grado": [
+"Clay",
+3
+],
+"W|guadalajara": [
+"Hard",
+4
+],
+"W|guangzhou": [
+"Hard",
+4
+],
+"W|hamburg": [
+"Clay",
+4
+],
+"W|hobart": [
+"Hard",
+4
+],
+"W|hong kong": [
+"Hard",
+4
+],
+"W|hua hin": [
+"Hard",
+4
+],
+"W|huzhou": [
+"Clay",
+3
+],
+"W|iasi": [
+"Clay",
+4
+],
+"W|ilkley": [
+"Grass",
+3
+],
+"W|indian wells": [
+"Hard",
+5
+],
+"W|istanbul": [
+"Clay",
+3
+],
+"W|jinan": [
+"Hard",
+3
+],
+"W|jingshan": [
+"Hard",
+3
+],
+"W|jiujiang": [
+"Hard",
+3
+],
+"W|kozerki": [
+"Hard",
+3
+],
+"W|la bisbal d emporda": [
+"Clay",
+3
+],
+"W|lausanne": [
+"Clay",
+4
+],
+"W|les sables d olonne": [
+"Hard",
+3
+],
+"W|limoges": [
+"Hard",
+3
+],
+"W|linz": [
+"Clay",
+4
+],
+"W|ljubljana": [
+"Clay",
+3
+],
+"W|lleida": [
+"Clay",
+3
+],
+"W|lyon": [
+"Hard",
+4
+],
+"W|madrid": [
+"Clay",
+5
+],
+"W|makarska": [
+"Clay",
+3
+],
+"W|mallorca": [
+"Clay",
+3
+],
+"W|manila": [
+"Hard",
+3
+],
+"W|memphis": [
+"Hard",
+4
+],
+"W|merida": [
+"Hard",
+4
+],
+"W|miami": [
+"Hard",
+5
+],
+"W|midland": [
+"Hard",
+3
+],
+"W|monastir": [
+"Hard",
+4
+],
+"W|monterrey": [
+"Hard",
+4
+],
+"W|montevideo": [
+"Clay",
+3
+],
+"W|montreal": [
+"Hard",
+5
+],
+"W|montreux": [
+"Clay",
+3
+],
+"W|mumbai": [
+"Hard",
+3
+],
+"W|nanchang": [
+"Hard",
+4
+],
+"W|newport": [
+"Grass",
+3
+],
+"W|ningbo": [
+"Hard",
+4
+],
+"W|nottingham": [
+"Grass",
+4
+],
+"W|oeiras": [
+"Clay",
+3
+],
+"W|oeiras indoor": [
+"Hard",
+3
+],
+"W|oeiras outdoor": [
+"Clay",
+3
+],
+"W|osaka": [
+"Hard",
+4
+],
+"W|ostrava": [
+"Hard",
+4
+],
+"W|palermo": [
+"Clay",
+3
+],
+"W|paris": [
+"Clay",
+3
+],
+"W|paris olympics": [
+"Clay",
+4
+],
+"W|parma": [
+"Clay",
+3
+],
+"W|porto": [
+"Hard",
+3
+],
+"W|prague": [
+"Hard",
+4
+],
+"W|puerto vallarta": [
+"Hard",
+3
+],
+"W|queen s club": [
+"Grass",
+4
+],
+"W|queretaro": [
+"Clay",
+3
+],
+"W|quito": [
+"Clay",
+3
+],
+"W|rabat": [
+"Clay",
+4
+],
+"W|reus": [
+"Clay",
+3
+],
+"W|rio de janeiro": [
+"Clay",
+3
+],
+"W|riyadh finals": [
+"Hard",
+5
+],
+"W|roland garros": [
+"Clay",
+6
+],
+"W|rome": [
+"Clay",
+5
+],
+"W|rouen": [
+"Clay",
+4
+],
+"W|rovereto": [
+"Hard",
+3
+],
+"W|s hertogenbosch": [
+"Grass",
+4
+],
+"W|saint malo": [
+"Clay",
+3
+],
+"W|samsun": [
+"Hard",
+3
+],
+"W|san diego": [
+"Hard",
+4
+],
+"W|san luis potosi": [
+"Clay",
+3
+],
+"W|san sebastian": [
+"Clay",
+3
+],
+"W|santa cruz": [
+"Clay",
+3
+],
+"W|sao paulo": [
+"Hard",
+4
+],
+"W|seoul": [
+"Hard",
+4
+],
+"W|singapore": [
+"Hard",
+4
+],
+"W|stanford": [
+"Hard",
+3
+],
+"W|strasbourg": [
+"Clay",
+4
+],
+"W|stuttgart": [
+"Clay",
+4
+],
+"W|suzhou": [
+"Hard",
+3
+],
+"W|tampico": [
+"Hard",
+3
+],
+"W|tokyo": [
+"Hard",
+4
+],
+"W|tolentino": [
+"Clay",
+3
+],
+"W|toronto": [
+"Hard",
+5
+],
+"W|tucuman": [
+"Clay",
+3
+],
+"W|united cup": [
+"Hard",
+4
+],
+"W|us open": [
+"Hard",
+6
+],
+"W|valencia": [
+"Clay",
+3
+],
+"W|vic": [
+"Clay",
+3
+],
+"W|w ahmedabad": [
+"Hard",
+0
+],
+"W|w alaminos": [
+"Clay",
+0
+],
+"W|w alaminos larnaca": [
+"Clay",
+1
+],
+"W|w alcala de henares": [
+"Hard",
+0
+],
+"W|w aldershot": [
+"Hard",
+1
+],
+"W|w alkmaar": [
+"Clay",
+0
+],
+"W|w altenkirchen": [
+"Carpet",
+2
+],
+"W|w amiens": [
+"Clay",
+0
+],
+"W|w amstelveen": [
+"Clay",
+1
+],
+"W|w amstetten": [
+"Clay",
+2
+],
+"W|w anapoima": [
+"Clay",
+1
+],
+"W|w andong": [
+"Hard",
+1
+],
+"W|w andrezieux boutheon": [
+"Hard",
+2
+],
+"W|w ankara": [
+"Hard",
+0
+],
+"W|w annenheim": [
+"Clay",
+1
+],
+"W|w anning": [
+"Clay",
+1
+],
+"W|w antalya": [
+"Clay",
+1
+],
+"W|w arcadia ca": [
+"Hard",
+1
+],
+"W|w arequipa": [
+"Clay",
+2
+],
+"W|w aschaffenburg": [
+"Clay",
+2
+],
+"W|w astana": [
+"Hard",
+0
+],
+"W|w asuncion": [
+"Clay",
+0
+],
+"W|w austin tx": [
+"Hard",
+2
+],
+"W|w bacau": [
+"Clay",
+0
+],
+"W|w bad waltersdorf": [
+"Clay",
+0
+],
+"W|w bakersfield ca": [
+"Hard",
+1
+],
+"W|w baku": [
+"Hard",
+0
+],
+"W|w banja luka": [
+"Clay",
+0
+],
+"W|w baotou": [
+"Clay",
+2
+],
+"W|w barcelona": [
+"Hard",
+2
+],
+"W|w bastad": [
+"Clay",
+1
+],
+"W|w bath": [
+"Hard",
+1
+],
+"W|w baza": [
+"Hard",
+2
+],
+"W|w belem": [
+"Hard",
+0
+],
+"W|w bellinzona": [
+"Clay",
+2
+],
+"W|w bengaluru": [
+"Hard",
+2
+],
+"W|w beograd": [
+"Clay",
+0
+],
+"W|w berkeley ca": [
+"Hard",
+2
+],
+"W|w bethany beach": [
+"Clay",
+1
+],
+"W|w bethany beach de": [
+"Clay",
+1
+],
+"W|w bhopal": [
+"Hard",
+1
+],
+"W|w biarritz": [
+"Clay",
+2
+],
+"W|w bielsko biala": [
+"Clay",
+0
+],
+"W|w birmingham": [
+"Hard",
+1
+],
+"W|w bissy chambery": [
+"Hard",
+0
+],
+"W|w bistrita": [
+"Hard",
+2
+],
+"W|w blois": [
+"Hard",
+2
+],
+"W|w boca raton": [
+"Clay",
+1
+],
+"W|w boca raton fl": [
+"Clay",
+1
+],
+"W|w bodrum": [
+"Clay",
+2
+],
+"W|w bol": [
+"Clay",
+1
+],
+"W|w bolszewo": [
+"Hard",
+0
+],
+"W|w bonita springs": [
+"Clay",
+2
+],
+"W|w bonita springs fl": [
+"Clay",
+2
+],
+"W|w bradenton fl": [
+"Hard",
+1
+],
+"W|w bragado": [
+"Clay",
+1
+],
+"W|w brasilia": [
+"Hard",
+0
+],
+"W|w brasov": [
+"Clay",
+1
+],
+"W|w bratislava": [
+"Hard",
+2
+],
+"W|w braunschweig": [
+"Clay",
+1
+],
+"W|w brescia": [
+"Clay",
+2
+],
+"W|w brezice": [
+"Clay",
+0
+],
+"W|w brisbane": [
+"Hard",
+2
+],
+"W|w brossard": [
+"Hard",
+0
+],
+"W|w bucharest": [
+"Clay",
+0
+],
+"W|w buenos aires": [
+"Clay",
+1
+],
+"W|w buenos aires h": [
+"Clay",
+2
+],
+"W|w bujumbura": [
+"Clay",
+2
+],
+"W|w burnie": [
+"Hard",
+1
+],
+"W|w buzau": [
+"Clay",
+1
+],
+"W|w bydgoszcz": [
+"Clay",
+1
+],
+"W|w bytom": [
+"Hard",
+2
+],
+"W|w cairns": [
+"Hard",
+1
+],
+"W|w caldas da rainha": [
+"Hard",
+2
+],
+"W|w caloundra": [
+"Hard",
+2
+],
+"W|w calvi": [
+"Hard",
+2
+],
+"W|w campina": [
+"Clay",
+0
+],
+"W|w campinas": [
+"Clay",
+0
+],
+"W|w campulung": [
+"Clay",
+0
+],
+"W|w canberra": [
+"Clay",
+2
+],
+"W|w cantanhede": [
+"Carpet",
+1
+],
+"W|w cap d agde": [
+"Clay",
+0
+],
+"W|w carrara": [
+"Hard",
+2
+],
+"W|w cary nc": [
+"Hard",
+2
+],
+"W|w casablanca": [
+"Clay",
+0
+],
+"W|w caserta": [
+"Clay",
+2
+],
+"W|w castellon": [
+"Clay",
+0
+],
+"W|w castellon vall duxo": [
+"Clay",
+0
+],
+"W|w cayenne": [
+"Hard",
+0
+],
+"W|w ceska lipa": [
+"Clay",
+2
+],
+"W|w ceuta": [
+"Hard",
+0
+],
+"W|w ch sambhaji nagar": [
+"Clay",
+0
+],
+"W|w chacabuco": [
+"Clay",
+1
+],
+"W|w champaign il": [
+"Hard",
+0
+],
+"W|w changwon": [
+"Hard",
+1
+],
+"W|w charleston sc": [
+"Clay",
+2
+],
+"W|w charlotte nc": [
+"Clay",
+1
+],
+"W|w charlottesville va": [
+"Clay",
+2
+],
+"W|w cherbourg en cotentin": [
+"Hard",
+2
+],
+"W|w chiasso": [
+"Clay",
+2
+],
+"W|w chihuahua": [
+"Hard",
+2
+],
+"W|w chihuahua chi": [
+"Clay",
+2
+],
+"W|w clemson sc": [
+"Hard",
+0
+],
+"W|w cluj napoca": [
+"Clay",
+0
+],
+"W|w collonge bellerive": [
+"Clay",
+1
+],
+"W|w colorado springs": [
+"Hard",
+1
+],
+"W|w constanta": [
+"Clay",
+0
+],
+"W|w cordenons": [
+"Clay",
+2
+],
+"W|w cordoba": [
+"Clay",
+0
+],
+"W|w cornella de llobregat": [
+"Hard",
+2
+],
+"W|w corroios seixal": [
+"Hard",
+2
+],
+"W|w criciuma": [
+"Clay",
+0
+],
+"W|w croissy beaubourg": [
+"Hard",
+2
+],
+"W|w cuiaba": [
+"Clay",
+1
+],
+"W|w curitiba": [
+"Clay",
+0
+],
+"W|w daegu": [
+"Hard",
+0
+],
+"W|w dallas": [
+"Hard",
+2
+],
+"W|w dallas tx": [
+"Hard",
+2
+],
+"W|w darmstadt": [
+"Clay",
+1
+],
+"W|w darwin": [
+"Hard",
+1
+],
+"W|w daytona beach fl": [
+"Hard",
+1
+],
+"W|w decatur il": [
+"Hard",
+1
+],
+"W|w denia": [
+"Clay",
+0
+],
+"W|w dijon": [
+"Clay",
+0
+],
+"W|w dinard": [
+"Clay",
+0
+],
+"W|w doksy stare splavy": [
+"Clay",
+2
+],
+"W|w don benito": [
+"Carpet",
+1
+],
+"W|w dubai": [
+"Hard",
+2
+],
+"W|w dublin": [
+"Carpet",
+0
+],
+"W|w duffel": [
+"Clay",
+1
+],
+"W|w edgbaston": [
+"Hard",
+2
+],
+"W|w edmond": [
+"Hard",
+2
+],
+"W|w edmond ok": [
+"Hard",
+2
+],
+"W|w edmonton": [
+"Hard",
+1
+],
+"W|w eindhoven": [
+"Clay",
+0
+],
+"W|w el espinar": [
+"Hard",
+1
+],
+"W|w erwitte": [
+"Clay",
+1
+],
+"W|w esch alzette": [
+"Hard",
+1
+],
+"W|w esch sur alzette": [
+"Hard",
+0
+],
+"W|w essen": [
+"Hard",
+0
+],
+"W|w estepona": [
+"Hard",
+1
+],
+"W|w evansville": [
+"Hard",
+2
+],
+"W|w evansville in": [
+"Hard",
+2
+],
+"W|w evora": [
+"Hard",
+2
+],
+"W|w faro": [
+"Hard",
+1
+],
+"W|w feira de santana": [
+"Hard",
+2
+],
+"W|w feld am see": [
+"Clay",
+1
+],
+"W|w fiano romano": [
+"Clay",
+0
+],
+"W|w figueira da foz": [
+"Hard",
+2
+],
+"W|w figueira de foz": [
+"Hard",
+2
+],
+"W|w florence": [
+"Hard",
+1
+],
+"W|w florence sc": [
+"Hard",
+1
+],
+"W|w florianopolis": [
+"Clay",
+2
+],
+"W|w focsani": [
+"Clay",
+0
+],
+"W|w fort de france": [
+"Hard",
+0
+],
+"W|w foxhills": [
+"Hard",
+1
+],
+"W|w fredericton": [
+"Hard",
+1
+],
+"W|w frydek mistek": [
+"Clay",
+1
+],
+"W|w fujairah": [
+"Hard",
+2
+],
+"W|w fukui": [
+"Hard",
+0
+],
+"W|w fukuoka": [
+"Carpet",
+1
+],
+"W|w funchal": [
+"Hard",
+2
+],
+"W|w fuzhou": [
+"Hard",
+2
+],
+"W|w gaborone": [
+"Hard",
+0
+],
+"W|w galati": [
+"Clay",
+0
+],
+"W|w gdansk": [
+"Clay",
+0
+],
+"W|w getxo": [
+"Clay",
+0
+],
+"W|w gifu": [
+"Hard",
+2
+],
+"W|w glasgow": [
+"Hard",
+2
+],
+"W|w gold coast": [
+"Hard",
+2
+],
+"W|w gonesse": [
+"Clay",
+0
+],
+"W|w goyang": [
+"Hard",
+1
+],
+"W|w grado": [
+"Clay",
+0
+],
+"W|w gran canaria": [
+"Clay",
+2
+],
+"W|w gran canaria maspalomas": [
+"Clay",
+2
+],
+"W|w granby": [
+"Hard",
+2
+],
+"W|w grenoble": [
+"Hard",
+2
+],
+"W|w grodzisk mazowiecki": [
+"Clay",
+0
+],
+"W|w guadalajara": [
+"Clay",
+1
+],
+"W|w guayaquil": [
+"Clay",
+1
+],
+"W|w guimaraes": [
+"Hard",
+2
+],
+"W|w guiyang": [
+"Hard",
+2
+],
+"W|w gurugram": [
+"Hard",
+0
+],
+"W|w h caldas da rainha": [
+"Hard",
+2
+],
+"W|w h calgary": [
+"Hard",
+2
+],
+"W|w h calvi": [
+"Hard",
+2
+],
+"W|w h cherbourg en cotentin": [
+"Hard",
+1
+],
+"W|w h granby": [
+"Hard",
+2
+],
+"W|w h irapuato": [
+"Hard",
+2
+],
+"W|w h koksijde": [
+"Clay",
+2
+],
+"W|w h leipzig": [
+"Clay",
+2
+],
+"W|w h macon": [
+"Hard",
+2
+],
+"W|w h palma del rio": [
+"Hard",
+2
+],
+"W|w h pazardzhik": [
+"Clay",
+2
+],
+"W|w h poitiers": [
+"Hard",
+2
+],
+"W|w h porto": [
+"Hard",
+2
+],
+"W|w h rome": [
+"Clay",
+2
+],
+"W|w h saguenay": [
+"Hard",
+2
+],
+"W|w h saint gaudens": [
+"Clay",
+2
+],
+"W|w h tauste": [
+"Hard",
+1
+],
+"W|w h tauste zaragoza": [
+"Hard",
+1
+],
+"W|w h toronto": [
+"Hard",
+2
+],
+"W|w h tossa de mar": [
+"Carpet",
+1
+],
+"W|w h vero beach fl": [
+"Clay",
+2
+],
+"W|w hagetmau": [
+"Hard",
+0
+],
+"W|w hamamatsu": [
+"Carpet",
+1
+],
+"W|w hamburg": [
+"Hard",
+2
+],
+"W|w hameenlinna": [
+"Clay",
+0
+],
+"W|w hamilton": [
+"Hard",
+0
+],
+"W|w hammamet": [
+"Clay",
+1
+],
+"W|w haren": [
+"Clay",
+0
+],
+"W|w hechingen": [
+"Clay",
+2
+],
+"W|w helsinki": [
+"Hard",
+2
+],
+"W|w heraklion": [
+"Clay",
+2
+],
+"W|w herrenschwanden": [
+"Carpet",
+1
+],
+"W|w hillcrest": [
+"Hard",
+0
+],
+"W|w hilton head island sc": [
+"Hard",
+1
+],
+"W|w hilton head sc": [
+"Clay",
+0
+],
+"W|w hinode": [
+"Hard",
+0
+],
+"W|w hong kong": [
+"Hard",
+0
+],
+"W|w horb": [
+"Clay",
+1
+],
+"W|w hua hin": [
+"Hard",
+0
+],
+"W|w huamantla": [
+"Hard",
+1
+],
+"W|w huntsville al": [
+"Clay",
+0
+],
+"W|w hurghada": [
+"Hard",
+0
+],
+"W|w huzhou": [
+"Hard",
+1
+],
+"W|w ibague": [
+"Clay",
+2
+],
+"W|w ilkley": [
+"Grass",
+2
+],
+"W|w incheon": [
+"Hard",
+2
+],
+"W|w indian harbour beach fl": [
+"Clay",
+2
+],
+"W|w indore": [
+"Hard",
+1
+],
+"W|w ipoh": [
+"Hard",
+0
+],
+"W|w ipoh perak": [
+"Hard",
+0
+],
+"W|w irapuato": [
+"Hard",
+2
+],
+"W|w irvine ca": [
+"Hard",
+0
+],
+"W|w ismaning": [
+"Carpet",
+2
+],
+"W|w istanbul": [
+"Hard",
+1
+],
+"W|w jackson ms": [
+"Clay",
+1
+],
+"W|w jackson tn": [
+"Hard",
+0
+],
+"W|w jakarta": [
+"Hard",
+1
+],
+"W|w jhajjar": [
+"Clay",
+0
+],
+"W|w jinan": [
+"Hard",
+2
+],
+"W|w joinville": [
+"Clay",
+0
+],
+"W|w joue les tours": [
+"Hard",
+1
+],
+"W|w junin": [
+"Clay",
+1
+],
+"W|w kachreti": [
+"Hard",
+1
+],
+"W|w kalaburagi": [
+"Hard",
+1
+],
+"W|w kalmar": [
+"Clay",
+0
+],
+"W|w kaltenkirchen": [
+"Hard",
+0
+],
+"W|w kamen": [
+"Clay",
+0
+],
+"W|w karaganda": [
+"Hard",
+0
+],
+"W|w karuizawa": [
+"Grass",
+1
+],
+"W|w kashiwa": [
+"Hard",
+0
+],
+"W|w kawaguchi": [
+"Hard",
+0
+],
+"W|w kayseri": [
+"Hard",
+0
+],
+"W|w klagenfurt": [
+"Clay",
+1
+],
+"W|w klosters": [
+"Hard",
+1
+],
+"W|w knokke heist": [
+"Clay",
+1
+],
+"W|w kocevje": [
+"Clay",
+0
+],
+"W|w koege": [
+"Clay",
+1
+],
+"W|w kofu": [
+"Hard",
+2
+],
+"W|w koge": [
+"Clay",
+1
+],
+"W|w koksijde": [
+"Clay",
+1
+],
+"W|w koper": [
+"Clay",
+2
+],
+"W|w kosice": [
+"Clay",
+2
+],
+"W|w kotka": [
+"Clay",
+0
+],
+"W|w krakow": [
+"Hard",
+0
+],
+"W|w kranjska gora": [
+"Clay",
+0
+],
+"W|w krsko": [
+"Clay",
+0
+],
+"W|w kuala lumpur": [
+"Hard",
+0
+],
+"W|w kuching": [
+"Hard",
+0
+],
+"W|w kunshan": [
+"Hard",
+1
+],
+"W|w kursumlijska banja": [
+"Clay",
+0
+],
+"W|w kurume": [
+"Carpet",
+2
+],
+"W|w kurume h": [
+"Carpet",
+2
+],
+"W|w kyoto": [
+"Hard",
+2
+],
+"W|w la marsa": [
+"Hard",
+2
+],
+"W|w lakewood": [
+"Hard",
+0
+],
+"W|w lakewood ca": [
+"Hard",
+0
+],
+"W|w landisville": [
+"Hard",
+2
+],
+"W|w landisville pa": [
+"Hard",
+2
+],
+"W|w las palmas de gran canaria": [
+"Clay",
+0
+],
+"W|w las vegas nv": [
+"Hard",
+1
+],
+"W|w launceston": [
+"Hard",
+1
+],
+"W|w le gosier": [
+"Hard",
+1
+],
+"W|w le havre": [
+"Clay",
+0
+],
+"W|w le lamentin": [
+"Hard",
+1
+],
+"W|w le neubourg": [
+"Hard",
+2
+],
+"W|w leimen": [
+"Hard",
+0
+],
+"W|w leipzig": [
+"Clay",
+1
+],
+"W|w leiria": [
+"Hard",
+2
+],
+"W|w leme": [
+"Clay",
+1
+],
+"W|w les contamines montjoie": [
+"Hard",
+0
+],
+"W|w les franqueses del valles": [
+"Hard",
+2
+],
+"W|w leszno": [
+"Hard",
+2
+],
+"W|w lexington": [
+"Hard",
+2
+],
+"W|w lexington ky": [
+"Hard",
+2
+],
+"W|w liberec": [
+"Hard",
+1
+],
+"W|w liepaja": [
+"Clay",
+2
+],
+"W|w lima": [
+"Clay",
+0
+],
+"W|w limassol": [
+"Hard",
+1
+],
+"W|w lincoln": [
+"Hard",
+0
+],
+"W|w lisboa": [
+"Clay",
+2
+],
+"W|w lisbon": [
+"Clay",
+2
+],
+"W|w logrono": [
+"Hard",
+0
+],
+"W|w lopota": [
+"Hard",
+2
+],
+"W|w los angeles ca": [
+"Hard",
+0
+],
+"W|w loughborough": [
+"Hard",
+1
+],
+"W|w loule": [
+"Hard",
+1
+],
+"W|w lousada": [
+"Hard",
+0
+],
+"W|w luan": [
+"Hard",
+0
+],
+"W|w lujan": [
+"Clay",
+0
+],
+"W|w luque": [
+"Clay",
+0
+],
+"W|w luzhou": [
+"Hard",
+1
+],
+"W|w maanshan": [
+"Hard",
+0
+],
+"W|w macon": [
+"Hard",
+2
+],
+"W|w macon ga": [
+"Hard",
+2
+],
+"W|w madrid": [
+"Hard",
+0
+],
+"W|w makinohara": [
+"Carpet",
+1
+],
+"W|w malaga": [
+"Hard",
+0
+],
+"W|w malibu ca": [
+"Hard",
+1
+],
+"W|w malmo": [
+"Clay",
+0
+],
+"W|w malta": [
+"Hard",
+0
+],
+"W|w manacor": [
+"Hard",
+0
+],
+"W|w manama": [
+"Hard",
+2
+],
+"W|w manchester": [
+"Hard",
+2
+],
+"W|w maribor": [
+"Hard",
+2
+],
+"W|w maringa": [
+"Clay",
+0
+],
+"W|w maspalomas gran canaria": [
+"Clay",
+2
+],
+"W|w mbombela": [
+"Hard",
+0
+],
+"W|w meerbusch": [
+"Clay",
+2
+],
+"W|w melilla": [
+"Hard",
+0
+],
+"W|w mendoza": [
+"Clay",
+1
+],
+"W|w merzig": [
+"Clay",
+0
+],
+"W|w mexico city": [
+"Hard",
+2
+],
+"W|w miami fl": [
+"Hard",
+1
+],
+"W|w mildura": [
+"Grass",
+1
+],
+"W|w miyazaki": [
+"Hard",
+1
+],
+"W|w mogi das cruzes": [
+"Hard",
+0
+],
+"W|w mogyorod": [
+"Clay",
+0
+],
+"W|w mohammedia": [
+"Clay",
+1
+],
+"W|w monastir": [
+"Hard",
+0
+],
+"W|w montemor o novo": [
+"Hard",
+2
+],
+"W|w montpellier": [
+"Clay",
+2
+],
+"W|w montreal": [
+"Hard",
+0
+],
+"W|w montreux": [
+"Clay",
+2
+],
+"W|w monzon": [
+"Hard",
+0
+],
+"W|w morelia": [
+"Hard",
+2
+],
+"W|w mosquera": [
+"Clay",
+1
+],
+"W|w murska sobota": [
+"Hard",
+2
+],
+"W|w mysuru": [
+"Hard",
+0
+],
+"W|w nagpur": [
+"Clay",
+0
+],
+"W|w naiman": [
+"Hard",
+1
+],
+"W|w nairobi": [
+"Clay",
+1
+],
+"W|w nakhon pathom": [
+"Hard",
+0
+],
+"W|w nakhon si thammarat": [
+"Hard",
+1
+],
+"W|w nanao": [
+"Grass",
+2
+],
+"W|w nanchang": [
+"Clay",
+1
+],
+"W|w nantes": [
+"Hard",
+2
+],
+"W|w naples fl": [
+"Clay",
+1
+],
+"W|w nasbypark": [
+"Hard",
+0
+],
+"W|w navi mumbai": [
+"Hard",
+2
+],
+"W|w neuquen": [
+"Clay",
+0
+],
+"W|w new delhi": [
+"Hard",
+0
+],
+"W|w nogent sur marne": [
+"Hard",
+0
+],
+"W|w nonthaburi": [
+"Hard",
+2
+],
+"W|w norges la ville": [
+"Hard",
+0
+],
+"W|w norman ok": [
+"Hard",
+1
+],
+"W|w nottingham": [
+"Hard",
+1
+],
+"W|w nova gorica": [
+"Clay",
+0
+],
+"W|w nules": [
+"Clay",
+0
+],
+"W|w oegstgeest": [
+"Clay",
+0
+],
+"W|w oeiras": [
+"Clay",
+2
+],
+"W|w oldenzaal": [
+"Hard",
+2
+],
+"W|w oliva": [
+"Clay",
+0
+],
+"W|w olomouc": [
+"Clay",
+2
+],
+"W|w ontinyent": [
+"Clay",
+0
+],
+"W|w orlando fl": [
+"Clay",
+0
+],
+"W|w ortisei": [
+"Hard",
+2
+],
+"W|w osaka": [
+"Hard",
+1
+],
+"W|w osijek": [
+"Clay",
+0
+],
+"W|w oslo": [
+"Hard",
+0
+],
+"W|w otocec": [
+"Clay",
+2
+],
+"W|w otopeni": [
+"Clay",
+0
+],
+"W|w ourense": [
+"Hard",
+2
+],
+"W|w palm coast fl": [
+"Clay",
+0
+],
+"W|w palma del rio": [
+"Hard",
+2
+],
+"W|w palmanova": [
+"Clay",
+1
+],
+"W|w panipat": [
+"Hard",
+0
+],
+"W|w papamoa": [
+"Hard",
+1
+],
+"W|w parnu": [
+"Clay",
+1
+],
+"W|w pazardzhik": [
+"Clay",
+2
+],
+"W|w pelham": [
+"Clay",
+2
+],
+"W|w pelham al": [
+"Clay",
+2
+],
+"W|w pergamino": [
+"Clay",
+1
+],
+"W|w perigueux": [
+"Clay",
+1
+],
+"W|w perth": [
+"Hard",
+2
+],
+"W|w petange": [
+"Hard",
+2
+],
+"W|w petit bourg": [
+"Hard",
+1
+],
+"W|w phan thiet": [
+"Hard",
+0
+],
+"W|w pilar": [
+"Clay",
+2
+],
+"W|w piracicaba": [
+"Clay",
+1
+],
+"W|w platja d aro": [
+"Clay",
+1
+],
+"W|w playford": [
+"Hard",
+2
+],
+"W|w plovdiv": [
+"Clay",
+2
+],
+"W|w poertschach": [
+"Clay",
+1
+],
+"W|w poitiers": [
+"Hard",
+2
+],
+"W|w porto": [
+"Hard",
+2
+],
+"W|w portoroz": [
+"Clay",
+2
+],
+"W|w prague": [
+"Hard",
+2
+],
+"W|w prerov": [
+"Clay",
+2
+],
+"W|w pretoria": [
+"Hard",
+0
+],
+"W|w prokuplje": [
+"Clay",
+1
+],
+"W|w pune": [
+"Hard",
+2
+],
+"W|w punta cana": [
+"Clay",
+1
+],
+"W|w qian daohu": [
+"Hard",
+1
+],
+"W|w quebec city": [
+"Hard",
+1
+],
+"W|w quinta do lago": [
+"Hard",
+2
+],
+"W|w radom": [
+"Clay",
+0
+],
+"W|w rancho santa fe ca": [
+"Hard",
+2
+],
+"W|w recife": [
+"Clay",
+0
+],
+"W|w redding ca": [
+"Hard",
+1
+],
+"W|w reichstett": [
+"Clay",
+0
+],
+"W|w reims": [
+"Hard",
+1
+],
+"W|w reus": [
+"Clay",
+1
+],
+"W|w ribeirao preto": [
+"Clay",
+0
+],
+"W|w ricany": [
+"Hard",
+2
+],
+"W|w rio claro": [
+"Clay",
+1
+],
+"W|w roehampton": [
+"Hard",
+2
+],
+"W|w rogaska slatina": [
+"Clay",
+0
+],
+"W|w rome": [
+"Clay",
+1
+],
+"W|w rome ga": [
+"Hard",
+2
+],
+"W|w rosario santa fe": [
+"Clay",
+0
+],
+"W|w sabadell": [
+"Clay",
+1
+],
+"W|w saguenay": [
+"Hard",
+2
+],
+"W|w saint gaudens": [
+"Clay",
+2
+],
+"W|w saint palais sur mer": [
+"Clay",
+2
+],
+"W|w san diego": [
+"Hard",
+0
+],
+"W|w san diego ca": [
+"Hard",
+0
+],
+"W|w san gregorio": [
+"Clay",
+1
+],
+"W|w san miguel de tucuman": [
+"Clay",
+2
+],
+"W|w san rafael": [
+"Hard",
+1
+],
+"W|w san rafael ca": [
+"Hard",
+1
+],
+"W|w sant vicenc de torello": [
+"Hard",
+0
+],
+"W|w santa margherita di pula": [
+"Clay",
+1
+],
+"W|w santa tecla": [
+"Hard",
+0
+],
+"W|w santarem": [
+"Hard",
+1
+],
+"W|w santiago": [
+"Clay",
+0
+],
+"W|w santo domingo": [
+"Hard",
+1
+],
+"W|w sao joao da boa vista": [
+"Clay",
+0
+],
+"W|w sao luis": [
+"Clay",
+0
+],
+"W|w sao paulo": [
+"Clay",
+1
+],
+"W|w sapporo": [
+"Hard",
+0
+],
+"W|w saskatoon": [
+"Hard",
+2
+],
+"W|w satu mare": [
+"Clay",
+0
+],
+"W|w savitaipale": [
+"Clay",
+0
+],
+"W|w segovia": [
+"Hard",
+1
+],
+"W|w selva gardena": [
+"Hard",
+2
+],
+"W|w setubal": [
+"Hard",
+1
+],
+"W|w seville": [
+"Clay",
+1
+],
+"W|w sharm elsheikh": [
+"Hard",
+1
+],
+"W|w sheffield": [
+"Hard",
+1
+],
+"W|w shenyang": [
+"Hard",
+1
+],
+"W|w shenzhen": [
+"Hard",
+2
+],
+"W|w shrewsbury": [
+"Hard",
+2
+],
+"W|w shymkent": [
+"Clay",
+0
+],
+"W|w sibenik": [
+"Clay",
+0
+],
+"W|w singapore": [
+"Hard",
+0
+],
+"W|w skopje": [
+"Clay",
+1
+],
+"W|w slobozia": [
+"Clay",
+2
+],
+"W|w slovenske konjice": [
+"Clay",
+0
+],
+"W|w solapur": [
+"Hard",
+1
+],
+"W|w solarino": [
+"Carpet",
+0
+],
+"W|w sopo": [
+"Clay",
+1
+],
+"W|w southaven ms": [
+"Hard",
+1
+],
+"W|w split": [
+"Clay",
+2
+],
+"W|w spring tx": [
+"Hard",
+1
+],
+"W|w stellenbosch": [
+"Hard",
+0
+],
+"W|w stuttgart vaihingen": [
+"Clay",
+1
+],
+"W|w sumter sc": [
+"Hard",
+2
+],
+"W|w sunderland": [
+"Hard",
+1
+],
+"W|w surbiton": [
+"Grass",
+2
+],
+"W|w swan hill": [
+"Grass",
+0
+],
+"W|w sydney": [
+"Hard",
+2
+],
+"W|w szabolcsveresmart": [
+"Hard",
+0
+],
+"W|w szekesfehervar": [
+"Clay",
+2
+],
+"W|w szentendre": [
+"Clay",
+0
+],
+"W|w taby": [
+"Hard",
+0
+],
+"W|w tainan": [
+"Clay",
+1
+],
+"W|w taipei": [
+"Hard",
+1
+],
+"W|w taizhou": [
+"Hard",
+2
+],
+"W|w takasaki": [
+"Hard",
+2
+],
+"W|w tallinn": [
+"Hard",
+1
+],
+"W|w tampa fl": [
+"Clay",
+2
+],
+"W|w targu mures": [
+"Hard",
+2
+],
+"W|w tarvisio": [
+"Clay",
+1
+],
+"W|w tashkent": [
+"Hard",
+0
+],
+"W|w tauranga": [
+"Hard",
+1
+],
+"W|w tbilisi": [
+"Hard",
+0
+],
+"W|w telavi": [
+"Clay",
+0
+],
+"W|w telde": [
+"Clay",
+0
+],
+"W|w templeton ca": [
+"Hard",
+2
+],
+"W|w terrassa": [
+"Clay",
+1
+],
+"W|w the hague": [
+"Hard",
+1
+],
+"W|w tianjin": [
+"Hard",
+1
+],
+"W|w timaru": [
+"Hard",
+1
+],
+"W|w tokyo": [
+"Hard",
+2
+],
+"W|w torello": [
+"Hard",
+0
+],
+"W|w torino": [
+"Clay",
+1
+],
+"W|w toronto": [
+"Hard",
+2
+],
+"W|w toyama": [
+"Hard",
+0
+],
+"W|w traralgon": [
+"Hard",
+1
+],
+"W|w trelew": [
+"Hard",
+0
+],
+"W|w trieste": [
+"Clay",
+1
+],
+"W|w trnava": [
+"Clay",
+2
+],
+"W|w trois rivieres": [
+"Hard",
+0
+],
+"W|w troisdorf": [
+"Clay",
+2
+],
+"W|w tsaghkadzor": [
+"Clay",
+0
+],
+"W|w tucuman": [
+"Clay",
+0
+],
+"W|w tumkur": [
+"Hard",
+1
+],
+"W|w tweed heads": [
+"Hard",
+0
+],
+"W|w tyler": [
+"Hard",
+2
+],
+"W|w tyler tx": [
+"Hard",
+2
+],
+"W|w ust kamenogorsk": [
+"Hard",
+0
+],
+"W|w vacaria": [
+"Clay",
+2
+],
+"W|w valencia": [
+"Clay",
+0
+],
+"W|w valladolid": [
+"Hard",
+0
+],
+"W|w varberg": [
+"Clay",
+0
+],
+"W|w varna": [
+"Clay",
+0
+],
+"W|w vejle": [
+"Clay",
+0
+],
+"W|w veracruz": [
+"Hard",
+2
+],
+"W|w verbier": [
+"Hard",
+1
+],
+"W|w vero beach fl": [
+"Clay",
+2
+],
+"W|w victoriaville": [
+"Hard",
+0
+],
+"W|w vienna": [
+"Clay",
+2
+],
+"W|w vierumaki": [
+"Hard",
+0
+],
+"W|w vigo": [
+"Hard",
+1
+],
+"W|w villach": [
+"Clay",
+1
+],
+"W|w villena": [
+"Hard",
+0
+],
+"W|w villeneuve d ascq": [
+"Hard",
+1
+],
+"W|w viserba": [
+"Clay",
+0
+],
+"W|w vitoria gasteiz": [
+"Hard",
+2
+],
+"W|w vrnjacka banja": [
+"Clay",
+1
+],
+"W|w wagga wagga": [
+"Hard",
+1
+],
+"W|w wanfercee baulet": [
+"Hard",
+0
+],
+"W|w warmbad villach": [
+"Clay",
+1
+],
+"W|w wellington": [
+"Hard",
+0
+],
+"W|w wesley chapel fl": [
+"Clay",
+1
+],
+"W|w weston fl": [
+"Clay",
+1
+],
+"W|w wichita": [
+"Hard",
+1
+],
+"W|w wichita ks": [
+"Hard",
+1
+],
+"W|w wiesbaden": [
+"Clay",
+2
+],
+"W|w wodonga": [
+"Grass",
+0
+],
+"W|w wroclaw": [
+"Clay",
+1
+],
+"W|w wuning": [
+"Hard",
+2
+],
+"W|w xiamen": [
+"Hard",
+0
+],
+"W|w yecla": [
+"Hard",
+2
+],
+"W|w yeongwol": [
+"Hard",
+0
+],
+"W|w yokohama": [
+"Hard",
+2
+],
+"W|w ystad": [
+"Hard",
+1
+],
+"W|w zagreb": [
+"Clay",
+2
+],
+"W|w zaragoza": [
+"Clay",
+2
+],
+"W|w zephyrhills fl": [
+"Clay",
+1
+],
+"W|warsaw": [
+"Hard",
+3
+],
+"W|washington": [
+"Hard",
+4
+],
+"W|wimbledon": [
+"Grass",
+6
+],
+"W|wuhan": [
+"Hard",
+5
+],
+"W|zhengzhou": [
+"Hard",
+4
+],
+"W|zhuhai": [
+"Hard",
+5
+]
+}
