@@ -771,7 +771,7 @@ async function showDTab(k) {
     if (e.sets.length) h += `<div class="card"><h3>Sety</h3><table class="st"><tr><th></th>${e.sets.map((s, k) => `<th>${k + 1}.</th>`).join('')}</tr>${[0, 1].map(sd => `<tr><td>${esc(sd ? nb : na)}</td>${e.sets.map(s => `<td class="${s[sd] > s[1 - sd] ? 'w' : ''}">${s[sd]}${s.length > 2 && Math.min(s[0], s[1]) >= 6 ? `<sup>${s[2 + sd]}</sup>` : ''}</td>`).join('')}</tr>`).join('')}</table></div>`;
     h += `<div class="card"><h3>Zápas</h3><div class="kv2"><span>Turnaj</span><b>${esc(e.tname)}${e.country ? ', ' + esc(e.country) : ''}</b><span>Kategorie</span><b>${esc(catLabel(e))}${e.q ? ' – kvalifikace' : ''}</b>
       <span>Povrch</span><b>${SURF_CS[e.surface]}</b><span>Začátek</span><b>${new Date(e.ts * 1000).toLocaleString('cs-CZ', { weekday: 'short', day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' })}</b>
-      <span>Zdroj dat</span><b>${esc(e.src === 'snapshot' ? 'snímek z buildu (Flashscore) ' + (S.live.snapshot || '') : e.src)}${e.src2 ? ' + ' + esc(e.src2 === 'snapshot' ? 'snímek (kurzy)' : e.src2) : ''}</b></div>
+      <span>Zdroj dat</span><b>${esc(e.src === 'snapshot' ? 'snímek z buildu (Flashscore) ' + (S.live.snapshot || '') : e.src)}${Object.keys(e.srcs || {}).filter(k => k !== e.src).map(k => ' + ' + esc(k === 'snapshot' ? 'snímek (kurzy)' : k)).join('')}</b></div>
       <div class="row"><button class="btn sec" data-prof="${r.hi}">Profil ${esc(na)}</button><button class="btn sec" data-prof="${r.ai}">Profil ${esc(nb)}</button></div></div>`;
     if (e.st === 3 || e._p == null) h += `<button class="btn ai" data-ask="${esc(e.id)}">✦ Zeptat se AI na tento zápas</button>`;
     body.innerHTML = h;
