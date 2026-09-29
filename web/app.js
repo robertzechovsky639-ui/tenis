@@ -640,6 +640,203 @@ function oddsHtml(e) {
   const c = k => `<span class="od ${v && v.side === k ? 'val' : ''}" data-k="${k}"><span class="v">${o.avg[k - 1].toFixed(2)}</span>${arrowOf(o, k - 1)}${v && v.side === k ? '<em>VALUE</em>' : ''}</span>`;
   return `<div class="odds${o.inplay ? ' inplay' : ''}">${c(1)}<span class="ol">${oddsLabel(o)}</span>${c(2)}</div>`;
 }
+/* ---------- predikce v průběhu (bodový model v prohlížeči) ----------
+   Průhledný Markovův model gem/set/zápas (bod na podání). Není to nově natrénovaný model
+   a nemá vlastní přesnost. Předzápasová pravděpodobnost modelu (_p) je výchozí bod:
+   mezera síly g se volí tak, aby z 0:0 (průměr obou podání) vyšlo právě _p.
+   Když to svorka bodu na podání nedovolí, „teď“ se posune jen o změnu log-šance
+   proti stavu 0:0, takže na 0:0 zůstane přesně _p.
+   Bod na podání: pA = clamp(s0+g, 0.50, 0.84), pB = clamp(s0−g, 0.50, 0.84),
+   s0 = 0.64 muži / 0.57 ženy (typická tour hodnota, konstanta, ne odhad z dat).
+   Gem: standardní vzorec z aktuálních bodů (0/15/30/40/A). Set: na 6, rozdíl 2, TB na 6:6
+   (na 7, rozdíl 2; 1. bod podává ten, kdo by podával další gem, pak po dvou).
+   Zápas: na 2 sety, u mužského Grand Slamu na 3 (stejné pravidlo jako predict()).
+   Podání neznámé → průměr obou možností. Body v gemu chybí → gem 0:0, sety a gemy platí.
+   LIVEPRED_START */
+function clamp01s(x, a, b) { return Math.min(b, Math.max(a, x)); }
+function logit(p) { const x = Math.min(1 - 1e-6, Math.max(1e-6, p)); return Math.log(x / (1 - x)); }
+function expit(z) { if (z > 20) return 1 - 1e-9; if (z < -20) return 1e-9; return 1 / (1 + Math.exp(-z)); }
+function holdP(p) {
+  const q = 1 - p, d = (p * p) / (p * p + q * q);
+  return Math.pow(p, 4) * (1 + 4 * q + 10 * q * q) + 20 * Math.pow(p, 3) * Math.pow(q, 3) * d;
+}
+/* P(A vyhraje gem) z bodů a,b (0..3 = 0/15/30/40, 4 = výhoda). p = P(A vyhraje bod). */
+function pGameAB(a, b, p) {
+  const q = 1 - p, d = (p * p) / (p * p + q * q);
+  const m = new Map();
+  const rec = (x, y) => {
+    if (x >= 4 && x - y >= 2) return 1;
+    if (y >= 4 && y - x >= 2) return 0;
+    if (x >= 3 && y >= 3) {
+      if (x === y) return d;
+      if (x === y + 1) return p + q * d;
+      if (y === x + 1) return p * d;
+    }
+    const k = x + ',' + y; const h = m.get(k); if (h != null) return h;
+    const v = p * rec(x + 1, y) + q * rec(x, y + 1);
+    m.set(k, v); return v;
+  };
+  return rec(a, b);
+}
+/* kdo podává i-tý bod tiebreaku (0 = první), když A podával první */
+function tbServeA(i, aFirst) {
+  if (i <= 0) return aFirst;
+  const pair = Math.floor((i - 1) / 2);
+  return (pair % 2 === 1) ? aFirst : !aFirst;
+}
+function pTie(a, b, aServes, pA, pB, tm) {
+  if (a >= 7 && a - b >= 2) return 1;
+  if (b >= 7 && b - a >= 2) return 0;
+  if (a + b > 48) return a === b ? (aServes ? pA : (1 - pB)) : (a > b ? 1 : 0);
+  const k = a + ',' + b + (aServes ? 'A' : 'B');
+  const hit = tm.get(k); if (hit != null) return hit;
+  const p = aServes ? pA : (1 - pB);
+  const n = a + b;
+  const aFirst = tbServeA(n, true) === aServes;
+  const nextA = tbServeA(n + 1, aFirst);
+  const v = p * pTie(a + 1, b, nextA, pA, pB, tm) + (1 - p) * pTie(a, b + 1, nextA, pA, pB, tm);
+  tm.set(k, v); return v;
+}
+function pMatch(sa, sb, ga, gb, aToServe, need, pA, pB, mm, tm) {
+  if (sa >= need) return 1;
+  if (sb >= need) return 0;
+  if ((ga >= 6 && ga - gb >= 2) || (ga === 7 && gb === 6)) return pMatch(sa + 1, sb, 0, 0, aToServe, need, pA, pB, mm, tm);
+  if ((gb >= 6 && gb - ga >= 2) || (gb === 7 && ga === 6)) return pMatch(sa, sb + 1, 0, 0, aToServe, need, pA, pB, mm, tm);
+  const k = sa + ',' + sb + ',' + ga + ',' + gb + (aToServe ? 'A' : 'B');
+  const hit = mm.get(k); if (hit != null) return hit;
+  let v;
+  if (ga === 6 && gb === 6) {
+    const pS = pTie(0, 0, aToServe, pA, pB, tm);
+    v = pS * pMatch(sa + 1, sb, 0, 0, !aToServe, need, pA, pB, mm, tm) + (1 - pS) * pMatch(sa, sb + 1, 0, 0, !aToServe, need, pA, pB, mm, tm);
+  } else {
+    const pG = aToServe ? holdP(pA) : (1 - holdP(pB));
+    v = pG * pMatch(sa, sb, ga + 1, gb, !aToServe, need, pA, pB, mm, tm) + (1 - pG) * pMatch(sa, sb, ga, gb + 1, !aToServe, need, pA, pB, mm, tm);
+  }
+  mm.set(k, v); return v;
+}
+function pFromState(sa, sb, ga, gb, aPts, bPts, tbA, tbB, inTB, aServes, need, pA, pB) {
+  const mm = new Map(), tm = new Map();
+  if (inTB) {
+    const n = tbA + tbB;
+    const aFirst = tbServeA(n, true) === aServes;
+    const pS = pTie(tbA, tbB, aServes, pA, pB, tm);
+    return pS * pMatch(sa + 1, sb, 0, 0, !aFirst, need, pA, pB, mm, tm) + (1 - pS) * pMatch(sa, sb + 1, 0, 0, !aFirst, need, pA, pB, mm, tm);
+  }
+  const pPt = aServes ? pA : (1 - pB);
+  const pG = pGameAB(aPts, bPts, pPt);
+  return pG * pMatch(sa, sb, ga + 1, gb, !aServes, need, pA, pB, mm, tm) + (1 - pG) * pMatch(sa, sb, ga, gb + 1, !aServes, need, pA, pB, mm, tm);
+}
+function matchBestOf(e) { return (e.code === 6 && e.g === 'M' && !e.q) ? 5 : 3; }
+function fitServe(p0, bo, s0) {
+  const need = (bo + 1) / 2;
+  const m0 = g => {
+    const pA = clamp01s(s0 + g, 0.5, 0.84), pB = clamp01s(s0 - g, 0.5, 0.84);
+    return (pFromState(0, 0, 0, 0, 0, 0, 0, 0, false, true, need, pA, pB) + pFromState(0, 0, 0, 0, 0, 0, 0, 0, false, false, need, pA, pB)) / 2;
+  };
+  let lo = -0.34, hi = 0.34;
+  for (let i = 0; i < 32; i++) { const mid = (lo + hi) / 2; if (m0(mid) < p0) lo = mid; else hi = mid; }
+  const g = (lo + hi) / 2;
+  const pA = clamp01s(s0 + g, 0.5, 0.84), pB = clamp01s(s0 - g, 0.5, 0.84);
+  return { g, pA, pB, m0: m0(g), s0, bo, p: p0 };
+}
+function gamePointTok(x) {
+  if (x == null || x === '') return null;
+  const t = String(x).trim().toUpperCase();
+  if (t === 'A' || t === 'AD' || t === '50') return 4;
+  if (t === '0' || t === '0.0') return 0;
+  if (t === '15' || t === '15.0') return 1;
+  if (t === '30' || t === '30.0') return 2;
+  if (t === '40' || t === '40.0') return 3;
+  return null;
+}
+function setWinner(s) {
+  const a = +s[0], b = +s[1];
+  if (!(a >= 0) || !(b >= 0)) return 0;
+  if (a >= 6 && a - b >= 2) return 1;
+  if (b >= 6 && b - a >= 2) return 2;
+  if (a === 7 && b === 6) return 1;
+  if (b === 7 && a === 6) return 2;
+  if (s.length > 2 && a === 6 && b === 6) {
+    const ta = +s[2], tb = +s[3];
+    if (ta >= 7 && ta - tb >= 2) return 1;
+    if (tb >= 7 && tb - ta >= 2) return 2;
+  }
+  return 0;
+}
+/* null = živé skóre nemáme. Jinak stav pro model. aServes null = podání neznáme. */
+function readLive(e) {
+  if (!e || e.st !== 2 || e.stale) return null;
+  const sets = (e.sets || []).filter(s => s && +s[0] >= 0 && +s[1] >= 0);
+  const hasPts = e.pts && (e.pts[0] != null || e.pts[1] != null);
+  if (!sets.length && !hasPts) return null;
+  let sa = 0, sb = 0;
+  const rows = sets.slice();
+  const cur = rows.length ? rows.pop() : [0, 0];
+  for (const s of rows) { const w = setWinner(s); if (w === 1) sa++; else if (w === 2) sb++; else if (+s[0] > +s[1]) sa++; else if (+s[1] > +s[0]) sb++; }
+  const wcur = setWinner(cur);
+  let ga = 0, gb = 0, aPts = 0, bPts = 0, tbA = 0, tbB = 0, inTB = false, pointsKnown = false, between = false;
+  if (wcur) { if (wcur === 1) sa++; else sb++; between = true; pointsKnown = false; }
+  else {
+    ga = +cur[0]; gb = +cur[1];
+    inTB = ga === 6 && gb === 6;
+    if (inTB && cur.length > 2 && (+cur[2] > 0 || +cur[3] > 0 || cur[2] === 0 || cur[3] === 0)) {
+      tbA = Math.max(0, +cur[2] || 0); tbB = Math.max(0, +cur[3] || 0); pointsKnown = true;
+    } else if (inTB) {
+      const ia = gamePointTok(e.pts && e.pts[0]), ib = gamePointTok(e.pts && e.pts[1]);
+      const na = e.pts ? parseInt(e.pts[0], 10) : NaN, nb = e.pts ? parseInt(e.pts[1], 10) : NaN;
+      if (e.pts && ia == null && ib == null && na >= 0 && nb >= 0 && na <= 30 && nb <= 30) { tbA = na; tbB = nb; pointsKnown = true; }
+      else pointsKnown = false;
+    } else {
+      const ia = gamePointTok(e.pts && e.pts[0]), ib = gamePointTok(e.pts && e.pts[1]);
+      if (ia != null && ib != null) { aPts = ia; bPts = ib; pointsKnown = true; }
+      else pointsKnown = false;
+    }
+  }
+  const aServes = e.srv === 1 ? true : e.srv === 2 ? false : null;
+  return { sa, sb, ga, gb, aPts, bPts, tbA, tbB, inTB, between, pointsKnown, aServes };
+}
+function liveProb(e) {
+  if (!e || e._p == null || !(e._p > 0) || !(e._p < 1)) return null;
+  const st = readLive(e);
+  if (!st) return { ok: false };
+  const bo = matchBestOf(e), s0 = e.g === 'W' ? 0.57 : 0.64;
+  let fit = e._lfit;
+  if (!fit || fit.p !== e._p || fit.bo !== bo || fit.s0 !== s0) { fit = fitServe(e._p, bo, s0); e._lfit = fit; }
+  const need = (bo + 1) / 2;
+  const once = aServes => pFromState(st.sa, st.sb, st.ga, st.gb, st.aPts, st.bPts, st.tbA, st.tbB, st.inTB, aServes, need, fit.pA, fit.pB);
+  const m = st.aServes == null ? (once(true) + once(false)) / 2 : once(st.aServes);
+  const anchored = Math.abs(fit.m0 - e._p) > 0.012;
+  const p = anchored ? expit(logit(e._p) + logit(m) - logit(fit.m0)) : m;
+  return { ok: true, p, serverKnown: st.aServes != null, pointsKnown: st.pointsKnown, between: st.between, anchored };
+}
+/* LIVEPRED_END */
+
+function predInner(e, na, nb) {
+  const pre = `<div class="predlab pre">Před zápasem</div><div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div>`;
+  if (e.st !== 2) return `<div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div>`;
+  const L = liveProb(e);
+  if (!L || !L.ok) return pre + '<p class="note">Živé skóre teď nemáme, platí jen předzápasová predikce.</p>';
+  const bits = [];
+  if (!L.serverKnown) bits.push('Podání neznáme, obě možnosti bereme stejně.');
+  if (!L.pointsKnown) bits.push(L.between ? 'Set skončil, další ještě nemá skóre — bereme jen sety.' : 'Body v gemu nemáme, bereme jen sety a gemy.');
+  return `<div class="predlab now">Predikce teď</div><div class="big2"><div><b class="a">${pct(L.p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - L.p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(L.p * 100).toFixed(1)}%"></i></div>${pre}<p class="note">Z předzápasové pravděpodobnosti modelu a aktuálního skóre (sety, gemy, body${L.serverKnown ? ', podání' : ''}). Průhledný bodový model v prohlížeči — ne nově natrénovaný model, bez vlastní přesnosti. ${bits.join(' ')}</p>`;
+}
+function predNote(e) {
+  if (e.st !== 2 || e._p == null) return '';
+  const L = liveProb(e);
+  if (!L || !L.ok) return '<div class="note" id="d-prednote">Živé skóre teď nemáme, platí jen předzápasová predikce. Podrobný rozpis níže je předzápasový.</div>';
+  const extra = [!L.serverKnown ? 'Podání neznáme, obě možnosti bereme stejně.' : '', !L.pointsKnown ? 'Body v gemu nemáme, bereme jen sety a gemy.' : ''].filter(Boolean).join(' ');
+  return `<div class="note" id="d-prednote"><b>Predikce teď ${pct(L.p)} : ${pct(1 - L.p)}</b> · Před zápasem ${pct(e._p)} : ${pct(1 - e._p)}. „Teď“ je bodový model z předzápasové šance a skóre, ne nový model. ${extra}Podrobný rozpis níže je pořád předzápasový.</div>`;
+}
+function paintLivePred(e) {
+  if (!S.detail || S.byId[S.detail.id] !== e || e._p == null || e.st === 3) return;
+  const r = resolveEv(e), na = dispName(r.hi, e.h), nb = dispName(r.ai, e.a);
+  const box = document.getElementById('d-predblock');
+  if (box) box.innerHTML = predInner(e, na, nb);
+  const note = document.getElementById('d-prednote');
+  if (note) note.outerHTML = predNote(e);
+}
+
 function probHtml(e) {
   if (e.st === 3 || e._p == null) return '';
   const p = e._p;
@@ -701,7 +898,7 @@ async function renderMatches(keep) {
   else if (!list.length) h += `<div class="empty">Žádné zápasy pro tento výběr.${F.favOnly ? '<br><small>Přidejte si hráče do oblíbených hvězdičkou v detailu zápasu.</small>' : ''}</div>`;
   else h += groupsHtml(list);
   const sc = S.live.srcCount || {};
-  h += `<p class="note">Zdroje: ${Object.entries(sc).map(([k, n]) => `${k === 'snapshot' ? 'snímek z buildu ' + esc(S.live.snapshot || '') : k} (${n})`).join(', ') || '—'}. Živé skóre: ATP/WTA z ESPN (45 s), Challenger/WTA 125 z 365scores (20 s)${S.live.sofa ? ', ITF ze Sofascore (20 s)' : ', ITF jen ze snímku buildu (Sofascore z této sítě neodpovídá)'}. Živé kurzy v průběhu (Tipsport, iFortuna, Chance, Betano – jen kdo je vypsal) se berou každých 20 s u zobrazených zápasů. VALUE je vždy z předzápasového kurzu. Procenta = odhad modelu před zápasem.</p>
+  h += `<p class="note">Zdroje: ${Object.entries(sc).map(([k, n]) => `${k === 'snapshot' ? 'snímek z buildu ' + esc(S.live.snapshot || '') : k} (${n})`).join(', ') || '—'}. Živé skóre: ATP/WTA z ESPN (45 s), Challenger/WTA 125 z 365scores (20 s)${S.live.sofa ? ', ITF ze Sofascore (20 s)' : ', ITF jen ze snímku buildu (Sofascore z této sítě neodpovídá)'}. Živé kurzy v průběhu (Tipsport, iFortuna, Chance, Betano – jen kdo je vypsal) se berou každých 20 s u zobrazených zápasů. VALUE je vždy z předzápasového kurzu. Procenta v seznamu = odhad modelu před zápasem. U živého zápasu je v detailu i „Predikce teď“ ze skóre.</p>
    <p class="note gam">18+ Kurzy slouží jen pro srovnání s modelem. Sázení je riskantní a může vést k závislosti – hrajte zodpovědně, jen s penězi, které si můžete dovolit prohrát.</p>`;
   v.innerHTML = h;
   if (keep) window.scrollTo(0, y);
@@ -786,7 +983,7 @@ function onLiveChange(newFin) {
     } else renderMatches(true);
   }
   if (v === 'oblibene') renderFav();
-  if (S.detail) { const e = S.byId[S.detail.id]; if (e) { $('#d-score').innerHTML = scoreBlock(e); if (newFin && S.detail.tab === 'stat') showDTab('stat'); } }
+  if (S.detail) { const e = S.byId[S.detail.id]; if (e) { $('#d-score').innerHTML = scoreBlock(e); paintLivePred(e); if (newFin && S.detail.tab === 'stat') showDTab('stat'); } }
   if (newFin && v === 'hraci' && S.profI != null && $('#hp .prof')) showProfile(S.profI, $('#hp'), true);
   for (const id of new Set([...S.visible, ...(S.detail ? [S.detail.id] : [])])) { const e = S.byId[id];
     if (e && e.st === 2 && e.fsid && !(e.oddsV && e.oddsV.inplay)) fetchOdds(e, true, ODDS_LIVE_TTL).then(() => { updateRowOdds(e); if (S.detail && S.detail.id === id) refreshDetailOdds(e); }); }
@@ -829,7 +1026,7 @@ async function showDTab(k) {
   if (k === 'prehled') {
     const v = valueOf(e);
     let h = '';
-    if (e.st !== 3 && e._p != null) h += `<div class="card"><h3>Predikce modelu</h3><div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div>
+    if (e.st !== 3 && e._p != null) h += `<div class="card"><h3>Predikce modelu</h3><div id="d-predblock">${predInner(e, na, nb)}</div>
       ${e.oddsV && e.oddsV.avg ? `<div class="kv2"><span>${e.oddsV.inplay ? 'Živý kurz (průměr)' : 'Průměrný kurz'}</span><b>${e.oddsV.avg[0].toFixed(2)} / ${e.oddsV.avg[1].toFixed(2)}</b><span>${e.st === 1 ? 'Trh (bez marže)' : 'Před zápasem'}</span><b>${e.st === 1 && v ? pct(v.im) + ' / ' + pct(1 - v.im) : e.oddsPrem && e.oddsPrem.avg ? e.oddsPrem.avg[0].toFixed(2) + ' / ' + e.oddsPrem.avg[1].toFixed(2) : '—'}</b></div>${v && v.side ? `<div class="valbox">VALUE: ${esc(v.side === 1 ? na : nb)} – model o ${(Math.abs(v.edge) * 100).toFixed(1)} p. b. výš než předzápasový trh</div>` : ''}` : e.fsid && e.st !== 3 ? '<p class="note">Načítám kurzy…</p>' : ''}
       <div class="row"><button class="btn sec" data-dtab="predikce">Podrobná predikce ›</button><button class="btn ai" data-ask="${esc(e.id)}">✦ Zeptat se AI</button></div></div>`;
     if (e.st === 3) h += `<div class="card"><h3>Výsledek</h3><p><b>${esc(e.win === 1 ? na : nb)}</b> vyhrál${e.g === 'W' ? 'a' : ''} ${e.sets.map(s => e.win === 1 ? `${s[0]}–${s[1]}` : `${s[1]}–${s[0]}`).join(', ')}${e.det === 8 ? ' (skreč)' : ''}.</p></div>`;
@@ -841,7 +1038,7 @@ async function showDTab(k) {
     if (e.st === 3 || e._p == null) h += `<button class="btn ai" data-ask="${esc(e.id)}">✦ Zeptat se AI na tento zápas</button>`;
     body.innerHTML = h;
   } else if (k === 'predikce') {
-    body.innerHTML = (e.st === 3 ? '<div class="warn">Zápas už skončil. Model níže počítá s aktuálními daty, která mohou tento výsledek už obsahovat – nejde o předzápasový tip.</div>' : e.st === 2 ? '<div class="note">Předzápasová predikce (průběžné skóre model nezohledňuje).</div>' : '') + resultHtml(r.hi, r.ai, e.surface, e.code, e.q);
+    body.innerHTML = (e.st === 3 ? '<div class="warn">Zápas už skončil. Model níže počítá s aktuálními daty, která mohou tento výsledek už obsahovat – nejde o předzápasový tip.</div>' : predNote(e)) + resultHtml(r.hi, r.ai, e.surface, e.code, e.q);
   } else if (k === 'kurzy') {
     body.innerHTML = '<div class="empty">Načítám kurzy…</div>';
     if (e.fsid) await fetchOdds(e, true);

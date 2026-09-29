@@ -104,6 +104,13 @@ table.st td.w{color:#fff;font-weight:800}table.st td{color:var(--mut)}table.st t
 .card .big .p{font-size:32px;font-weight:900}.p.a,b.a{color:var(--a)}.p.b,b.b{color:var(--b)}
 .card .big .nm{font-size:13px;color:var(--mut);white-space:normal}
 .big2>div{flex:1;display:flex;flex-direction:column}.big2 b{font-size:30px;font-weight:900}.big2 small{color:var(--mut);font-size:12px}
+.predlab{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut2);margin:2px 0 0}
+.predlab.now{color:var(--live)}
+.predlab.pre{margin-top:12px}
+#d-predblock .big2 b{font-size:28px}
+#d-predblock .big2 small{font-size:11px;line-height:1.25;overflow-wrap:anywhere}
+#d-predblock .bar.lg{margin:4px 0 2px}
+#d-predblock .note{margin:8px 0 0}
 .f{display:flex;justify-content:space-between;gap:8px;font-size:13px;padding:5px 0;border-top:1px solid rgba(255,255,255,.05)}.f .dir{white-space:nowrap;font-size:12px}
 .wl{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:5px;font-size:11px;font-weight:800;margin:2px 2px 0 0}
 .wl.W{background:rgba(47,224,137,.18);color:var(--live)}.wl.L{background:rgba(255,46,126,.15);color:var(--pink)}
