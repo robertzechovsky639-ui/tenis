@@ -374,8 +374,9 @@ async function lowTick(force) {
 }
 
 /* ---------- kurzy: Flashscore (global.ds.lsapp.eu, CORS *, bez klíče, bez hlavičky) ----------
-   oce = předzápasové srovnání, ole = kurzy v průběhu (in-play). VALUE se počítá jen z předzápasových. */
-const ODDS_URL = (id, live) => `https://global.ds.lsapp.eu/odds/pq_graphql?_hash=${live ? 'ole' : 'oce'}&eventId=${encodeURIComponent(id)}&projectId=2&geoIpCode=CZ&geoIpSubdivisionCode=CZ10`;
+   oce = předzápasové srovnání (/odds/pq_graphql). ole = kurzy v průběhu a je uložený na /pq_graphql
+   (na /odds/pq_graphql vrací „Query not stored“ a zápas by zůstal u snímku z buildu). VALUE jen z předzápasových. */
+const ODDS_URL = (id, live) => `https://global.ds.lsapp.eu/${live ? '' : 'odds/'}pq_graphql?_hash=${live ? 'ole' : 'oce'}&eventId=${encodeURIComponent(id)}&projectId=2&geoIpCode=CZ&geoIpSubdivisionCode=CZ10`;
 const BOOKS = { 49: 'Tipsport.cz', 46: 'iFortuna.cz', 45: 'Chance.cz', 657: 'Betano.cz' };
 const ODDS_TTL = 5 * 60 * 1000, ODDS_LIVE_TTL = 20000, VALUE_TH = 0.15, VALUE_EV = 0.05, VALUE_N = 3;
 function bookName(id) { return BOOKS[id] || ('sázkovka ' + id); }
