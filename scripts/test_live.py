@@ -34,20 +34,20 @@ with sync_playwright() as p:
             homeCompetitor: { name: 'Ilija Palavestra', nameForURL: 'ilija-palavestra', isWinner: false }, awayCompetitor: { name: 'Daniil Ostapenkov', nameForURL: 'daniil-ostapenkov', isWinner: true },
             stages: [{ shortName: 'S1', homeCompetitorScore: 6, awayCompetitorScore: 7, homeCompetitorExtraScore: 4, awayCompetitorExtraScore: 7 }, { shortName: 'S2', homeCompetitorScore: 1, awayCompetitorScore: 6 }, { shortName: 'S3', homeCompetitorScore: -1, awayCompetitorScore: -1 }, { shortName: 'Sets', homeCompetitorScore: 0, awayCompetitorScore: 2 }] },
           { id: 12, competitionId: 2, stageName: 'Round of 32', startTime: '2026-09-29T05:00:00+02:00', statusGroup: 3, statusText: '2nd Set',
-            homeCompetitor: { name: 'Kristina Mladenovic', nameForURL: 'kristina-mladenovic' }, awayCompetitor: { name: 'Sara Costoulas', nameForURL: 'sara-costoulas' },
-            stages: [{ shortName: 'S1', homeCompetitorScore: 6, awayCompetitorScore: 3 }, { shortName: 'S2', homeCompetitorScore: 2, awayCompetitorScore: 4 }, { shortName: 'S3', homeCompetitorScore: -1, awayCompetitorScore: -1 }] },
+            homeCompetitor: { name: 'Kristina Mladenovic', nameForURL: 'kristina-mladenovic' }, awayCompetitor: { name: 'Sara Costoulas', nameForURL: 'sara-costoulas', inPossession: true },
+            stages: [{ shortName: 'Game', name: 'Game', homeCompetitorScore: 30, awayCompetitorScore: 40, isLive: true }, { shortName: 'S1', homeCompetitorScore: 6, awayCompetitorScore: 3 }, { shortName: 'S2', homeCompetitorScore: 2, awayCompetitorScore: 4 }, { shortName: 'S3', homeCompetitorScore: -1, awayCompetitorScore: -1 }] },
           { id: 13, competitionId: 1, stageName: 'Round of 32', startTime: '2026-09-29T18:00:00+02:00', statusGroup: 4, statusText: 'Player 2 Retired',
             homeCompetitor: { name: 'A B' }, awayCompetitor: { name: 'C D' }, stages: [{ shortName: 'S1', homeCompetitorScore: 3, awayCompetitorScore: 1 }] },
           { id: 14, competitionId: 3, startTime: '2026-09-29T18:00:00+02:00', statusGroup: 3, homeCompetitor: { name: 'Rybakov A./Smith K.' }, awayCompetitor: { name: 'Colby R./Zamora N.' }, stages: [] },
           { id: 15, competitionId: 1, startTime: '2026-09-29T18:00:00+02:00', statusGroup: 4, statusText: 'Cancelled', homeCompetitor: { name: 'E F' }, awayCompetitor: { name: 'G H' }, stages: [] }] };
       const ev = ev365(j); const f = ev.find(e => e.id === 'x11'), l = ev.find(e => e.id === 'x12'), r = ev.find(e => e.id === 'x13');
       return { n: ev.length, fin: f && { st: f.st, win: f.win, sets: f.sets, code: f.code, g: f.g, q: f.q, hn: f.h.name },
-               live: l && { st: l.st, sets: l.sets, g: l.g, code: l.code, live: l.live }, ret: r && { st: r.st, det: r.det, win: r.win } };
+               live: l && { st: l.st, sets: l.sets, g: l.g, code: l.code, live: l.live, pts: l.pts, srv: l.srv }, ret: r && { st: r.st, det: r.det, win: r.win } };
     })()""")
     print('parser:', json.dumps(pt, ensure_ascii=False))
     check('parser: jen dvouhry, bez zrušených', pt['n'] == 3, pt['n'])
     check('parser: dokončený zápas + tiebreak', pt['fin'] == {'st': 3, 'win': 2, 'sets': [[6, 7, 4, 7], [1, 6]], 'code': 3, 'g': 'M', 'q': 1, 'hn': 'Palavestra I.'}, pt['fin'])
-    check('parser: živý zápas WTA 125', pt['live'] == {'st': 2, 'sets': [[6, 3], [2, 4]], 'g': 'W', 'code': 3, 'live': '2. set'}, pt['live'])
+    check('parser: živý zápas WTA 125 (sety, body v gemu, podání)', pt['live'] == {'st': 2, 'sets': [[6, 3], [2, 4]], 'g': 'W', 'code': 3, 'live': '2. set', 'pts': ['30', '40'], 'srv': 2}, pt['live'])
     check('parser: skreč', pt['ret'] == {'st': 3, 'det': 8, 'win': 1}, pt['ret'])
     rc = pg.evaluate(r"""(() => { const l = { st: 2, sets: [[6, 3], [2, 4]], pts: ['30', 'A'], srv: 2 }; return [scoreCells(l, 0), scoreCells(l, 1)]; })()""")
     check('render: tečka podání + body v gemu', 'sv on' in rc[1] and 'sv on' not in rc[0] and '>A</span>' in rc[1])

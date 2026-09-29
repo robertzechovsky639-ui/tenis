@@ -201,7 +201,7 @@ async function loadSnapshot() {
     return up.matches.map(m => ({ id: 'f' + m.id, fsid: m.id, ts: m.ts, st: m.st, det: m.det, win: m.win || 0, sets: m.sets || [],
       h: { name: m.h, slug: m.hs || '', c: m.hc || '', pid: m.hp }, a: { name: m.a, slug: m.as || '', c: m.ac || '', pid: m.ap },
       g: m.g, lvl: m.lvl, code: m.code, q: m.q, surface: m.s, tname: m.t.replace(/\s*\(.*?\)\s*$/, ''), country: (/\((.*?)\)/.exec(m.t) || [])[1] || '',
-      hi: m.hi ?? null, ai: m.ai ?? null, oddsV: m.odds ? { avg: [m.odds[0], m.odds[1]], max: [m.odds[2], m.odds[3]], n: m.odds[4], snap: true } : null, src: 'snapshot' }));
+      hi: m.hi ?? null, ai: m.ai ?? null, oddsV: m.odds ? { avg: [m.odds[0], m.odds[1]], max: [m.odds[2], m.odds[3]], n: m.odds[4], snap: true } : null, src: 'snapshot', stSrc: m.st === 3 ? 'snapshot' : undefined }));
   } catch (e) { return []; }
 }
 
@@ -227,11 +227,11 @@ function ev365(j) {
       if (st === 3 && !win) { const m = /player (\d) retired/i.exec(txt); if (m) win = 3 - +m[1];
         else { const tot = (g.stages || []).find(x => x.shortName === 'Sets'); if (tot && tot.homeCompetitorScore !== tot.awayCompetitorScore) win = tot.homeCompetitorScore > tot.awayCompetitorScore ? 1 : 2; } }
       if (st === 3 && !win) continue;
-      // body v aktuálním gemu (pokud je 365 posílá jako „Game“/„Points“ nebo u soutěžícího)
+      // body v aktuálním gemu (stage „Game“) a podání (inPossession u soutěžícího)
       let pts = null, srv = 0;
       if (st === 2) { const gp = (g.stages || []).find(x => /^(G|Game|Pts|Points)$/i.test(x.shortName || '') || /game|point/i.test(x.name || ''));
         if (gp && gp.homeCompetitorScore >= 0 && gp.awayCompetitorScore >= 0) pts = [gp.homeCompetitorScore, gp.awayCompetitorScore].map(v => v === 50 ? 'A' : String(v));
-        if (H.isServing || g.servingCompetitor === 1 || g.possession === 1) srv = 1; else if (A.isServing || g.servingCompetitor === 2 || g.possession === 2) srv = 2; }
+        if (H.inPossession) srv = 1; else if (A.inPossession) srv = 2; }
       const [gg, lc] = cat; const ti = lc === 4 ? tourInfo(gg, c.name, c.name) : null;
       const P = x => { const t = String(x.name || '').trim().split(/\s+/); return { slug: x.nameForURL || x.name || '', name: t.length > 1 ? `${t[t.length - 1]} ${t[0][0]}.` : (x.name || ''), full: x.name || '', c: '' }; };
       out.push({ id: 'x' + g.id, ts: Math.floor(Date.parse(g.startTime) / 1000), st, det: ret ? 8 : 3, win, sets, pts, srv, h: P(H), a: P(A), g: gg,
@@ -259,13 +259,22 @@ function mergeInto(ex, e, sw) {
   const sets = sw ? flipSets(e.sets) : e.sets, win = sw ? (e.win === 1 ? 2 : e.win === 2 ? 1 : 0) : e.win;
   const H = sw ? e.a : e.h, A = sw ? e.h : e.a;
   const pts = e.pts ? (sw ? [e.pts[1], e.pts[0]] : e.pts) : null, srv = e.srv ? (sw ? 3 - e.srv : e.srv) : 0;
-  // vyšší zdroj má přednost; nižší zdroj smí posunout stav dopředu (např. ohlásí konec dřív než ESPN); konec už jiný zdroj nevrátí zpět
-  const fwd = e.st > ex.st, back = ex.st === 3 && e.st < 3 && e.src !== ex.src;
+  // vyšší zdroj má přednost; nižší zdroj smí posunout stav dopředu (např. ohlásí začátek/konec dřív než ESPN);
+  // stav zpět (živě -> plán, konec -> živě) smí vrátit jen ten zdroj, který ho nastavil (jiný zdroj se jen zpožďuje)
+  const fwd = e.st > ex.st, back = e.st < ex.st && ex.stSrc && ex.stSrc !== e.src;
   if (!back && (RANK[e.src] >= RANK[ex.src] || fwd)) {
     if (ex.st !== e.st || JSON.stringify(ex.sets) !== JSON.stringify(sets) || ex.win !== win || JSON.stringify(ex.pts || null) !== JSON.stringify(pts) || (ex.srv || 0) !== srv || (ex.live || '') !== (e.live || '')) changed = true;
-    Object.assign(ex, { st: e.st, det: e.det, win, sets, ts: ex.src === 'snapshot' || RANK[e.src] >= RANK[ex.src] ? e.ts : ex.ts, live: e.live || '', pts, srv, stale: false });
+    if (e.st !== ex.st || !ex.stSrc) ex.stSrc = e.src;
+    // body v gemu/podání posílá jen 365scores (a Sofascore): zdroj bez nich je nemaže, dokud se nezmění gemy
+    let p2 = pts, s2 = srv;
+    if (!pts && ex.pts && e.st === 2 && ex.ptsSrc && ex.ptsSrc !== e.src && JSON.stringify(ex.sets) === JSON.stringify(sets)) { p2 = ex.pts; s2 = ex.srv; }
+    else ex.ptsSrc = pts ? e.src : null;
+    if (JSON.stringify(ex.pts || null) === JSON.stringify(p2) && (ex.srv || 0) === s2 && changed && ex.st === e.st && JSON.stringify(ex.sets) === JSON.stringify(sets) && ex.win === win && (ex.live || '') === (e.live || '')) changed = false;
+    Object.assign(ex, { st: e.st, det: e.det, win, sets, ts: ex.src === 'snapshot' || RANK[e.src] >= RANK[ex.src] ? e.ts : ex.ts, live: e.live || '', pts: p2, srv: s2, stale: false });
     if (e.round) ex.round = e.round;
     if (RANK[e.src] > RANK[ex.src]) { ex.src2 = ex.src; ex.src = e.src; }
+  } else if (!back && pts && e.st === 2 && ex.st === 2 && JSON.stringify(ex.sets) === JSON.stringify(sets)) {
+    if (JSON.stringify(ex.pts || null) !== JSON.stringify(pts) || (ex.srv || 0) !== srv) { ex.pts = pts; ex.srv = srv; ex.ptsSrc = e.src; changed = true; }
   }
   ex.srcs = ex.srcs || {}; ex.srcs[e.src] = 1;
   for (const [x, y] of [[ex.h, H], [ex.a, A]]) { if (y.eid && !x.eid) x.eid = y.eid; if (y.pid && !x.pid) x.pid = y.pid; if (y.c && !x.c) x.c = y.c; }
