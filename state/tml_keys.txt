@@ -1083,8 +1083,11 @@
 2026-3009|Stan Wawrinka|Dalibor Svrcina|R32
 2026-3009|Vit Kopriva|Gauthier Onclin|R16
 2026-3013|Alex Bolt|Semen Pankin|R32
+2026-3013|Andre Ilagan|Matthew Dellavedova|R32
 2026-3013|Luka Pavlovic|Akira Santillan|R32
+2026-3013|Michael Zheng|Yaojie Zeng|R32
 2026-3013|Yanki Erel|Arthur Weber|R32
+2026-3013|Yuta Shimizu|Stefanos Sakellaridis|R32
 2026-3021|Alvaro Guillen Meza|Radu Mihai Papoe|R32
 2026-3021|Andrej Nedic|Alan Fernando Rubio Fierros|R32
 2026-3021|Andrej Nedic|Max Alcala Gurri|QF
@@ -1720,9 +1723,12 @@
 2026-314|Valentin Vacherot|Yannick Hanfmann|R16
 2026-314|Vitaliy Sachko|Manas Dhamne|Q1
 2026-314|Yannick Hanfmann|Pedro Martinez|R32
+2026-3151|Dimitar Kuzmanov|Geoffrey Blancaneaux|R32
 2026-3151|Enrico Dalla Valle|Buvaysar Gadamauri|R32
+2026-3151|Gianluca Cadenasso|Benito Sanchez Martinez|R32
 2026-3151|Juan Cruz Martin Manzano|Matteo Sciahbasi|R32
 2026-3151|Lorenzo Angelini|Garrett Johns|R32
+2026-3151|Matthew William Donald|Olle Wallin|R32
 2026-3151|Vitaliy Sachko|Mika Petkovic|R32
 2026-3151|Zsombor Piros|Benjamin Hassan|R32
 2026-315|Adam Walton|Alex Michelsen|SF
