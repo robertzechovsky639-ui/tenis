@@ -1,0 +1,90 @@
+name: Týdenní přetrénování modelu
+
+on:
+  schedule:
+    - cron: '17 1 * * 0'    # neděle 03:17 letního času v Praze (02:17 v zimě)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+defaults:
+  run:
+    shell: bash
+
+# stejná skupina jako denní aktualizace -> nikdy neběží současně (druhý běh počká)
+concurrency:
+  group: daily-update
+  cancel-in-progress: false
+
+jobs:
+  retrain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      TZ: Europe/Prague
+      PYTHONUNBUFFERED: '1'
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Instalace závislostí
+        run: pip install -r requirements-ci.txt scikit-learn==1.9.1
+      - name: Stažení trénovací sady (GitHub Release „trainset“)
+        run: gh release download trainset -p trainset.parquet -D trainset --clobber
+      - name: Připojení nových zápasů z denních aktualizací
+        run: python scripts/trainset.py merge
+      - name: Nahrání sloučené trénovací sady
+        run: gh release upload trainset trainset/trainset.parquet --clobber
+      - name: Přetrénování + bezpečnostní brána
+        id: rt
+        run: python -W ignore scripts/retrain.py
+      - name: Aktualizace dat a export (nový i ponechaný model)
+        run: python scripts/daily.py
+      - name: Test parity JS == Python (jinak návrat k předchozímu modelu)
+        run: |
+          if ! node scripts/parity_test.js; then
+            if [ "${{ steps.rt.outputs.deployed }}" = "true" ]; then
+              echo "::warning::Parita selhala – vracím předchozí model"
+              python scripts/retrain.py --revert
+              python scripts/daily.py --no-fetch
+              node scripts/parity_test.js
+            else
+              exit 1
+            fi
+          fi
+          python scripts/check_data.py
+      - name: Sestavení webu
+        run: bash scripts/make_dist.sh
+      - name: Commit modelu, historie a stavu
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state data/retrain_history.json data/model_info.json data/gbm.txt web/data/model.json
+          if git diff --cached --quiet; then echo "Beze změn"; else
+            git commit -q -m "Týdenní přetrénování $(date '+%Y-%m-%d %H:%M %Z'): deployed=${{ steps.rt.outputs.deployed }}"
+            git pull --rebase -q && git push -q
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: retrain
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

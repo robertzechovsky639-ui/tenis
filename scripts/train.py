@@ -139,3 +139,9 @@ json.dump(model, open(os.path.join(OUTW, 'model.json'), 'w'), separators=(',', '
 SH['b'].save_model(os.path.join(D, 'gbm.txt'))
 pickle.dump(dict(lr=lr, base=base, w=SH['w'], a=SH['a']), open(os.path.join(D, 'lr.pkl'), 'wb'))
 print('model.json KB', os.path.getsize(os.path.join(OUTW, 'model.json')) // 1024, 'total s', round(time.time() - T0))
+# info pro týdenní přetrénování (retrain.py): do kdy model viděl data
+_end = int((pd.Timestamp(str(HOLD)) - pd.Timestamp('1970-01-01')).days) - 1
+json.dump(dict(version='v2', trained_at=time.strftime('%Y-%m-%d %H:%M %Z') + ' (plná přestavba)', train_start='2005-01-01', train_end=str((pd.Timestamp('1970-01-01') + pd.Timedelta(days=_end)).date()),
+               train_end_day=_end, twin_end_day=_end, n_train=int(rf2.sum()), iterations=int(SH['it']), trees=int(SH['b'].num_trees()), cal=SH['a'], w_gbm=SH['w'],
+               params={k: SH['prm'][k] for k in ('learning_rate', 'num_leaves', 'min_data_in_leaf', 'feature_fraction', 'lambda_l2')}, train_years=21),
+          open(os.path.join(D, 'model_info.json'), 'w'), indent=1, ensure_ascii=False)

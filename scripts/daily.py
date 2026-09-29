@@ -9,7 +9,7 @@ Použití:  python scripts/daily.py [--no-fetch]"""
 import os, sys, json, glob, time, datetime, argparse
 import numpy as np, pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import engine, export, state_io, fs, fetch_data
+import engine, export, state_io, fs, fetch_data, trainset, zlib
 import data as dmod
 ROOT = state_io.ROOT; RAW = os.path.join(ROOT, 'raw')
 GROUPS = [  # (label, pohlaví, soubory(y), druh, klíč cutoffu z init)
@@ -124,6 +124,7 @@ def main():
         if ioc and ioc != 'nan': p['ioc'] = ioc
         if p.get('dob') is None and age == age and age: p['dob'] = int(day - age * 365.25)
         return p
+    train_rows = []
     for r in df.to_dict('records'):
         wid, lid, day, g = r['winner_id'], r['loser_id'], int(r['day']), r['gender']
         key = (wid, lid) if wid < lid else (lid, wid)
@@ -148,6 +149,17 @@ def main():
         if lr: L['rank'] = lr; L['rday'] = day
         if wp is not None: W['pts'] = wp
         if lp is not None: L['pts'] = lp
+        # trénovací řádek: příznaky ze stavu PŘED zápasem (stejně jako engine.run), orientace A/B deterministicky z klíče zápasu
+        if int(r['tourney_date']) >= 20050101 and int(r['ret']) == 0:
+            mk = f'{day}|{wid}|{lid}'; a_is_w = zlib.crc32(mk.encode()) % 2 == 0
+            A, B = (W, L) if a_is_w else (L, W); sv = engine.SURF.get(r['surface'], 0)
+            hh0 = H.get(key, [0, 0]); aid = wid if a_is_w else lid
+            hA = hh0[0] if aid == key[0] else hh0[1]; hB = hh0[1] if aid == key[0] else hh0[0]
+            ctx = dict(day=day, surface=sv, lvl_code=int(r['lvl_code']), is_qual=int(r['is_qual']), best_of=int(r['best_of']),
+                       rankA=wr if a_is_w else lr, rankB=lr if a_is_w else wr, ptsA=wp if a_is_w else lp, ptsB=lp if a_is_w else wp,
+                       ageA=engine._num(r.get('winner_age') if a_is_w else r.get('loser_age')), ageB=engine._num(r.get('loser_age') if a_is_w else r.get('winner_age')))
+            x = engine.feats(A, B, ctx, (hA, hB))
+            train_rows.append(dict(tdate=int(r['tourney_date']), day=day, y=1 if a_is_w else 0, group=r['lvl_group'], mk=mk, **dict(zip(engine.FEATS, x))))
         engine.update(W, L, dict(surface=engine.SURF.get(r['surface'], 0), lvl_code=int(r['lvl_code']), is_qual=int(r['is_qual']), ret=int(r['ret']), day=day,
                                  minutes=r['minutes'], best_of=int(r['best_of']), stats=stats, wid=wid, lid=lid, games=engine.games_of(r['score'])))
         hh = H.get(key, [0, 0]); hh[0 if wid == key[0] else 1] += 1; H[key] = hh
@@ -165,6 +177,7 @@ def main():
     meta['seen'] = sorted([a, b, d] for (a, b), ds in seenmap.items() for d in ds if d >= meta['day_end'] - 45)
     now = time.strftime('%Y-%m-%d %H:%M %Z')
     meta['updates'] = (meta.get('updates', []) + [dict(at=now, **{k: v for k, v in st.items()})])[-40:]
+    trainset.append_rows(train_rows); st['train_rows'] = len(train_rows)
     state_io.save(P, H, meta, tml_keys, tours)
     print('aktualizace:', json.dumps(st, ensure_ascii=False))
     export.export_all(P, H, meta['day_end'], meta['gap_start'], meta['coverage'], tours, meta.get('tml', {}),

@@ -15,9 +15,20 @@ Dvakrát denně (~05:17 a ~17:17 pražského letního času; v zimě o hodinu d�
 
 `state/` = textové shardy (řádek na hráče / H2H pár), takže git ukládá jen malé denní delty.
 
+## Týdenní přetrénování (`.github/workflows/weekly-retrain.yml`)
+Každou neděli ~03:17 pražského letního času (02:17 v zimě) + ručně. Sdílí skupinu souběhu s denní aktualizací, takže nikdy neběží současně.
+1. Stáhne trénovací sadu (`trainset.parquet`, příznaky PŘED zápasem + výsledek, od 2010) z GitHub Release **trainset**
+   a připojí řádky, které denní běhy ukládají do `state/train_new.csv`; sloučenou sadu nahraje zpět.
+2. `scripts/retrain.py`: stejné příznaky a hyperparametry v2, okno 15 let. Kandidát se trénuje jen do začátku holdoutu
+   (posledních 12 týdnů; kalibrace a počet iterací z 12 týdnů před ním) a porovná se se současným modelem na stejném holdoutu.
+   Brána: nižší log loss, Brier ne horší, přesnost max. o 0,3 p. b. horší -> refit na všech datech -> `model.json` + `gbm.txt`.
+3. Test parity prohlížeč = Python; při selhání návrat k předchozímu modelu (`retrain.py --revert`).
+4. Historie v `data/retrain_history.json` (záložka Model).
+
 ## Plná přestavba (lokálně, ne v CI)
     ./rebuild.sh                           # stáhne celý archiv (~1 GB), přepočítá, přetrénuje, exportuje, dist/
     .venv/bin/python scripts/init_state.py # z plné přestavby vytvoří nový state/ pro denní aktualizace
+    .venv/bin/python scripts/trainset.py init  # nová trénovací sada -> gh release upload trainset trainset/trainset.parquet --clobber
     .venv/bin/python scripts/test_mobile.py <URL>   # headless test 390x844
     .venv/bin/python scripts/test_chat.py <URL>     # test AI chatu
 

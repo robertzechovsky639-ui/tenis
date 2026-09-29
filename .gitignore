@@ -9,6 +9,9 @@ data/*
 !data/gbm.txt
 !data/metrics.json
 !data/coverage.json
+!data/model_info.json
+!data/retrain_history.json
+trainset/
 # web/data/: generuje scripts/daily.py (resp. export.py); v repu jen model
 web/data/*
 !web/data/model.json

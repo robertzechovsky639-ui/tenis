@@ -935,6 +935,15 @@ async function renderFav() {
 }
 
 /* ---------- MODEL ---------- */
+function retrainCard(m) {
+  const mi = m.model_info, H = (m.retrain || []).slice().reverse();
+  const f = (x, k) => k === 'acc' ? (x[k] * 100).toFixed(2).replace('.', ',') + ' %' : x[k].toFixed(4).replace('.', ',');
+  const cell = (e, k) => { const better = k === 'acc' ? e.new[k] > e.old[k] : e.new[k] < e.old[k]; return `<td>${f(e.old, k)} → <b class="${better ? 'pos' : e.new[k] === e.old[k] ? '' : 'neg'}">${f(e.new, k)}</b></td>`; };
+  return `<div class="card"><h2>Týdenní přetrénování</h2>
+   <p class="note">Každou neděli ~03:17 (GitHub Actions) se model v2 se stejnými příznaky a hyperparametry přetrénuje na posledních 15 letech dat. Kandidát se trénuje jen do začátku holdoutu (posledních 12 týdnů) a porovná se se současným modelem na stejných zápasech. Nasadí se jen když má nižší log loss, ne horší Brier a přesnost nejvýš o 0,3 p. b. horší, a když projde test shody prohlížeč = Python; pak se ještě dotrénuje na všech datech.</p>
+   ${mi ? `<div class="kv"><div>Nasazený model</div><div><b>${esc(mi.version)}</b>, natrénován ${esc(mi.trained_at)}</div><div>Data tréninku</div><div>${esc(mi.train_start)} – ${esc(mi.train_end)} (${(mi.n_train || 0).toLocaleString('cs-CZ')})</div><div>Stromů / kalibrace</div><div>${mi.trees} / a = ${mi.cal}</div></div>` : ''}
+   ${H.length ? `<div class="tscroll"><table class="rt"><tr><th>Datum</th><th>Holdout</th><th>Přesnost</th><th>Log loss</th><th>Brier</th><th>Rozhodnutí</th></tr>${H.map(e => `<tr><td>${esc(e.date.slice(0, 10))}</td><td>${esc(e.holdout)}<br><small>n = ${e.n_holdout.toLocaleString('cs-CZ')}</small></td>${cell(e, 'acc')}${cell(e, 'logloss')}${cell(e, 'brier')}<td>${e.deployed ? '<b class="pos">nasazeno</b>' : '<b class="neg">ponecháno</b>'}<br><small>${esc(e.decision)}</small></td></tr>`).join('')}</table></div><p class="note">Vlevo současný model, vpravo kandidát (${esc(H[0].compared || '')}).</p>` : '<p class="note">Zatím žádné týdenní přetrénování.</p>'}</div>`;
+}
 function renderModel() {
   const m = S.meta, mt = m.metrics; const v = $('#v-model');
   const tbl = (k, title) => { const r = mt.metrics[k]; if (!r) return ''; const ks = ['rank_baseline', 'elo_only', 'gelo_only', 'logreg', 'old_model', 'v1_newdata', 'ensemble'].filter(x => r[x]);
@@ -954,6 +963,7 @@ function renderModel() {
    <details><summary>Podle pohlaví</summary>${['M_tour', 'W_tour', 'M_chall', 'W_chall', 'M_itf', 'W_itf'].map(k => tbl(k, (k[0] === 'M' ? 'Muži – ' : 'Ženy – ') + GRP_CS[k.slice(2)])).join('')}</details>
    <details><summary>Kalibrace</summary><table><tr><th>Předpověď</th><th>n</th><th>Průměr předp.</th><th>Skutečnost</th></tr>${mt.calibration.map(c => `<tr><td>${c.bin}</td><td>${c.n}</td><td>${c.pred ?? '—'}</td><td>${c.obs ?? '—'}</td></tr>`).join('')}</table></details>
    <details><summary>Nejdůležitější příznaky (LightGBM)</summary><table>${mt.importance.slice(0, 15).map(([f, g]) => `<tr><td>${esc(FEAT_CS[f] || f)}</td><td>${(g * 100).toFixed(1)} %</td></tr>`).join('')}</table></details></div>
+   ${retrainCard(m)}
    <div class="card"><h2>Data</h2><table><tr><th>Kategorie</th><th style="text-align:left">Zdroj: rozsah (počet zápasů)</th></tr>${cov}</table>
    <p class="note">Sackmannovy repozitáře tennis_atp/tennis_wta jsou od léta 2026 offline; použit veřejný archiv (snapshot do ${fmtDate(m.gap_start)}). ATP/WTA okruh a Challengery jsou doplněny z TennisMyLife až do buildu. ITF, WTA 125 a kvalifikace Challengerů mají mezeru mezi snapshotem a posledními 7 dny před buildem (u těchto hráčů je neutralizována únava).</p></div>
    <div class="card"><h2>Živá data a aktualizace</h2>

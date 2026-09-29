@@ -123,6 +123,9 @@ def export_all(P, H, day_end, gap_start, cov, tours, tmlrep, extra_meta=None):
     meta = dict(built=time.strftime('%Y-%m-%d %H:%M'), day_end=day_end, date_end=str((EPOCH + pd.Timedelta(days=day_end)).date()),
                 gap_start=gap_start, gap_start_date=str((EPOCH + pd.Timedelta(days=gap_start)).date()), nsh=NSH,
                 n_players=len(act_ids), coverage=cov, metrics=metrics, tml=tmlrep, **(extra_meta or {}))
+    for k, f in (('model_info', 'model_info.json'), ('retrain', 'retrain_history.json')):   # týdenní přetrénování -> záložka Model
+        fp = os.path.join(D, f)
+        if os.path.exists(fp): meta[k] = json.load(open(fp)) if k == 'model_info' else json.load(open(fp))[-12:]
     json.dump(meta, open(os.path.join(W, 'meta.json'), 'w'), ensure_ascii=False, indent=0)
     sizes = [os.path.getsize(os.path.join(W, 'st', f'{k}.json')) for k in range(NSH)]
     print('players', len(act_ids), 'index KB', os.path.getsize(os.path.join(W, 'players.json')) // 1024, 'shards KB total', sum(sizes) // 1024)
