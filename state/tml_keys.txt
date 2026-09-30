@@ -3613,6 +3613,7 @@
 2026-6857|Dominic Stricker|Liam Broady|R32
 2026-6857|Felix Balshaw|Billy Harris|R32
 2026-6857|Gauthier Onclin|Dan Added|R32
+2026-6857|Harold Mayot|Niels Visker|R32
 2026-6857|Harry Wendelken|Filippo Romano|R32
 2026-6857|Joel Schwaerzler|Alberto Barroso Campos|R32
 2026-6857|Lucas Poullain|Mark Lajal|R32
