@@ -93,6 +93,20 @@
 2026-1017|Xiyu Wang|Leylah Fernandez|R64
 2026-1017|Xiyu Wang|Maria Timofeeva|R128
 2026-1017|Zeynep Sonmez|Daria Kasatkina|R128
+2026-1020|Aliaksandra Sasnovich|Talia Gibson|R128
+2026-1020|Daria Snigur|Katarzyna Kawa|R128
+2026-1020|Dayana Yastremska|Caty McNally|R128
+2026-1020|Elena Gabriela Ruse|Lilli Tagger|R128
+2026-1020|Janice Tjen|Anhelina Kalinina|R128
+2026-1020|Katie Boulter|Mai Hontama|R128
+2026-1020|Linda Fruhvirtova|Zhuoxuan Bai|R128
+2026-1020|Maddison Inglis|Zeynep Sonmez|R128
+2026-1020|Maria Timofeeva|Darja Vidmanova|R128
+2026-1020|Polina Kudermetova|Yexin Ma|R128
+2026-1020|Sinja Kraus|Maya Joint|R128
+2026-1020|Taylah Preston|Tamara Korpatsch|R128
+2026-1020|Viktorija Golubic|Elvina Kalieva|R128
+2026-1020|Yue Yuan|Oleksandra Oliynykova|R128
 2026-1024|Alina Charaeva|Sofia Kenin|R32
 2026-1024|Alina Korneeva|Darya Astakhova|R16
 2026-1024|Alina Korneeva|Mananchaya Sawangkaew|R32
@@ -1092,11 +1106,20 @@
 2026-3009|Sebastian Baez|Rodrigo Pacheco Mendez|R16
 2026-3009|Stan Wawrinka|Dalibor Svrcina|R32
 2026-3009|Vit Kopriva|Gauthier Onclin|R16
+2026-3013|Adam Walton|Moise Kouame|R32
 2026-3013|Alex Bolt|Semen Pankin|R32
 2026-3013|Andre Ilagan|Matthew Dellavedova|R32
 2026-3013|Bernard Tomic|Fajing Sun|R32
+2026-3013|Dane Sweeny|Omar Jasika|R32
+2026-3013|Elias Ymer|Terence Atmane|R32
+2026-3013|Evan Zhu|Hanyi Liu|R32
+2026-3013|Federico Cina|James McCabe|R32
+2026-3013|Lloyd Harris|Alexis Galarneau|R32
 2026-3013|Luka Pavlovic|Akira Santillan|R32
+2026-3013|Marat Sharipov|Dalibor Svrcina|R32
+2026-3013|Mattia Bellucci|Alexandre Muller|R32
 2026-3013|Michael Zheng|Yaojie Zeng|R32
+2026-3013|Petr Bar Biryukov|Masamichi Imamura|R32
 2026-3013|Yanki Erel|Arthur Weber|R32
 2026-3013|Yuta Shimizu|Stefanos Sakellaridis|R32
 2026-3021|Alvaro Guillen Meza|Radu Mihai Papoe|R32
@@ -1738,7 +1761,9 @@
 2026-3151|Dimitar Kuzmanov|Geoffrey Blancaneaux|R32
 2026-3151|Enrico Dalla Valle|Buvaysar Gadamauri|R32
 2026-3151|Gianluca Cadenasso|Benito Sanchez Martinez|R32
+2026-3151|Gianluca Cadenasso|Lorenzo Angelini|R16
 2026-3151|Jay Clarke|Fabrizio Andaloro|R32
+2026-3151|Juan Cruz Martin Manzano|Jay Clarke|R16
 2026-3151|Juan Cruz Martin Manzano|Matteo Sciahbasi|R32
 2026-3151|Laurent Lokoli|Pol Martin Tiffon|R32
 2026-3151|Lorenzo Angelini|Garrett Johns|R32
@@ -3585,6 +3610,7 @@
 2026-6795|Thiago Seyboth Wild|Andrej Martin|R32
 2026-6857|Clement Chidekh|David Goffin|R32
 2026-6857|Clement Tabur|Matteo Martineau|R32
+2026-6857|Dominic Stricker|Liam Broady|R32
 2026-6857|Felix Balshaw|Billy Harris|R32
 2026-6857|Gauthier Onclin|Dan Added|R32
 2026-6857|Harry Wendelken|Filippo Romano|R32
@@ -3594,6 +3620,7 @@
 2026-6857|Remy Bertola|Alexandre Reco|R32
 2026-6857|Sascha Gueymard Wayenburg|Pierre-Hugues Herbert|R32
 2026-6857|Thomas Faurel|Jack Pinnington Jones|R32
+2026-6857|Tristan Schoolkate|Philip Henning|R32
 2026-6857|Ugo Blanchet|Viktor Durasovic|R32
 2026-7083|Adrian Boitan|Alex Hernandez|R32
 2026-7083|Alafia Ayeni|Carl Emil Overbeck|R32
