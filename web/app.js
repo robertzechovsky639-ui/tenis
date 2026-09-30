@@ -316,24 +316,74 @@ function markStale() {
   const t = nowS();
   for (const e of S.all) if (e.src === 'snapshot' && ((e.st === 1 && e.ts < t - 1200) || e.st === 2)) e.stale = true;
 }
-async function loadLive() {
-  const [es, so, sn, x3] = await Promise.all([loadESPN().catch(e => ({ ok: false, ev: [] })), loadSofa().catch(e => ({ ok: false, ev: [] })), loadSnapshot(), load365().catch(e => ({ ok: false, ev: [] }))]);
-  S.live.espn = es.ok; S.live.sofa = so.ok; S.live.ok = es.ok || so.ok || x3.ok; S.live.last = Date.now();
-  // výsledky -> Elo (duplicitní zápasy z více zdrojů i zápasy obsažené v buildu se odfiltrují)
-  applyLive([...so.ev, ...es.ev]);
-  S.all = []; S.byId = {}; S.pair = {};
-  for (const e of [...es.ev, ...so.ev, ...sn]) { const d = dayOff(e.ts); if (d < -2 || d > 2) continue; addEvent(e); }
-  const fin365 = [];
-  for (const e of x3.ev) { const d = dayOff(e.ts); if (d < -2 || d > 2) continue; const r = attachEvent(e); if (!r) { S.l365.unmatched++; continue; } if (r.ex.st === 3) fin365.push(r.ex); }
-  applyLive(fin365);   // výsledky Challenger/WTA 125 z 365scores (duplicity s buildem/ESPN se odfiltrují)
-  markStale();
-  for (const e of S.all) if (e.st === 3) S.finSeen.add(e.id);
-  S.live.srcCount = {}; for (const e of S.all) S.live.srcCount[e.src] = (S.live.srcCount[e.src] || 0) + 1;
+function recountSrc() {
+  S.live.srcCount = {}; for (const e of S.all || []) S.live.srcCount[e.src] = (S.live.srcCount[e.src] || 0) + 1;
 }
-/* živé obnovování skóre (ESPN) každých 45 s, když je stránka viditelná */
-const REFRESH_MS = 45000;
+function sealList() {
+  markStale();
+  for (const e of S.all || []) if (e.st === 3) S.finSeen.add(e.id);
+  recountSrc();
+}
+/* snímek z buildu hned, ať první obrazovka nečeká na ESPN/365/Sofascore */
+async function showSnapshotFirst() {
+  const sn = await loadSnapshot();
+  S.all = []; S.byId = {}; S.pair = {};
+  for (const e of sn) { const d = dayOff(e.ts); if (d < -2 || d > 2) continue; addEvent(e); }
+  sealList();
+}
+/* živé feedy doplní skóre, jak který dorazí (bez smazání seznamu) */
+async function fillLive() {
+  S.refreshing = true; S.lowBusy = true;
+  const take = async (label, loader, attach) => {
+    let res;
+    try { res = await loader; }
+    catch (e) { if (label === 'espn') S.live.err = String(e && e.message || e); S.liveReady = true; updateStatus(); return; }
+    if (label === 'espn') { S.live.espn = !!res.ok; S.live.last = Date.now(); if (res.ok) S.live.err = null; }
+    if (label === 'sofa') S.live.sofa = !!res.ok;
+    S.live.ok = !!(S.live.espn || S.live.sofa || S.l365.ok);
+    const evs = res.ev || [];
+    const before = S.live.applied;
+    let nFin = 0;
+    if (!attach) {
+      const fin = evs.filter(e => e.st === 3);
+      if (fin.length) applyLive(fin);
+      for (const e of evs) { const d = dayOff(e.ts); if (d < -2 || d > 2) continue; addEvent(e); }
+      nFin = fin.length;
+    } else {
+      const finEx = [];
+      for (const e of evs) { const d = dayOff(e.ts); if (d < -2 || d > 2) continue; const r = attachEvent(e); if (!r) { S.l365.unmatched++; continue; } if (r.ex.st === 3) finEx.push(r.ex); }
+      if (finEx.length) applyLive(finEx);
+      nFin = finEx.length;
+    }
+    sealList();
+    if (label !== 'sofa') S.liveReady = true;   // samotné Sofascore (často ticho) ještě není „offline“
+    updateStatus();
+    onLiveChange(nFin);
+    if (S.live.applied !== before) {
+      const v = (location.hash || '#zapasy').slice(1);
+      if (v === 'zapasy') renderMatches(true); else if (v === 'oblibene') renderFav();
+    }
+  };
+  try {
+    await Promise.allSettled([
+      take('espn', loadESPN().catch(e => ({ ok: false, ev: [] })), false),
+      take('sofa', loadSofa().catch(e => ({ ok: false, ev: [] })), false),
+      take('365', load365().catch(e => ({ ok: false, ev: [] })), true),
+    ]);
+  } finally { S.refreshing = false; S.lowBusy = false; S.liveReady = true; updateStatus(); }
+}
+/* seznam zápasů nebo otevřený detail, a stránka je vidět */
+function scoreVisible(force) {
+  if (document.hidden && !force) return false;
+  if (force) return true;
+  if (S.detail) return true;
+  const v = (location.hash || '#zapasy').slice(1);
+  return v === 'zapasy' || v === 'oblibene';
+}
+/* živé obnovování skóre (ESPN) asi každých 15 s, jen když je seznam nebo detail vidět */
+const REFRESH_MS = 15000;
 async function refreshLive(force) {
-  if (!S.all || S.refreshing || (document.hidden && !force)) return;
+  if (!S.all || S.refreshing || !scoreVisible(force)) return;
   S.refreshing = true;
   try {
     const res = await Promise.allSettled(['atp', 'wta'].map(t => getJSON(ESPN(t), 12000).then(j => espnEvents(j, t))));
@@ -354,23 +404,31 @@ function ingest(evs, attach) {
   if (changed || newFin.length) onLiveChange(newFin.length);
   return { changed, n, fin: newFin.length };
 }
-/* Challenger/WTA 125 (365scores) a Sofascore live (všechny úrovně vč. ITF, pokud z dané sítě funguje) – každých 20 s,
-   jen když je stránka viditelná a otevřený seznam zápasů / oblíbení / detail. */
-const LOW_MS = 20000;
+/* 365scores (body a gemy, Challenger/WTA 125 i ATP/WTA) asi každých 8 s.
+   Jen když je stránka viditelná a otevřený seznam zápasů / oblíbení / detail. Skrytá záložka se neptá. */
+const LOW_MS = 8000;
 async function lowTick(force) {
-  if (!S.all || S.lowBusy || (document.hidden && !force)) return;
-  const v = (location.hash || '#zapasy').slice(1);
-  if (!force && !S.detail && v !== 'zapasy' && v !== 'oblibene') return;
+  if (!S.all || S.lowBusy || !scoreVisible(force)) return;
   S.lowBusy = true;
   try {
-    const jobs = [getJSON(`${S365}current/?${P365()}`, 12000).then(ev365)];
-    if (S.live.sofa) jobs.push(getJSON('https://api.sofascore.com/api/v1/sport/tennis/events/live', 10000).then(sofaEvents));
-    const res = await Promise.allSettled(jobs);
-    if (res[0].status === 'fulfilled') { const r = ingest(res[0].value, true); S.l365.ok = true; S.l365.err = null; S.l365.last = Date.now(); S.l365.polls++; S.l365.upd += r.n; S.l365.fin += r.fin; }
-    else S.l365.err = String(res[0].reason && res[0].reason.message || res[0].reason);
-    if (res[1]) { if (res[1].status === 'fulfilled') { const r = ingest(res[1].value, true); S.live.sofaPolls = (S.live.sofaPolls || 0) + 1; S.live.sofaUpd = (S.live.sofaUpd || 0) + r.n; } }
+    const ev = await getJSON(`${S365}current/?${P365()}`, 8000).then(ev365);
+    const r = ingest(ev, true);
+    S.l365.ok = true; S.l365.err = null; S.l365.last = Date.now(); S.l365.polls++; S.l365.upd += r.n; S.l365.fin += r.fin;
     updateStatus();
-  } finally { S.lowBusy = false; }
+  } catch (e) { S.l365.err = String(e && e.message || e); updateStatus(); }
+  finally { S.lowBusy = false; }
+}
+/* Sofascore (ITF, jen když úvodní dotaz prošel) zůstává na 20 s — ne každý tik 365scores. */
+const SOFA_MS = 20000;
+async function sofaTick(force) {
+  if (!S.live.sofa || !S.all || S.sofaBusy || !scoreVisible(force)) return;
+  S.sofaBusy = true;
+  try {
+    const ev = await getJSON('https://api.sofascore.com/api/v1/sport/tennis/events/live', 10000).then(sofaEvents);
+    const r = ingest(ev, true);
+    S.live.sofaPolls = (S.live.sofaPolls || 0) + 1; S.live.sofaUpd = (S.live.sofaUpd || 0) + r.n; S.live.sofaAt = Date.now();
+  } catch (e) { /* síť Sofascore často mlčí; necháváme poslední skóre */ }
+  finally { S.sofaBusy = false; }
 }
 
 /* ---------- kurzy: Flashscore (global.ds.lsapp.eu, CORS *, bez klíče, bez hlavičky) ----------
@@ -963,8 +1021,10 @@ function matchListIds() {   // pořadí řádků, jak by je vykreslil renderMatc
 }
 async function renderMatches(keep) {
   const v = $('#v-zapasy'); const F = S.filt; const y = keep ? window.scrollY : 0;
+  const seq = (S.rendN = (S.rendN || 0) + 1);
   const { dayEv, base } = matchSel();
   await probsFor(base.filter(e => e.st !== 3));
+  if (seq !== S.rendN || !v) return;
   const list = base.filter(e => passFilt(e, F.st));
   const nLive = dayEv.filter(e => e.st === 2 && !e.stale).length;
   const tabs = [-2, -1, 0, 1, 2].map(d => `<button class="dtab ${F.day === d ? 'on' : ''}" data-day="${d}"><b>${esc(dayLabel(d))}</b><small>${dateSub(d)}</small></button>`).join('');
@@ -977,7 +1037,7 @@ async function renderMatches(keep) {
   else if (!list.length) h += `<div class="empty">Žádné zápasy pro tento výběr.${F.favOnly ? '<br><small>Přidejte si hráče do oblíbených hvězdičkou v detailu zápasu.</small>' : ''}</div>`;
   else h += groupsHtml(list);
   const sc = S.live.srcCount || {};
-  h += `<p class="note">Zdroje: ${Object.entries(sc).map(([k, n]) => `${k === 'snapshot' ? 'snímek z buildu ' + esc(S.live.snapshot || '') : k} (${n})`).join(', ') || '—'}. Živé skóre: ATP/WTA z ESPN (45 s), Challenger/WTA 125 z 365scores (20 s)${S.live.sofa ? ', ITF ze Sofascore (20 s)' : ', ITF jen ze snímku buildu (Sofascore z této sítě neodpovídá)'}. Živé kurzy v průběhu (Tipsport, iFortuna, Chance, Betano – jen kdo je vypsal) se berou každých 20 s u zobrazených zápasů. VALUE je vždy z předzápasového kurzu. Procenta v seznamu = odhad modelu před zápasem. U živého zápasu je v detailu i „Predikce teď“ ze skóre.</p>
+  h += `<p class="note">Zdroje: ${Object.entries(sc).map(([k, n]) => `${k === 'snapshot' ? 'snímek z buildu ' + esc(S.live.snapshot || '') : k} (${n})`).join(', ') || '—'}. Živé skóre: ATP/WTA z ESPN (~15 s), body a gemy z 365scores (~8 s)${S.live.sofa ? ', ITF ze Sofascore (~20 s)' : ', ITF jen ze snímku buildu (Sofascore z této sítě neodpovídá)'}. Živé kurzy v průběhu (Tipsport, iFortuna, Chance, Betano – jen kdo je vypsal) se berou každých 20 s u zobrazených zápasů. VALUE je vždy z předzápasového kurzu. Procenta v seznamu = odhad modelu před zápasem. U živého zápasu je v detailu i „Predikce teď“ ze skóre.</p>
    <p class="note gam">18+ Kurzy slouží jen pro srovnání s modelem. Sázení je riskantní a může vést k závislosti – hrajte zodpovědně, jen s penězi, které si můžete dovolit prohrát.</p>`;
   v.innerHTML = h;
   if (keep) window.scrollTo(0, y);
@@ -1046,29 +1106,68 @@ function refreshDetailOdds(e) {
   else if (S.detail.tab === 'prehled') { const y = $('#detail').scrollTop; showDTab('prehled'); $('#detail').scrollTop = y; }
 }
 /* živá změna skóre: pokud se nezměnilo pořadí/sada zápasů, jen se „záplatují“ změněné řádky */
+/* jen skóre a stav řádku — jména a fotky se nepřekreslují, ať bod v gemu neblikne celou stránkou */
+function patchMatchRow(el, e) {
+  const sc = el.querySelectorAll('.pls .sc');
+  if (sc.length !== 2) return false;
+  for (let side = 0; side < 2; side++) {
+    const h = scoreCells(e, side);
+    if (sc[side]._h !== h) { sc[side].innerHTML = h; sc[side]._h = h; }
+  }
+  const stc = el.querySelector('.stc'), st = statusCell(e);
+  if (stc && stc._h !== st) { stc.innerHTML = st; stc._h = st; }
+  el.classList.toggle('islive', e.st === 2 && !e.stale);
+  el.querySelectorAll('.pls .pl').forEach((pl, side) => {
+    pl.classList.toggle('win', e.win === side + 1);
+    pl.classList.toggle('lose', !!(e.st === 3 && e.win && e.win !== side + 1));
+  });
+  if (e.st === 3) { el.querySelector('.pb')?.remove(); el.querySelector('.odds')?.remove(); }
+  return true;
+}
+function patchDetailScore(e) {
+  const sc = $('#d-score'); if (!sc) return;
+  const h = scoreBlock(e);
+  if (sc._h !== h) { sc.innerHTML = h; sc._h = h; }
+  const table = document.querySelector('#d-body table.st');
+  if (!table || S.detail.tab !== 'prehled') return;
+  const r = resolveEv(e), na = dispName(r.hi, e.h), nb = dispName(r.ai, e.a);
+  const html = `<tr><th></th>${e.sets.map((s, k) => `<th>${k + 1}.</th>`).join('')}</tr>` + [0, 1].map(sd => `<tr><td>${esc(sd ? nb : na)}</td>${e.sets.map(s => `<td class="${s[sd] > s[1 - sd] ? 'w' : ''}">${s[sd]}${s.length > 2 && Math.min(s[0], s[1]) >= 6 ? `<sup>${s[2 + sd]}</sup>` : ''}</td>`).join('')}</tr>`).join('');
+  if (table._h !== html) { table.innerHTML = html; table._h = html; }
+}
 function onLiveChange(newFin) {
   const v = (location.hash || '#zapasy').slice(1);
   if (v === 'zapasy' && !document.querySelector('select:focus')) {
     const ids = [...document.querySelectorAll('#v-zapasy .mr')].map(x => x.dataset.ev);
     const want = matchListIds();
-    // stejná sada řádků (i když by se změnilo řazení živé/nadcházející) -> jen záplata na místě, bez skoku stránky
+    // stejná sada řádků (i když by se změnilo řazení) -> jen skóre na místě, bez překreslení seznamu
     if (ids.length && ids.length === want.length && ids.slice().sort().join('|') === want.slice().sort().join('|')) {
       for (const el of document.querySelectorAll('#v-zapasy .mr')) { const e = S.byId[el.dataset.ev]; if (!e) continue;
-        const h = mrowHtml(e); const mr = el.querySelector('.mrow'); if (mr._h !== h && mr.innerHTML !== h) { mr.innerHTML = h; mr._h = h; el.classList.add('upd'); setTimeout(() => el.classList.remove('upd'), 1200); }
-        el.classList.toggle('islive', e.st === 2 && !e.stale);
-        if (e.st === 3) { el.querySelector('.pb')?.remove(); el.querySelector('.odds')?.remove(); } }
+        if (!patchMatchRow(el, e)) { const h = mrowHtml(e); const mr = el.querySelector('.mrow'); if (mr && mr._h !== h) { mr.innerHTML = h; mr._h = h; } } }
       const nLive = matchSel().dayEv.filter(e => e.st === 2 && !e.stale).length, ph = $('#v-zapasy .ph'), lc = ph && ph.querySelector('.livec');
       if (ph) { if (nLive && lc) lc.innerHTML = `<i class="dot"></i>${nLive} živě`; else if (nLive) ph.insertAdjacentHTML('beforeend', `<span class="livec"><i class="dot"></i>${nLive} živě</span>`); else if (lc) lc.remove(); }
     } else renderMatches(true);
   }
-  if (v === 'oblibene') renderFav();
-  if (S.detail) { const e = S.byId[S.detail.id]; if (e) { $('#d-score').innerHTML = scoreBlock(e); paintLivePred(e); if (newFin && S.detail.tab === 'stat') showDTab('stat'); } }
+  if (v === 'oblibene') {
+    const have = [...document.querySelectorAll('#v-oblibene .mr')].map(x => x.dataset.ev).sort().join('|');
+    const fav = [...S.fav.values()].map(f => favIdx(f)).filter(x => x !== null);
+    const want = (S.all || []).filter(e => { const r = resolveEv(e); return fav.includes(r.hi) || fav.includes(r.ai); }).map(e => e.id).sort().join('|');
+    if (have && have === want) { for (const el of document.querySelectorAll('#v-oblibene .mr')) { const e = S.byId[el.dataset.ev]; if (e) patchMatchRow(el, e); } }
+    else renderFav();
+  }
+  if (S.detail) { const e = S.byId[S.detail.id]; if (e) {
+    const becameFin = e.st === 3 && e._seenSt !== 3;
+    e._seenSt = e.st;
+    patchDetailScore(e);
+    if (becameFin && S.detail.tab !== 'kurzy' && S.detail.tab !== 'h2h') showDTab(S.detail.tab);
+    else if (e.st !== 3) paintLivePred(e);
+  } }
   if (newFin && v === 'hraci' && S.profI != null && $('#hp .prof')) showProfile(S.profI, $('#hp'), true);
   for (const id of new Set([...S.visible, ...(S.detail ? [S.detail.id] : [])])) { const e = S.byId[id];
     if (e && e.st === 2 && e.fsid && !(e.oddsV && e.oddsV.inplay)) fetchOdds(e, true, ODDS_LIVE_TTL).then(() => { updateRowOdds(e); if (S.detail && S.detail.id === id) refreshDetailOdds(e); }); }
 }
 function updateStatus() {
   const st = $('#status'); if (!st || !S.meta) return;
+  if (!S.liveReady) { st.innerHTML = `<i class="dot off"></i>Snímek zápasů · doplňuji živé skóre… · data do ${fmtDate(S.meta.day_end)}`; return; }
   const L = S.live; const t = L.last ? new Date(L.last).toLocaleTimeString('cs-CZ') : '—';
   const X = S.l365, last = Math.max(L.last || 0, X.last || 0), ok = (L.espn && !L.err) || (X.ok && !X.err);
   st.innerHTML = `${ok ? '<i class="dot"></i>Živě' : '<i class="dot off"></i>Offline'} · aktualizováno ${last ? new Date(last).toLocaleTimeString('cs-CZ') : t} · data do ${fmtDate(S.meta.day_end)}`;
@@ -1447,7 +1546,7 @@ function renderModel() {
    <div class="card"><h2>Data</h2><table><tr><th>Kategorie</th><th style="text-align:left">Zdroj: rozsah (počet zápasů)</th></tr>${cov}</table>
    <p class="note">Sackmannovy repozitáře tennis_atp/tennis_wta jsou od léta 2026 offline; použit veřejný archiv (snapshot do ${fmtDate(m.gap_start)}). ATP/WTA okruh a Challengery jsou doplněny z TennisMyLife až do buildu. ITF, WTA 125 a kvalifikace Challengerů mají mezeru mezi snapshotem a posledními 7 dny před buildem (u těchto hráčů je neutralizována únava).</p></div>
    <div class="card"><h2>Živá data a aktualizace</h2>
-   <p><b>Při otevření</b> aplikace v prohlížeči (bez klíčů) stáhne rozpis a výsledky (±2 dny, výsledky ~7 dní zpět) a z nových výsledků <b>přepočítá Elo</b>, formu, únavu a H2H. <b>Živé skóre</b> ATP/WTA (ESPN) se obnovuje každých 45 s, Challenger/WTA 125 (365scores) a ITF (Sofascore, pokud z dané sítě odpovídá) každých 20 s, dokud je stránka otevřená a viditelná; dokončené zápasy se hned započtou do Elo. Predikce se počítají přímo v telefonu.</p>
+   <p><b>Při otevření</b> aplikace v prohlížeči (bez klíčů) stáhne rozpis a výsledky (±2 dny, výsledky ~7 dní zpět) a z nových výsledků <b>přepočítá Elo</b>, formu, únavu a H2H. <b>Živé skóre</b> se nejdřív ukáže ze snímku buildu, potom se doplní z feedů. ATP/WTA (ESPN) se obnovuje asi každých 15 s, body a gemy (365scores) asi každých 8 s, ITF (Sofascore, pokud z dané sítě odpovídá) každých 20 s — jen dokud je vidět seznam zápasů nebo detail; dokončené zápasy se hned započtou do Elo. Predikce se počítají přímo v telefonu.</p>
    <div class="kv"><div>ESPN – živé skóre ATP/WTA (+ část WTA 125)</div><div>${L.espn ? '✅ funguje' : '⚠️ nedostupné'}${L.polls ? ` · ${L.polls}× obnoveno` : ''}</div>
    <div>365scores – živé skóre Challenger/WTA 125</div><div>${S.l365.ok && !S.l365.err ? '✅ funguje' : S.l365.err ? '⚠️ nedostupné' : '…'}${S.l365.polls ? ` · ${S.l365.polls}× obnoveno, ${S.l365.upd} změn skóre` : ''}</div>
    <div>Sofascore (všechny úrovně)</div><div>${L.sofa ? '✅ funguje' : '⚠️ z této sítě blokováno'}</div>
@@ -1492,8 +1591,9 @@ document.addEventListener('change', ev => {
 window.addEventListener('hashchange', route);
 window.addEventListener('popstate', () => { if (S.detail) closeDetail(true); });
 document.addEventListener('visibilitychange', () => { if (document.hidden) return;
-  if (S.live.last && Date.now() - S.live.last > REFRESH_MS - 5000) refreshLive();
-  if (Date.now() - (S.l365.last || 0) > LOW_MS - 3000) lowTick(); });
+  if (!S.live.last || Date.now() - S.live.last > REFRESH_MS - 4000) refreshLive();
+  if (Date.now() - (S.l365.last || 0) > LOW_MS - 2000) lowTick();
+  if (S.live.sofa && Date.now() - (S.live.sofaAt || 0) > SOFA_MS - 3000) sofaTick(); });
 
 async function init() {
   loadFav(); route();
@@ -1507,14 +1607,16 @@ async function init() {
     S.ro = idx.ro.map(s => s ? s.split(';').map(t => { const [o, d] = t.split(','); return [+o, meta.day_end - (+d)]; }) : []);
     S.matcher = new Matcher(); for (let i = 0; i < S.N; i++) S.matcher.add(i, idx.g[i], idx.n[i], -idx.l[i]);
     try { S.tours = await getJSON('data/tournaments.json'); } catch (e) { S.tours = {}; }
-    st.textContent = `Data do ${fmtDate(meta.day_end)} · načítám živý rozpis…`;
+    st.textContent = `Data do ${fmtDate(meta.day_end)} · snímek zápasů…`;
     cleanCache();
-    await loadLive();
+    await showSnapshotFirst();
     updateStatus();
     route();
+    fillLive();
     setInterval(() => refreshLive(), REFRESH_MS);
     setInterval(oddsTick, 20000);
     setInterval(() => lowTick(), LOW_MS);
+    setInterval(() => sofaTick(), SOFA_MS);
   } catch (e) { st.textContent = 'Chyba načítání: ' + e.message; console.error(e); }
 }
 if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => { }));
