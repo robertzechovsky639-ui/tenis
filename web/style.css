@@ -111,6 +111,15 @@ table.st td.w{color:#fff;font-weight:800}table.st td{color:var(--mut)}table.st t
 #d-predblock .big2 small{font-size:11px;line-height:1.25;overflow-wrap:anywhere}
 #d-predblock .bar.lg{margin:4px 0 2px}
 #d-predblock .note{margin:8px 0 0}
+.setpreds{margin-top:12px;padding-top:8px;border-top:1px solid rgba(255,255,255,.08)}
+.setrow{display:grid;grid-template-columns:68px minmax(0,1fr) minmax(0,1fr);gap:1px 8px;align-items:center;padding:5px 0}
+.setrow .n{font-size:12px;font-weight:800;color:var(--mut);line-height:1.15}
+.setrow .n small{display:block;font-size:10px;font-weight:600;color:var(--mut2)}
+.setrow b{font-size:16px;font-weight:900;line-height:1.1}
+.setrow .nm{display:block;color:var(--mut);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.setrow .r{text-align:right}
+.setrow .win{grid-column:2 / span 2;font-weight:800;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.setpreds .note{margin:6px 0 0}
 .f{display:flex;justify-content:space-between;gap:8px;font-size:13px;padding:5px 0;border-top:1px solid rgba(255,255,255,.05)}.f .dir{white-space:nowrap;font-size:12px}
 .wl{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:5px;font-size:11px;font-weight:800;margin:2px 2px 0 0}
 .wl.W{background:rgba(47,224,137,.18);color:var(--live)}.wl.L{background:rgba(255,46,126,.15);color:var(--pink)}

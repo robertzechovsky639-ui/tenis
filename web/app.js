@@ -727,6 +727,29 @@ function pFromState(sa, sb, ga, gb, aPts, bPts, tbA, tbB, inTB, aServes, need, p
   return pG * pMatch(sa, sb, ga + 1, gb, !aServes, need, pA, pB, mm, tm) + (1 - pG) * pMatch(sa, sb, ga, gb + 1, !aServes, need, pA, pB, mm, tm);
 }
 function matchBestOf(e) { return (e.code === 6 && e.g === 'M' && !e.q) ? 5 : 3; }
+/* P(A vyhraje set) ze stavu gemů. aToServe = kdo podává další gem. */
+function pSetGames(ga, gb, aToServe, pA, pB, memo, tm) {
+  if ((ga >= 6 && ga - gb >= 2) || (ga === 7 && gb === 6)) return 1;
+  if ((gb >= 6 && gb - ga >= 2) || (gb === 7 && ga === 6)) return 0;
+  const k = ga + ',' + gb + (aToServe ? 'A' : 'B');
+  const hit = memo.get(k); if (hit != null) return hit;
+  let v;
+  if (ga === 6 && gb === 6) v = pTie(0, 0, aToServe, pA, pB, tm);
+  else {
+    const pG = aToServe ? holdP(pA) : (1 - holdP(pB));
+    v = pG * pSetGames(ga + 1, gb, !aToServe, pA, pB, memo, tm) + (1 - pG) * pSetGames(ga, gb + 1, !aToServe, pA, pB, memo, tm);
+  }
+  memo.set(k, v); return v;
+}
+/* P(A vyhraje právě tenhle set) z gemů, bodů a podání. Stejná pravidla jako zápasový model. */
+function pThisSet(ga, gb, aPts, bPts, tbA, tbB, inTB, aServes, pA, pB) {
+  const tm = new Map();
+  if (inTB) return pTie(tbA, tbB, aServes, pA, pB, tm);
+  const pPt = aServes ? pA : (1 - pB);
+  const pG = pGameAB(aPts, bPts, pPt);
+  const memo = new Map();
+  return pG * pSetGames(ga + 1, gb, !aServes, pA, pB, memo, tm) + (1 - pG) * pSetGames(ga, gb + 1, !aServes, pA, pB, memo, tm);
+}
 function fitServe(p0, bo, s0) {
   const need = (bo + 1) / 2;
   const m0 = g => {
@@ -799,27 +822,83 @@ function liveProb(e) {
   if (!e || e._p == null || !(e._p > 0) || !(e._p < 1)) return null;
   const st = readLive(e);
   if (!st) return { ok: false };
-  const bo = matchBestOf(e), s0 = e.g === 'W' ? 0.57 : 0.64;
-  let fit = e._lfit;
-  if (!fit || fit.p !== e._p || fit.bo !== bo || fit.s0 !== s0) { fit = fitServe(e._p, bo, s0); e._lfit = fit; }
-  const need = (bo + 1) / 2;
+  const fit = serveFit(e);
+  const need = (fit.bo + 1) / 2;
   const once = aServes => pFromState(st.sa, st.sb, st.ga, st.gb, st.aPts, st.bPts, st.tbA, st.tbB, st.inTB, aServes, need, fit.pA, fit.pB);
   const m = st.aServes == null ? (once(true) + once(false)) / 2 : once(st.aServes);
   const anchored = Math.abs(fit.m0 - e._p) > 0.012;
   const p = anchored ? expit(logit(e._p) + logit(m) - logit(fit.m0)) : m;
   return { ok: true, p, serverKnown: st.aServes != null, pointsKnown: st.pointsKnown, between: st.between, anchored };
 }
+function serveFit(e) {
+  const bo = matchBestOf(e), s0 = e.g === 'W' ? 0.57 : 0.64;
+  let fit = e._lfit;
+  if (!fit || fit.p !== e._p || fit.bo !== bo || fit.s0 !== s0) { fit = fitServe(e._p, bo, s0); e._lfit = fit; }
+  if (fit.pSet0 == null) fit.pSet0 = (pThisSet(0, 0, 0, 0, 0, 0, false, true, fit.pA, fit.pB) + pThisSet(0, 0, 0, 0, 0, 0, false, false, fit.pA, fit.pB)) / 2;
+  return fit;
+}
+/* set i (1 = první) se ještě může hrát, když z dosavadních výher sa:sb jde oba udržet pod need */
+function setReachable(i, sa, sb, need) {
+  const t = (i - 1) - (sa + sb);
+  if (t < 0) return false;
+  const maxA = need - sa - 1, maxB = need - sb - 1;
+  if (maxA < 0 || maxB < 0) return false;
+  return Math.max(0, t - maxB) <= Math.min(t, maxA);
+}
+function setGuaranteed(i, sa, sb, need) {
+  const t = (i - 1) - (sa + sb);
+  return t >= 0 && sa + t < need && sb + t < need;
+}
 /* LIVEPRED_END */
+
+function setRowPct(n, na, nb, p, tag) {
+  return `<div class="setrow"><span class="n">${n}. set${tag ? `<small>${tag}</small>` : ''}</span><span><b class="a">${pct(p)}</b><small class="nm">${esc(na)}</small></span><span class="r"><b class="b">${pct(1 - p)}</b><small class="nm">${esc(nb)}</small></span></div>`;
+}
+function setPredHtml(e, na, nb) {
+  if (e._p == null || !(e._p > 0) || !(e._p < 1) || e.st === 3) return '';
+  const fit = serveFit(e);
+  const verb = e.g === 'W' ? 'vyhrála' : 'vyhrál';
+  const live = e.st === 2 && !e.stale ? readLive(e) : null;
+  if (!live) {
+    const tag = e.st === 2 ? 'bez skóre' : 'z 0:0';
+    const note = e.st === 2 ? '' : '<p class="note">1. set z 0:0, stejný bodový model jako zápas. Není to zvlášť trénovaný model setů.</p>';
+    return `<div class="setpreds"><div class="predlab">Kdo bere set</div>${setRowPct(1, na, nb, fit.pSet0, tag)}${note}</div>`;
+  }
+  const need = (fit.bo + 1) / 2;
+  const sets = (e.sets || []).filter(s => s && +s[0] >= 0 && +s[1] >= 0);
+  const done = [];
+  for (let i = 0; i < sets.length; i++) {
+    const w = setWinner(sets[i]);
+    const last = i === sets.length - 1;
+    if (w && (!last || live.between)) done.push(w);
+    else if (!last) { if (+sets[i][0] > +sets[i][1]) done.push(1); else if (+sets[i][1] > +sets[i][0]) done.push(2); }
+  }
+  const lines = done.map((w, i) => `<div class="setrow"><span class="n">${i + 1}. set</span><span class="win">${verb} ${esc(w === 1 ? na : nb)}</span></div>`);
+  const curN = done.length + 1;
+  const pNow = (st, aServes) => pThisSet(st.ga, st.gb, st.aPts, st.bPts, st.tbA, st.tbB, st.inTB, aServes, fit.pA, fit.pB);
+  for (let i = curN; i <= fit.bo; i++) {
+    if (!setReachable(i, live.sa, live.sb, need)) continue;
+    const sure = setGuaranteed(i, live.sa, live.sb, need);
+    if (i === curN) {
+      let p;
+      if (live.between) p = live.aServes == null ? fit.pSet0 : pThisSet(0, 0, 0, 0, 0, 0, false, live.aServes, fit.pA, fit.pB);
+      else p = live.aServes == null ? (pNow(live, true) + pNow(live, false)) / 2 : pNow(live, live.aServes);
+      lines.push(setRowPct(i, na, nb, p, live.between ? 'z 0:0' : 'teď'));
+    } else lines.push(setRowPct(i, na, nb, fit.pSet0, sure ? 'z 0:0' : 'když bude'));
+  }
+  return `<div class="setpreds"><div class="predlab">Kdo bere set</div>${lines.join('')}<p class="note">Teď hraný set ze skóre, další z 0:0. Stejný bodový model, ne samostatný model setů.</p></div>`;
+}
+
 
 function predInner(e, na, nb) {
   const pre = `<div class="predlab pre">Před zápasem</div><div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div>`;
-  if (e.st !== 2) return `<div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div>`;
+  if (e.st !== 2) return `<div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div>${setPredHtml(e, na, nb)}`;
   const L = liveProb(e);
-  if (!L || !L.ok) return pre + '<p class="note">Živé skóre teď nemáme, platí jen předzápasová predikce.</p>';
+  if (!L || !L.ok) return pre + setPredHtml(e, na, nb) + '<p class="note">Živé skóre teď nemáme, platí jen předzápasová predikce.</p>';
   const bits = [];
   if (!L.serverKnown) bits.push('Podání neznáme, obě možnosti bereme stejně.');
   if (!L.pointsKnown) bits.push(L.between ? 'Set skončil, další ještě nemá skóre — bereme jen sety.' : 'Body v gemu nemáme, bereme jen sety a gemy.');
-  return `<div class="predlab now">Predikce teď</div><div class="big2"><div><b class="a">${pct(L.p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - L.p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(L.p * 100).toFixed(1)}%"></i></div>${pre}<p class="note">Z předzápasové pravděpodobnosti modelu a aktuálního skóre (sety, gemy, body${L.serverKnown ? ', podání' : ''}). Průhledný bodový model v prohlížeči — ne nově natrénovaný model, bez vlastní přesnosti. ${bits.join(' ')}</p>`;
+  return `<div class="predlab now">Predikce teď</div><div class="big2"><div><b class="a">${pct(L.p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - L.p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(L.p * 100).toFixed(1)}%"></i></div>${pre}<p class="note">Z předzápasové pravděpodobnosti modelu a aktuálního skóre (sety, gemy, body${L.serverKnown ? ', podání' : ''}). Průhledný bodový model v prohlížeči — ne nově natrénovaný model, bez vlastní přesnosti. ${bits.join(' ')}</p>${setPredHtml(e, na, nb)}`;
 }
 function predNote(e) {
   if (e.st !== 2 || e._p == null) return '';
