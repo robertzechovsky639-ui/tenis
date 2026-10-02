@@ -647,7 +647,20 @@ function syncMarket(e) {
 function shownP(e) { return e && e._ps != null ? e._ps : e._p; }
 const LAB_SHIFT = 'Posouvá se podle kurzu a podle odhlášky nebo zranění a ten posun jde do dalšího zápasu.';
 const LAB_MODEL = 'Učí se jen z dohraných zápasů, kurz ji nehýbe.';
+const TITLE_MODEL = 'Predikce modelu';
+const TITLE_SHIFT = 'Šance po kurzu';
 function matchLab(e) { return e && e.st === 1 && e.code >= 3 ? LAB_SHIFT : LAB_MODEL; }
+function pctPair(na, nb, p, title, lab) {
+  if (p == null || !(p > 0) || !(p < 1)) return '';
+  return `<h3>${title}</h3><div class="big2"><div><b class="a">${pct(p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(p * 100).toFixed(1)}%"></i></div><p class="plab">${lab}</p>`;
+}
+/* Přehled: jen čistý model, bez kurzu. Záložka Predikce přidá i šanci po kurzu. */
+function rawOnlyHtml(e, na, nb) {
+  return pctPair(na, nb, e._p, TITLE_MODEL, LAB_MODEL) + setPredHtml(e, na, nb);
+}
+function bothPrematchHtml(e, na, nb) {
+  return pctPair(na, nb, e._p, TITLE_MODEL, LAB_MODEL) + pctPair(na, nb, shownP(e), TITLE_SHIFT, matchLab(e)) + setPredHtml(e, na, nb);
+}
 /* ---------- živé výsledky -> Elo ---------- */
 async function applyLive(evs) {
   const fin = evs.filter(e => e.st === 3 && (e.det === 3 || e.det === 8) && (e.win === 1 || e.win === 2)).sort((a, b) => a.ts - b.ts);
@@ -1540,8 +1553,8 @@ function gamePredHtml(e, na, nb) {
 
 
 function predInner(e, na, nb) {
-  const pre = `<div class="predlab pre">Před zápasem</div><div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div><p class="plab">${LAB_MODEL}</p>`;
-  if (e.st !== 2) { const p = shownP(e); return `<div class="big2"><div><b class="a">${pct(p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(p * 100).toFixed(1)}%"></i></div><p class="plab">${matchLab(e)}</p>${setPredHtml(e, na, nb)}`; }
+  const pre = `<div class="predlab pre">${TITLE_MODEL}</div><div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div><p class="plab">${LAB_MODEL}</p>`;
+  if (e.st !== 2) return rawOnlyHtml(e, na, nb);
   const L = liveProb(e);
   if (!L || !L.ok) return pre + setPredHtml(e, na, nb) + '<p class="note">Živé skóre teď nemáme, platí jen předzápasová predikce.</p>';
   const bits = [];
@@ -1560,15 +1573,15 @@ function paintLivePred(e) {
   if (!S.detail || S.byId[S.detail.id] !== e || e._p == null || e.st === 3) return;
   const r = resolveEv(e), na = dispName(r.hi, e.h), nb = dispName(r.ai, e.a);
   const box = document.getElementById('d-predblock');
-  if (box) box.innerHTML = predInner(e, na, nb);
+  if (box) box.innerHTML = (S.detail.tab === 'predikce' && e.st === 1) ? bothPrematchHtml(e, na, nb) : predInner(e, na, nb);
   const note = document.getElementById('d-prednote');
   if (note) note.outerHTML = predNote(e);
 }
 
 function probHtml(e) {
   if (e.st === 3 || e._p == null) return '';
-  const p = shownP(e);
-  return `<div class="pb"><span class="pa ${p >= 0.5 ? 'fv' : ''}">${pct(p)}</span><div class="bar"><i style="width:${(p * 100).toFixed(1)}%"></i></div><span class="pc ${p < 0.5 ? 'fv' : ''}">${pct(1 - p)}</span></div><p class="plab">${matchLab(e)}</p>`;
+  const p = e._p;
+  return `<div class="predlab">${TITLE_MODEL}</div><div class="pb"><span class="pa ${p >= 0.5 ? 'fv' : ''}">${pct(p)}</span><div class="bar"><i style="width:${(p * 100).toFixed(1)}%"></i></div><span class="pc ${p < 0.5 ? 'fv' : ''}">${pct(1 - p)}</span></div><p class="plab">${LAB_MODEL}</p>`;
 }
 function mrowHtml(e) {
   const r = resolveEv(e);
@@ -1669,7 +1682,7 @@ function tweenNum(el, to) {
 function flash(el, dir) { if (!dir || !el) return; el.classList.remove('fl-up', 'fl-dn'); void el.offsetWidth; el.classList.add(dir > 0 ? 'fl-up' : 'fl-dn'); }
 function updateRowProb(e) {
   if (!e) return;
-  const p = shownP(e);
+  const p = e._p;
   for (const el of document.querySelectorAll(`.mr[data-ev="${CSS.escape(e.id)}"]`)) {
     const pb = el.querySelector('.pb');
     if (!pb || p == null) continue;
@@ -1809,7 +1822,7 @@ async function showDTab(k) {
   if (k === 'prehled') {
     const v = valueOf(e);
     let h = '';
-    if (e.st !== 3 && e._p != null) h += `<div class="card"><h3>Predikce modelu</h3><div id="d-predblock">${predInner(e, na, nb)}</div>
+    if (e.st !== 3 && e._p != null) h += `<div class="card"><div id="d-predblock">${predInner(e, na, nb)}</div>
       ${e.oddsV && e.oddsV.avg ? `<div class="kv2"><span>${e.oddsV.inplay ? 'Živý kurz (průměr)' : 'Průměrný kurz'}</span><b>${e.oddsV.avg[0].toFixed(2)} / ${e.oddsV.avg[1].toFixed(2)}</b><span>${e.st === 1 ? 'Trh (bez marže)' : 'Před zápasem'}</span><b>${e.st === 1 && v ? pct(v.im) + ' / ' + pct(1 - v.im) : e.oddsPrem && e.oddsPrem.avg ? e.oddsPrem.avg[0].toFixed(2) + ' / ' + e.oddsPrem.avg[1].toFixed(2) : '—'}</b></div>${v && v.side ? `<div class="valbox">VALUE: ${esc(v.side === 1 ? na : nb)} – model o ${(Math.abs(v.edge) * 100).toFixed(1)} p. b. výš než předzápasový trh</div>` : ''}` : e.fsid && e.st !== 3 ? '<p class="note">Načítám kurzy…</p>' : ''}
       <div class="row"><button class="btn sec" data-dtab="predikce">Podrobná predikce ›</button><button class="btn ai" data-ask="${esc(e.id)}">✦ Zeptat se AI</button></div></div>`;
     if (e.st === 3) h += `<div class="card"><h3>Výsledek</h3><p><b>${esc(e.win === 1 ? na : nb)}</b> vyhrál${e.g === 'W' ? 'a' : ''} ${e.sets.map(s => e.win === 1 ? `${s[0]}–${s[1]}` : `${s[1]}–${s[0]}`).join(', ')}${e.det === 8 ? ' (skreč)' : ''}.</p></div>`;
@@ -1821,7 +1834,7 @@ async function showDTab(k) {
     if (e.st === 3 || e._p == null) h += `<button class="btn ai" data-ask="${esc(e.id)}">✦ Zeptat se AI na tento zápas</button>`;
     body.innerHTML = h;
   } else if (k === 'predikce') {
-    body.innerHTML = (e.st === 3 ? '<div class="warn">Zápas už skončil. Model níže počítá s aktuálními daty, která mohou tento výsledek už obsahovat – nejde o předzápasový tip.</div>' : (e.st === 1 ? `<div class="card" id="d-predblock">${predInner(e, na, nb)}</div>` : predNote(e))) + resultHtml(r.hi, r.ai, e.surface, e.code, e.q);
+    body.innerHTML = (e.st === 3 ? '<div class="warn">Zápas už skončil. Model níže počítá s aktuálními daty, která mohou tento výsledek už obsahovat – nejde o předzápasový tip.</div>' : (e.st === 1 ? `<div class="card" id="d-predblock">${bothPrematchHtml(e, na, nb)}</div>` : predNote(e))) + resultHtml(r.hi, r.ai, e.surface, e.code, e.q, e.st === 1);
   } else if (k === 'kurzy') {
     body.innerHTML = '<div class="empty">Načítám kurzy…</div>';
     if (e.fsid) await fetchOdds(e, true);
@@ -1961,7 +1974,7 @@ function factorsHtml(r, na, nb) {
   return c.map(([f, v]) => `<div class="f"><span>${esc(FEAT_CS[f] || f)}</span><span class="dir" style="color:${v > 0 ? 'var(--a)' : 'var(--b)'}">${'▮'.repeat(Math.max(1, Math.round(Math.abs(v) / mx * 5)))} ${esc(v > 0 ? na : nb)}</span></div>`).join('');
 }
 function formHtml(p) { return p.ring.slice(-10).map(x => `<span class="wl ${x[1] ? 'W' : 'L'}">${x[1] ? 'V' : 'P'}</span>`).join('') || '<span class="note">—</span>'; }
-function resultHtml(i, j, surface, code, q) {
+function resultHtml(i, j, surface, code, q, noBig) {
   const r = predict(i, j, surface, code, q); const na = pName(i), nb = pName(j); const A = r.A, B = r.B, t = todayDay();
   const f = TM.fatigue, fa = f(A.ring, t), fb = f(B.ring, t);
   const age = p => p.dob != null ? ((t - p.dob) / 365.25).toFixed(1) : '—';
@@ -1973,10 +1986,12 @@ function resultHtml(i, j, surface, code, q) {
   let warn = '';
   if (A.isNew || B.isNew) warn += `<div class="warn">${esc(A.isNew ? na : nb)} nemá v databázi historii (nový hráč nebo nespárované jméno) – odhad je velmi nejistý.</div>`;
   if (pG(i) !== pG(j)) warn += `<div class="warn">Pozor: porovnáváte muže a ženu – model na to není stavěný.</div>`;
-  return `${warn}<div class="card"><div class="note">${esc(LVL_CS[code])} · ${SURF_CS[surface]}${q ? ' · kvalifikace' : ''} · na ${r.ctx.best_of} sety</div>
+  const big = noBig ? '' : `<h3>${TITLE_MODEL}</h3>
    <div class="big"><div><div class="p a">${pct(r.p)}</div><div class="nm">${esc(na)}</div></div><div><div class="p b">${pct(1 - r.p)}</div><div class="nm">${esc(nb)}</div></div></div>
    <div class="bar lg"><i style="width:${(r.p * 100).toFixed(1)}%"></i></div>
-   <p class="plab">${LAB_MODEL}</p>
+   <p class="plab">${LAB_MODEL}</p>`;
+  return `${warn}<div class="card"><div class="note">${esc(LVL_CS[code])} · ${SURF_CS[surface]}${q ? ' · kvalifikace' : ''} · na ${r.ctx.best_of} sety</div>
+   ${big}
    <h3>Hlavní faktory</h3>${factorsHtml(r, na, nb)}
    <p class="note">Faktory = příspěvky v logistické regresi (vysvětlitelná část modelu); výsledná pravděpodobnost je z LightGBM.</p></div>
    <div class="card"><h3>Srovnání</h3><table><tr><th></th><th>${esc(na.split(' ').slice(-1)[0])}</th><th>${esc(nb.split(' ').slice(-1)[0])}</th></tr>
