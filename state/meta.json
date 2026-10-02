@@ -21509,6 +21509,16 @@
 "tml_rows": {
 "M_chall": 1
 }
+},
+{
+"applied": 0,
+"at": "2026-10-03 00:26 CEST",
+"by_level": {},
+"dup_skipped": 0,
+"enriched": 0,
+"fs_new_events": 0,
+"new_players": 0,
+"tml_rows": {}
 }
 ]
 }
