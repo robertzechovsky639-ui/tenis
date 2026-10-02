@@ -876,6 +876,7 @@
 2026-2895|Matheus Pucinelli De Almeida|Joao Lucas Reis Da Silva|R16
 2026-2895|Matheus Pucinelli De Almeida|Paulo Andre Saraiva Dos Santos|R32
 2026-2895|Pedro Boscardin Dias|Genaro Alberto Olivieri|R16
+2026-2895|Pedro Boscardin Dias|Luis Guto Miguel|QF
 2026-2895|Pedro Boscardin Dias|Victor Hugo Remondy Pagotto|R32
 2026-2895|Pedro Sakamoto|Eduardo Ribeiro|R32
 2026-2895|Tomas Barrios Vera|Juan Bautista Torres|R16
@@ -3693,6 +3694,7 @@
 2026-6795|Sumit Nagal|Petr Brunclik|R16
 2026-6795|Thiago Seyboth Wild|Andrej Martin|R32
 2026-6857|Clement Chidekh|David Goffin|R32
+2026-6857|Clement Chidekh|Harold Mayot|QF
 2026-6857|Clement Chidekh|Ugo Blanchet|R16
 2026-6857|Clement Tabur|Matteo Martineau|R32
 2026-6857|Clement Tabur|Thomas Faurel|R16
@@ -4527,6 +4529,7 @@
 2026-8266|Sandro Kopp|Martin Krumich|QF
 2026-8266|Sandro Kopp|Mika Brunold|R16
 2026-8266|Svyatoslav Gulin|Henri Haupt|R32
+2026-8281|Abdullah Shelbayh|Aidan Mayo|QF
 2026-8281|Abdullah Shelbayh|Daniil Ostapenkov|R16
 2026-8281|Abdullah Shelbayh|Li Tu|R32
 2026-8281|Aidan Mayo|Colton Smith|R16
