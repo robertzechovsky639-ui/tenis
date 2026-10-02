@@ -3,7 +3,7 @@
 import os, sys, json, pickle, glob, math, datetime, time, re
 import numpy as np, pandas as pd, lightgbm as lgb
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import engine, fs, online
+import engine, fs, online, live_online
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, 'data'); W = os.path.join(ROOT, 'web', 'data')
 NSH = 16
@@ -145,6 +145,11 @@ def export_all(P, H, day_end, gap_start, cov, tours, tmlrep, extra_meta=None):
     json.dump(on, open(os.path.join(W, 'online.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
     meta['online_n'] = int(on.get('n') or 0)
     meta['online_base'] = on.get('base')
+    lp = os.path.join(ROOT, 'state', 'live_online.json')
+    lv = json.load(open(lp)) if os.path.exists(lp) else live_online.empty()
+    json.dump(lv, open(os.path.join(W, 'live_online.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
+    meta['live_n'] = int(lv.get('n') or 0)
+    meta['live_base'] = lv.get('base')
     json.dump(meta, open(os.path.join(W, 'meta.json'), 'w'), ensure_ascii=False, indent=0)
     sizes = [os.path.getsize(os.path.join(W, 'st', f'{k}.json')) for k in range(NSH)]
     print('players', len(act_ids), 'index KB', os.path.getsize(os.path.join(W, 'players.json')) // 1024, 'shards KB total', sum(sizes) // 1024)
