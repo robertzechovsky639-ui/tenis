@@ -18,6 +18,7 @@ CORE = ['ds', 'dg', 'dp', 'dtb', 'srv', 'hold', 'brk', 'bp', 'late']
 CTX = ['bo5', 'woman', 'clay', 'grass', 'qual', 'lvl']
 ZCAP = 1.15
 GAME_ZCAP = 3.2
+SET_ZCAP = 2.2
 PULL = 0.04
 BOUND = 0.22
 ETA = {'G': 0.0012, 'S': 0.0025, 'M': 0.0035}
@@ -35,12 +36,17 @@ def sig(z):
 def n_weights():
     return len(SCORE) + len(CORE) * len(DIFF) + len(CORE) * len(CTX)
 
+def n_set_weights():
+    # stejné vstupy jako zápas plus posun, který je zapnutý i na 0:0 (1. set před zápasem)
+    return n_weights() + 1 + len(CTX)
+
 def empty(scales=None):
     sc = list(scales) if scales is not None else [1.0] * len(DIFF)
     z = [0.0] * n_weights()
     return dict(base=BASE, score=list(SCORE), core=list(CORE), diffs=list(DIFF), ctx=list(CTX),
                 scale=[float(s) if s else 1.0 for s in sc], w=z, w0=list(z), n=0, seen=[],
                 gw=list(z), gw0=list(z), gn=0, gseen=[],
+                sw=[0.0] * n_set_weights(), sw0=[0.0] * n_set_weights(), sn=0, sseen=[],
                 eta=dict(ETA), pull=PULL, bound=BOUND)
 
 def load(path):
@@ -66,6 +72,13 @@ def load(path):
     st['gw'], st['gw0'] = gw, gw0
     st['gseen'] = [str(s) for s in st.get('gseen') or []]
     st['gn'] = int(st.get('gn') or 0)
+    sw = [float(v) for v in (st.get('sw') or [])]
+    if len(sw) != n_set_weights(): sw = [0.0] * n_set_weights()
+    sw0 = [float(v) for v in (st.get('sw0') or sw)]
+    if len(sw0) != n_set_weights(): sw0 = list(sw)
+    st['sw'], st['sw0'] = sw, sw0
+    st['sseen'] = [str(s) for s in st.get('sseen') or []]
+    st['sn'] = int(st.get('sn') or 0)
     st['eta'] = dict(ETA)
     st['pull'] = PULL
     st['bound'] = BOUND
@@ -73,7 +86,7 @@ def load(path):
 
 def save(path, st):
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    out = {k: st[k] for k in ('base', 'score', 'core', 'diffs', 'ctx', 'scale', 'w', 'w0', 'n', 'seen', 'gw', 'gw0', 'gn', 'gseen') if k in st}
+    out = {k: st[k] for k in ('base', 'score', 'core', 'diffs', 'ctx', 'scale', 'w', 'w0', 'n', 'seen', 'gw', 'gw0', 'gn', 'gseen', 'sw', 'sw0', 'sn', 'sseen') if k in st}
     out['eta'] = dict(ETA); out['pull'] = PULL; out['bound'] = BOUND
     json.dump(out, open(path, 'w'), ensure_ascii=False, separators=(',', ':'))
 
@@ -126,6 +139,13 @@ def phi(sa, sb, ga, gb, pa, pb, ta, tb, in_tb, srv, hold, brk, diffs, ctx, scale
 def phi_game(sa, sb, ga, gb, pa, pb, ta, tb, in_tb, srv, hold, brk, diffs, ctx, scales):
     """Stejné vstupy jako zápas, ale podání zůstane i na 0:0 a bez bodů."""
     return phi(sa, sb, ga, gb, pa, pb, ta, tb, in_tb, srv, hold, brk, diffs, ctx, scales, blank_start=False)
+
+def phi_set(sa, sb, ga, gb, pa, pb, ta, tb, in_tb, srv, hold, brk, diffs, ctx, scales):
+    """Stejné vstupy jako zápas. Navíc je zapnutý posun a kontext i na 0:0, aby se 1. set před zápasem mohl učit."""
+    x = list(phi_game(sa, sb, ga, gb, pa, pb, ta, tb, in_tb, srv, hold, brk, diffs, ctx, scales))
+    x.append(1.0)
+    x.extend(float(ctx.get(k) or 0) for k in CTX)
+    return x
 
 def _dot_w(w, x, cap):
     z = 0.0
@@ -187,6 +207,16 @@ def step_game(st, x, y, p0, mk):
     """Stejný krok po dohraném gemu. y je výherce gemu, p0 předzápasová šance té strany."""
     return _step_into(st, 'gw', 'gw0', 'gseen', 'gn', x, y, p0, mk, ETA['G'], GAME_ZCAP)
 
+def adjust_set(p, st, x):
+    if not st or not x or not st.get('sw'): return float(p)
+    z = _dot_w(st['sw'], x, SET_ZCAP)
+    if not z: return float(p)
+    return sig(logit(p) + z)
+
+def step_set(st, x, y, p0, mk):
+    """Stejný krok po dohraném setu. y je výherce setu, p0 předzápasová šance té strany."""
+    return _step_into(st, 'sw', 'sw0', 'sseen', 'sn', x, y, p0, mk, ETA['S'], SET_ZCAP)
+
 def ctx_of(bo, gender, surface, qual, lvl):
     s = str(surface or '')
     return {
@@ -234,6 +264,8 @@ def from_sets(st, wid, lid, score, day, bo, gender, surface, qual, lvl, p_winner
         x = phi(sa, sb, 0, 0, 0, 0, 0, 0, False, 0, 0, 0, diffs, ctx, sc)
         if step(st, x, yS, pA, f'{mk}|S|{sa}|{sb}', ETA['S']): n += 1
         if step(st, x, yM, pA, f'{mk}|M|{sa}|{sb}|0|0', ETA['M']): n += 1
+        xs = phi_set(sa, sb, 0, 0, 0, 0, 0, 0, False, 0, 0, 0, diffs, ctx, sc)
+        if step_set(st, xs, yS, pA, f'{mk}|s|{sa}|{sb}'): n += 1
         if yS == 1: sa += 1
         else: sb += 1
     return n

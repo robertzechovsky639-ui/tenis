@@ -943,7 +943,7 @@ function liveMlOn(e) {
   return !!(e && e.code >= 3 && L && L.base === 'liveml1' && L.w && L.score && L.w.length === (L.score.length + L.core.length * L.diffs.length + L.core.length * L.ctx.length));
 }
 function saveLive() {
-  try { localStorage.setItem('tp:liveon', JSON.stringify({ base: S.liveOn.base, w: S.liveOn.w, w0: S.liveOn.w0, n: S.liveOn.n, seen: S.liveOn.seen, gw: S.liveOn.gw, gw0: S.liveOn.gw0, gn: S.liveOn.gn, gseen: S.liveOn.gseen, score: S.liveOn.score, core: S.liveOn.core, diffs: S.liveOn.diffs, ctx: S.liveOn.ctx, scale: S.liveOn.scale })); } catch (e) {}
+  try { localStorage.setItem('tp:liveon', JSON.stringify({ base: S.liveOn.base, w: S.liveOn.w, w0: S.liveOn.w0, n: S.liveOn.n, seen: S.liveOn.seen, gw: S.liveOn.gw, gw0: S.liveOn.gw0, gn: S.liveOn.gn, gseen: S.liveOn.gseen, sw: S.liveOn.sw, sw0: S.liveOn.sw0, sn: S.liveOn.sn, sseen: S.liveOn.sseen, score: S.liveOn.score, core: S.liveOn.core, diffs: S.liveOn.diffs, ctx: S.liveOn.ctx, scale: S.liveOn.scale })); } catch (e) {}
 }
 function attachLive(shipped) {
   const ok = shipped && shipped.base === 'liveml1' && shipped.w && shipped.score && shipped.w.length === (shipped.score.length + shipped.core.length * shipped.diffs.length + shipped.core.length * shipped.ctx.length);
@@ -967,7 +967,17 @@ function attachLive(shipped) {
     const shipInLocal = [...ss].every(id => ls.has(id));
     if (!localInShip && shipInLocal) { gw = local.gw.slice(); gseen = (local.gseen || []).slice(); gn = local.gn || 0; }
   }
-  S.liveOn = { base: 'liveml1', score: shipped.score, core: shipped.core, diffs: shipped.diffs, ctx: shipped.ctx, scale: shipped.scale.slice(), w: use.w.slice(), w0: (shipped.w0 || shipped.w).slice(), n: use.n || 0, seen: (use.seen || []).slice(), gw, gw0, gn, gseen, pull: 0.04, bound: 0.22, eta: shipped.eta || { G: 0.0012, S: 0.0025, M: 0.0035 } };
+  const nSet = shipped.w.length + 1 + shipped.ctx.length;
+  const swShip = shipped.sw && shipped.sw.length === nSet ? shipped.sw : Array(nSet).fill(0);
+  let sw = swShip.slice(), sw0 = (shipped.sw0 && shipped.sw0.length === nSet ? shipped.sw0 : swShip).slice();
+  let sseen = (shipped.sseen || []).slice(), sn = shipped.sn || 0;
+  if (local && local.base === 'liveml1' && local.sw && local.sw.length === nSet) {
+    const ss = new Set(shipped.sseen || []), ls = new Set(local.sseen || []);
+    const localInShip = [...ls].every(id => ss.has(id));
+    const shipInLocal = [...ss].every(id => ls.has(id));
+    if (!localInShip && shipInLocal) { sw = local.sw.slice(); sseen = (local.sseen || []).slice(); sn = local.sn || 0; }
+  }
+  S.liveOn = { base: 'liveml1', score: shipped.score, core: shipped.core, diffs: shipped.diffs, ctx: shipped.ctx, scale: shipped.scale.slice(), w: use.w.slice(), w0: (shipped.w0 || shipped.w).slice(), n: use.n || 0, seen: (use.seen || []).slice(), gw, gw0, gn, gseen, sw, sw0, sn, sseen, pull: 0.04, bound: 0.22, eta: shipped.eta || { G: 0.0012, S: 0.0025, M: 0.0035 } };
 }
 function ensureX(e) {
   if (!e || e._x || e._p == null) return;
@@ -1099,6 +1109,35 @@ function liveStep(x, y, p0, mk, eta) {
   st.n = (st.n || 0) + 1;
   return true;
 }
+const SET_ZCAP = 2.2;
+function setModelOn(e) {
+  const L = S.liveOn;
+  return !!(liveMlOn(e) && L.sw && L.ctx && L.sw.length === L.w.length + 1 + L.ctx.length);
+}
+function liveSetPhi(e, id, sa, sb, ga, gb, pa, pb, ta, tb, inTb, srv, hold, brk) {
+  const x = liveGamePhi(e, id, sa, sb, ga, gb, pa, pb, ta, tb, inTb, srv, hold, brk);
+  const ctx = liveCtx(e);
+  x.push(1);
+  for (const k of S.liveOn.ctx) x.push(ctx[k] || 0);
+  return x;
+}
+function liveSetP(e, sa, sb, ga, gb, pa, pb, ta, tb, inTb, srvH, holdH, brkH) {
+  ensureX(e);
+  const id = liveIds(e);
+  const L = S.liveOn;
+  if (!id || !e._x || !setModelOn(e)) return null;
+  const saA = id.aIsH ? sa : sb, sbA = id.aIsH ? sb : sa;
+  const gaA = id.aIsH ? ga : gb, gbA = id.aIsH ? gb : ga;
+  const paA = id.aIsH ? pa : pb, pbA = id.aIsH ? pb : pa;
+  const taA = id.aIsH ? ta : tb, tbA = id.aIsH ? tb : ta;
+  const srv = srvH === 0 ? 0 : (id.aIsH ? srvH : -srvH);
+  const hold = id.aIsH ? holdH : -holdH, brk = id.aIsH ? brkH : -brkH;
+  const x = liveSetPhi(e, id, saA, sbA, gaA, gbA, paA, pbA, taA, tbA, inTb, srv, hold, brk);
+  const pA = id.aIsH ? e._p : 1 - e._p;
+  const z = liveDotW(L.sw, x, SET_ZCAP);
+  const p = z ? expit(logit(pA) + z) : pA;
+  return id.aIsH ? p : 1 - p;
+}
 function liveGameStep(x, y, p0, mk) {
   const st = S.liveOn;
   if (!st || !st.gw || !x) return false;
@@ -1121,6 +1160,30 @@ function liveGameStep(x, y, p0, mk) {
   st.gseen.push(mk);
   if (st.gseen.length > 6000) st.gseen = st.gseen.slice(-6000);
   st.gn = (st.gn || 0) + 1;
+  return true;
+}
+function liveSetStep(x, y, p0, mk) {
+  const st = S.liveOn;
+  if (!st || !st.sw || !x) return false;
+  st.sseen = st.sseen || [];
+  if (st.sseen.indexOf(mk) >= 0) return false;
+  if (!x.some(v => v)) { st.sseen.push(mk); if (st.sseen.length > 6000) st.sseen = st.sseen.slice(-6000); return false; }
+  const eta = (st.eta && st.eta.S) || 0.0025;
+  const p = expit(logit(p0) + liveDotW(st.sw, x, SET_ZCAP));
+  const err = p - y;
+  const pull = st.pull || 0.04, bound = st.bound || 0.22;
+  for (let i = 0; i < x.length; i++) {
+    if (!x[i]) continue;
+    const w0 = st.sw0[i] || 0;
+    let nw = (st.sw[i] || 0) - eta * err * x[i] - eta * pull * ((st.sw[i] || 0) - w0);
+    const lo = w0 - bound, hi = w0 + bound;
+    if (nw > hi) nw = hi; else if (nw < lo) nw = lo;
+    if (nw > 1.5) nw = 1.5; else if (nw < -1.5) nw = -1.5;
+    st.sw[i] = nw;
+  }
+  st.sseen.push(mk);
+  if (st.sseen.length > 6000) st.sseen = st.sseen.slice(-6000);
+  st.sn = (st.sn || 0) + 1;
   return true;
 }
 function hbOf(winH, srvH) {
@@ -1188,6 +1251,8 @@ function learnLive(e) {
       const xs = livePhi(sa, sb, 0, 0, 0, 0, 0, 0, false, 0, 0, 0, liveDiffs(e, id.aIsH), liveCtx(e));
       const pA = id.aIsH ? e._p : 1 - e._p;
       if (liveStep(xs, yS, pA, id.mk + '|S|' + sa + '|' + sb, (S.liveOn.eta && S.liveOn.eta.S) || 0.0025)) stepped = true;
+      const xset = liveSetPhi(e, id, sa, sb, 0, 0, 0, 0, 0, 0, false, 0, 0, 0);
+      if (liveSetStep(xset, yS, pA, id.mk + '|s|' + sa + '|' + sb)) stepped = true;
     }
     if (stepped) { saveLive(); S.predGen++; }
   }
@@ -1238,6 +1303,10 @@ function setPredHtml(e, na, nb) {
   const live = e.st === 2 && !e.stale ? readLive(e) : null;
   if (!live) {
     const tag = e.st === 2 ? 'bez skóre' : 'z 0:0';
+    if (setModelOn(e) && e.st !== 2) {
+      const p = liveSetP(e, 0, 0, 0, 0, 0, 0, 0, 0, false, 0, 0, 0);
+      if (p != null) return `<div class="setpreds"><div class="predlab">Kdo bere set</div>${setRowPct(1, na, nb, p, tag)}<p class="note">1. set ze stejných vstupů jako živá predikce zápasu. Po dohraných setech se posune.</p></div>`;
+    }
     const note = e.st === 2 ? '' : '<p class="note">1. set z 0:0, stejný bodový model jako zápas. Není to zvlášť trénovaný model setů.</p>';
     return `<div class="setpreds"><div class="predlab">Kdo bere set</div>${setRowPct(1, na, nb, fit.pSet0, tag)}${note}</div>`;
   }
@@ -1258,12 +1327,24 @@ function setPredHtml(e, na, nb) {
     const sure = setGuaranteed(i, live.sa, live.sb, need);
     if (i === curN) {
       let p;
-      if (live.between) p = live.aServes == null ? fit.pSet0 : pThisSet(0, 0, 0, 0, 0, 0, false, live.aServes, fit.pA, fit.pB);
-      else p = live.aServes == null ? (pNow(live, true) + pNow(live, false)) / 2 : pNow(live, live.aServes);
+      const hb = e._hb || { hold: 0, brk: 0 };
+      const srvH = live.aServes == null ? 0 : (live.aServes ? 1 : -1);
+      if (setModelOn(e)) {
+        p = live.between ? liveSetP(e, live.sa, live.sb, 0, 0, 0, 0, 0, 0, false, srvH, 0, 0)
+          : liveSetP(e, live.sa, live.sb, live.ga, live.gb, live.aPts, live.bPts, live.tbA, live.tbB, live.inTB, srvH, hb.hold, hb.brk);
+      }
+      if (p == null) {
+        if (live.between) p = live.aServes == null ? fit.pSet0 : pThisSet(0, 0, 0, 0, 0, 0, false, live.aServes, fit.pA, fit.pB);
+        else p = live.aServes == null ? (pNow(live, true) + pNow(live, false)) / 2 : pNow(live, live.aServes);
+      }
       lines.push(setRowPct(i, na, nb, p, live.between ? 'z 0:0' : 'teď'));
+    } else if (setModelOn(e)) {
+      const p = liveSetP(e, 0, 0, 0, 0, 0, 0, 0, 0, false, 0, 0, 0);
+      lines.push(setRowPct(i, na, nb, p == null ? fit.pSet0 : p, sure ? 'z 0:0' : 'když bude'));
     } else lines.push(setRowPct(i, na, nb, fit.pSet0, sure ? 'z 0:0' : 'když bude'));
   }
-  return `<div class="setpreds"><div class="predlab">Kdo bere set</div>${lines.join('')}<p class="note">Teď hraný set ze skóre, další z 0:0. Stejný bodový model, ne samostatný model setů.</p></div>`;
+  const note = setModelOn(e) ? 'Teď hraný set ze stejných vstupů jako živá predikce zápasu. Po každém dohraném setu se posune.' : 'Teď hraný set ze skóre, další z 0:0. Stejný bodový model, ne samostatný model setů.';
+  return `<div class="setpreds"><div class="predlab">Kdo bere set</div>${lines.join('')}<p class="note">${note}</p></div>`;
 }
 function gamePredHtml(e, na, nb) {
   if (!liveMlOn(e) || e.st !== 2 || e.stale || e._p == null) return '';
@@ -1871,7 +1952,7 @@ function renderModel() {
     return `<tr><td>${g === 'M' ? 'Muži' : 'Ženy'} – ${GRP_CS[grp]}</td><td>${Object.entries(by).map(([s, [a, b, n]]) => `${SRC[s] || s}: ${a.slice(0, 4)}–${b.slice(6, 8)}.${b.slice(4, 6)}.${b.slice(0, 4)} (${n.toLocaleString('cs-CZ')})`).join('<br>')}</td></tr>`; }).join('');
   const L = S.live;
   v.innerHTML = `<div class="ph"><h1>MODEL</h1></div><div class="card"><h2>O modelu</h2>
-   <p>Model předpovídá pravděpodobnost výhry ve dvouhře pro <b>všechny úrovně</b>: Grand Slamy, ATP/WTA, Challengery, WTA 125, ITF/Futures i kvalifikace. Příznaky pro každý zápas se počítají jen z předchozích zápasů: Elo celkové a podle povrchu (K-faktor podle úrovně turnaje), žebříček a body, forma, H2H, věk, výška, ruka, únava, úspěšnost na povrchu, klouzavé statistiky podání/příjmu a úroveň turnaje. Pořadí hráčů je náhodné; predikce je symetrizovaná.</p><p><b>Verze 2</b> přidává Elo počítané z podílu vyhraných gemů (zohlední, jak přesvědčivě hráč vyhrál/prohrál), totéž podle povrchu, časově váženou formu (poločas ~1 měsíc), formu za 60 dní, nejistotu ratingu ve stylu Glicko (málo zápasů / dlouhá pauza), neaktivitu a součet bodů na podání+příjmu. Hyperparametry a kalibrace laděny jen na validaci (2. pol. 2025).</p><p>Předzápasová pravděpodobnost se po každém dohraném zápase o kousek posune — jeden online krok, ne nový strom. Starší výsledky zůstávají v nedělním modelu. Dnešní běh už započítal +19. Živá predikce u ATP, WTA a Challengeru vychází z předzápasové šance a skóre (sety, gemy, body, podání, brejk nebo udržení) a posune se po gemu, brejku, setu a po dohrání. Odhad, kdo vezme hraný gem, používá stejné vstupy a po každém dohraném gemu stejný krok.</p>
+   <p>Model předpovídá pravděpodobnost výhry ve dvouhře pro <b>všechny úrovně</b>: Grand Slamy, ATP/WTA, Challengery, WTA 125, ITF/Futures i kvalifikace. Příznaky pro každý zápas se počítají jen z předchozích zápasů: Elo celkové a podle povrchu (K-faktor podle úrovně turnaje), žebříček a body, forma, H2H, věk, výška, ruka, únava, úspěšnost na povrchu, klouzavé statistiky podání/příjmu a úroveň turnaje. Pořadí hráčů je náhodné; predikce je symetrizovaná.</p><p><b>Verze 2</b> přidává Elo počítané z podílu vyhraných gemů (zohlední, jak přesvědčivě hráč vyhrál/prohrál), totéž podle povrchu, časově váženou formu (poločas ~1 měsíc), formu za 60 dní, nejistotu ratingu ve stylu Glicko (málo zápasů / dlouhá pauza), neaktivitu a součet bodů na podání+příjmu. Hyperparametry a kalibrace laděny jen na validaci (2. pol. 2025).</p><p>Předzápasová pravděpodobnost se po každém dohraném zápase o kousek posune — jeden online krok, ne nový strom. Starší výsledky zůstávají v nedělním modelu. Dnešní běh už započítal +19. Živá predikce u ATP, WTA a Challengeru vychází z předzápasové šance a skóre (sety, gemy, body, podání, brejk nebo udržení) a posune se po gemu, brejku, setu a po dohrání. Odhad, kdo vezme hraný gem, používá stejné vstupy a po každém dohraném gemu stejný krok. Odhad setu, včetně prvního před zápasem, taky: stejné vstupy a krok po každém dohraném setu.</p>
    <div class="kv"><div>Poslední datum v datech buildu</div><div><b>${fmtDate(m.day_end)}</b></div><div>Build</div><div>${esc(m.built)}${m.mode === 'daily-incremental' ? ' <small class="note">(automatická denní aktualizace GitHub Actions, ~05:17 a ~17:17)</small>' : ''}</div>${m.update ? `<div>Poslední aktualizace</div><div>+${m.update.applied} zápasů${m.update.new_players ? `, ${m.update.new_players} nových hráčů` : ''}</div>` : ''}${m.full_build ? `<div>Plná přestavba a trénink</div><div>${esc(m.full_build)}</div>` : ''}
    <div>Trénink</div><div>${esc(mt.split.train)} (${mt.split.n_train.toLocaleString('cs-CZ')})</div><div>Validace</div><div>${esc(mt.split.valid)} (${mt.split.n_valid.toLocaleString('cs-CZ')})</div>
    <div>Refit (nasazený model)</div><div>${esc(mt.split.refit || '—')}</div><div>Holdout (mimo vzorek)</div><div>${esc(mt.split.test)} (${mt.split.n_test.toLocaleString('cs-CZ')})</div><div>Stromů LightGBM</div><div>${mt.gbm_trees}</div></div></div>
