@@ -4,7 +4,7 @@
 "flashscore": [
 "20260922",
 "20261002",
-145
+146
 ],
 "sackmann": [
 "20000124",
@@ -2331,6 +2331,7 @@
 "zstq7RyJ": 20719,
 "zu7FMRzH": 20720,
 "zuNCrDPj": 20718,
+"zuRVe1Cj": 20728,
 "zwnQdiK0": 20719,
 "zy5KSrWb": 20727
 },
@@ -12124,6 +12125,11 @@
 ],
 [
 "a208854",
+"a209406",
+20728
+],
+[
+"a208854",
 "a211346",
 20693
 ],
@@ -21337,6 +21343,22 @@
 "fs_new_events": 0,
 "new_players": 0,
 "tml_rows": {}
+},
+{
+"applied": 1,
+"at": "2026-10-02 21:25 CEST",
+"by_level": {
+"M_chall": 1
+},
+"dup_skipped": 0,
+"enriched": 3,
+"fs_new_events": 1,
+"live_steps": 2,
+"new_players": 0,
+"online_steps": 1,
+"tml_rows": {
+"M_chall": 3
+}
 }
 ]
 }
