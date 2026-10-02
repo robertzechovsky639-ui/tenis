@@ -599,6 +599,52 @@ function attachOnline(shipped) {
   S.online = { base: use.base, cols: shipped.cols, scale: shipped.scale, w: (use.w || []).slice(), n: use.n || 0, seen: (use.seen || []).slice() };
   S.model.m.online = S.online;
 }
+/* Kurzy a zprávy. Zvlášť od kroku z dohraného zápasu, ať se ten krok (0,008) nespustí podruhé. */
+function attachMkt() {
+  const cols = (S.online && S.online.cols) || [];
+  let local = null;
+  try { local = JSON.parse(localStorage.getItem('tp:mkt') || 'null'); } catch (e) { local = null; }
+  S.mkt = (typeof MK !== 'undefined' ? MK.fresh() : { v: 1, w: [], seen: [], ph: {}, n: 0 });
+  S.newsArts = [];
+  if (local && local.v === 1 && local.ph) {
+    S.mkt.ph = local.ph;
+    if (local.w && cols.length && local.w.length === cols.length) { S.mkt.w = local.w.slice(); S.mkt.seen = (local.seen || []).slice(); S.mkt.n = local.n || 0; }
+  }
+}
+function saveMkt() {
+  try { const m = S.mkt; if (!m) return; localStorage.setItem('tp:mkt', JSON.stringify({ v: 1, w: m.w, seen: m.seen, ph: m.ph, n: m.n })); } catch (e) {}
+}
+function marketOn(e) { return !!(e && e.st === 1 && e.code >= 3 && e.det !== 8 && e.det !== 5 && e._p > 0 && e._p < 1); }
+function pidOf(i) { if (i == null || i < 0) return null; if (i < S.N && S.idx && S.idx.id[i]) return 'p' + S.idx.id[i]; return 'x' + i; }
+function preAvg(e) {
+  const o = e.oddsV && e.oddsV.avg && !e.oddsV.inplay ? e.oddsV : (e.oddsPrem && e.oddsPrem.avg && !e.oddsPrem.inplay ? e.oddsPrem : null);
+  return o ? o.avg : null;
+}
+function newsOn(e, side) {
+  if (typeof MK === 'undefined') return 0;
+  const r = resolveEv(e), i = side ? r.ai : r.hi;
+  const names = [side ? (e.a && e.a.name) : (e.h && e.h.name), i != null ? pName(i) : ''];
+  let best = 0; const now = Date.now();
+  for (const n of names) { const ph = MK.phrase(n); if (!ph) continue; const s = MK.shockFromArticles(S.newsArts || [], ph, now); if (s < best) best = s; }
+  return best;
+}
+function syncMarket(e) {
+  if (!e || e._p == null) return;
+  if (!S.mkt || typeof MK === 'undefined' || !marketOn(e)) { e._d = 0; e._ps = e._p; return; }
+  const r = resolveEv(e);
+  const rec = { id: e.id, hi: pidOf(r.hi), ai: pidOf(r.ai), p: e._p, pMkt: MK.implied(preAvg(e)), newsH: newsOn(e, 0), newsA: newsOn(e, 1), x: e._x, cols: S.online && S.online.cols, scale: S.online && S.online.scale, F: S.model && S.model.F };
+  const bucket = (rec.pMkt == null ? 'x' : Math.round(rec.pMkt * 100)) + ':' + Math.round(((rec.newsH || 0) - (rec.newsA || 0)) * 100);
+  if (e._mb === bucket && e._ps != null) {
+    const d = MK.displayDelta(S.mkt, rec); e._d = d.d; e._ps = MK.show(e._p, d.d); return;
+  }
+  const n0 = S.mkt.n || 0;
+  const view = MK.sync(S.mkt, rec);
+  if (!view) { e._d = 0; e._ps = e._p; return; }
+  const after = MK.displayDelta(S.mkt, rec);
+  e._d = after.d; e._ps = MK.show(e._p, after.d); e._mb = bucket;
+  if (view.stepped || (S.mkt.n || 0) !== n0 || rec.pMkt != null) saveMkt();
+}
+function shownP(e) { return e && e._ps != null ? e._ps : e._p; }
 /* ---------- živé výsledky -> Elo ---------- */
 async function applyLive(evs) {
   const fin = evs.filter(e => e.st === 3 && (e.det === 3 || e.det === 8) && (e.win === 1 || e.win === 2)).sort((a, b) => a.ts - b.ts);
@@ -698,6 +744,7 @@ async function probsFor(list) {
     if (e.st === 3) continue;
     if (e._p != null && (e.st === 2 || e._pg === S.predGen)) continue;
     const r = resolveEv(e); try { const pr = predict(r.hi, r.ai, e.surface, e.code, e.q); e._p = pr.p; e._x = pr.x; e._pg = S.predGen; } catch (err) { }
+    try { syncMarket(e); } catch (err) { e._ps = e._p; }
   }
 }
 
@@ -1418,12 +1465,15 @@ function setPredHtml(e, na, nb) {
   const live = e.st === 2 && !e.stale ? readLive(e) : null;
   if (!live) {
     const tag = e.st === 2 ? 'bez skóre' : 'z 0:0';
-    if (setModelOn(e) && e.st !== 2) {
-      const p = liveSetP(e, 0, 0, 0, 0, 0, 0, 0, 0, false, 0, 0, 0);
-      if (p != null) return `<div class="setpreds"><div class="predlab">Kdo bere set</div>${setRowPct(1, na, nb, p, tag)}<p class="note">Šance na 1. set je vlastní číslo, ne šance na zápas. Po dohraných setech se přenese do dalšího zápasu.</p></div>`;
-    }
-    const note = e.st === 2 ? '' : '<p class="note">1. set z 0:0, stejný bodový model jako zápas. Není to zvlášť trénovaný model setů.</p>';
-    return `<div class="setpreds"><div class="predlab">Kdo bere set</div>${setRowPct(1, na, nb, fit.pSet0, tag)}${note}</div>`;
+    let base = null;
+    if (setModelOn(e) && e.st !== 2) base = liveSetP(e, 0, 0, 0, 0, 0, 0, 0, 0, false, 0, 0, 0);
+    if (base == null) base = fit.pSet0;
+    const d = marketOn(e) && e._d ? e._d : 0;
+    const p = (typeof MK !== 'undefined' && d) ? MK.show(base, MK.SET_SCALE * d) : base;
+    const note = e.st === 2 ? '' : (setModelOn(e)
+      ? '<p class="note">Šance na 1. set je vlastní číslo, ne šance na zápas. Před zápasem se zápas i set posunou podle kurzů a podle zpráv o odhlášení nebo zranění, jakmile přijdou. Naučený posun jde do dalších zápasů. Bez kurzu zůstává model.</p>'
+      : '<p class="note">1. set z 0:0, stejný bodový model jako zápas. Není to zvlášť trénovaný model setů.</p>');
+    return `<div class="setpreds"><div class="predlab">Kdo bere set</div>${setRowPct(1, na, nb, p, tag)}${note}</div>`;
   }
   const need = (fit.bo + 1) / 2;
   const sets = (e.sets || []).filter(s => s && +s[0] >= 0 && +s[1] >= 0);
@@ -1488,7 +1538,7 @@ function gamePredHtml(e, na, nb) {
 
 function predInner(e, na, nb) {
   const pre = `<div class="predlab pre">Před zápasem</div><div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div>`;
-  if (e.st !== 2) return `<div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div>${setPredHtml(e, na, nb)}`;
+  if (e.st !== 2) { const p = shownP(e); return `<div class="big2"><div><b class="a">${pct(p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(p * 100).toFixed(1)}%"></i></div>${setPredHtml(e, na, nb)}`; }
   const L = liveProb(e);
   if (!L || !L.ok) return pre + setPredHtml(e, na, nb) + '<p class="note">Živé skóre teď nemáme, platí jen předzápasová predikce.</p>';
   const bits = [];
@@ -1514,7 +1564,7 @@ function paintLivePred(e) {
 
 function probHtml(e) {
   if (e.st === 3 || e._p == null) return '';
-  const p = e._p;
+  const p = shownP(e);
   return `<div class="pb"><span class="pa ${p >= 0.5 ? 'fv' : ''}">${pct(p)}</span><div class="bar"><i style="width:${(p * 100).toFixed(1)}%"></i></div><span class="pc ${p < 0.5 ? 'fv' : ''}">${pct(1 - p)}</span></div>`;
 }
 function mrowHtml(e) {
@@ -1575,34 +1625,36 @@ async function renderMatches(keep) {
   else if (!list.length) h += `<div class="empty">Žádné zápasy pro tento výběr.${F.favOnly ? '<br><small>Přidejte si hráče do oblíbených hvězdičkou v detailu zápasu.</small>' : ''}</div>`;
   else h += groupsHtml(list);
   const sc = S.live.srcCount || {};
-  h += `<p class="note">Zdroje: ${Object.entries(sc).map(([k, n]) => `${k === 'snapshot' ? 'snímek z buildu ' + esc(S.live.snapshot || '') : k} (${n})`).join(', ') || '—'}. Živé skóre: ATP/WTA z ESPN (~15 s), body a gemy z 365scores (~8 s)${S.live.sofa ? ', ITF ze Sofascore (~20 s)' : ', ITF jen ze snímku buildu (Sofascore z této sítě neodpovídá)'}. Živé kurzy v průběhu (Tipsport, iFortuna, Chance, Betano – jen kdo je vypsal) se berou každých 20 s u zobrazených zápasů. VALUE je vždy z předzápasového kurzu. Procenta v seznamu = odhad modelu před zápasem. U živého zápasu je v detailu i „Predikce teď“ ze skóre.</p>
+  h += `<p class="note">Zdroje: ${Object.entries(sc).map(([k, n]) => `${k === 'snapshot' ? 'snímek z buildu ' + esc(S.live.snapshot || '') : k} (${n})`).join(', ') || '—'}. Živé skóre: ATP/WTA z ESPN (~15 s), body a gemy z 365scores (~8 s)${S.live.sofa ? ', ITF ze Sofascore (~20 s)' : ', ITF jen ze snímku buildu (Sofascore z této sítě neodpovídá)'}. Kurzy (Tipsport, iFortuna, Chance, Betano) se u nadcházejícího zápasu ATP, WTA, Challengeru a grandslamu berou každých 20 s a posouvají šanci na zápas i na 1. set. Zprávy o odhlášení a zranění jdou z ESPN. VALUE zůstává z čistého modelu a předzápasového kurzu. ITF se podle kurzů neposouvá. U živého zápasu je v detailu i „Predikce teď“ ze skóre.</p>
    <p class="note gam">18+ Kurzy slouží jen pro srovnání s modelem. Sázení je riskantní a může vést k závislosti – hrajte zodpovědně, jen s penězi, které si můžete dovolit prohrát.</p>`;
   v.innerHTML = h;
   if (keep) window.scrollTo(0, y);
   observeOdds(v);
 }
-/* živé kurzy: viditelné řádky (IntersectionObserver) se obnovují každých ~60 s, otevřený detail každých ~20 s */
+/* kurzy: nadcházející ATP/WTA/Challenger/slam a živé zápasy každých 20 s, ostatní viditelné řádky ~60 s */
 const ODDS_VIS_TTL = 60000, ODDS_OPEN_TTL = 20000;
 let oddsObs = null;
+function oddsEvery(e) { if (!e) return ODDS_VIS_TTL; if (e.st === 2) return ODDS_LIVE_TTL; if (e.st === 1 && e.code >= 3) return ODDS_OPEN_TTL; return ODDS_VIS_TTL; }
+function onOdds(e) { if (!e) return; try { syncMarket(e); } catch (err) {} updateRowOdds(e); updateRowProb(e); if (S.detail && S.detail.id === e.id) { refreshDetailOdds(e); paintLivePred(e); } }
 function observeOdds(root) {
   if (!('IntersectionObserver' in window)) return;
   if (!oddsObs) oddsObs = new IntersectionObserver(ents => { for (const en of ents) { const id = en.target.dataset.ev;
       if (!en.isIntersecting) { S.visible.delete(id); continue; }
       S.visible.add(id); const e = S.byId[id]; if (!e || e.st === 3 || !e.fsid) continue;
-      const ttl = e.st === 2 ? ODDS_LIVE_TTL : ODDS_VIS_TTL;
+      const ttl = oddsEvery(e);
       if (e.st === 2 ? (e.oddsV && e.oddsV.inplay && Date.now() - e.oddsV.t < ttl) : (e.oddsV && e.oddsV.live && Date.now() - e.oddsV.t < ttl)) continue;
-      fetchOdds(e, false, ttl).then(() => updateRowOdds(e)); } }, { rootMargin: '150px' });
+      fetchOdds(e, false, ttl).then(() => onOdds(e)); } }, { rootMargin: '150px' });
   for (const el of root.querySelectorAll('.mr[data-fs]')) oddsObs.observe(el);
 }
 function oddsTick() {
   if (document.hidden || !S.all) return;
-  const want = e => { if (!e || !e.fsid || e.st === 3) return 0; if (e.st === 2) return !(e.oddsV && e.oddsV.inplay) || Date.now() - e.oddsV.t >= ODDS_LIVE_TTL; return !e.oddsV || !e.oddsV.live || Date.now() - e.oddsV.t >= ODDS_VIS_TTL; };
-  if (S.detail) { const e = S.byId[S.detail.id]; if (want(e) || (e && e.fsid && e.st === 1 && S.detail.tab === 'kurzy')) fetchOdds(e, true, e.st === 2 ? ODDS_LIVE_TTL : ODDS_OPEN_TTL).then(() => { updateRowOdds(e); refreshDetailOdds(e); }); }
+  const want = e => { if (!e || !e.fsid || e.st === 3) return 0; const ttl = oddsEvery(e); if (e.st === 2) return !(e.oddsV && e.oddsV.inplay) || Date.now() - e.oddsV.t >= ttl; return !e.oddsV || !e.oddsV.live || Date.now() - e.oddsV.t >= ttl; };
+  if (S.detail) { const e = S.byId[S.detail.id]; if (want(e) || (e && e.fsid && e.st === 1 && S.detail.tab === 'kurzy')) fetchOdds(e, true, oddsEvery(e)).then(() => onOdds(e)); }
   const v = (location.hash || '#zapasy').slice(1);
   if (v !== 'zapasy' && v !== 'oblibene' && !S.detail) return;
   for (const id of [...S.visible]) { const e = S.byId[id]; if (!want(e)) continue;
     if (!document.querySelector(`.mr[data-ev="${CSS.escape(id)}"]`)) { S.visible.delete(id); continue; }
-    fetchOdds(e, false, e.st === 2 ? ODDS_LIVE_TTL : ODDS_VIS_TTL).then(() => updateRowOdds(e)); }
+    fetchOdds(e, false, oddsEvery(e)).then(() => onOdds(e)); }
 }
 /* plynulá změna čísla (bez skoku) */
 function tweenNum(el, to) {
@@ -1612,6 +1664,18 @@ function tweenNum(el, to) {
   requestAnimationFrame(step);
 }
 function flash(el, dir) { if (!dir || !el) return; el.classList.remove('fl-up', 'fl-dn'); void el.offsetWidth; el.classList.add(dir > 0 ? 'fl-up' : 'fl-dn'); }
+function updateRowProb(e) {
+  if (!e) return;
+  const p = shownP(e);
+  for (const el of document.querySelectorAll(`.mr[data-ev="${CSS.escape(e.id)}"]`)) {
+    const pb = el.querySelector('.pb');
+    if (!pb || p == null) continue;
+    const pa = pb.querySelector('.pa'), pc = pb.querySelector('.pc'), bar = pb.querySelector('.bar i');
+    if (pa) { pa.textContent = pct(p); pa.classList.toggle('fv', p >= 0.5); }
+    if (pc) { pc.textContent = pct(1 - p); pc.classList.toggle('fv', p < 0.5); }
+    if (bar) bar.style.width = (p * 100).toFixed(1) + '%';
+  }
+}
 function updateRowOdds(e) {
   const o = e.oddsV;
   for (const el of document.querySelectorAll(`.mr[data-ev="${CSS.escape(e.id)}"]`)) {
@@ -1732,7 +1796,7 @@ async function openEvent(id, tab) {
   if (!S.detail) history.pushState({ detail: 1 }, '');
   S.detail = { id }; $('#detail').scrollTop = 0;
   showDTab(tab || 'prehled');
-  if (e.fsid && e.st !== 3) fetchOdds(e, true).then(() => { if (S.detail && S.detail.id === id && S.detail.tab === 'prehled') showDTab('prehled'); updateRowOdds(e); });
+  if (e.fsid && e.st !== 3) fetchOdds(e, true).then(() => { if (!(S.detail && S.detail.id === id)) return; try { syncMarket(e); } catch (err) {} if (S.detail.tab === 'prehled' || S.detail.tab === 'predikce') showDTab(S.detail.tab); updateRowOdds(e); updateRowProb(e); });
 }
 function closeDetail(fromPop) { if (!S.detail) return; S.detail = null; $('#detail').hidden = true; document.body.classList.remove('noscroll'); if (!fromPop) history.back(); }
 async function showDTab(k) {
@@ -1754,7 +1818,7 @@ async function showDTab(k) {
     if (e.st === 3 || e._p == null) h += `<button class="btn ai" data-ask="${esc(e.id)}">✦ Zeptat se AI na tento zápas</button>`;
     body.innerHTML = h;
   } else if (k === 'predikce') {
-    body.innerHTML = (e.st === 3 ? '<div class="warn">Zápas už skončil. Model níže počítá s aktuálními daty, která mohou tento výsledek už obsahovat – nejde o předzápasový tip.</div>' : predNote(e)) + resultHtml(r.hi, r.ai, e.surface, e.code, e.q);
+    body.innerHTML = (e.st === 3 ? '<div class="warn">Zápas už skončil. Model níže počítá s aktuálními daty, která mohou tento výsledek už obsahovat – nejde o předzápasový tip.</div>' : (e.st === 1 ? `<div class="card" id="d-predblock">${predInner(e, na, nb)}</div>` : predNote(e))) + resultHtml(r.hi, r.ai, e.surface, e.code, e.q);
   } else if (k === 'kurzy') {
     body.innerHTML = '<div class="empty">Načítám kurzy…</div>';
     if (e.fsid) await fetchOdds(e, true);
@@ -2070,7 +2134,7 @@ function renderModel() {
     return `<tr><td>${g === 'M' ? 'Muži' : 'Ženy'} – ${GRP_CS[grp]}</td><td>${Object.entries(by).map(([s, [a, b, n]]) => `${SRC[s] || s}: ${a.slice(0, 4)}–${b.slice(6, 8)}.${b.slice(4, 6)}.${b.slice(0, 4)} (${n.toLocaleString('cs-CZ')})`).join('<br>')}</td></tr>`; }).join('');
   const L = S.live;
   v.innerHTML = `<div class="ph"><h1>MODEL</h1></div><div class="card"><h2>O modelu</h2>
-   <p>Model předpovídá pravděpodobnost výhry ve dvouhře pro <b>všechny úrovně</b>: Grand Slamy, ATP/WTA, Challengery, WTA 125, ITF/Futures i kvalifikace. Příznaky pro každý zápas se počítají jen z předchozích zápasů: Elo celkové a podle povrchu (K-faktor podle úrovně turnaje), žebříček a body, forma, H2H, věk, výška, ruka, únava, úspěšnost na povrchu, klouzavé statistiky podání/příjmu a úroveň turnaje. Pořadí hráčů je náhodné; predikce je symetrizovaná.</p><p><b>Verze 2</b> přidává Elo počítané z podílu vyhraných gemů (zohlední, jak přesvědčivě hráč vyhrál/prohrál), totéž podle povrchu, časově váženou formu (poločas ~1 měsíc), formu za 60 dní, nejistotu ratingu ve stylu Glicko (málo zápasů / dlouhá pauza), neaktivitu a součet bodů na podání+příjmu. Hyperparametry a kalibrace laděny jen na validaci (2. pol. 2025).</p><p>Předzápasová pravděpodobnost se po každém dohraném zápase o kousek posune — jeden online krok, ne nový strom. Starší výsledky zůstávají v nedělním modelu. Dnešní běh už započítal +19. Živá predikce u ATP, WTA a Challengeru vychází z předzápasové šance a skóre (sety, gemy, body, podání, brejk nebo udržení) a posune se po gemu, brejku, setu a po dohrání. Odhad, kdo vezme hraný gem, používá stejné vstupy a po každém dohraném gemu stejný krok. Šance na set je vlastní číslo, ne kopie šance na zápas. Před zápasem vychází z naučených vah setu a po dohraném setu se přenese do dalšího zápasu. Během setu se šance na ten set i na další set posouvají podle gemů, bodů, brejků a síly soupeře.</p>
+   <p>Model předpovídá pravděpodobnost výhry ve dvouhře pro <b>všechny úrovně</b>: Grand Slamy, ATP/WTA, Challengery, WTA 125, ITF/Futures i kvalifikace. Příznaky pro každý zápas se počítají jen z předchozích zápasů: Elo celkové a podle povrchu (K-faktor podle úrovně turnaje), žebříček a body, forma, H2H, věk, výška, ruka, únava, úspěšnost na povrchu, klouzavé statistiky podání/příjmu a úroveň turnaje. Pořadí hráčů je náhodné; predikce je symetrizovaná.</p><p><b>Verze 2</b> přidává Elo počítané z podílu vyhraných gemů (zohlední, jak přesvědčivě hráč vyhrál/prohrál), totéž podle povrchu, časově váženou formu (poločas ~1 měsíc), formu za 60 dní, nejistotu ratingu ve stylu Glicko (málo zápasů / dlouhá pauza), neaktivitu a součet bodů na podání+příjmu. Hyperparametry a kalibrace laděny jen na validaci (2. pol. 2025).</p><p>Předzápasová pravděpodobnost se po každém dohraném zápase o kousek posune — jeden online krok, ne nový strom. Starší výsledky zůstávají v nedělním modelu. Dnešní běh už započítal +19. U ATP, WTA, Challengeru a grandslamu se před zápasem zobrazená šance na zápas a na 1. set navíc posouvá podle aktuálních kurzů (jen část rozdílu proti trhu bez marže) a podle zpráv ESPN o odhlášení nebo zranění. Ten posun se zapíše do vlastních vah a u dalších zápasů těch hráčů zůstane. Stromy ani krok z dohraného zápasu se tím nemění. Když kurz není, zůstává model. ITF se tak neposouvá. Živá predikce u ATP, WTA a Challengeru vychází z předzápasové šance a skóre (sety, gemy, body, podání, brejk nebo udržení) a posune se po gemu, brejku, setu a po dohrání. Odhad, kdo vezme hraný gem, používá stejné vstupy a po každém dohraném gemu stejný krok. Šance na set je vlastní číslo, ne kopie šance na zápas. Před zápasem vychází z naučených vah setu a po dohraném setu se přenese do dalšího zápasu. Během setu se šance na ten set i na další set posouvají podle gemů, bodů, brejků a síly soupeře.</p>
    <div class="kv"><div>Poslední datum v datech buildu</div><div><b>${fmtDate(m.day_end)}</b></div><div>Build</div><div>${esc(m.built)}${m.mode === 'daily-incremental' ? ' <small class="note">(automatická denní aktualizace GitHub Actions, ~05:17 a ~17:17)</small>' : ''}</div>${m.update ? `<div>Poslední aktualizace</div><div>+${m.update.applied} zápasů${m.update.new_players ? `, ${m.update.new_players} nových hráčů` : ''}</div>` : ''}${m.full_build ? `<div>Plná přestavba a trénink</div><div>${esc(m.full_build)}</div>` : ''}
    <div>Trénink</div><div>${esc(mt.split.train)} (${mt.split.n_train.toLocaleString('cs-CZ')})</div><div>Validace</div><div>${esc(mt.split.valid)} (${mt.split.n_valid.toLocaleString('cs-CZ')})</div>
    <div>Refit (nasazený model)</div><div>${esc(mt.split.refit || '—')}</div><div>Holdout (mimo vzorek)</div><div>${esc(mt.split.test)} (${mt.split.n_test.toLocaleString('cs-CZ')})</div><div>Stromů LightGBM</div><div>${mt.gbm_trees}</div></div></div>
@@ -2140,6 +2204,7 @@ async function init() {
     const [meta, idx, model] = await Promise.all(['data/meta.json', 'data/players.json', 'data/model.json'].map(u => fetch(u).then(r => { if (!r.ok) throw new Error(u); return r.json(); })));
     S.meta = meta; S.idx = idx; S.N = idx.id.length; S.model = new TM.Model(model); S.extraKey = {};
     try { attachOnline(await getJSON('data/online.json')); } catch (e) { S.online = null; }
+    attachMkt();
     try { attachLive(await getJSON('data/live_online.json')); } catch (e) { attachLive(null); }
     S.idMap = new Map(idx.id.map((x, i) => [String(x), i]));
     S.E = idx.e.slice(); S.SE = idx.se.map(x => x.slice()); S.GE = (idx.ge || idx.e).slice(); S.GSE = (idx.gse || idx.se).map(x => x.slice()); S.K = idx.k.slice(); S.SK = idx.sk.map(x => x.slice());
@@ -2155,6 +2220,19 @@ async function init() {
     fillLive();
     setInterval(() => refreshLive(), REFRESH_MS);
     setInterval(oddsTick, 20000);
+    const NEWS = t => `https://site.api.espn.com/apis/site/v2/sports/tennis/${t}/news?limit=25`;
+    async function pollNews() {
+      if (!S.mkt || typeof MK === 'undefined') return;
+      const arts = [];
+      for (const t of ['atp', 'wta']) { try { const j = await getJSON(NEWS(t), 12000); if (j && j.articles) arts.push(...j.articles); } catch (e) { S.mkt.newsErr = (S.mkt.newsErr || 0) + 1; } }
+      if (!arts.length) return;
+      S.newsArts = arts;
+      for (const e of (S.all || [])) { if (!marketOn(e)) continue; e._mb = null; try { syncMarket(e); } catch (err) {} }
+      for (const e of (S.all || [])) if (marketOn(e)) updateRowProb(e);
+      if (S.detail) { const e = S.byId[S.detail.id]; if (e && e.st === 1) paintLivePred(e); }
+    }
+    pollNews();
+    setInterval(pollNews, 180000);
     setInterval(() => lowTick(), LOW_MS);
     setInterval(() => sofaTick(), SOFA_MS);
   } catch (e) { st.textContent = 'Chyba načítání: ' + e.message; console.error(e); }
