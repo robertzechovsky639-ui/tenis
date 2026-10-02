@@ -3,7 +3,7 @@
 import os, sys, json, pickle, glob, math, datetime, time, re
 import numpy as np, pandas as pd, lightgbm as lgb
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import engine, fs
+import engine, fs, online
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, 'data'); W = os.path.join(ROOT, 'web', 'data')
 NSH = 16
@@ -70,6 +70,11 @@ class Predictor:
         m = json.load(open(os.path.join(W, 'model.json')))
         self.m = m; self.b = lgb.Booster(model_file=os.path.join(D, 'gbm.txt'))
         self.di = [m['feats'].index(f) for f in m['diff']]
+        info_p = os.path.join(D, 'model_info.json')
+        base = '0'
+        if os.path.exists(info_p):
+            base = str(json.load(open(info_p)).get('train_end_day') or json.load(open(info_p)).get('train_end') or '0')
+        self.online = online.load(os.path.join(ROOT, 'state', 'online.json'), base, m['lr']['cols'], m['lr']['scale'])
     def swap(self, x):
         z = list(x); F = self.m['feats']
         for i in self.di: z[i] = -z[i]
@@ -79,13 +84,16 @@ class Predictor:
         L = self.m[part]; F = self.m['feats']
         z = sum(x[F.index(c)] / s * w for c, s, w in zip(L['cols'], L['scale'], L['coef']))
         return 1 / (1 + math.exp(-z))
-    def predict(self, x):
+    def frozen(self, x):
         pg = self.b.predict(np.array([x, self.swap(x)], dtype=np.float64))
         pgb = 0.5 * (pg[0] + 1 - pg[1]); plr = self.lr(x)
         a = self.m.get('cal', 1.0)
         if a != 1.0:
             q = min(max(pgb, 1e-6), 1 - 1e-6); pgb = 1 / (1 + math.exp(-a * math.log(q / (1 - q))))
         return self.m['w_gbm'] * pgb + (1 - self.m['w_gbm']) * plr, pgb, plr
+    def predict(self, x):
+        p, pgb, plr = self.frozen(x)
+        return online.adjust(p, self.online, x, self.m['feats']), pgb, plr
 
 def full_inputs():
     """Vstupy exportu z plné přestavby (state.pkl + matches.parquet)."""
@@ -126,6 +134,17 @@ def export_all(P, H, day_end, gap_start, cov, tours, tmlrep, extra_meta=None):
     for k, f in (('model_info', 'model_info.json'), ('retrain', 'retrain_history.json')):   # týdenní přetrénování -> záložka Model
         fp = os.path.join(D, f)
         if os.path.exists(fp): meta[k] = json.load(open(fp)) if k == 'model_info' else json.load(open(fp))[-12:]
+    on_p = os.path.join(ROOT, 'state', 'online.json')
+    if os.path.exists(on_p):
+        on = json.load(open(on_p))
+    else:
+        mm = json.load(open(os.path.join(W, 'model.json')))
+        info_p = os.path.join(D, 'model_info.json')
+        base = str(json.load(open(info_p)).get('train_end_day')) if os.path.exists(info_p) else '0'
+        on = online.empty(base, mm['lr']['cols'], mm['lr']['scale'])
+    json.dump(on, open(os.path.join(W, 'online.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
+    meta['online_n'] = int(on.get('n') or 0)
+    meta['online_base'] = on.get('base')
     json.dump(meta, open(os.path.join(W, 'meta.json'), 'w'), ensure_ascii=False, indent=0)
     sizes = [os.path.getsize(os.path.join(W, 'st', f'{k}.json')) for k in range(NSH)]
     print('players', len(act_ids), 'index KB', os.path.getsize(os.path.join(W, 'players.json')) // 1024, 'shards KB total', sum(sizes) // 1024)

@@ -400,8 +400,8 @@ function ingest(evs, attach) {
   for (const e of evs) { const d = dayOff(e.ts); if (d < -2 || d > 2) continue;
     const r = attach ? attachEvent(e) : addEvent(e); if (!r) continue; if (r.changed) { changed = true; n++; }
     if (r.ex.st === 3 && !S.finSeen.has(r.ex.id)) { S.finSeen.add(r.ex.id); newFin.push(attach ? r.ex : e); } }
-  if (newFin.length) { applyLive(newFin); S.predCache = {}; }
-  if (changed || newFin.length) onLiveChange(newFin.length);
+  if (newFin.length) applyLive(newFin).then(() => { S.predCache = {}; onLiveChange(newFin.length); });
+  else if (changed) onLiveChange(0);
   return { changed, n, fin: newFin.length };
 }
 /* 365scores (body a gemy, Challenger/WTA 125 i ATP/WTA) asi každých 8 s.
@@ -577,10 +577,38 @@ function predict(i, j, surface, code, q, bo) {
   return r;
 }
 
+
+/* Doladění modelu z dohraných zápasů. Váhy z buildu (state/online.json) plus zápasy,
+   které tenhle prohlížeč viděl dřív než poslední build. Stejný krok jako scripts/online.py. */
+function saveOnline() {
+  try { localStorage.setItem('tp:online', JSON.stringify({ base: S.online.base, w: S.online.w, n: S.online.n, seen: S.online.seen, cols: S.online.cols, scale: S.online.scale })); } catch (e) { /* úložiště plné – doladění platí aspoň do zavření */ }
+}
+function attachOnline(shipped) {
+  if (!shipped || !shipped.w || !S.model) return;
+  let local = null;
+  try { local = JSON.parse(localStorage.getItem('tp:online') || 'null'); } catch (e) { local = null; }
+  const same = local && local.base === shipped.base && local.cols && local.cols.length === shipped.cols.length;
+  let use = shipped;
+  if (same) {
+    const ss = new Set(shipped.seen || []), ls = new Set(local.seen || []);
+    const localInShip = [...ls].every(id => ss.has(id));
+    const shipInLocal = [...ss].every(id => ls.has(id));
+    if (!localInShip && shipInLocal) use = local; // telefon je napřed
+  }
+  S.online = { base: use.base, cols: shipped.cols, scale: shipped.scale, w: (use.w || []).slice(), n: use.n || 0, seen: (use.seen || []).slice() };
+  S.model.m.online = S.online;
+}
 /* ---------- živé výsledky -> Elo ---------- */
-function applyLive(evs) {
+async function applyLive(evs) {
   const fin = evs.filter(e => e.st === 3 && (e.det === 3 || e.det === 8) && (e.win === 1 || e.win === 2)).sort((a, b) => a.ts - b.ts);
   const seen = new Set(); const ro = S.ro;
+  const ids = [];
+  for (const e of fin) {
+    const Wp = e.win === 1 ? e.h : e.a, Lp = e.win === 1 ? e.a : e.h;
+    const wi = S.matcher.match(e.g, Wp.slug, Wp.name), li = S.matcher.match(e.g, Lp.slug, Lp.name);
+    if (wi !== null) ids.push(wi); if (li !== null) ids.push(li);
+  }
+  try { if (ids.length) await ensure(ids); } catch (e) { /* shard nejde – Elo se započte i bez doladění */ }
   for (const e of fin) {
     if (seen.has(e.id)) continue; seen.add(e.id); S.live.finished++;
     const day = Math.floor(e.ts / 86400) + ((e.ts % 86400) > 22 * 3600 ? 1 : 0);
@@ -592,6 +620,23 @@ function applyLive(evs) {
     const dup = (ro[wi] || []).some(([o, d]) => o === li && Math.abs(d - day) <= (d > S.meta.day_end ? 2 : 10));
     if (dup) { S.live.dup++; continue; }
     const s = TM.SURF[e.surface] ?? 0, ret = e.det === 8 ? 1 : 0;
+    if (!ret && wi < S.N && li < S.N && S.idx.id[wi] && S.idx.id[li] && S.online) {
+      delete S.states[wi]; delete S.states[li];
+      const Ws = state(wi), Ls = state(li);
+      if (Ws && Ls) {
+        const mk = day + '|' + S.idx.id[wi] + '|' + S.idx.id[li];
+        const aIsW = TM.crc32(mk) % 2 === 0;
+        const A = aIsW ? Ws : Ls, B = aIsW ? Ls : Ws, ai = aIsW ? wi : li, bi = aIsW ? li : wi;
+        const bo = (e.code === 6 && e.g === 'M' && !e.q) ? 5 : 3;
+        const ctx = { day, dayA: TM.refDay(A, day, S.meta.gap_start), dayB: TM.refDay(B, day, S.meta.gap_start), surface: s, lvl_code: e.code, is_qual: e.q ? 1 : 0, best_of: bo };
+        const hh = h2h(ai, bi);
+        try {
+          const x = TM.feats(A, B, ctx, hh);
+          const p0 = S.model.base(x);
+          if (TM.onlineStep(S.online, x, aIsW ? 1 : 0, p0, S.model.F, mk)) { S.onlineN = (S.onlineN || 0) + 1; saveOnline(); S.predGen++; }
+        } catch (err) { /* příznaky nejdou spočítat – Elo se stejně posune */ }
+      }
+    }
     const W = { elo: S.E[wi], se: S.SE[wi], n: S.K[wi], sn: S.SK[wi], gelo: S.GE[wi], gse: S.GSE[wi] }, L = { elo: S.E[li], se: S.SE[li], n: S.K[li], sn: S.SK[li], gelo: S.GE[li], gse: S.GSE[li] };
     // gemy vítěze/poraženého ze setů (pro Elo z gemů); bez setů -> null
     const ws = e.win === 1 ? 0 : 1; const games = (e.sets || []).length ? e.sets.reduce((a, x) => [a[0] + (+x[ws] || 0), a[1] + (+x[1 - ws] || 0)], [0, 0]) : null;
@@ -1546,15 +1591,15 @@ function renderModel() {
    <div class="card"><h2>Data</h2><table><tr><th>Kategorie</th><th style="text-align:left">Zdroj: rozsah (počet zápasů)</th></tr>${cov}</table>
    <p class="note">Sackmannovy repozitáře tennis_atp/tennis_wta jsou od léta 2026 offline; použit veřejný archiv (snapshot do ${fmtDate(m.gap_start)}). ATP/WTA okruh a Challengery jsou doplněny z TennisMyLife až do buildu. ITF, WTA 125 a kvalifikace Challengerů mají mezeru mezi snapshotem a posledními 7 dny před buildem (u těchto hráčů je neutralizována únava).</p></div>
    <div class="card"><h2>Živá data a aktualizace</h2>
-   <p><b>Při otevření</b> aplikace v prohlížeči (bez klíčů) stáhne rozpis a výsledky (±2 dny, výsledky ~7 dní zpět) a z nových výsledků <b>přepočítá Elo</b>, formu, únavu a H2H. <b>Živé skóre</b> se nejdřív ukáže ze snímku buildu, potom se doplní z feedů. ATP/WTA (ESPN) se obnovuje asi každých 15 s, body a gemy (365scores) asi každých 8 s, ITF (Sofascore, pokud z dané sítě odpovídá) každých 20 s — jen dokud je vidět seznam zápasů nebo detail; dokončené zápasy se hned započtou do Elo. Predikce se počítají přímo v telefonu.</p>
+   <p><b>Při otevření</b> aplikace v prohlížeči (bez klíčů) stáhne rozpis a výsledky (±2 dny, výsledky ~7 dní zpět) a z nových výsledků <b>přepočítá Elo</b>, formu, únavu a H2H. <b>Živé skóre</b> se nejdřív ukáže ze snímku buildu, potom se doplní z feedů. ATP/WTA (ESPN) se obnovuje asi každých 15 s, body a gemy (365scores) asi každých 8 s, ITF (Sofascore, pokud z dané sítě odpovídá) každých 20 s — jen dokud je vidět seznam zápasů nebo detail. Dokončený zápas se hned započte do Elo a jedním krokem doladí předzápasový model (váhy logistické korekce, stromy se nemění). Velké přetrénování stromů zůstává v neděli. Stejný krok dělá i denní aktualizace ~05:17 a ~17:17, takže doladění platí i pro ostatní. Predikce se počítají přímo v telefonu.</p>
    <div class="kv"><div>ESPN – živé skóre ATP/WTA (+ část WTA 125)</div><div>${L.espn ? '✅ funguje' : '⚠️ nedostupné'}${L.polls ? ` · ${L.polls}× obnoveno` : ''}</div>
    <div>365scores – živé skóre Challenger/WTA 125</div><div>${S.l365.ok && !S.l365.err ? '✅ funguje' : S.l365.err ? '⚠️ nedostupné' : '…'}${S.l365.polls ? ` · ${S.l365.polls}× obnoveno, ${S.l365.upd} změn skóre` : ''}</div>
    <div>Sofascore (všechny úrovně)</div><div>${L.sofa ? '✅ funguje' : '⚠️ z této sítě blokováno'}</div>
    <div>Snímek z buildu (Flashscore, Challenger/ITF + kurzy)</div><div>${esc(L.snapshot || '—')}</div>
    <div>Kurzy Flashscore (předzápas oce + v průběhu ole, CORS)</div><div>${L.oddsOk ? `✅ načteno ${L.oddsOk}×${L.oddsLive ? `, z toho ${L.oddsLive}× v průběhu` : ''}` : L.oddsErr ? '⚠️ nedostupné – použit snímek' : 'načítají se u zobrazených zápasů'}</div>
    <div>Dokončené zápasy z živých zdrojů</div><div>${L.finished}</div><div>Už obsaženo v buildu / duplicity</div><div>${L.dup}</div>
-   <div>Nově započteno do Elo</div><div>${L.applied}</div><div>Neznámí hráči v živých datech</div><div>${L.unknown}</div></div>
-   <p class="note">Flashscore feed pokrývá všechny úrovně, ale vyžaduje hlavičku x-fsign a CORS preflight povoluje jen vlastním doménám Flashscore – z prohlížeče proto nejde. Živé Challenger/WTA 125 bere aplikace z 365scores (CORS *), ITF ze Sofascore (funguje z běžných sítí, z datacenter ne); jinak ITF jen ze snímku buildu. Kurzy Flashscore CORS povolují, ale potřebují ID zápasu ze snímku; zápasy ESPN se se snímkem párují podle dvojice hráčů. Bez nového buildu se neaktualizuje žebříček, statistiky podání/příjmu a samotný model.</p></div>
+   <div>Nově započteno do Elo</div><div>${L.applied}</div><div>Doladění modelu z výsledků od nedělního přepočtu</div><div>${(S.online && S.online.n) || 0}</div><div>Neznámí hráči v živých datech</div><div>${L.unknown}</div></div>
+   <p class="note">Flashscore feed pokrývá všechny úrovně, ale vyžaduje hlavičku x-fsign a CORS preflight povoluje jen vlastním doménám Flashscore – z prohlížeče proto nejde. Živé Challenger/WTA 125 bere aplikace z 365scores (CORS *), ITF ze Sofascore (funguje z běžných sítí, z datacenter ne); jinak ITF jen ze snímku buildu. Kurzy Flashscore CORS povolují, ale potřebují ID zápasu ze snímku; zápasy ESPN se se snímkem párují podle dvojice hráčů. Bez nového buildu se neaktualizuje žebříček a statistiky podání/příjmu. Předzápasový model se z dohraného zápasu doladí hned (a znovu v denním buildu); stromy LightGBM se přepočítají až v neděli.</p></div>
    <div class="card"><h2>Kurzy a zodpovědné hraní</h2><p>„Value“ se zvýrazní jen před začátkem zápasu a jen z předzápasových kurzů (živý kurz v průběhu se nepočítá). Model musí být nad trhem (průměrný kurz bez marže) aspoň o ${VALUE_TH * 100} procentních bodů, očekávaná návratnost při nejlepším kurzu aspoň ${VALUE_EV * 100} % a průměr musí být aspoň ze ${VALUE_N} kanceláří. Práh je přísný schválně: model se od trhu liší v průměru o ~8 p. b. Na testu 2025–26 má přesnost ~70 %; trh bývá přesnější, protože vidí informace, které model nemá.</p>
    <p class="note gam">18+ Aplikace není sázková kancelář ani sázkové poradenství. Sázení je riskantní a může vést k závislosti. Sázejte jen částky, které si můžete dovolit prohrát, stanovte si limity a při potížích vyhledejte odbornou pomoc.</p></div>
    <div class="card"><p class="note">Zdroje: Jeff Sackmann – tennis_atp / tennis_wta (CC BY-NC-SA 4.0, archiv Aneeshers/tennis-sackmann-archive), TennisMyLife (stats.tennismylife.org), veřejný feed a kurzové srovnání Flashscore, ESPN (živé skóre, fotky hráčů), vlajky flagcdn.com. Aplikace je nekomerční. Predikce jsou odhady, ne záruky.</p></div>`;
@@ -1601,6 +1646,7 @@ async function init() {
   try {
     const [meta, idx, model] = await Promise.all(['data/meta.json', 'data/players.json', 'data/model.json'].map(u => fetch(u).then(r => { if (!r.ok) throw new Error(u); return r.json(); })));
     S.meta = meta; S.idx = idx; S.N = idx.id.length; S.model = new TM.Model(model); S.extraKey = {};
+    try { attachOnline(await getJSON('data/online.json')); } catch (e) { S.online = null; }
     S.idMap = new Map(idx.id.map((x, i) => [String(x), i]));
     S.E = idx.e.slice(); S.SE = idx.se.map(x => x.slice()); S.GE = (idx.ge || idx.e).slice(); S.GSE = (idx.gse || idx.se).map(x => x.slice()); S.K = idx.k.slice(); S.SK = idx.sk.map(x => x.slice());
     S.norm = idx.n.map(n => toks(n).join(' '));

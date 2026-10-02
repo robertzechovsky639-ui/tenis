@@ -109,8 +109,56 @@
     lrContrib(x) { const L = this.m.lr; return L.cols.map((c, j) => [c, x[this.lrIdx[j]] / L.scale[j] * L.coef[j]]); }
     lr(x) { const z = this.lrContrib(x).reduce((a, b) => a + b[1], 0); return 1 / (1 + Math.exp(-z)); }
     elo(x) { return 1 / (1 + Math.pow(10, -(0.5 * x[0] + 0.5 * x[1]) / 400)); }
-    predict(x) { const g = this.gbm(x), l = this.lr(x), w = this.m.w_gbm; return { p: w * g + (1 - w) * l, gbm: g, lr: l, elo: this.elo(x) }; }
+    base(x) { const g = this.gbm(x), l = this.lr(x), w = this.m.w_gbm; return w * g + (1 - w) * l; }
+    predict(x) {
+      const g = this.gbm(x), l = this.lr(x), w = this.m.w_gbm;
+      const p0 = w * g + (1 - w) * l;
+      const on = this.m.online;
+      const p = on && on.w ? adjustOnline(p0, x, this.F, on) : p0;
+      return { p, gbm: g, lr: l, elo: this.elo(x), p0 };
+    }
   }
-  const api = { SURF, RING, decode, newPlayer, feats, kf, eloStep, refDay, Model, fatigue, form };
+  /* Průběžná korekce: logit(p) = logit(p_stromů) + w·(x/scale). w=0 => stejné p. */
+  const ON_ETA = 0.008, ON_DECAY = 0.9997, ON_CLIP = 0.25, ON_ZCAP = 0.35, ON_SEEN = 4000;
+  function crc32(str) {
+    let c = 0xFFFFFFFF;
+    for (let i = 0; i < str.length; i++) {
+      c ^= str.charCodeAt(i);
+      for (let k = 0; k < 8; k++) c = (c >>> 1) ^ (0xEDB88320 & -(c & 1));
+    }
+    return (~c) >>> 0;
+  }
+  function logitP(p) { const q = Math.min(1 - 1e-6, Math.max(1e-6, p)); return Math.log(q / (1 - q)); }
+  function sigP(z) { if (z > 20) return 1 - 1e-9; if (z < -20) return 1e-9; return 1 / (1 + Math.exp(-z)); }
+  function zOnline(x, F, on) {
+    let z = 0;
+    for (let i = 0; i < on.cols.length; i++) {
+      const w = on.w[i]; if (!w) continue;
+      z += w * (x[F.indexOf(on.cols[i])] / on.scale[i]);
+    }
+    return z > ON_ZCAP ? ON_ZCAP : z < -ON_ZCAP ? -ON_ZCAP : z;
+  }
+  function adjustOnline(p, x, F, on) {
+    if (!on || !on.w || !on.w.some(v => v)) return p;
+    return sigP(logitP(p) + zOnline(x, F, on));
+  }
+  /* Jeden krok z dohraného zápasu. x jsou příznaky PŘED zápasem, y je 0/1 pro stranu A. */
+  function onlineStep(on, x, y, p0, F, mk) {
+    mk = String(mk);
+    if (!on || !on.w || (on.seen || []).indexOf(mk) >= 0) return false;
+    const p = sigP(logitP(p0) + zOnline(x, F, on));
+    const err = p - y;
+    for (let i = 0; i < on.cols.length; i++) {
+      const xs = x[F.indexOf(on.cols[i])] / on.scale[i];
+      let v = ON_DECAY * on.w[i] - ON_ETA * err * xs;
+      if (v > ON_CLIP) v = ON_CLIP; else if (v < -ON_CLIP) v = -ON_CLIP;
+      on.w[i] = v;
+    }
+    on.seen = on.seen || []; on.seen.push(mk);
+    if (on.seen.length > ON_SEEN) on.seen = on.seen.slice(-ON_SEEN);
+    on.n = (on.n || 0) + 1;
+    return true;
+  }
+  const api = { SURF, RING, decode, newPlayer, feats, kf, eloStep, refDay, Model, fatigue, form, crc32, onlineStep, adjustOnline };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.TM = api;
 })(typeof self !== 'undefined' ? self : this);

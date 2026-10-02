@@ -9,7 +9,7 @@ Použití:  python scripts/daily.py [--no-fetch]"""
 import os, sys, json, glob, time, datetime, argparse
 import numpy as np, pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import engine, export, state_io, fs, fetch_data, trainset, zlib
+import engine, export, state_io, fs, fetch_data, trainset, zlib, online
 import data as dmod
 ROOT = state_io.ROOT; RAW = os.path.join(ROOT, 'raw')
 GROUPS = [  # (label, pohlaví, soubory(y), druh, klíč cutoffu z init)
@@ -134,6 +134,7 @@ def main():
         if p.get('dob') is None and age == age and age: p['dob'] = int(day - age * 365.25)
         return p
     train_rows = []
+    online_pred = None
     for r in df.to_dict('records'):
         wid, lid, day, g = r['winner_id'], r['loser_id'], int(r['day']), r['gender']
         key = (wid, lid) if wid < lid else (lid, wid)
@@ -168,7 +169,14 @@ def main():
                        rankA=wr if a_is_w else lr, rankB=lr if a_is_w else wr, ptsA=wp if a_is_w else lp, ptsB=lp if a_is_w else wp,
                        ageA=engine._num(r.get('winner_age') if a_is_w else r.get('loser_age')), ageB=engine._num(r.get('loser_age') if a_is_w else r.get('winner_age')))
             x = engine.feats(A, B, ctx, (hA, hB))
-            train_rows.append(dict(tdate=int(r['tourney_date']), day=day, y=1 if a_is_w else 0, group=r['lvl_group'], mk=mk, **dict(zip(engine.FEATS, x))))
+            yrow = 1 if a_is_w else 0
+            train_rows.append(dict(tdate=int(r['tourney_date']), day=day, y=yrow, group=r['lvl_group'], mk=mk, **dict(zip(engine.FEATS, x))))
+            # stejný zápas doladí předzápasový model (váhy, ne stromy) ještě před posunem Elo
+            if online_pred is None:
+                online_pred = export.Predictor()
+            p0 = online_pred.frozen(x)[0]
+            if online.step(online_pred.online, x, yrow, p0, engine.FEATS, mk):
+                st['online_steps'] = st.get('online_steps', 0) + 1
         engine.update(W, L, dict(surface=engine.SURF.get(r['surface'], 0), lvl_code=int(r['lvl_code']), is_qual=int(r['is_qual']), ret=int(r['ret']), day=day,
                                  minutes=r['minutes'], best_of=int(r['best_of']), stats=stats, wid=wid, lid=lid, games=engine.games_of(r['score'])))
         hh = H.get(key, [0, 0]); hh[0 if wid == key[0] else 1] += 1; H[key] = hh
@@ -187,6 +195,18 @@ def main():
     now = time.strftime('%Y-%m-%d %H:%M %Z')
     meta['updates'] = (meta.get('updates', []) + [dict(at=now, **{k: v for k, v in st.items()})])[-40:]
     trainset.append_rows(train_rows); st['train_rows'] = len(train_rows)
+    if online_pred is not None:
+        online.save(os.path.join(ROOT, 'state', 'online.json'), online_pred.online)
+    else:
+        # i den bez nových zápasů nechá soubor se správnou základnou modelu (po nedělním refitu se vynuluje)
+        import json as _json
+        mp = os.path.join(ROOT, 'web', 'data', 'model.json')
+        ip = os.path.join(ROOT, 'data', 'model_info.json')
+        if os.path.exists(mp) and os.path.exists(ip):
+            mm = _json.load(open(mp)); inf = _json.load(open(ip))
+            base = str(inf.get('train_end_day') or '0')
+            cur = online.load(os.path.join(ROOT, 'state', 'online.json'), base, mm['lr']['cols'], mm['lr']['scale'])
+            online.save(os.path.join(ROOT, 'state', 'online.json'), cur)
     state_io.save(P, H, meta, tml_keys, tours)
     print('aktualizace:', json.dumps(st, ensure_ascii=False))
     export.export_all(P, H, meta['day_end'], meta['gap_start'], meta['coverage'], tours, meta.get('tml', {}),
