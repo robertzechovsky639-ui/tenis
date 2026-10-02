@@ -1016,6 +1016,16 @@ function liveAdjust(p, x) {
   if (!z) return p;
   return expit(logit(p) + z);
 }
+function liveIds(e) {
+  if (!e || !e.ts) return null;
+  const r = resolveEv(e);
+  if (!r || r.hi == null || r.ai == null || r.hi >= S.N || r.ai >= S.N) return null;
+  const ih = S.idx.id[r.hi], ia = S.idx.id[r.ai];
+  if (!ih || !ia) return null;
+  const day = Math.floor(e.ts / 86400) + ((e.ts % 86400) > 22 * 3600 ? 1 : 0);
+  const aIsH = String(ih) < String(ia);
+  return { aIsH, mk: day + '|' + (aIsH ? ih : ia) + '|' + (aIsH ? ia : ih), bo5: matchBestOf(e) === 5 ? 1 : 0 };
+}
 function liveMlProb(e, st) {
   ensureX(e);
   const id = liveIds(e);
