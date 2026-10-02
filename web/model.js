@@ -119,7 +119,7 @@
     }
   }
   /* Průběžná korekce: logit(p) = logit(p_stromů) + w·(x/scale). w=0 => stejné p. */
-  const ON_ETA = 0.002, ON_DECAY = 0.999, ON_CLIP = 0.15, ON_ZCAP = 0.35, ON_SEEN = 4000;
+  const ON_ETA = 0.008, ON_DECAY = 0.9997, ON_CLIP = 0.25, ON_ZCAP = 0.35, ON_SEEN = 4000;
   function crc32(str) {
     let c = 0xFFFFFFFF;
     for (let i = 0; i < str.length; i++) {
