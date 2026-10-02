@@ -21392,6 +21392,16 @@
 "new_players": 0,
 "online_steps": 3,
 "tml_rows": {}
+},
+{
+"applied": 0,
+"at": "2026-10-02 21:53 CEST",
+"by_level": {},
+"dup_skipped": 0,
+"enriched": 0,
+"fs_new_events": 0,
+"new_players": 0,
+"tml_rows": {}
 }
 ]
 }
