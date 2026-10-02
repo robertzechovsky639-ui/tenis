@@ -9,7 +9,7 @@ Použití:  python scripts/daily.py [--no-fetch]"""
 import os, sys, json, glob, time, datetime, argparse
 import numpy as np, pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import engine, export, state_io, fs, fetch_data, trainset, zlib, online, live_online
+import engine, export, state_io, fs, fetch_data, trainset, zlib, online, live_ml
 import data as dmod
 ROOT = state_io.ROOT; RAW = os.path.join(ROOT, 'raw')
 GROUPS = [  # (label, pohlaví, soubory(y), druh, klíč cutoffu z init)
@@ -135,7 +135,7 @@ def main():
         return p
     train_rows = []
     online_pred = None
-    live_on = live_online.load(os.path.join(ROOT, 'state', 'live_online.json'))
+    live_on = live_ml.load(os.path.join(ROOT, 'state', 'live_online.json'))
     for r in df.to_dict('records'):
         wid, lid, day, g = r['winner_id'], r['loser_id'], int(r['day']), r['gender']
         key = (wid, lid) if wid < lid else (lid, wid)
@@ -179,8 +179,11 @@ def main():
             if online.step(online_pred.online, x, yrow, p0, engine.FEATS, mk):
                 st['online_steps'] = st.get('online_steps', 0) + 1
             p_win = p0 if yrow == 1 else 1.0 - p0
-            st['live_steps'] = st.get('live_steps', 0) + live_online.from_sets(
-                live_on, wid, lid, str(r.get('score') or ''), day, int(r['best_of']), p_win)
+            if int(r['lvl_code']) >= 3:
+                dw = x[:len(engine.DIFF)] if a_is_w else [-v for v in x[:len(engine.DIFF)]]
+                st['live_steps'] = st.get('live_steps', 0) + live_ml.from_sets(
+                    live_on, wid, lid, str(r.get('score') or ''), day, int(r['best_of']), r['gender'], r.get('surface'),
+                    int(r['is_qual']), int(r['lvl_code']), p_win, dw)
         engine.update(W, L, dict(surface=engine.SURF.get(r['surface'], 0), lvl_code=int(r['lvl_code']), is_qual=int(r['is_qual']), ret=int(r['ret']), day=day,
                                  minutes=r['minutes'], best_of=int(r['best_of']), stats=stats, wid=wid, lid=lid, games=engine.games_of(r['score'])))
         hh = H.get(key, [0, 0]); hh[0 if wid == key[0] else 1] += 1; H[key] = hh
@@ -199,7 +202,7 @@ def main():
     now = time.strftime('%Y-%m-%d %H:%M %Z')
     meta['updates'] = (meta.get('updates', []) + [dict(at=now, **{k: v for k, v in st.items()})])[-40:]
     trainset.append_rows(train_rows); st['train_rows'] = len(train_rows)
-    live_online.save(os.path.join(ROOT, 'state', 'live_online.json'), live_on)
+    live_ml.save(os.path.join(ROOT, 'state', 'live_online.json'), live_on)
     if online_pred is not None:
         online.save(os.path.join(ROOT, 'state', 'online.json'), online_pred.online)
     else:

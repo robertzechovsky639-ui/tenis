@@ -697,7 +697,7 @@ async function probsFor(list) {
   for (const e of list) {
     if (e.st === 3) continue;
     if (e._p != null && (e.st === 2 || e._pg === S.predGen)) continue;
-    const r = resolveEv(e); try { e._p = predict(r.hi, r.ai, e.surface, e.code, e.q).p; e._pg = S.predGen; } catch (err) { }
+    const r = resolveEv(e); try { const pr = predict(r.hi, r.ai, e.surface, e.code, e.q); e._p = pr.p; e._x = pr.x; e._pg = S.predGen; } catch (err) { }
   }
 }
 
@@ -932,98 +932,146 @@ function liveProb(e) {
   const m = st.aServes == null ? (once(true) + once(false)) / 2 : once(st.aServes);
   const anchored = Math.abs(fit.m0 - e._p) > 0.012;
   const pm = anchored ? expit(logit(e._p) + logit(m) - logit(fit.m0)) : m;
-  const p = liveShift(e, st, pm);
-  return { ok: true, p, serverKnown: st.aServes != null, pointsKnown: st.pointsKnown, between: st.between, anchored };
+  if (liveMlOn(e)) {
+    const ml = liveMlProb(e, st);
+    if (ml != null) return { ok: true, p: ml, serverKnown: st.aServes != null, pointsKnown: st.pointsKnown, between: st.between, anchored, ml: true };
+  }
+  return { ok: true, p: pm, serverKnown: st.aServes != null, pointsKnown: st.pointsKnown, between: st.between, anchored };
 }
-const LIVE_COLS = ['ds', 'd1', 'd2', 'dg', 'srv', 'bo5', 'late'];
-const LIVE_ETA = { G: 0.0015, S: 0.003, M: 0.004 };
-function emptyLive() {
-  return { base: 'markov', cols: LIVE_COLS.slice(), scale: [1, 1, 1, 1, 1, 1, 1], w: [0, 0, 0, 0, 0, 0, 0], n: 0, seen: [] };
+function liveMlOn(e) {
+  const L = S.liveOn;
+  return !!(e && e.code >= 3 && L && L.base === 'liveml1' && L.w && L.score && L.w.length === (L.score.length + L.core.length * L.diffs.length + L.core.length * L.ctx.length));
 }
 function saveLive() {
-  try { localStorage.setItem('tp:liveon', JSON.stringify(S.liveOn)); } catch (e) {}
+  try { localStorage.setItem('tp:liveon', JSON.stringify({ base: S.liveOn.base, w: S.liveOn.w, w0: S.liveOn.w0, n: S.liveOn.n, seen: S.liveOn.seen, score: S.liveOn.score, core: S.liveOn.core, diffs: S.liveOn.diffs, ctx: S.liveOn.ctx, scale: S.liveOn.scale })); } catch (e) {}
 }
 function attachLive(shipped) {
-  const blank = emptyLive();
-  const ship = shipped && shipped.base === 'markov' && shipped.w && shipped.w.length === 7 ? shipped : blank;
+  const ok = shipped && shipped.base === 'liveml1' && shipped.w && shipped.score && shipped.w.length === (shipped.score.length + shipped.core.length * shipped.diffs.length + shipped.core.length * shipped.ctx.length);
+  if (!ok) { S.liveOn = null; return; }
   let local = null;
   try { local = JSON.parse(localStorage.getItem('tp:liveon') || 'null'); } catch (e) { local = null; }
-  let use = ship;
-  if (local && local.base === 'markov' && local.w && local.w.length === 7) {
-    const ss = new Set(ship.seen || []), ls = new Set(local.seen || []);
+  let use = shipped;
+  if (local && local.base === 'liveml1' && local.w && local.w.length === shipped.w.length) {
+    const ss = new Set(shipped.seen || []), ls = new Set(local.seen || []);
     const localInShip = [...ls].every(id => ss.has(id));
     const shipInLocal = [...ss].every(id => ls.has(id));
     if (!localInShip && shipInLocal) use = local;
   }
-  S.liveOn = { base: 'markov', cols: LIVE_COLS.slice(), scale: blank.scale, w: (use.w || blank.w).slice(), n: use.n || 0, seen: (use.seen || []).slice() };
+  S.liveOn = { base: 'liveml1', score: shipped.score, core: shipped.core, diffs: shipped.diffs, ctx: shipped.ctx, scale: shipped.scale.slice(), w: use.w.slice(), w0: (shipped.w0 || shipped.w).slice(), n: use.n || 0, seen: (use.seen || []).slice(), pull: 0.04, bound: 0.22, eta: shipped.eta || { G: 0.0012, S: 0.0025, M: 0.0035 } };
 }
-function liveIds(e) {
-  if (!e || !e.ts) return null;
+function ensureX(e) {
+  if (!e || e._x || e._p == null) return;
   const r = resolveEv(e);
-  if (!r || r.hi == null || r.ai == null || r.hi >= S.N || r.ai >= S.N) return null;
-  const ih = S.idx.id[r.hi], ia = S.idx.id[r.ai];
-  if (!ih || !ia) return null;
-  const day = Math.floor(e.ts / 86400) + ((e.ts % 86400) > 22 * 3600 ? 1 : 0);
-  const aIsH = String(ih) < String(ia);
-  return { aIsH, mk: day + '|' + (aIsH ? ih : ia) + '|' + (aIsH ? ia : ih), bo5: matchBestOf(e) === 5 ? 1 : 0 };
+  if (!r || r.hi == null || r.ai == null) return;
+  try { const pr = predict(r.hi, r.ai, e.surface, e.code, e.q); e._p = pr.p; e._x = pr.x; } catch (err) {}
 }
-function liveFeat(sa, sb, ga, gb, srv, bo5) {
-  if (sa === 0 && sb === 0 && ga === 0 && gb === 0) return [0, 0, 0, 0, 0, 0, 0];
-  const ds = sa - sb;
-  return [ds, (sa === 1) - (sb === 1), (sa === 2) - (sb === 2), ga - gb, srv, ds * bo5, (ga >= 5) - (gb >= 5)];
+function liveDiffs(e, aIsH) {
+  const names = S.liveOn.diffs, F = S.model.F, x = e._x;
+  const d = names.map(n => { const i = F.indexOf(n); return i < 0 ? 0 : (x[i] || 0); });
+  if (!aIsH) for (let i = 0; i < d.length; i++) d[i] = -d[i];
+  return d;
 }
-function liveZ(x) {
-  const w = (S.liveOn && S.liveOn.w) || [];
-  let z = 0;
-  for (let i = 0; i < 7; i++) if (w[i]) z += w[i] * x[i];
-  return z > 0.22 ? 0.22 : z < -0.22 ? -0.22 : z;
+function liveCtx(e) {
+  const surf = e.surface || '';
+  return { bo5: matchBestOf(e) === 5 ? 1 : 0, woman: e.g === 'W' ? 1 : 0, clay: surf === 'Clay' ? 1 : 0, grass: surf === 'Grass' ? 1 : 0, qual: e.q ? 1 : 0, lvl: (e.code || 0) / 6 };
 }
-function liveShift(e, st, pm) {
+function liveScoreMap(sa, sb, ga, gb, pa, pb, ta, tb, inTb, srv, hold, brk) {
+  const z = {};
+  const start = !inTb && sa === 0 && sb === 0 && ga === 0 && gb === 0 && pa === 0 && pb === 0 && ta === 0 && tb === 0;
+  for (const k of S.liveOn.score) z[k] = 0;
+  if (start) return z;
+  z.ds = sa - sb; z.d1 = (sa === 1) - (sb === 1); z.d2 = (sa === 2) - (sb === 2);
+  z.dg = inTb ? 0 : ga - gb; z.late = inTb ? 0 : (ga >= 5) - (gb >= 5);
+  z.dp = inTb ? 0 : (pa - pb) / 4; z.dtb = inTb ? (ta - tb) / 7 : 0;
+  z.srv = srv; z.hold = hold; z.brk = brk; z.bp = 0;
+  if (!inTb && srv) {
+    const aGp = pa >= 3 && pa > pb, bGp = pb >= 3 && pb > pa;
+    if (srv < 0 && aGp) z.bp = 1; else if (srv > 0 && bGp) z.bp = -1;
+  }
+  if (!inTb) {
+    for (let k = 1; k <= 6; k++) z['g' + k] = (ga === k) - (gb === k);
+    for (let k = 1; k <= 4; k++) z['p' + k] = (pa === k) - (pb === k);
+  }
+  return z;
+}
+function livePhi(sa, sb, ga, gb, pa, pb, ta, tb, inTb, srv, hold, brk, diffs, ctx) {
+  const L = S.liveOn;
+  const sm = liveScoreMap(sa, sb, ga, gb, pa, pb, ta, tb, inTb, srv, hold, brk);
+  const sd = diffs.map((d, i) => Math.abs(d) / (L.scale[i] || 1));
+  const out = L.score.map(k => sm[k] || 0);
+  for (const c of L.core) {
+    const v = sm[c] || 0;
+    for (const a of sd) out.push(v * a);
+    for (const k of L.ctx) out.push(v * (ctx[k] || 0));
+  }
+  return out;
+}
+function liveDot(x) {
+  const w = S.liveOn.w; let z = 0;
+  for (let i = 0; i < x.length; i++) if (x[i] && w[i]) z += w[i] * x[i];
+  return z > 1.15 ? 1.15 : z < -1.15 ? -1.15 : z;
+}
+function liveAdjust(p, x) {
+  const z = liveDot(x);
+  if (!z) return p;
+  return expit(logit(p) + z);
+}
+function liveMlProb(e, st) {
+  ensureX(e);
   const id = liveIds(e);
-  if (!id || !S.liveOn || !st) return pm;
+  if (!id || !e._x || !S.model) return null;
+  const hb = e._hb || { hold: 0, brk: 0 };
+  const srvH = st.aServes == null ? 0 : (st.aServes ? 1 : -1);
   const sa = id.aIsH ? st.sa : st.sb, sb = id.aIsH ? st.sb : st.sa;
   const ga = id.aIsH ? st.ga : st.gb, gb = id.aIsH ? st.gb : st.ga;
-  const srv = st.aServes == null ? 0 : (id.aIsH ? (st.aServes ? 1 : -1) : (st.aServes ? -1 : 1));
-  let z = liveZ(liveFeat(sa, sb, ga, gb, srv, id.bo5));
-  if (!id.aIsH) z = -z;
-  if (!z) return pm;
-  return expit(logit(pm) + z);
+  const pa = id.aIsH ? st.aPts : st.bPts, pb = id.aIsH ? st.bPts : st.aPts;
+  const ta = id.aIsH ? st.tbA : st.tbB, tb = id.aIsH ? st.tbB : st.tbA;
+  const srv = srvH === 0 ? 0 : (id.aIsH ? srvH : -srvH);
+  const hold = id.aIsH ? hb.hold : -hb.hold, brk = id.aIsH ? hb.brk : -hb.brk;
+  const x = livePhi(sa, sb, ga, gb, pa, pb, ta, tb, st.inTB, srv, hold, brk, liveDiffs(e, id.aIsH), liveCtx(e));
+  const pA = id.aIsH ? e._p : 1 - e._p;
+  const p = liveAdjust(pA, x);
+  return id.aIsH ? p : 1 - p;
 }
-function markovAt(e, sa, sb, ga, gb, aServes) {
-  const fit = serveFit(e), need = (fit.bo + 1) / 2;
-  const once = s => pFromState(sa, sb, ga, gb, 0, 0, 0, 0, false, s, need, fit.pA, fit.pB);
-  const m = aServes == null ? (once(true) + once(false)) / 2 : once(!!aServes);
-  return Math.abs(fit.m0 - e._p) > 0.012 ? expit(logit(e._p) + logit(m) - logit(fit.m0)) : m;
-}
-function liveStep(x, y, pBase, mk, eta) {
+function liveStep(x, y, p0, mk, eta) {
   const st = S.liveOn;
   if (!st || !x) return false;
   if ((st.seen || []).indexOf(mk) >= 0) return false;
   st.seen = st.seen || [];
-  if (!x.some(v => v)) { st.seen.push(mk); if (st.seen.length > 5000) st.seen = st.seen.slice(-5000); return false; }
-  const p = expit(logit(pBase) + liveZ(x));
+  if (!x.some(v => v)) { st.seen.push(mk); if (st.seen.length > 6000) st.seen = st.seen.slice(-6000); return false; }
+  const p = expit(logit(p0) + liveDot(x));
   const err = p - y;
-  for (let i = 0; i < 7; i++) {
-    let v = 0.9998 * (st.w[i] || 0) - eta * err * x[i];
-    if (v > 0.08) v = 0.08; else if (v < -0.08) v = -0.08;
-    st.w[i] = v;
+  const pull = st.pull || 0.04, bound = st.bound || 0.22;
+  for (let i = 0; i < x.length; i++) {
+    if (!x[i]) continue;
+    let nw = (st.w[i] || 0) - eta * err * x[i] - eta * pull * ((st.w[i] || 0) - (st.w0[i] || 0));
+    const lo = (st.w0[i] || 0) - bound, hi = (st.w0[i] || 0) + bound;
+    if (nw > hi) nw = hi; else if (nw < lo) nw = lo;
+    if (nw > 1.5) nw = 1.5; else if (nw < -1.5) nw = -1.5;
+    st.w[i] = nw;
   }
   st.seen.push(mk);
-  if (st.seen.length > 5000) st.seen = st.seen.slice(-5000);
+  if (st.seen.length > 6000) st.seen = st.seen.slice(-6000);
   st.n = (st.n || 0) + 1;
   return true;
 }
-/* Gem, brejk/udržení nebo set: jeden krok z výsledku té jednotky. Vítěz zápasu až když zápas skončí. */
+function hbOf(winH, srvH) {
+  if (srvH == null || !winH) return { hold: 0, brk: 0 };
+  if ((winH === 1) === !!srvH) return { hold: winH === 1 ? 1 : -1, brk: 0 };
+  return { hold: 0, brk: winH === 1 ? 1 : -1 };
+}
+/* ATP, WTA, Challenger: naučený model. Krok jen z gemu, brejku, setu nebo konce zápasu. */
 function learnLive(e) {
-  if (!S.liveOn || !e || e.det === 8) { if (e && e.det === 8) e._trk = null; return; }
+  if (!liveMlOn(e) || e.det === 8) { if (e && e.det === 8) e._trk = null; return; }
   if (e.st === 3) { closeLive(e); return; }
   if (e.st !== 2 || e.stale || e._p == null) return;
+  ensureX(e);
   const st = readLive(e);
-  if (!st) return;
+  if (!st || !e._x) return;
   const sig = st.sa + ':' + st.sb + ':' + st.ga + ':' + st.gb;
   const tr = e._trk;
   if (!tr) {
-    e._trk = { sig, st, gameSrv: (st.aPts === 0 && st.bPts === 0 && !st.inTB) ? st.aServes : null, trail: [] };
+    e._trk = { sig, st, gameSrv: (st.aPts === 0 && st.bPts === 0 && !st.inTB) ? st.aServes : null, hb: e._hb || { hold: 0, brk: 0 }, trail: [] };
     return;
   }
   if (tr.sig === sig) {
@@ -1038,54 +1086,53 @@ function learnLive(e) {
   const gameUp = sameSets && gamesDelta === 1;
   const setUp = setsDelta === 1 && fresh;
   const done = (ga, gb) => (ga >= 6 && ga - gb >= 2) || (gb >= 6 && gb - ga >= 2) || (ga === 7 && gb === 6) || (gb === 7 && ga === 6);
-  if ((setUp || gameUp) && e._p) {
-    const id = liveIds(e);
-    if (id) {
-      let stepped = false;
-      if (gameUp || setUp) {
-        let winH = 0, takeGame = gameUp;
-        if (setUp) {
-          winH = st.sa > prev.sa ? 1 : 2;
-          const aWins = winH === 1;
-          takeGame = !done(prev.ga, prev.gb) && done(aWins ? prev.ga + 1 : prev.ga, aWins ? prev.gb : prev.gb + 1);
-        } else winH = st.ga > prev.ga ? 1 : 2;
-        if (takeGame && winH) {
-          const yG = (winH === 1) === id.aIsH ? 1 : 0;
-          const srvH = tr.gameSrv;
-          const sa = id.aIsH ? prev.sa : prev.sb, sb = id.aIsH ? prev.sb : prev.sa;
-          const ga = id.aIsH ? prev.ga : prev.gb, gb = id.aIsH ? prev.gb : prev.ga;
-          const srv = srvH == null ? 0 : (id.aIsH ? (srvH ? 1 : -1) : (srvH ? -1 : 1));
-          const x = liveFeat(sa, sb, ga, gb, srv, id.bo5);
-          const pmH = markovAt(e, prev.sa, prev.sb, prev.ga, prev.gb, srvH);
-          const pm = id.aIsH ? pmH : 1 - pmH;
-          if (liveStep(x, yG, pm, id.mk + '|G|' + sa + '|' + sb + '|' + ga + '|' + gb, LIVE_ETA.G)) stepped = true;
-          tr.trail.push({ x, p: pm, mk: id.mk + '|M|' + sa + '|' + sb + '|' + ga + '|' + gb });
-        }
-      }
-      if (setUp) {
-        const winH = st.sa > prev.sa ? 1 : 2;
-        const yS = (winH === 1) === id.aIsH ? 1 : 0;
-        const sa = id.aIsH ? prev.sa : prev.sb, sb = id.aIsH ? prev.sb : prev.sa;
-        const xs = liveFeat(sa, sb, 0, 0, 0, id.bo5);
-        const psH = markovAt(e, prev.sa, prev.sb, 0, 0, null);
-        const ps = id.aIsH ? psH : 1 - psH;
-        if (liveStep(xs, yS, ps, id.mk + '|S|' + sa + '|' + sb, LIVE_ETA.S)) stepped = true;
-      }
-      if (stepped) { saveLive(); S.predGen++; }
+  const id = liveIds(e);
+  let hb = tr.hb || { hold: 0, brk: 0 };
+  if ((setUp || gameUp) && id) {
+    let stepped = false;
+    let winH = 0, takeGame = gameUp;
+    if (setUp) {
+      winH = st.sa > prev.sa ? 1 : 2;
+      const aWins = winH === 1;
+      takeGame = !done(prev.ga, prev.gb) && done(aWins ? prev.ga + 1 : prev.ga, aWins ? prev.gb : prev.gb + 1);
+    } else winH = st.ga > prev.ga ? 1 : 2;
+    if (takeGame && winH) {
+      const yG = (winH === 1) === id.aIsH ? 1 : 0;
+      const srvH = tr.gameSrv;
+      const sa = id.aIsH ? prev.sa : prev.sb, sb = id.aIsH ? prev.sb : prev.sa;
+      const ga = id.aIsH ? prev.ga : prev.gb, gb = id.aIsH ? prev.gb : prev.ga;
+      const srv = srvH == null ? 0 : (id.aIsH ? (srvH ? 1 : -1) : (srvH ? -1 : 1));
+      const hold = id.aIsH ? hb.hold : -hb.hold, brk = id.aIsH ? hb.brk : -hb.brk;
+      const x = livePhi(sa, sb, ga, gb, 0, 0, 0, 0, false, srv, hold, brk, liveDiffs(e, id.aIsH), liveCtx(e));
+      const pA = id.aIsH ? e._p : 1 - e._p;
+      if (liveStep(x, yG, pA, id.mk + '|G|' + sa + '|' + sb + '|' + ga + '|' + gb, (S.liveOn.eta && S.liveOn.eta.G) || 0.0012)) stepped = true;
+      tr.trail.push({ x, p: pA, mk: id.mk + '|M|' + sa + '|' + sb + '|' + ga + '|' + gb });
+      hb = hbOf(winH, srvH);
+      e._hb = hb;
     }
+    if (setUp) {
+      const wH = st.sa > prev.sa ? 1 : 2;
+      const yS = (wH === 1) === id.aIsH ? 1 : 0;
+      const sa = id.aIsH ? prev.sa : prev.sb, sb = id.aIsH ? prev.sb : prev.sa;
+      const xs = livePhi(sa, sb, 0, 0, 0, 0, 0, 0, false, 0, 0, 0, liveDiffs(e, id.aIsH), liveCtx(e));
+      const pA = id.aIsH ? e._p : 1 - e._p;
+      if (liveStep(xs, yS, pA, id.mk + '|S|' + sa + '|' + sb, (S.liveOn.eta && S.liveOn.eta.S) || 0.0025)) stepped = true;
+    }
+    if (stepped) { saveLive(); S.predGen++; }
   }
   const atBoundary = st.aPts === 0 && st.bPts === 0 && !st.inTB;
-  e._trk = { sig, st, gameSrv: atBoundary ? st.aServes : null, trail: tr.trail };
+  e._trk = { sig, st, gameSrv: atBoundary ? st.aServes : null, hb, trail: tr.trail };
 }
 function closeLive(e) {
-  if (!e || e._liveClosed || e.det === 8 || (e.win !== 1 && e.win !== 2)) return;
+  if (!e || e._liveClosed || e.det === 8 || (e.win !== 1 && e.win !== 2) || !liveMlOn(e)) return;
   const id = liveIds(e), tr = e._trk;
   if (!id || !tr || !tr.trail) { e._liveClosed = true; e._trk = null; return; }
   if (e._p == null) return;
   e._liveClosed = true;
   const y = (e.win === 1) === id.aIsH ? 1 : 0;
+  const eta = (S.liveOn.eta && S.liveOn.eta.M) || 0.0035;
   let moved = false;
-  for (const row of tr.trail) if (liveStep(row.x, y, row.p, row.mk, LIVE_ETA.M)) moved = true;
+  for (const row of tr.trail) if (liveStep(row.x, y, row.p, row.mk, eta)) moved = true;
   if (moved) { saveLive(); S.predGen++; }
   e._trk = null;
 }
@@ -1157,14 +1204,14 @@ function predInner(e, na, nb) {
   const bits = [];
   if (!L.serverKnown) bits.push('Podání neznáme, obě možnosti bereme stejně.');
   if (!L.pointsKnown) bits.push(L.between ? 'Set skončil, další ještě nemá skóre — bereme jen sety.' : 'Body v gemu nemáme, bereme jen sety a gemy.');
-  return `<div class="predlab now">Predikce teď</div><div class="big2"><div><b class="a">${pct(L.p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - L.p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(L.p * 100).toFixed(1)}%"></i></div>${pre}<p class="note">Z předzápasové šance a skóre (sety, gemy, body${L.serverKnown ? ', podání' : ''}). Základ je pořád bodový model. Po gemu, brejku nebo setu se šance o kousek posune podle toho, jak to dopadlo. Na 0:0 zůstává předzápasová. ${bits.join(' ')}</p>${setPredHtml(e, na, nb)}`;
+  return `<div class="predlab now">Predikce teď</div><div class="big2"><div><b class="a">${pct(L.p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - L.p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(L.p * 100).toFixed(1)}%"></i></div>${pre}<p class="note">${L.ml ? 'Z předzápasové šance, síly hráčů a skóre (sety, gemy, body, podání, brejk nebo udržení). Na 0:0 zůstává předzápasová. Po gemu, brejku, setu a po dohrání se posune.' : 'Z předzápasové šance a skóre. Bodový výpočet, na 0:0 je předzápasová.'} ${bits.join(' ')}</p>${setPredHtml(e, na, nb)}`;
 }
 function predNote(e) {
   if (e.st !== 2 || e._p == null) return '';
   const L = liveProb(e);
   if (!L || !L.ok) return '<div class="note" id="d-prednote">Živé skóre teď nemáme, platí jen předzápasová predikce. Podrobný rozpis níže je předzápasový.</div>';
   const extra = [!L.serverKnown ? 'Podání neznáme, obě možnosti bereme stejně.' : '', !L.pointsKnown ? 'Body v gemu nemáme, bereme jen sety a gemy.' : ''].filter(Boolean).join(' ');
-  return `<div class="note" id="d-prednote"><b>Predikce teď ${pct(L.p)} : ${pct(1 - L.p)}</b> · Před zápasem ${pct(e._p)} : ${pct(1 - e._p)}. „Teď“ je bodový model. Po gemu nebo setu se o kousek doladí; na 0:0 je předzápasová. ${extra}Podrobný rozpis níže je pořád předzápasový.</div>`;
+  return `<div class="note" id="d-prednote"><b>Predikce teď ${pct(L.p)} : ${pct(1 - L.p)}</b> · Před zápasem ${pct(e._p)} : ${pct(1 - e._p)}. ${L.ml ? 'U ATP, WTA a Challengeru vychází z předzápasové šance a skóre a posune se po gemu, brejku, setu a po dohrání. Na 0:0 je předzápasová.' : 'Bodový výpočet ze skóre. Na 0:0 je předzápasová.'} ${extra}Podrobný rozpis níže je pořád předzápasový.</div>`;
 }
 function paintLivePred(e) {
   if (!S.detail || S.byId[S.detail.id] !== e || e._p == null || e.st === 3) return;
@@ -1733,7 +1780,7 @@ function renderModel() {
     return `<tr><td>${g === 'M' ? 'Muži' : 'Ženy'} – ${GRP_CS[grp]}</td><td>${Object.entries(by).map(([s, [a, b, n]]) => `${SRC[s] || s}: ${a.slice(0, 4)}–${b.slice(6, 8)}.${b.slice(4, 6)}.${b.slice(0, 4)} (${n.toLocaleString('cs-CZ')})`).join('<br>')}</td></tr>`; }).join('');
   const L = S.live;
   v.innerHTML = `<div class="ph"><h1>MODEL</h1></div><div class="card"><h2>O modelu</h2>
-   <p>Model předpovídá pravděpodobnost výhry ve dvouhře pro <b>všechny úrovně</b>: Grand Slamy, ATP/WTA, Challengery, WTA 125, ITF/Futures i kvalifikace. Příznaky pro každý zápas se počítají jen z předchozích zápasů: Elo celkové a podle povrchu (K-faktor podle úrovně turnaje), žebříček a body, forma, H2H, věk, výška, ruka, únava, úspěšnost na povrchu, klouzavé statistiky podání/příjmu a úroveň turnaje. Pořadí hráčů je náhodné; predikce je symetrizovaná.</p><p><b>Verze 2</b> přidává Elo počítané z podílu vyhraných gemů (zohlední, jak přesvědčivě hráč vyhrál/prohrál), totéž podle povrchu, časově váženou formu (poločas ~1 měsíc), formu za 60 dní, nejistotu ratingu ve stylu Glicko (málo zápasů / dlouhá pauza), neaktivitu a součet bodů na podání+příjmu. Hyperparametry a kalibrace laděny jen na validaci (2. pol. 2025).</p><p>Předzápasová pravděpodobnost se po každém dohraném zápase o kousek posune — jeden online krok, ne nový strom. Starší výsledky zůstávají v nedělním modelu. Dnešní běh už započítal +19.</p>
+   <p>Model předpovídá pravděpodobnost výhry ve dvouhře pro <b>všechny úrovně</b>: Grand Slamy, ATP/WTA, Challengery, WTA 125, ITF/Futures i kvalifikace. Příznaky pro každý zápas se počítají jen z předchozích zápasů: Elo celkové a podle povrchu (K-faktor podle úrovně turnaje), žebříček a body, forma, H2H, věk, výška, ruka, únava, úspěšnost na povrchu, klouzavé statistiky podání/příjmu a úroveň turnaje. Pořadí hráčů je náhodné; predikce je symetrizovaná.</p><p><b>Verze 2</b> přidává Elo počítané z podílu vyhraných gemů (zohlední, jak přesvědčivě hráč vyhrál/prohrál), totéž podle povrchu, časově váženou formu (poločas ~1 měsíc), formu za 60 dní, nejistotu ratingu ve stylu Glicko (málo zápasů / dlouhá pauza), neaktivitu a součet bodů na podání+příjmu. Hyperparametry a kalibrace laděny jen na validaci (2. pol. 2025).</p><p>Předzápasová pravděpodobnost se po každém dohraném zápase o kousek posune — jeden online krok, ne nový strom. Starší výsledky zůstávají v nedělním modelu. Dnešní běh už započítal +19. Živá predikce u ATP, WTA a Challengeru vychází z předzápasové šance a skóre (sety, gemy, body, podání, brejk nebo udržení) a posune se po gemu, brejku, setu a po dohrání.</p>
    <div class="kv"><div>Poslední datum v datech buildu</div><div><b>${fmtDate(m.day_end)}</b></div><div>Build</div><div>${esc(m.built)}${m.mode === 'daily-incremental' ? ' <small class="note">(automatická denní aktualizace GitHub Actions, ~05:17 a ~17:17)</small>' : ''}</div>${m.update ? `<div>Poslední aktualizace</div><div>+${m.update.applied} zápasů${m.update.new_players ? `, ${m.update.new_players} nových hráčů` : ''}</div>` : ''}${m.full_build ? `<div>Plná přestavba a trénink</div><div>${esc(m.full_build)}</div>` : ''}
    <div>Trénink</div><div>${esc(mt.split.train)} (${mt.split.n_train.toLocaleString('cs-CZ')})</div><div>Validace</div><div>${esc(mt.split.valid)} (${mt.split.n_valid.toLocaleString('cs-CZ')})</div>
    <div>Refit (nasazený model)</div><div>${esc(mt.split.refit || '—')}</div><div>Holdout (mimo vzorek)</div><div>${esc(mt.split.test)} (${mt.split.n_test.toLocaleString('cs-CZ')})</div><div>Stromů LightGBM</div><div>${mt.gbm_trees}</div></div></div>
