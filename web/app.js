@@ -645,6 +645,9 @@ function syncMarket(e) {
   if (view.stepped || (S.mkt.n || 0) !== n0 || rec.pMkt != null) saveMkt();
 }
 function shownP(e) { return e && e._ps != null ? e._ps : e._p; }
+const LAB_SHIFT = 'Posouvá se podle kurzu a podle odhlášky nebo zranění a ten posun jde do dalšího zápasu.';
+const LAB_MODEL = 'Učí se jen z dohraných zápasů, kurz ji nehýbe.';
+function matchLab(e) { return e && e.st === 1 && e.code >= 3 ? LAB_SHIFT : LAB_MODEL; }
 /* ---------- živé výsledky -> Elo ---------- */
 async function applyLive(evs) {
   const fin = evs.filter(e => e.st === 3 && (e.det === 3 || e.det === 8) && (e.win === 1 || e.win === 2)).sort((a, b) => a.ts - b.ts);
@@ -1537,8 +1540,8 @@ function gamePredHtml(e, na, nb) {
 
 
 function predInner(e, na, nb) {
-  const pre = `<div class="predlab pre">Před zápasem</div><div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div>`;
-  if (e.st !== 2) { const p = shownP(e); return `<div class="big2"><div><b class="a">${pct(p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(p * 100).toFixed(1)}%"></i></div>${setPredHtml(e, na, nb)}`; }
+  const pre = `<div class="predlab pre">Před zápasem</div><div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div><p class="plab">${LAB_MODEL}</p>`;
+  if (e.st !== 2) { const p = shownP(e); return `<div class="big2"><div><b class="a">${pct(p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(p * 100).toFixed(1)}%"></i></div><p class="plab">${matchLab(e)}</p>${setPredHtml(e, na, nb)}`; }
   const L = liveProb(e);
   if (!L || !L.ok) return pre + setPredHtml(e, na, nb) + '<p class="note">Živé skóre teď nemáme, platí jen předzápasová predikce.</p>';
   const bits = [];
@@ -1553,17 +1556,6 @@ function predNote(e) {
   const extra = [!L.serverKnown ? 'Podání neznáme, obě možnosti bereme stejně.' : '', !L.pointsKnown ? 'Body v gemu nemáme, bereme jen sety a gemy.' : ''].filter(Boolean).join(' ');
   return `<div class="note" id="d-prednote"><b>Predikce teď ${pct(L.p)} : ${pct(1 - L.p)}</b> · Před zápasem ${pct(e._p)} : ${pct(1 - e._p)}. ${L.ml ? 'U ATP, WTA a Challengeru vychází z předzápasové šance a skóre a posune se po gemu, brejku, setu a po dohrání. U stejných zápasů je pod tím i odhad, kdo vezme hraný gem, a ten se po každém gemu posune stejně. Na 0:0 je předzápasová.' : 'Bodový výpočet ze skóre. Na 0:0 je předzápasová.'} ${extra}Podrobný rozpis níže je pořád předzápasový.</div>`;
 }
-function paintMatchBar(p) {
-  const root = document.getElementById('d-body');
-  if (!root || p == null) return;
-  const big = root.querySelector('.js-matchp');
-  if (!big) return;
-  const a = big.querySelector('.p.a'), b = big.querySelector('.p.b');
-  if (a) a.textContent = pct(p);
-  if (b) b.textContent = pct(1 - p);
-  const bar = root.querySelector('.js-matchbar i');
-  if (bar) bar.style.width = (p * 100).toFixed(1) + '%';
-}
 function paintLivePred(e) {
   if (!S.detail || S.byId[S.detail.id] !== e || e._p == null || e.st === 3) return;
   const r = resolveEv(e), na = dispName(r.hi, e.h), nb = dispName(r.ai, e.a);
@@ -1571,13 +1563,12 @@ function paintLivePred(e) {
   if (box) box.innerHTML = predInner(e, na, nb);
   const note = document.getElementById('d-prednote');
   if (note) note.outerHTML = predNote(e);
-  if (e.st === 1) paintMatchBar(shownP(e));
 }
 
 function probHtml(e) {
   if (e.st === 3 || e._p == null) return '';
   const p = shownP(e);
-  return `<div class="pb"><span class="pa ${p >= 0.5 ? 'fv' : ''}">${pct(p)}</span><div class="bar"><i style="width:${(p * 100).toFixed(1)}%"></i></div><span class="pc ${p < 0.5 ? 'fv' : ''}">${pct(1 - p)}</span></div>`;
+  return `<div class="pb"><span class="pa ${p >= 0.5 ? 'fv' : ''}">${pct(p)}</span><div class="bar"><i style="width:${(p * 100).toFixed(1)}%"></i></div><span class="pc ${p < 0.5 ? 'fv' : ''}">${pct(1 - p)}</span></div><p class="plab">${matchLab(e)}</p>`;
 }
 function mrowHtml(e) {
   const r = resolveEv(e);
@@ -1830,7 +1821,7 @@ async function showDTab(k) {
     if (e.st === 3 || e._p == null) h += `<button class="btn ai" data-ask="${esc(e.id)}">✦ Zeptat se AI na tento zápas</button>`;
     body.innerHTML = h;
   } else if (k === 'predikce') {
-    body.innerHTML = (e.st === 3 ? '<div class="warn">Zápas už skončil. Model níže počítá s aktuálními daty, která mohou tento výsledek už obsahovat – nejde o předzápasový tip.</div>' : (e.st === 1 ? `<div class="card" id="d-predblock">${predInner(e, na, nb)}</div>` : predNote(e))) + resultHtml(r.hi, r.ai, e.surface, e.code, e.q, e.st === 1 ? shownP(e) : null);
+    body.innerHTML = (e.st === 3 ? '<div class="warn">Zápas už skončil. Model níže počítá s aktuálními daty, která mohou tento výsledek už obsahovat – nejde o předzápasový tip.</div>' : (e.st === 1 ? `<div class="card" id="d-predblock">${predInner(e, na, nb)}</div>` : predNote(e))) + resultHtml(r.hi, r.ai, e.surface, e.code, e.q);
   } else if (k === 'kurzy') {
     body.innerHTML = '<div class="empty">Načítám kurzy…</div>';
     if (e.fsid) await fetchOdds(e, true);
@@ -1970,10 +1961,8 @@ function factorsHtml(r, na, nb) {
   return c.map(([f, v]) => `<div class="f"><span>${esc(FEAT_CS[f] || f)}</span><span class="dir" style="color:${v > 0 ? 'var(--a)' : 'var(--b)'}">${'▮'.repeat(Math.max(1, Math.round(Math.abs(v) / mx * 5)))} ${esc(v > 0 ? na : nb)}</span></div>`).join('');
 }
 function formHtml(p) { return p.ring.slice(-10).map(x => `<span class="wl ${x[1] ? 'W' : 'L'}">${x[1] ? 'V' : 'P'}</span>`).join('') || '<span class="note">—</span>'; }
-function resultHtml(i, j, surface, code, q, pShow) {
+function resultHtml(i, j, surface, code, q) {
   const r = predict(i, j, surface, code, q); const na = pName(i), nb = pName(j); const A = r.A, B = r.B, t = todayDay();
-  const linked = typeof pShow === 'number' && pShow > 0 && pShow < 1;
-  const use = linked ? pShow : r.p;
   const f = TM.fatigue, fa = f(A.ring, t), fb = f(B.ring, t);
   const age = p => p.dob != null ? ((t - p.dob) / 365.25).toFixed(1) : '—';
   const wr = p => { const w = p.ring.slice(-10).reduce((a, x) => a + x[1], 0); return p.ring.length ? `${w}/${Math.min(10, p.ring.length)}` : '—'; };
@@ -1984,14 +1973,12 @@ function resultHtml(i, j, surface, code, q, pShow) {
   let warn = '';
   if (A.isNew || B.isNew) warn += `<div class="warn">${esc(A.isNew ? na : nb)} nemá v databázi historii (nový hráč nebo nespárované jméno) – odhad je velmi nejistý.</div>`;
   if (pG(i) !== pG(j)) warn += `<div class="warn">Pozor: porovnáváte muže a ženu – model na to není stavěný.</div>`;
-  const factorNote = linked
-    ? 'Velké číslo je stejná šance jako predikce nahoře a pohne se s kurzem. Faktory vysvětlují čistý model před posunem z kurzu a zpráv.'
-    : 'Faktory = příspěvky v logistické regresi (vysvětlitelná část modelu); výsledná pravděpodobnost je z LightGBM.';
   return `${warn}<div class="card"><div class="note">${esc(LVL_CS[code])} · ${SURF_CS[surface]}${q ? ' · kvalifikace' : ''} · na ${r.ctx.best_of} sety</div>
-   <div class="big${linked ? ' js-matchp' : ''}"><div><div class="p a">${pct(use)}</div><div class="nm">${esc(na)}</div></div><div><div class="p b">${pct(1 - use)}</div><div class="nm">${esc(nb)}</div></div></div>
-   <div class="bar lg${linked ? ' js-matchbar' : ''}"><i style="width:${(use * 100).toFixed(1)}%"></i></div>
+   <div class="big"><div><div class="p a">${pct(r.p)}</div><div class="nm">${esc(na)}</div></div><div><div class="p b">${pct(1 - r.p)}</div><div class="nm">${esc(nb)}</div></div></div>
+   <div class="bar lg"><i style="width:${(r.p * 100).toFixed(1)}%"></i></div>
+   <p class="plab">${LAB_MODEL}</p>
    <h3>Hlavní faktory</h3>${factorsHtml(r, na, nb)}
-   <p class="note">${factorNote}</p></div>
+   <p class="note">Faktory = příspěvky v logistické regresi (vysvětlitelná část modelu); výsledná pravděpodobnost je z LightGBM.</p></div>
    <div class="card"><h3>Srovnání</h3><table><tr><th></th><th>${esc(na.split(' ').slice(-1)[0])}</th><th>${esc(nb.split(' ').slice(-1)[0])}</th></tr>
    ${rows.map(x => `<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join('')}
    <tr><td>Vzájemné zápasy</td><td colspan="2" style="text-align:center">${r.h2h[0]} : ${r.h2h[1]}</td></tr></table>
