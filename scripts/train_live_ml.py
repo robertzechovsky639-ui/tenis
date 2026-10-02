@@ -132,15 +132,23 @@ def load_points(lookup):
             sa = sb = ga = gb = pa = pb = ta = tb = 0
             in_tb = False; hold = brk = 0
             states = []
+            open_g = []
             for rec in g.itertuples(index=False):
                 pw = to_int(rec.PointWinner, 0)
                 if str(rec.PointNumber) in ('0X', '0Y') or pw == 0: continue
                 srv_raw = to_int(rec.PointServer, 0)
                 srv = 1 if srv_raw == 1 else (-1 if srv_raw == 2 else 0)
-                states.append((sa, sb, ga, gb, pa, pb, ta, tb, 1 if in_tb else 0, srv, hold, brk))
+                states.append((sa, sb, ga, gb, pa, pb, ta, tb, 1 if in_tb else 0, srv, hold, brk, None))
+                open_g.append(len(states) - 1)
                 sw = to_int(rec.SetWinner, 0); gw = to_int(rec.GameWinner, 0)
                 if sw or gw:
                     winner = sw or gw
+                    if winner in (1, 2):
+                        yg = 1 if winner == 1 else 0
+                        for j in open_g:
+                            t = states[j]
+                            states[j] = t[:12] + (yg,)
+                        open_g = []
                     server = srv_raw
                     if server and winner:
                         if server == winner:

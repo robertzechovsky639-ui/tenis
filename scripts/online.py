@@ -8,9 +8,9 @@ Váhy žijí ve state/online.json (denní job je commituje). Nedělní refit zm�
 train_end_day a tím se korekce vynuluje — nové stromy už ty zápasy viděly.
 """
 import json, os, math
-ETA = 0.008
-DECAY = 0.9997
-CLIP = 0.25
+ETA = 0.002
+DECAY = 0.999
+CLIP = 0.15
 ZCAP = 0.35
 SEEN_MAX = 4000
 
