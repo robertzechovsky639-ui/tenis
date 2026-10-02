@@ -19,6 +19,7 @@ CTX = ['bo5', 'woman', 'clay', 'grass', 'qual', 'lvl']
 ZCAP = 1.15
 GAME_ZCAP = 3.2
 SET_ZCAP = 2.2
+NEXT_SCORE = ['ds', 'dg', 'dp', 'dtb', 'srv', 'hold', 'brk', 'bp', 'late']
 PULL = 0.04
 BOUND = 0.22
 ETA = {'G': 0.0012, 'S': 0.0025, 'M': 0.0035}
@@ -36,9 +37,16 @@ def sig(z):
 def n_weights():
     return len(SCORE) + len(CORE) * len(DIFF) + len(CORE) * len(CTX)
 
+def n_set_pre():
+    # jen na 0:0 zápasu: logit předzápasové šance, totéž krát kontext, a rozdíly hráčů
+    return 1 + len(CTX) + len(DIFF)
+
 def n_set_weights():
-    # stejné vstupy jako zápas plus posun, který je zapnutý i na 0:0 (1. set před zápasem)
-    return n_weights() + 1 + len(CTX)
+    # skóre jako zápas, plus posun a kontext pořád, plus příznaky jen pro 1. set před zápasem
+    return n_weights() + 1 + len(CTX) + n_set_pre()
+
+def first_set_start(sa, sb, ga, gb, pa, pb, ta, tb, in_tb):
+    return (not in_tb) and sa == 0 and sb == 0 and ga == 0 and gb == 0 and pa == 0 and pb == 0 and ta == 0 and tb == 0
 
 def empty(scales=None):
     sc = list(scales) if scales is not None else [1.0] * len(DIFF)
@@ -47,6 +55,7 @@ def empty(scales=None):
                 scale=[float(s) if s else 1.0 for s in sc], w=z, w0=list(z), n=0, seen=[],
                 gw=list(z), gw0=list(z), gn=0, gseen=[],
                 sw=[0.0] * n_set_weights(), sw0=[0.0] * n_set_weights(), sn=0, sseen=[],
+                nw=[0.0] * n_next_weights(), nw0=[0.0] * n_next_weights(), nn=0, nseen=[], nscore=list(NEXT_SCORE),
                 eta=dict(ETA), pull=PULL, bound=BOUND)
 
 def load(path):
@@ -73,12 +82,26 @@ def load(path):
     st['gseen'] = [str(s) for s in st.get('gseen') or []]
     st['gn'] = int(st.get('gn') or 0)
     sw = [float(v) for v in (st.get('sw') or [])]
-    if len(sw) != n_set_weights(): sw = [0.0] * n_set_weights()
+    if len(sw) == n_weights() + 1 + len(CTX):
+        sw = sw + [0.0] * n_set_pre()
+    elif len(sw) != n_set_weights():
+        sw = [0.0] * n_set_weights()
     sw0 = [float(v) for v in (st.get('sw0') or sw)]
-    if len(sw0) != n_set_weights(): sw0 = list(sw)
+    if len(sw0) == n_weights() + 1 + len(CTX):
+        sw0 = sw0 + [0.0] * n_set_pre()
+    elif len(sw0) != n_set_weights():
+        sw0 = list(sw)
     st['sw'], st['sw0'] = sw, sw0
     st['sseen'] = [str(s) for s in st.get('sseen') or []]
     st['sn'] = int(st.get('sn') or 0)
+    nw = [float(v) for v in (st.get('nw') or [])]
+    if len(nw) != n_next_weights(): nw = [0.0] * n_next_weights()
+    nw0 = [float(v) for v in (st.get('nw0') or nw)]
+    if len(nw0) != n_next_weights(): nw0 = list(nw)
+    st['nscore'] = list(st.get('nscore') or NEXT_SCORE)
+    st['nw'], st['nw0'] = nw, nw0
+    st['nseen'] = [str(s) for s in st.get('nseen') or []]
+    st['nn'] = int(st.get('nn') or 0)
     st['eta'] = dict(ETA)
     st['pull'] = PULL
     st['bound'] = BOUND
@@ -86,7 +109,7 @@ def load(path):
 
 def save(path, st):
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    out = {k: st[k] for k in ('base', 'score', 'core', 'diffs', 'ctx', 'scale', 'w', 'w0', 'n', 'seen', 'gw', 'gw0', 'gn', 'gseen', 'sw', 'sw0', 'sn', 'sseen') if k in st}
+    out = {k: st[k] for k in ('base', 'score', 'core', 'diffs', 'ctx', 'scale', 'w', 'w0', 'n', 'seen', 'gw', 'gw0', 'gn', 'gseen', 'sw', 'sw0', 'sn', 'sseen', 'nw', 'nw0', 'nn', 'nseen', 'nscore') if k in st}
     out['eta'] = dict(ETA); out['pull'] = PULL; out['bound'] = BOUND
     json.dump(out, open(path, 'w'), ensure_ascii=False, separators=(',', ':'))
 
@@ -140,12 +163,27 @@ def phi_game(sa, sb, ga, gb, pa, pb, ta, tb, in_tb, srv, hold, brk, diffs, ctx, 
     """Stejné vstupy jako zápas, ale podání zůstane i na 0:0 a bez bodů."""
     return phi(sa, sb, ga, gb, pa, pb, ta, tb, in_tb, srv, hold, brk, diffs, ctx, scales, blank_start=False)
 
-def phi_set(sa, sb, ga, gb, pa, pb, ta, tb, in_tb, srv, hold, brk, diffs, ctx, scales):
-    """Stejné vstupy jako zápas. Navíc je zapnutý posun a kontext i na 0:0, aby se 1. set před zápasem mohl učit."""
+def pre_tail(diffs, ctx, scales, p):
+    """Vlastní vstupy 1. setu: logit předzápasové šance, totéž krát kontext, rozdíly hráčů."""
+    lp = logit(p)
+    out = [lp]
+    out.extend(lp * float(ctx.get(k) or 0) for k in CTX)
+    out.extend(float(d) / (float(sc) if sc else 1.0) for d, sc in zip(diffs, scales))
+    return out
+
+def phi_set(sa, sb, ga, gb, pa, pb, ta, tb, in_tb, srv, hold, brk, diffs, ctx, scales, p=0.5):
+    """Skóre jako živý zápas plus vlastní váhy setu (logit předzápasové šance a rozdíly hráčů).
+    Ty jsou zapnuté i na 0:0, takže 1. set před zápasem není kopie šance na zápas, a i v průběhu setu."""
     x = list(phi_game(sa, sb, ga, gb, pa, pb, ta, tb, in_tb, srv, hold, brk, diffs, ctx, scales))
     x.append(1.0)
     x.extend(float(ctx.get(k) or 0) for k in CTX)
+    # pořád zapnuté: stejné váhy platí na 0:0 i v průběhu setu, takže se po dohrání přenesou do dalšího zápasu
+    x.extend(pre_tail(diffs, ctx, scales, p))
     return x
+
+def phi_set_pre(diffs, ctx, scales, p):
+    """Jen vlastní váhy 1. setu. Skóre je nulové, aby se z dohraného setu nehýbaly váhy průběhu."""
+    return [0.0] * (n_weights() + 1 + len(CTX)) + pre_tail(diffs, ctx, scales, p)
 
 def _dot_w(w, x, cap):
     z = 0.0
@@ -217,6 +255,29 @@ def step_set(st, x, y, p0, mk):
     """Stejný krok po dohraném setu. y je výherce setu, p0 předzápasová šance té strany."""
     return _step_into(st, 'sw', 'sw0', 'sseen', 'sn', x, y, p0, mk, ETA['S'], SET_ZCAP)
 
+def n_next_weights():
+    # skóre, skóre krát logit(p), logit(p), rozdíly hráčů
+    return len(NEXT_SCORE) * 2 + 1 + len(DIFF)
+
+def phi_next(sa, sb, ga, gb, pa, pb, ta, tb, in_tb, srv, hold, brk, diffs, ctx, scales, p):
+    """Vstupy hlavy dalšího setu: gemy, body, brejk a síla soupeře ve stavu, kdy se set N ještě hraje."""
+    sm = score_map(sa, sb, ga, gb, pa, pb, ta, tb, in_tb, srv, hold, brk, blank_start=False)
+    pc = min(0.98, max(0.02, float(p)))
+    lp = logit(pc)
+    sc = [float(sm[k]) for k in NEXT_SCORE]
+    out = list(sc)
+    out.extend(v * lp for v in sc)
+    out.append(lp)
+    out.extend(float(d) / (float(s) if s else 1.0) for d, s in zip(diffs, scales))
+    return out
+
+def step_next(st, x, y, p0, mk):
+    """Krok hlavy dalšího setu. y je výherce setu, který následoval po stavu x."""
+    if 'nw' not in st or len(st.get('nw') or []) != n_next_weights():
+        return False
+    pc = min(0.98, max(0.02, float(p0)))
+    return _step_into(st, 'nw', 'nw0', 'nseen', 'nn', x, y, pc, mk, ETA['S'], SET_ZCAP)
+
 def ctx_of(bo, gender, surface, qual, lvl):
     s = str(surface or '')
     return {
@@ -259,13 +320,18 @@ def from_sets(st, wid, lid, score, day, bo, gender, surface, qual, lvl, p_winner
     sa = sb = 0
     n = 0
     yM = 1.0 if a_is_w else 0.0
+    prev = None
     for wg, lg in sets:
         yS = 1.0 if (wg > lg) == a_is_w else 0.0
         x = phi(sa, sb, 0, 0, 0, 0, 0, 0, False, 0, 0, 0, diffs, ctx, sc)
         if step(st, x, yS, pA, f'{mk}|S|{sa}|{sb}', ETA['S']): n += 1
         if step(st, x, yM, pA, f'{mk}|M|{sa}|{sb}|0|0', ETA['M']): n += 1
-        xs = phi_set(sa, sb, 0, 0, 0, 0, 0, 0, False, 0, 0, 0, diffs, ctx, sc)
+        xs = phi_set(sa, sb, 0, 0, 0, 0, 0, 0, False, 0, 0, 0, diffs, ctx, sc, pA)
         if step_set(st, xs, yS, pA, f'{mk}|s|{sa}|{sb}'): n += 1
+        xn = phi_next(sa, sb, 0, 0, 0, 0, 0, 0, False, 0, 0, 0, diffs, ctx, sc, pA)
+        if prev is not None:
+            if step_next(st, prev[0], yS, pA, f'{mk}|n|{prev[1]}|{prev[2]}|0|0'): n += 1
+        prev = (xn, sa, sb)
         if yS == 1: sa += 1
         else: sb += 1
     return n
