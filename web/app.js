@@ -1553,6 +1553,17 @@ function predNote(e) {
   const extra = [!L.serverKnown ? 'Podání neznáme, obě možnosti bereme stejně.' : '', !L.pointsKnown ? 'Body v gemu nemáme, bereme jen sety a gemy.' : ''].filter(Boolean).join(' ');
   return `<div class="note" id="d-prednote"><b>Predikce teď ${pct(L.p)} : ${pct(1 - L.p)}</b> · Před zápasem ${pct(e._p)} : ${pct(1 - e._p)}. ${L.ml ? 'U ATP, WTA a Challengeru vychází z předzápasové šance a skóre a posune se po gemu, brejku, setu a po dohrání. U stejných zápasů je pod tím i odhad, kdo vezme hraný gem, a ten se po každém gemu posune stejně. Na 0:0 je předzápasová.' : 'Bodový výpočet ze skóre. Na 0:0 je předzápasová.'} ${extra}Podrobný rozpis níže je pořád předzápasový.</div>`;
 }
+function paintMatchBar(p) {
+  const root = document.getElementById('d-body');
+  if (!root || p == null) return;
+  const big = root.querySelector('.js-matchp');
+  if (!big) return;
+  const a = big.querySelector('.p.a'), b = big.querySelector('.p.b');
+  if (a) a.textContent = pct(p);
+  if (b) b.textContent = pct(1 - p);
+  const bar = root.querySelector('.js-matchbar i');
+  if (bar) bar.style.width = (p * 100).toFixed(1) + '%';
+}
 function paintLivePred(e) {
   if (!S.detail || S.byId[S.detail.id] !== e || e._p == null || e.st === 3) return;
   const r = resolveEv(e), na = dispName(r.hi, e.h), nb = dispName(r.ai, e.a);
@@ -1560,6 +1571,7 @@ function paintLivePred(e) {
   if (box) box.innerHTML = predInner(e, na, nb);
   const note = document.getElementById('d-prednote');
   if (note) note.outerHTML = predNote(e);
+  if (e.st === 1) paintMatchBar(shownP(e));
 }
 
 function probHtml(e) {
@@ -1818,7 +1830,7 @@ async function showDTab(k) {
     if (e.st === 3 || e._p == null) h += `<button class="btn ai" data-ask="${esc(e.id)}">✦ Zeptat se AI na tento zápas</button>`;
     body.innerHTML = h;
   } else if (k === 'predikce') {
-    body.innerHTML = (e.st === 3 ? '<div class="warn">Zápas už skončil. Model níže počítá s aktuálními daty, která mohou tento výsledek už obsahovat – nejde o předzápasový tip.</div>' : (e.st === 1 ? `<div class="card" id="d-predblock">${predInner(e, na, nb)}</div>` : predNote(e))) + resultHtml(r.hi, r.ai, e.surface, e.code, e.q);
+    body.innerHTML = (e.st === 3 ? '<div class="warn">Zápas už skončil. Model níže počítá s aktuálními daty, která mohou tento výsledek už obsahovat – nejde o předzápasový tip.</div>' : (e.st === 1 ? `<div class="card" id="d-predblock">${predInner(e, na, nb)}</div>` : predNote(e))) + resultHtml(r.hi, r.ai, e.surface, e.code, e.q, e.st === 1 ? shownP(e) : null);
   } else if (k === 'kurzy') {
     body.innerHTML = '<div class="empty">Načítám kurzy…</div>';
     if (e.fsid) await fetchOdds(e, true);
@@ -1958,8 +1970,10 @@ function factorsHtml(r, na, nb) {
   return c.map(([f, v]) => `<div class="f"><span>${esc(FEAT_CS[f] || f)}</span><span class="dir" style="color:${v > 0 ? 'var(--a)' : 'var(--b)'}">${'▮'.repeat(Math.max(1, Math.round(Math.abs(v) / mx * 5)))} ${esc(v > 0 ? na : nb)}</span></div>`).join('');
 }
 function formHtml(p) { return p.ring.slice(-10).map(x => `<span class="wl ${x[1] ? 'W' : 'L'}">${x[1] ? 'V' : 'P'}</span>`).join('') || '<span class="note">—</span>'; }
-function resultHtml(i, j, surface, code, q) {
+function resultHtml(i, j, surface, code, q, pShow) {
   const r = predict(i, j, surface, code, q); const na = pName(i), nb = pName(j); const A = r.A, B = r.B, t = todayDay();
+  const linked = typeof pShow === 'number' && pShow > 0 && pShow < 1;
+  const use = linked ? pShow : r.p;
   const f = TM.fatigue, fa = f(A.ring, t), fb = f(B.ring, t);
   const age = p => p.dob != null ? ((t - p.dob) / 365.25).toFixed(1) : '—';
   const wr = p => { const w = p.ring.slice(-10).reduce((a, x) => a + x[1], 0); return p.ring.length ? `${w}/${Math.min(10, p.ring.length)}` : '—'; };
@@ -1970,11 +1984,14 @@ function resultHtml(i, j, surface, code, q) {
   let warn = '';
   if (A.isNew || B.isNew) warn += `<div class="warn">${esc(A.isNew ? na : nb)} nemá v databázi historii (nový hráč nebo nespárované jméno) – odhad je velmi nejistý.</div>`;
   if (pG(i) !== pG(j)) warn += `<div class="warn">Pozor: porovnáváte muže a ženu – model na to není stavěný.</div>`;
+  const factorNote = linked
+    ? 'Velké číslo je stejná šance jako predikce nahoře a pohne se s kurzem. Faktory vysvětlují čistý model před posunem z kurzu a zpráv.'
+    : 'Faktory = příspěvky v logistické regresi (vysvětlitelná část modelu); výsledná pravděpodobnost je z LightGBM.';
   return `${warn}<div class="card"><div class="note">${esc(LVL_CS[code])} · ${SURF_CS[surface]}${q ? ' · kvalifikace' : ''} · na ${r.ctx.best_of} sety</div>
-   <div class="big"><div><div class="p a">${pct(r.p)}</div><div class="nm">${esc(na)}</div></div><div><div class="p b">${pct(1 - r.p)}</div><div class="nm">${esc(nb)}</div></div></div>
-   <div class="bar lg"><i style="width:${(r.p * 100).toFixed(1)}%"></i></div>
+   <div class="big${linked ? ' js-matchp' : ''}"><div><div class="p a">${pct(use)}</div><div class="nm">${esc(na)}</div></div><div><div class="p b">${pct(1 - use)}</div><div class="nm">${esc(nb)}</div></div></div>
+   <div class="bar lg${linked ? ' js-matchbar' : ''}"><i style="width:${(use * 100).toFixed(1)}%"></i></div>
    <h3>Hlavní faktory</h3>${factorsHtml(r, na, nb)}
-   <p class="note">Faktory = příspěvky v logistické regresi (vysvětlitelná část modelu); výsledná pravděpodobnost je z LightGBM.</p></div>
+   <p class="note">${factorNote}</p></div>
    <div class="card"><h3>Srovnání</h3><table><tr><th></th><th>${esc(na.split(' ').slice(-1)[0])}</th><th>${esc(nb.split(' ').slice(-1)[0])}</th></tr>
    ${rows.map(x => `<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join('')}
    <tr><td>Vzájemné zápasy</td><td colspan="2" style="text-align:center">${r.h2h[0]} : ${r.h2h[1]}</td></tr></table>
