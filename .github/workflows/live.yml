@@ -2,10 +2,9 @@ name: Živé učení během zápasu
 
 on:
   schedule:
-    # 08:07–20:07 UTC = v létě 10:07–22:07 Praha, v zimě 09:07–21:07.
-    # Každý běh pak smyčkou sahá na skóre asi minutu, takže pokryje den zhruba do 23:00.
-    # V noci se nespouští, ať se nespálí minuty Actions, když se nehraje.
-    - cron: '7 8-20 * * *'
+    # Každou hodinu v :07, celý den. Veřejný repozitář minuty Actions nespálí.
+    # Běh trvá asi 48 minut a sahá na skóre každou minutu, takže pokryje i noční zápasy.
+    - cron: '7 * * * *'
   workflow_dispatch:
 
 permissions:
