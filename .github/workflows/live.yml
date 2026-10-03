@@ -2,12 +2,12 @@ name: Živé učení během zápasu
 
 on:
   schedule:
-    # Každou hodinu v :02, celý den. Veřejný repozitář minuty Actions nespálí.
-    # Běh trvá 58 minut a sahá na skóre každou minutu. Než naběhne další, zbývají asi dvě minuty.
+    # Záloha, kdyby řetěz vypadl. GitHub tenhle cron dnes nespouštěl včas.
     - cron: '2 * * * *'
   workflow_dispatch:
 
 permissions:
+  actions: write
   contents: write
   pages: write
   id-token: write
@@ -45,9 +45,21 @@ jobs:
           else
             python scripts/live_tick.py --minutes 58 --interval 60
           fi
+      - name: Spustit další běh
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          queued=$(gh run list --repo "${{ github.repository }}" --workflow live.yml --status queued --json databaseId --jq 'length')
+          active=$(gh run list --repo "${{ github.repository }}" --workflow live.yml --status in_progress --json databaseId --jq 'length')
+          if [ "$queued" != "0" ] || [ "$active" != "1" ]; then
+            echo "další běh už čeká nebo běží (queued=$queued active=$active)"
+            exit 0
+          fi
+          gh workflow run live.yml --repo "${{ github.repository }}" --ref main
 
   deploy:
-    if: github.event_name == 'workflow_dispatch'
+    if: false
     needs: learn
     runs-on: ubuntu-latest
     timeout-minutes: 20
