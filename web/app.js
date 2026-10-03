@@ -335,6 +335,7 @@ async function showSnapshotFirst() {
 async function fillLive() {
   S.refreshing = true; S.lowBusy = true;
   try { await pullLiveServer(false); } catch (e) {}
+  try { await pullOnlineServer(false); } catch (e) {}
   const take = async (label, loader, attach) => {
     let res;
     try { res = await loader; }
@@ -388,6 +389,7 @@ async function refreshLive(force) {
   S.refreshing = true;
   try {
     try { await pullLiveServer(false); } catch (e) {}
+    try { await pullOnlineServer(false); } catch (e) {}
     const res = await Promise.allSettled(['atp', 'wta'].map(t => getJSON(ESPN(t), 12000).then(j => espnEvents(j, t))));
     const evs = res.filter(r => r.status === 'fulfilled').flatMap(r => r.value);
     if (!res.some(r => r.status === 'fulfilled')) { S.live.err = 'ESPN nedostupné'; updateStatus(); return; }
@@ -415,6 +417,7 @@ async function lowTick(force) {
   S.lowBusy = true;
   try {
     try { await pullLiveServer(false); } catch (e) {}
+    try { await pullOnlineServer(false); } catch (e) {}
     const ev = await getJSON(`${S365}current/?${P365()}`, 8000).then(ev365);
     const r = ingest(ev, true);
     S.l365.ok = true; S.l365.err = null; S.l365.last = Date.now(); S.l365.polls++; S.l365.upd += r.n; S.l365.fin += r.fin;
@@ -1009,6 +1012,29 @@ function liveMlOn(e) {
   return !!(e && e.code >= 3 && L && L.base === 'liveml1' && L.w && L.score && L.w.length === (L.score.length + L.core.length * L.diffs.length + L.core.length * L.ctx.length));
 }
 const LIVE_RAW = 'https://raw.githubusercontent.com/robertzechovsky639-ui/tenis/main/state/live_online.json';
+const ONLINE_RAW = 'https://raw.githubusercontent.com/robertzechovsky639-ui/tenis/main/state/online.json';
+function onlineSig() {
+  const o = S.online; if (!o) return '';
+  return [o.base, o.n, (o.seen || []).length, o.w && o.w[0]].join('|');
+}
+/* Předzápasové váhy z Gitu, ať telefon nečeká na sestavení stránky v 17:17. */
+async function pullOnlineServer(force) {
+  if (!S.online || !S.model) return;
+  if (!force && Date.now() - (S.onlinePullAt || 0) < 60000) return;
+  S.onlinePullAt = Date.now();
+  let shipped;
+  try { shipped = await getJSON(ONLINE_RAW + '?t=' + Math.floor(Date.now() / 30000), 8000); }
+  catch (e) { return; }
+  if (!shipped || !shipped.w || !shipped.cols) return;
+  const before = onlineSig();
+  saveOnline();
+  attachOnline(shipped);
+  saveOnline();
+  if (onlineSig() !== before && S.all) {
+    S.predGen++;
+    try { await probsFor(S.all); onLiveChange(0); } catch (e) {}
+  }
+}
 function liveWeightSig() {
   const L = S.liveOn; if (!L) return '';
   return [L.n, L.gn, L.sn, L.nn, (L.seen || []).length, (L.gseen || []).length, (L.sseen || []).length, (L.nseen || []).length, L.w && L.w[0], L.gw && L.gw[0], L.sw && L.sw[0], L.nw && L.nw[0]].join('|');
@@ -2191,7 +2217,7 @@ function renderModel() {
    <div class="card"><h2>Data</h2><table><tr><th>Kategorie</th><th style="text-align:left">Zdroj: rozsah (počet zápasů)</th></tr>${cov}</table>
    <p class="note">Sackmannovy repozitáře tennis_atp/tennis_wta jsou od léta 2026 offline; použit veřejný archiv (snapshot do ${fmtDate(m.gap_start)}). ATP/WTA okruh a Challengery jsou doplněny z TennisMyLife až do buildu. ITF, WTA 125 a kvalifikace Challengerů mají mezeru mezi snapshotem a posledními 7 dny před buildem (u těchto hráčů je neutralizována únava).</p></div>
    <div class="card"><h2>Živá data a aktualizace</h2>
-   <p><b>Při otevření</b> aplikace v prohlížeči (bez klíčů) stáhne rozpis a výsledky (±2 dny, výsledky ~7 dní zpět) a z nových výsledků <b>přepočítá Elo</b>, formu, únavu a H2H. <b>Živé skóre</b> se nejdřív ukáže ze snímku buildu, potom se doplní z feedů. ATP/WTA (ESPN) se obnovuje asi každých 15 s, body a gemy (365scores) asi každých 8 s, ITF (Sofascore, pokud z dané sítě odpovídá) každých 20 s — jen dokud je vidět seznam zápasů nebo detail. Váhy živého zápasu, setu, dalšího setu a gemu se na serveru ukládají i při zavřené aplikaci (zhruba 10:00–23:00) a příští otevření je stáhne. Dokončený zápas se hned započte do Elo a jedním krokem doladí předzápasový model (váhy logistické korekce, stromy se nemění). Velké přetrénování stromů zůstává v neděli. Stejný krok dělá i denní aktualizace ~05:17 a ~17:17, takže doladění platí i pro ostatní. Predikce se počítají přímo v telefonu.</p>
+   <p><b>Při otevření</b> aplikace v prohlížeči (bez klíčů) stáhne rozpis a výsledky (±2 dny, výsledky ~7 dní zpět) a z nových výsledků <b>přepočítá Elo</b>, formu, únavu a H2H. <b>Živé skóre</b> se nejdřív ukáže ze snímku buildu, potom se doplní z feedů. ATP/WTA (ESPN) se obnovuje asi každých 15 s, body a gemy (365scores) asi každých 8 s, ITF (Sofascore, pokud z dané sítě odpovídá) každých 20 s — jen dokud je vidět seznam zápasů nebo detail. Váhy živého zápasu, setu, dalšího setu a gemu se na serveru ukládají i při zavřené aplikaci a příští otevření je stáhne. Dokončený zápas se hned započte do Elo. Předzápasový model se z něj doladí jedním krokem i na serveru, do pár minut, i když je aplikace zavřená. Telefon si ty váhy stáhne z Gitu a nečeká na sestavení stránky. Denní běh ~05:17 a ~17:17 a nedělní přepočet stromů zůstávají. Stejný zápas se nezapočítá podruhé. Predikce se počítají přímo v telefonu.</p>
    <div class="kv"><div>ESPN – živé skóre ATP/WTA (+ část WTA 125)</div><div>${L.espn ? '✅ funguje' : '⚠️ nedostupné'}${L.polls ? ` · ${L.polls}× obnoveno` : ''}</div>
    <div>365scores – živé skóre Challenger/WTA 125</div><div>${S.l365.ok && !S.l365.err ? '✅ funguje' : S.l365.err ? '⚠️ nedostupné' : '…'}${S.l365.polls ? ` · ${S.l365.polls}× obnoveno, ${S.l365.upd} změn skóre` : ''}</div>
    <div>Sofascore (všechny úrovně)</div><div>${L.sofa ? '✅ funguje' : '⚠️ z této sítě blokováno'}</div>
@@ -2199,7 +2225,7 @@ function renderModel() {
    <div>Kurzy Flashscore (předzápas oce + v průběhu ole, CORS)</div><div>${L.oddsOk ? `✅ načteno ${L.oddsOk}×${L.oddsLive ? `, z toho ${L.oddsLive}× v průběhu` : ''}` : L.oddsErr ? '⚠️ nedostupné – použit snímek' : 'načítají se u zobrazených zápasů'}</div>
    <div>Dokončené zápasy z živých zdrojů</div><div>${L.finished}</div><div>Už obsaženo v buildu / duplicity</div><div>${L.dup}</div>
    <div>Nově započteno do Elo</div><div>${L.applied}</div><div>Doladění modelu z výsledků od nedělního přepočtu</div><div>${(S.online && S.online.n) || 0}</div><div>Neznámí hráči v živých datech</div><div>${L.unknown}</div></div>
-   <p class="note">Flashscore feed pokrývá všechny úrovně, ale vyžaduje hlavičku x-fsign a CORS preflight povoluje jen vlastním doménám Flashscore – z prohlížeče proto nejde. Živé Challenger/WTA 125 bere aplikace z 365scores (CORS *), ITF ze Sofascore (funguje z běžných sítí, z datacenter ne); jinak ITF jen ze snímku buildu. Kurzy Flashscore CORS povolují, ale potřebují ID zápasu ze snímku; zápasy ESPN se se snímkem párují podle dvojice hráčů. Bez nového buildu se neaktualizuje žebříček a statistiky podání/příjmu. Předzápasový model se z dohraného zápasu doladí hned (a znovu v denním buildu); stromy LightGBM se přepočítají až v neděli.</p></div>
+   <p class="note">Flashscore feed pokrývá všechny úrovně, ale vyžaduje hlavičku x-fsign a CORS preflight povoluje jen vlastním doménám Flashscore – z prohlížeče proto nejde. Živé Challenger/WTA 125 bere aplikace z 365scores (CORS *), ITF ze Sofascore (funguje z běžných sítí, z datacenter ne); jinak ITF jen ze snímku buildu. Kurzy Flashscore CORS povolují, ale potřebují ID zápasu ze snímku; zápasy ESPN se se snímkem párují podle dvojice hráčů. Bez nového buildu se neaktualizuje žebříček a statistiky podání/příjmu. Předzápasový model se z dohraného zápasu doladí na serveru do pár minut, i při zavřené aplikaci, a telefon si váhy stáhne z Gitu. Denní běh stejný zápas nepočítá podruhé. Stromy LightGBM se přepočítají až v neděli.</p></div>
    <div class="card"><h2>Kurzy a zodpovědné hraní</h2><p>„Value“ se zvýrazní jen před začátkem zápasu a jen z předzápasových kurzů (živý kurz v průběhu se nepočítá). Model musí být nad trhem (průměrný kurz bez marže) aspoň o ${VALUE_TH * 100} procentních bodů, očekávaná návratnost při nejlepším kurzu aspoň ${VALUE_EV * 100} % a průměr musí být aspoň ze ${VALUE_N} kanceláří. Práh je přísný schválně: model se od trhu liší v průměru o ~8 p. b. Na testu 2025–26 má přesnost ~70 %; trh bývá přesnější, protože vidí informace, které model nemá.</p>
    <p class="note gam">18+ Aplikace není sázková kancelář ani sázkové poradenství. Sázení je riskantní a může vést k závislosti. Sázejte jen částky, které si můžete dovolit prohrát, stanovte si limity a při potížích vyhledejte odbornou pomoc.</p></div>
    <div class="card"><p class="note">Zdroje: Jeff Sackmann – tennis_atp / tennis_wta (CC BY-NC-SA 4.0, archiv Aneeshers/tennis-sackmann-archive), TennisMyLife (stats.tennismylife.org), veřejný feed a kurzové srovnání Flashscore, ESPN (živé skóre, fotky hráčů), vlajky flagcdn.com. Aplikace je nekomerční. Predikce jsou odhady, ne záruky.</p></div>`;
@@ -2259,6 +2285,7 @@ async function init() {
     cleanCache();
     await showSnapshotFirst();
     try { await pullLiveServer(true); } catch (e) {}
+    try { await pullOnlineServer(true); } catch (e) {}
     updateStatus();
     route();
     fillLive();

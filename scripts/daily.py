@@ -177,6 +177,15 @@ def main():
             # stejný zápas doladí předzápasový model (váhy, ne stromy) ještě před posunem Elo
             if online_pred is None:
                 online_pred = export.Predictor()
+            on_path = os.path.join(ROOT, 'state', 'online.json')
+            online_pred.online = online.adopt_ahead(on_path, online_pred.online)
+            if os.path.exists(on_path):
+                try:
+                    disk_on = json.load(open(on_path))
+                except Exception:
+                    disk_on = None
+                if disk_on and str(disk_on.get('base')) == str(online_pred.online.get('base')) and online.near(disk_on, mk):
+                    online.mark(online_pred.online, mk)
             p0 = online_pred.frozen(x)[0]
             if online.step(online_pred.online, x, yrow, p0, engine.FEATS, mk):
                 st['online_steps'] = st.get('online_steps', 0) + 1
@@ -214,7 +223,9 @@ def main():
     if not disk.get('bases') and live_on.get('bases'): disk['bases'] = live_on['bases']
     live_ml.save(live_path, disk)
     if online_pred is not None:
-        online.save(os.path.join(ROOT, 'state', 'online.json'), online_pred.online)
+        on_path = os.path.join(ROOT, 'state', 'online.json')
+        online_pred.online = online.adopt_ahead(on_path, online_pred.online)
+        online.save(on_path, online_pred.online)
     else:
         # i den bez nových zápasů nechá soubor se správnou základnou modelu (po nedělním refitu se vynuluje)
         import json as _json
