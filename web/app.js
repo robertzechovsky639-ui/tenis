@@ -1834,7 +1834,7 @@ async function showDTab(k) {
     if (e.st === 3 || e._p == null) h += `<button class="btn ai" data-ask="${esc(e.id)}">✦ Zeptat se AI na tento zápas</button>`;
     body.innerHTML = h;
   } else if (k === 'predikce') {
-    body.innerHTML = (e.st === 3 ? '<div class="warn">Zápas už skončil. Model níže počítá s aktuálními daty, která mohou tento výsledek už obsahovat – nejde o předzápasový tip.</div>' : (e.st === 1 ? `<div class="card" id="d-predblock">${bothPrematchHtml(e, na, nb)}</div>` : predNote(e))) + resultHtml(r.hi, r.ai, e.surface, e.code, e.q, e.st === 1);
+    body.innerHTML = (e.st === 3 ? '<div class="warn">Zápas už skončil. Model níže počítá s aktuálními daty, která mohou tento výsledek už obsahovat – nejde o předzápasový tip.</div>' : (e.st === 1 ? `<div class="card" id="d-predblock">${bothPrematchHtml(e, na, nb)}</div>` : predNote(e))) + resultHtml(r.hi, r.ai, e.surface, e.code, e.q, true);
   } else if (k === 'kurzy') {
     body.innerHTML = '<div class="empty">Načítám kurzy…</div>';
     if (e.fsid) await fetchOdds(e, true);
