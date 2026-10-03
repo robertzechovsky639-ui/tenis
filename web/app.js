@@ -1362,8 +1362,7 @@ function setPredHtml(e, na, nb) {
   if (e._p == null || !(e._p > 0) || !(e._p < 1) || e.st === 3) return '';
   const fit = serveFit(e);
   const verb = e.g === 'W' ? 'vyhrála' : 'vyhrál';
-  if (e.st === 2) return '';
-  const live = null;
+  const live = e.st === 2 && !e.stale ? readLive(e) : null;
   if (!live) {
     const tag = e.st === 2 ? 'bez skóre' : 'z 0:0';
     let base = null;
@@ -1415,7 +1414,28 @@ function setPredHtml(e, na, nb) {
   const note = setModelOn(e) ? 'Šance na hraný set i na další set se učí z gemů, bodů, brejků a síly soupeře. Po dohraném setu se přenese do dalšího zápasu.' : 'Teď hraný set ze skóre, další z 0:0. Stejný bodový model, ne samostatný model setů.';
   return `<div class="setpreds"><div class="predlab">Kdo bere set</div>${lines.join('')}<p class="note">${note}</p></div>`;
 }
-function gamePredHtml() { return ''; }
+
+function gamePredHtml(e, na, nb) {
+  if (!liveMlOn(e) || e.st !== 2 || e.stale || e._p == null) return '';
+  const st = readLive(e);
+  if (!st) return '';
+  const p = liveGameProb(e, st);
+  if (p == null) return '';
+  const lab = st.inTB ? 'Tiebreak teď' : 'Gem teď';
+  const row = `<div class="setrow"><span class="n">${lab}</span><span><b class="a">${pct(p)}</b><small class="nm">${esc(na)}</small></span><span class="r"><b class="b">${pct(1 - p)}</b><small class="nm">${esc(nb)}</small></span></div>`;
+  let w = e._lastGem && e._lastGem.w;
+  if (!w && st.between) {
+    const sets = (e.sets || []).filter(s => s && +s[0] >= 0 && +s[1] >= 0);
+    for (let i = sets.length - 1; i >= 0; i--) { const sw = setWinner(sets[i]); if (sw) { w = sw; break; } }
+  }
+  const verb = e.g === 'W' ? 'vyhrála' : 'vyhrál';
+  const last = w ? `<div class="setrow"><span class="n">Minulý gem</span><span class="win">${verb} ${esc(w === 1 ? na : nb)}</span></div>` : '';
+  const bits = [];
+  if (st.aServes == null) bits.push('Podání neznáme, bereme obě možnosti.');
+  if (!st.pointsKnown && !st.between) bits.push('Body v gemu nemáme, bereme gemy a podání.');
+  return `<div class="setpreds"><div class="predlab">${lab}</div>${row}${last}<p class="note">Stejné vstupy jako živá predikce zápasu (skóre, podání, brejk nebo udržení, předzápasová síla). Po každém dohraném gemu se posune.${bits.length ? ' ' + bits.join(' ') : ''}</p></div>`;
+}
+
 
 
 
@@ -1462,17 +1482,25 @@ function serverPredHtml(e, na, nb) {
 }
 
 function predInner(e, na, nb) {
-  const pre = rawOnlyHtml(e, na, nb);
-  if (e.st !== 2) return pre;
-  return pre + serverPredHtml(e, na, nb);
+  const pre = `<div class="predlab pre">${TITLE_MODEL}</div><div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div><p class="plab">${LAB_MODEL}</p>`;
+  if (e.st !== 2) return rawOnlyHtml(e, na, nb);
+  const L = liveProb(e);
+  if (!L || !L.ok) return pre + setPredHtml(e, na, nb) + '<p class="note">Živé skóre teď nemáme, platí jen předzápasová predikce.</p>';
+  const bits = [];
+  if (!L.serverKnown) bits.push('Podání neznáme, obě možnosti bereme stejně.');
+  if (!L.pointsKnown) bits.push(L.between ? 'Set skončil, další ještě nemá skóre — bereme jen sety.' : 'Body v gemu nemáme, bereme jen sety a gemy.');
+  return `<div class="predlab now">Predikce teď</div><div class="big2"><div><b class="a">${pct(L.p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - L.p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(L.p * 100).toFixed(1)}%"></i></div>${pre}<p class="note">${L.ml ? 'Z předzápasové šance, síly hráčů a skóre (sety, gemy, body, podání, brejk nebo udržení). Na 0:0 zůstává předzápasová. Po gemu, brejku, setu a po dohrání se posune.' : 'Z předzápasové šance a skóre. Bodový výpočet, na 0:0 je předzápasová.'} ${bits.join(' ')}</p>${gamePredHtml(e, na, nb)}${setPredHtml(e, na, nb)}`;
 }
+
 
 function predNote(e) {
   if (e.st !== 2 || e._p == null) return '';
-  const row = serverPred(e);
-  if (!row) return `<div class="note" id="d-prednote">Před zápasem ${pct(e._p)} : ${pct(1 - e._p)}. GitHub pro tenhle zápas ještě nezapsal živá procenta. Telefon je ze skóre nepočítá. Objeví se, až je server zapíše, zhruba do dvou minut.</div>`;
-  return `<div class="note" id="d-prednote"><b>Ze serveru ${pct(row.p)} : ${pct(1 - row.p)}</b> · Před zápasem ${pct(e._p)} : ${pct(1 - e._p)}. Čísla zapsal GitHub, telefon je jen ukazuje. Obnovují se zhruba jednou za dvě minuty.</div>`;
+  const L = liveProb(e);
+  if (!L || !L.ok) return '<div class="note" id="d-prednote">Živé skóre teď nemáme, platí jen předzápasová predikce. Podrobný rozpis níže je předzápasový.</div>';
+  const extra = [!L.serverKnown ? 'Podání neznáme, obě možnosti bereme stejně.' : '', !L.pointsKnown ? 'Body v gemu nemáme, bereme jen sety a gemy.' : ''].filter(Boolean).join(' ');
+  return `<div class="note" id="d-prednote"><b>Predikce teď ${pct(L.p)} : ${pct(1 - L.p)}</b> · Před zápasem ${pct(e._p)} : ${pct(1 - e._p)}. ${L.ml ? 'U ATP, WTA a Challengeru vychází z předzápasové šance a skóre a posune se po gemu, brejku, setu a po dohrání. U stejných zápasů je pod tím i odhad, kdo vezme hraný gem, a ten se po každém gemu posune stejně. Na 0:0 je předzápasová.' : 'Bodový výpočet ze skóre. Na 0:0 je předzápasová.'} ${extra}Podrobný rozpis níže je pořád předzápasový.</div>`;
 }
+
 
 function paintLivePred(e) {
   if (!S.detail || S.byId[S.detail.id] !== e || e._p == null || e.st === 3) return;
@@ -1546,7 +1574,7 @@ async function renderMatches(keep) {
   else if (!list.length) h += `<div class="empty">Žádné zápasy pro tento výběr.${F.favOnly ? '<br><small>Přidejte si hráče do oblíbených hvězdičkou v detailu zápasu.</small>' : ''}</div>`;
   else h += groupsHtml(list);
   const sc = S.live.srcCount || {};
-  h += `<p class="note">Zdroje: ${Object.entries(sc).map(([k, n]) => `${k === 'snapshot' ? 'snímek z buildu ' + esc(S.live.snapshot || '') : k} (${n})`).join(', ') || '—'}. Živé skóre: ATP/WTA z ESPN (~15 s), body a gemy z 365scores (~8 s)${S.live.sofa ? ', ITF ze Sofascore (~20 s)' : ', ITF jen ze snímku buildu (Sofascore z této sítě neodpovídá)'}. Kurzy (Tipsport, iFortuna, Chance, Betano) se u nadcházejícího zápasu jen zobrazí, šanci na telefonu neposouvají. Zprávy o odhlášení a zranění jdou z ESPN a na telefonu váhy neposouvají. VALUE zůstává z čistého modelu a předzápasového kurzu. Živá procenta na zápas, set, další set a gem zapisuje GitHub zhruba jednou za dvě minuty. Telefon je jen ukáže a ze skóre je nepočítá.</p>
+  h += `<p class="note">Zdroje: ${Object.entries(sc).map(([k, n]) => `${k === 'snapshot' ? 'snímek z buildu ' + esc(S.live.snapshot || '') : k} (${n})`).join(', ') || '—'}. Živé skóre: ATP/WTA z ESPN (~15 s), body a gemy z 365scores (~8 s)${S.live.sofa ? ', ITF ze Sofascore (~20 s)' : ', ITF jen ze snímku buildu (Sofascore z této sítě neodpovídá)'}. Kurzy (Tipsport, iFortuna, Chance, Betano) se u nadcházejícího zápasu jen zobrazí, šanci na telefonu neposouvají. Zprávy o odhlášení a zranění jdou z ESPN a na telefonu váhy neposouvají. VALUE zůstává z čistého modelu a předzápasového kurzu. Živá procenta na zápas, set, další set a gem se na telefonu hýbou hned se skóre. Váhy se přitom neukládají, ty posouvá jen GitHub.</p>
    <p class="note gam">18+ Kurzy slouží jen pro srovnání s modelem. Sázení je riskantní a může vést k závislosti – hrajte zodpovědně, jen s penězi, které si můžete dovolit prohrát.</p>`;
   v.innerHTML = h;
   if (keep) window.scrollTo(0, y);
@@ -2058,7 +2086,7 @@ function renderModel() {
     return `<tr><td>${g === 'M' ? 'Muži' : 'Ženy'} – ${GRP_CS[grp]}</td><td>${Object.entries(by).map(([s, [a, b, n]]) => `${SRC[s] || s}: ${a.slice(0, 4)}–${b.slice(6, 8)}.${b.slice(4, 6)}.${b.slice(0, 4)} (${n.toLocaleString('cs-CZ')})`).join('<br>')}</td></tr>`; }).join('');
   const L = S.live;
   v.innerHTML = `<div class="ph"><h1>MODEL</h1></div><div class="card"><h2>O modelu</h2>
-   <p>Model předpovídá pravděpodobnost výhry ve dvouhře pro <b>všechny úrovně</b>: Grand Slamy, ATP/WTA, Challengery, WTA 125, ITF/Futures i kvalifikace. Příznaky pro každý zápas se počítají jen z předchozích zápasů: Elo celkové a podle povrchu (K-faktor podle úrovně turnaje), žebříček a body, forma, H2H, věk, výška, ruka, únava, úspěšnost na povrchu, klouzavé statistiky podání/příjmu a úroveň turnaje. Pořadí hráčů je náhodné; predikce je symetrizovaná.</p><p><b>Verze 2</b> přidává Elo počítané z podílu vyhraných gemů (zohlední, jak přesvědčivě hráč vyhrál/prohrál), totéž podle povrchu, časově váženou formu (poločas ~1 měsíc), formu za 60 dní, nejistotu ratingu ve stylu Glicko (málo zápasů / dlouhá pauza), neaktivitu a součet bodů na podání+příjmu. Hyperparametry a kalibrace laděny jen na validaci (2. pol. 2025).</p><p>Předzápasová pravděpodobnost se po každém dohraném zápase o kousek posune — jeden online krok, ne nový strom. Starší výsledky zůstávají v nedělním modelu. Dnešní běh už započítal +19. U ATP, WTA, Challengeru a grandslamu se před zápasem zobrazená šance na zápas a na 1. set navíc posouvá podle aktuálních kurzů (jen část rozdílu proti trhu bez marže) a podle zpráv ESPN o odhlášení nebo zranění. Telefon ten posun do vah nezapisuje. Stromy ani krok z dohraného zápasu se tím nemění. Když kurz není, zůstává model. ITF se tak neposouvá. Živá predikce u ATP, WTA a Challengeru vychází z předzápasové šance a skóre (sety, gemy, body, podání, brejk nebo udržení) a posune se po gemu, brejku, setu a po dohrání. Odhad, kdo vezme hraný gem, používá stejné vstupy a po každém dohraném gemu stejný krok. Šance na set je vlastní číslo, ne kopie šance na zápas. Před zápasem vychází z naučených vah setu a po dohraném setu se přenese do dalšího zápasu. Během setu se šance na ten set i na další set posouvají podle gemů, bodů, brejků a síly soupeře. Ten krok běží jen na GitHubu. Telefon váhy neposouvá, jen je stáhne. Živá procenta na zápas, set, další set a gem zapisuje GitHub zhruba jednou za dvě minuty. Telefon je jen stáhne a ukáže, ze skóre je nepočítá.</p>
+   <p>Model předpovídá pravděpodobnost výhry ve dvouhře pro <b>všechny úrovně</b>: Grand Slamy, ATP/WTA, Challengery, WTA 125, ITF/Futures i kvalifikace. Příznaky pro každý zápas se počítají jen z předchozích zápasů: Elo celkové a podle povrchu (K-faktor podle úrovně turnaje), žebříček a body, forma, H2H, věk, výška, ruka, únava, úspěšnost na povrchu, klouzavé statistiky podání/příjmu a úroveň turnaje. Pořadí hráčů je náhodné; predikce je symetrizovaná.</p><p><b>Verze 2</b> přidává Elo počítané z podílu vyhraných gemů (zohlední, jak přesvědčivě hráč vyhrál/prohrál), totéž podle povrchu, časově váženou formu (poločas ~1 měsíc), formu za 60 dní, nejistotu ratingu ve stylu Glicko (málo zápasů / dlouhá pauza), neaktivitu a součet bodů na podání+příjmu. Hyperparametry a kalibrace laděny jen na validaci (2. pol. 2025).</p><p>Předzápasová pravděpodobnost se po každém dohraném zápase o kousek posune — jeden online krok, ne nový strom. Starší výsledky zůstávají v nedělním modelu. Dnešní běh už započítal +19. U ATP, WTA, Challengeru a grandslamu se před zápasem zobrazená šance na zápas a na 1. set navíc posouvá podle aktuálních kurzů (jen část rozdílu proti trhu bez marže) a podle zpráv ESPN o odhlášení nebo zranění. Telefon ten posun do vah nezapisuje. Stromy ani krok z dohraného zápasu se tím nemění. Když kurz není, zůstává model. ITF se tak neposouvá. Živá predikce u ATP, WTA a Challengeru vychází z předzápasové šance a skóre (sety, gemy, body, podání, brejk nebo udržení) a posune se po gemu, brejku, setu a po dohrání. Odhad, kdo vezme hraný gem, používá stejné vstupy a po každém dohraném gemu stejný krok. Šance na set je vlastní číslo, ne kopie šance na zápas. Před zápasem vychází z naučených vah setu a po dohraném setu se přenese do dalšího zápasu. Během setu se šance na ten set i na další set posouvají podle gemů, bodů, brejků a síly soupeře. Ten krok běží jen na GitHubu. Telefon váhy neposouvá, jen je stáhne. Živá procenta na zápas, set, další set a gem se na telefonu hýbou hned se skóre. Váhy telefon neposouvá, ty ukládá jen GitHub.</p>
    <div class="kv"><div>Poslední datum v datech buildu</div><div><b>${fmtDate(m.day_end)}</b></div><div>Build</div><div>${esc(m.built)}${m.mode === 'daily-incremental' ? ' <small class="note">(automatická denní aktualizace GitHub Actions, ~05:17 a ~17:17)</small>' : ''}</div>${m.update ? `<div>Poslední aktualizace</div><div>+${m.update.applied} zápasů${m.update.new_players ? `, ${m.update.new_players} nových hráčů` : ''}</div>` : ''}${m.full_build ? `<div>Plná přestavba a trénink</div><div>${esc(m.full_build)}</div>` : ''}
    <div>Trénink</div><div>${esc(mt.split.train)} (${mt.split.n_train.toLocaleString('cs-CZ')})</div><div>Validace</div><div>${esc(mt.split.valid)} (${mt.split.n_valid.toLocaleString('cs-CZ')})</div>
    <div>Refit (nasazený model)</div><div>${esc(mt.split.refit || '—')}</div><div>Holdout (mimo vzorek)</div><div>${esc(mt.split.test)} (${mt.split.n_test.toLocaleString('cs-CZ')})</div><div>Stromů LightGBM</div><div>${mt.gbm_trees}</div></div></div>
@@ -2072,7 +2100,7 @@ function renderModel() {
    <div class="card"><h2>Data</h2><table><tr><th>Kategorie</th><th style="text-align:left">Zdroj: rozsah (počet zápasů)</th></tr>${cov}</table>
    <p class="note">Sackmannovy repozitáře tennis_atp/tennis_wta jsou od léta 2026 offline; použit veřejný archiv (snapshot do ${fmtDate(m.gap_start)}). ATP/WTA okruh a Challengery jsou doplněny z TennisMyLife až do buildu. ITF, WTA 125 a kvalifikace Challengerů mají mezeru mezi snapshotem a posledními 7 dny před buildem (u těchto hráčů je neutralizována únava).</p></div>
    <div class="card"><h2>Živá data a aktualizace</h2>
-   <p><b>Při otevření</b> aplikace v prohlížeči (bez klíčů) stáhne rozpis a výsledky (±2 dny, výsledky ~7 dní zpět) a z nových výsledků <b>přepočítá Elo</b>, formu, únavu a H2H. <b>Živé skóre</b> se nejdřív ukáže ze snímku buildu, potom se doplní z feedů. ATP/WTA (ESPN) se obnovuje asi každých 15 s, body a gemy (365scores) asi každých 8 s, ITF (Sofascore, pokud z dané sítě odpovídá) každých 20 s — jen dokud je vidět seznam zápasů nebo detail. Váhy živého zápasu, setu, dalšího setu, gemu i předzápasu posouvá jen GitHub, i když je aplikace otevřená. Telefon je neposouvá a neukládá, jen je stáhne. Procenta na probíhající zápas, hraný set, další set a gem zapisuje jen GitHub, zhruba jednou za dvě minuty. Telefon je stáhne a ukáže, ze skóre je nepočítá. Dokončený zápas se v telefonu hned započte do Elo. Předzápasové váhy doladí jen server. Telefon si je stáhne z Gitu a nečeká na sestavení stránky. Denní běh ~05:17 a ~17:17 a nedělní přepočet stromů zůstávají. Stejný zápas se nezapočítá podruhé. Předzápasovou šanci telefon spočítá z modelu a ze stažených vah. Živá procenta v zápasu bere jen ze souboru, který zapsal GitHub.</p>
+   <p><b>Při otevření</b> aplikace v prohlížeči (bez klíčů) stáhne rozpis a výsledky (±2 dny, výsledky ~7 dní zpět) a z nových výsledků <b>přepočítá Elo</b>, formu, únavu a H2H. <b>Živé skóre</b> se nejdřív ukáže ze snímku buildu, potom se doplní z feedů. ATP/WTA (ESPN) se obnovuje asi každých 15 s, body a gemy (365scores) asi každých 8 s, ITF (Sofascore, pokud z dané sítě odpovídá) každých 20 s — jen dokud je vidět seznam zápasů nebo detail. Váhy živého zápasu, setu, dalšího setu, gemu i předzápasu posouvá jen GitHub, i když je aplikace otevřená. Telefon je neposouvá a neukládá, jen je stáhne. Procenta na probíhající zápas, hraný set, další set a gem se na telefonu hýbou hned se skóre. Váhy telefon neposouvá ani neukládá. Dokončený zápas se v telefonu hned započte do Elo. Předzápasové váhy doladí jen server. Telefon si je stáhne z Gitu a nečeká na sestavení stránky. Denní běh ~05:17 a ~17:17 a nedělní přepočet stromů zůstávají. Stejný zápas se nezapočítá podruhé. Předzápasovou šanci telefon spočítá z modelu a ze stažených vah. Živá procenta v zápasu se na telefonu hýbou hned se skóre. Váhy posouvá jen GitHub.</p>
    <div class="kv"><div>ESPN – živé skóre ATP/WTA (+ část WTA 125)</div><div>${L.espn ? '✅ funguje' : '⚠️ nedostupné'}${L.polls ? ` · ${L.polls}× obnoveno` : ''}</div>
    <div>365scores – živé skóre Challenger/WTA 125</div><div>${S.l365.ok && !S.l365.err ? '✅ funguje' : S.l365.err ? '⚠️ nedostupné' : '…'}${S.l365.polls ? ` · ${S.l365.polls}× obnoveno, ${S.l365.upd} změn skóre` : ''}</div>
    <div>Sofascore (všechny úrovně)</div><div>${L.sofa ? '✅ funguje' : '⚠️ z této sítě blokováno'}</div>
