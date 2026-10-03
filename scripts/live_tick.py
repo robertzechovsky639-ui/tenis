@@ -7,6 +7,8 @@ ATP, WTA a Challenger. ITF se nešahá. Stromy se nemění.
 Po dohrání (ne skreč) stejný předzápasový krok jako daily.py (0.008) zapíše state/online.json.
 Klíč day|vítěz|poražený a okno ±10 dní brání druhé aplikaci, i když denní běh uvidí zápas později.
 Kurzor a klíče ve state/live_online.json brání druhé aplikaci téhož gemu nebo setu.
+Stejný běh zapíše aktuální čtyři procenta (zápas, set, další set, gem) do state/live_preds.json
+a pošle je ve stejném commitu jako váhy. Nový model ani jiný interval to není.
 """
 import argparse, datetime, json, os, re, subprocess, sys, time, urllib.request
 from zoneinfo import ZoneInfo
@@ -17,6 +19,8 @@ import engine, export, fs, live_ml, online, state_io
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PATH = os.path.join(ROOT, 'state', 'live_online.json')
 ON_PATH = os.path.join(ROOT, 'state', 'online.json')
+PRED_PATH = os.path.join(ROOT, 'state', 'live_preds.json')
+PRED_REL = 'state/live_preds.json'
 TZ = ZoneInfo('Europe/Prague')
 FEED = 'https://webws.365scores.com/web/games/current/?appTypeId=5&langId=1&timezoneName=Europe%2FPrague&userCountryId=1&sports=3'
 C365 = {301: ('M', 3), 302: ('W', 3), 88: ('M', 4), 87: ('W', 4)}
@@ -88,6 +92,67 @@ def read_live(sets, pts, srv):
                 a_pts, b_pts = ia, ib
     a_serves = True if srv == 1 else False if srv == 2 else None
     return dict(sa=sa, sb=sb, ga=ga, gb=gb, aPts=a_pts, bPts=b_pts, inTB=in_tb, aServes=a_serves)
+
+
+def save_preds(preds):
+    os.makedirs(os.path.dirname(PRED_PATH), exist_ok=True)
+    out = {'v': 1, 't': int(time.time()), 'by': preds or {}}
+    with open(PRED_PATH, 'w') as f:
+        json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
+
+def _tb(ev, in_tb):
+    if not in_tb:
+        return 0, 0
+    sets = ev.get('sets') or []
+    if not sets or len(sets[-1]) < 4:
+        return 0, 0
+    return int(sets[-1][2]), int(sets[-1][3])
+
+def _orient(a_is_h, sa, sb, ga, gb, pa, pb, ta, tb, srv_h, hb):
+    if a_is_h:
+        return sa, sb, ga, gb, pa, pb, ta, tb, srv_h, hb.get('hold') or 0, hb.get('brk') or 0
+    srv = -srv_h if srv_h else 0
+    return sb, sa, gb, ga, pb, pa, tb, ta, srv, -(hb.get('hold') or 0), -(hb.get('brk') or 0)
+
+def _home(p, a_is_h):
+    p = float(p)
+    return p if a_is_h else 1.0 - p
+
+def snapshot_pred(st, ev, a_is_h, pA, diffs, ctx, tr):
+    """Čtyři procenta pro domácího hráče. Stejné hlavy jako učení, bez kroku vah."""
+    if ev.get('st') != 2 or not st or not (0 < float(pA) < 1):
+        return None
+    stt = read_live(ev.get('sets'), ev.get('pts'), ev.get('srv'))
+    if not stt:
+        return None
+    hb = (tr or {}).get('hb') or {'hold': 0, 'brk': 0}
+    srv_h = 1 if stt['aServes'] is True else -1 if stt['aServes'] is False else 0
+    ta, tb = _tb(ev, stt['inTB'])
+    sa, sb, ga, gb, pa, pb, ta, tb, srv, hold, brk = _orient(
+        a_is_h, stt['sa'], stt['sb'], stt['ga'], stt['gb'], stt['aPts'], stt['bPts'], ta, tb, srv_h, hb)
+    scales = st.get('scale') or []
+    w_before = list(st.get('w') or [])
+    row = {}
+    x = live_ml.phi(sa, sb, ga, gb, pa, pb, ta, tb, stt['inTB'], srv, hold, brk, diffs, ctx, scales, True)
+    row['p'] = round(_home(live_ml.adjust(pA, st, x), a_is_h), 4)
+    gw = st.get('gw') or []
+    if len(gw) == len(st.get('w') or []):
+        xg = live_ml.phi_game(sa, sb, ga, gb, pa, pb, ta, tb, stt['inTB'], srv, hold, brk, diffs, ctx, scales)
+        row['game'] = round(_home(live_ml.adjust_game(pA, st, xg), a_is_h), 4)
+    sw = st.get('sw') or []
+    if len(sw) == live_ml.n_set_weights():
+        xs = live_ml.phi_set(sa, sb, ga, gb, pa, pb, ta, tb, stt['inTB'], srv, hold, brk, diffs, ctx, scales, pA)
+        row['set'] = round(_home(live_ml.adjust_set(pA, st, xs), a_is_h), 4)
+    nw = st.get('nw') or []
+    if len(nw) == live_ml.n_next_weights() and any(nw):
+        xn = live_ml.phi_next(sa, sb, ga, gb, pa, pb, ta, tb, stt['inTB'], srv, hold, brk, diffs, ctx, scales, pA)
+        pc = min(0.98, max(0.02, float(pA)))
+        z = live_ml._dot_w(nw, xn, live_ml.SET_ZCAP)
+        pn = live_ml.sig(live_ml.logit(pc) + z) if z else pc
+        row['next'] = round(_home(pn, a_is_h), 4)
+    if list(st.get('w') or []) != w_before:
+        raise RuntimeError('snapshot posunul váhy')
+    return row if row.get('p') is not None else None
 
 def sig_of(stt):
     return f"{stt['sa']}:{stt['sb']}:{stt['ga']}:{stt['gb']}"
@@ -202,6 +267,7 @@ class Learner:
         st.setdefault('bases', {})
         self.steps = 0
         self.skipped = 0
+        self.preds = {}
 
     def log(self, kind, mk, y, p, sa, sb, ga, gb, srv, hold, brk, base):
         if self.st.get('_replaying'): return
@@ -516,6 +582,7 @@ def poll(world, learner):
     live_n = sum(1 for e in evs if e['st'] == 2 and e['code'] >= 3)
     used = 0
     pre = 0
+    preds = {}
     for ev in evs:
         if prematch_apply(world, ev):
             pre += 1
@@ -529,12 +596,20 @@ def poll(world, learner):
                 continue
         used += 1
         learner.observe(*b, ev)
+        if ev['st'] == 2:
+            try:
+                row = snapshot_pred(learner.st, ev, b[1], b[2], b[3], b[4], learner.st['tracks'].get(b[0]))
+            except Exception:
+                row = None
+            if row:
+                preds[b[0]] = row
+    learner.preds = preds
     learner.prune(world.today)
     return dict(feed=len(evs), live=live_n, used=used, steps=learner.steps, pre=pre,
                 n=learner.st.get('n'), gn=learner.st.get('gn'), sn=learner.st.get('sn'), nn=learner.st.get('nn'),
-                tracks=len(learner.st.get('tracks') or {}), on=world.pred.online.get('n'))
+                tracks=len(learner.st.get('tracks') or {}), preds=len(preds), on=world.pred.online.get('n'))
 
-def commit_push(st, on):
+def commit_push(st, on, preds=None):
     if os.environ.get('LIVE_COMMIT') != '1':
         return st, on
     if not subprocess.run(['git', 'config', 'user.email'], cwd=ROOT, capture_output=True, text=True).stdout.strip():
@@ -547,6 +622,7 @@ def commit_push(st, on):
         subprocess.check_call(['git', 'fetch', 'origin', 'main'], cwd=ROOT)
         # soubory na disku nesmí blokovat rebase; pravda je v paměti
         subprocess.run(['git', 'checkout', '--', rel, on_rel], cwd=ROOT, check=False)
+        subprocess.run(['git', 'checkout', '--', PRED_REL], cwd=ROOT, check=False)
         head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
         origin = subprocess.check_output(['git', 'rev-parse', 'origin/main'], cwd=ROOT, text=True).strip()
         if head != origin:
@@ -554,7 +630,7 @@ def commit_push(st, on):
             if r.returncode != 0:
                 subprocess.run(['git', 'rebase', '--abort'], cwd=ROOT)
                 porcelain = subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT, text=True)
-                extra = [ln for ln in porcelain.splitlines() if rel not in ln and on_rel not in ln and ln.strip()]
+                extra = [ln for ln in porcelain.splitlines() if rel not in ln and on_rel not in ln and PRED_REL not in ln and ln.strip()]
                 if extra:
                     raise SystemExit('rebase selhal a pracovní strom má i jiné změny: ' + ' '.join(extra[:8]))
                 subprocess.check_call(['git', 'reset', '--hard', 'origin/main'], cwd=ROOT)
@@ -565,7 +641,8 @@ def commit_push(st, on):
         remote_on = json.loads(subprocess.check_output(['git', 'show', 'HEAD:' + on_rel], cwd=ROOT))
         on = online.merge_states(on, remote_on)
         online.save(ON_PATH, on)
-        subprocess.check_call(['git', 'add', rel, on_rel], cwd=ROOT)
+        save_preds(preds if preds is not None else {})
+        subprocess.check_call(['git', 'add', rel, on_rel, PRED_REL], cwd=ROOT)
         if subprocess.run(['git', 'diff', '--cached', '--quiet'], cwd=ROOT).returncode == 0:
             print('commit: beze změn', flush=True)
             return st, on
@@ -661,7 +738,11 @@ def self_test():
     assert '20729|w1|w2' in kept['seen'] and kept['n'] == a['n']
     sup = online.empty('b', cols, [10.0]); sup['seen'] = list(a['seen']) + ['20760|w3|w4']; sup['n'] = 9; sup['w'] = [0.05]
     assert online.merge_states(a, sup)['seen'][-1] == '20760|w3|w4'
-    print('self-test ok', 'steps', L.steps, 'w moved', w_before != st['w'])
+    frozen = list(st['w'])
+    row = snapshot_pred(st, dict(st=2, sets=[[1, 0]], pts=['15', '0'], srv=1), True, pA, diffs, ctx, st['tracks'].get(mk))
+    assert row and 0 < row['p'] < 1 and 'set' in row and 'game' in row, row
+    assert st['w'] == frozen
+    print('self-test ok', 'steps', L.steps, 'w moved', w_before != st['w'], 'pred', row['p'])
 
 def main():
     ap = argparse.ArgumentParser()
@@ -690,7 +771,7 @@ def main():
             print('poll', json.dumps(info, ensure_ascii=False), flush=True)
         now = time.time()
         if os.environ.get('LIVE_COMMIT') == '1' and info and (info['steps'] or info.get('pre') or learner.st.get('tracks')) and now - last_commit > 120:
-            learner.st, world.pred.online = commit_push(learner.st, world.pred.online)
+            learner.st, world.pred.online = commit_push(learner.st, world.pred.online, learner.preds)
             learner = Learner(learner.st)
             last_commit = time.time()
         if a.once or a.minutes <= 0 or time.time() >= end:
@@ -699,7 +780,7 @@ def main():
     live_ml.save(PATH, learner.st)
     online.save(ON_PATH, world.pred.online)
     if os.environ.get('LIVE_COMMIT') == '1':
-        learner.st, world.pred.online = commit_push(learner.st, world.pred.online)
+        learner.st, world.pred.online = commit_push(learner.st, world.pred.online, getattr(learner, "preds", {}))
     print('hotovo', json.dumps(dict(n=learner.st.get('n'), gn=learner.st.get('gn'), sn=learner.st.get('sn'), nn=learner.st.get('nn'),
                                      tracks=len(learner.st.get('tracks') or {}), steps=learner.steps,
                                      on=world.pred.online.get('n')), ensure_ascii=False), flush=True)

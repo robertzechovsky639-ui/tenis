@@ -336,6 +336,7 @@ async function fillLive() {
   S.refreshing = true; S.lowBusy = true;
   try { await pullLiveServer(false); } catch (e) {}
   try { await pullOnlineServer(false); } catch (e) {}
+  try { await pullLivePreds(false); } catch (e) {}
   const take = async (label, loader, attach) => {
     let res;
     try { res = await loader; }
@@ -390,6 +391,7 @@ async function refreshLive(force) {
   try {
     try { await pullLiveServer(false); } catch (e) {}
     try { await pullOnlineServer(false); } catch (e) {}
+    try { await pullLivePreds(false); } catch (e) {}
     const res = await Promise.allSettled(['atp', 'wta'].map(t => getJSON(ESPN(t), 12000).then(j => espnEvents(j, t))));
     const evs = res.filter(r => r.status === 'fulfilled').flatMap(r => r.value);
     if (!res.some(r => r.status === 'fulfilled')) { S.live.err = 'ESPN nedostupné'; updateStatus(); return; }
@@ -418,6 +420,7 @@ async function lowTick(force) {
   try {
     try { await pullLiveServer(false); } catch (e) {}
     try { await pullOnlineServer(false); } catch (e) {}
+    try { await pullLivePreds(false); } catch (e) {}
     const ev = await getJSON(`${S365}current/?${P365()}`, 8000).then(ev365);
     const r = ingest(ev, true);
     S.l365.ok = true; S.l365.err = null; S.l365.last = Date.now(); S.l365.polls++; S.l365.upd += r.n; S.l365.fin += r.fin;
@@ -630,7 +633,7 @@ const TITLE_MODEL = 'Predikce modelu';
 const TITLE_SHIFT = 'Šance po kurzu';
 function matchLab(e) { return e && e.st === 1 && e.code >= 3 ? LAB_SHIFT : LAB_MODEL; }
 function pctPair(na, nb, p, title, lab) {
-  if (p == null || !(p > 0) || !(p < 1)) return '';
+  if (p == null || !(p >= 0) || !(p <= 1)) return '';
   return `<h3>${title}</h3><div class="big2"><div><b class="a">${pct(p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(p * 100).toFixed(1)}%"></i></div><p class="plab">${lab}</p>`;
 }
 /* Přehled: jen čistý model, bez kurzu. Záložka Predikce přidá i šanci po kurzu. */
@@ -1416,15 +1419,59 @@ function gamePredHtml() { return ''; }
 
 
 
+
+const LIVE_PRED_RAW = 'https://raw.githubusercontent.com/robertzechovsky639-ui/tenis/main/state/live_preds.json';
+function predSig() {
+  const P = S.livePred; if (!P || !P.by) return '';
+  const ks = Object.keys(P.by);
+  return [P.t, ks.length, ks[0] && P.by[ks[0]] && P.by[ks[0]].p].join('|');
+}
+/* Čtyři živá procenta z Gitu. Telefon je jen stáhne, sám je nepočítá. */
+async function pullLivePreds(force) {
+  if (!force && Date.now() - (S.livePredAt || 0) < 60000) return;
+  S.livePredAt = Date.now();
+  let shipped;
+  try { shipped = await getJSON(LIVE_PRED_RAW + '?t=' + Math.floor(Date.now() / 30000), 8000); }
+  catch (e) { return; }
+  if (!shipped || !shipped.by) return;
+  const before = predSig();
+  S.livePred = { v: shipped.v || 1, t: shipped.t || 0, by: shipped.by };
+  if (predSig() !== before && S.all) { try { onLiveChange(0); } catch (e) {} }
+}
+function serverPred(e) {
+  const id = liveIds(e);
+  const by = S.livePred && S.livePred.by;
+  if (!id || !by) return null;
+  const row = by[id.mk];
+  return row && row.p != null ? row : null;
+}
+function serverPctRow(lab, p, na, nb) {
+  if (p == null || !(p > 0) || !(p < 1)) return '';
+  return `<div class="setrow"><span class="n">${lab}</span><span><b class="a">${pct(p)}</b><small class="nm">${esc(na)}</small></span><span class="r"><b class="b">${pct(1 - p)}</b><small class="nm">${esc(nb)}</small></span></div>`;
+}
+function serverPredHtml(e, na, nb) {
+  const row = serverPred(e);
+  if (!row) return '<p class="note">GitHub pro tenhle zápas ještě nezapsal živá procenta. Telefon je ze skóre nepočítá. Objeví se, až je server zapíše, zhruba do dvou minut.</p>';
+  const rows = [
+    serverPctRow('Zápas', row.p, na, nb),
+    serverPctRow('Set teď', row.set, na, nb),
+    serverPctRow('Další set', row.next, na, nb),
+    serverPctRow('Gem teď', row.game, na, nb)
+  ].join('');
+  return `<div class="setpreds"><div class="predlab">Ze serveru</div>${rows}<p class="note">Zápas, set, další set a gem zapsal GitHub. Telefon je jen ukazuje a sám je ze skóre nepočítá. Obnovují se zhruba jednou za dvě minuty.</p></div>`;
+}
+
 function predInner(e, na, nb) {
   const pre = rawOnlyHtml(e, na, nb);
   if (e.st !== 2) return pre;
-  return pre + '<p class="note">Zápas, hraný set, další set ani gem se na telefonu nepočítají. Telefon jen ukazuje, co GitHub uložil. V souboru jsou váhy, ne tato čtyři procenta, a váhy se zapisují zhruba jednou za dvě minuty. Dokud tam ta procenta nejsou, telefon je ze skóre nespočítá.</p>';
+  return pre + serverPredHtml(e, na, nb);
 }
 
 function predNote(e) {
   if (e.st !== 2 || e._p == null) return '';
-  return `<div class="note" id="d-prednote">Před zápasem ${pct(e._p)} : ${pct(1 - e._p)}. Živá procenta na zápas, set, další set a gem telefon nepočítá. GitHub ukládá váhy, ne tato čísla, zhruba jednou za dvě minuty.</div>`;
+  const row = serverPred(e);
+  if (!row) return `<div class="note" id="d-prednote">Před zápasem ${pct(e._p)} : ${pct(1 - e._p)}. GitHub pro tenhle zápas ještě nezapsal živá procenta. Telefon je ze skóre nepočítá. Objeví se, až je server zapíše, zhruba do dvou minut.</div>`;
+  return `<div class="note" id="d-prednote"><b>Ze serveru ${pct(row.p)} : ${pct(1 - row.p)}</b> · Před zápasem ${pct(e._p)} : ${pct(1 - e._p)}. Čísla zapsal GitHub, telefon je jen ukazuje. Obnovují se zhruba jednou za dvě minuty.</div>`;
 }
 
 function paintLivePred(e) {
@@ -1499,7 +1546,7 @@ async function renderMatches(keep) {
   else if (!list.length) h += `<div class="empty">Žádné zápasy pro tento výběr.${F.favOnly ? '<br><small>Přidejte si hráče do oblíbených hvězdičkou v detailu zápasu.</small>' : ''}</div>`;
   else h += groupsHtml(list);
   const sc = S.live.srcCount || {};
-  h += `<p class="note">Zdroje: ${Object.entries(sc).map(([k, n]) => `${k === 'snapshot' ? 'snímek z buildu ' + esc(S.live.snapshot || '') : k} (${n})`).join(', ') || '—'}. Živé skóre: ATP/WTA z ESPN (~15 s), body a gemy z 365scores (~8 s)${S.live.sofa ? ', ITF ze Sofascore (~20 s)' : ', ITF jen ze snímku buildu (Sofascore z této sítě neodpovídá)'}. Kurzy (Tipsport, iFortuna, Chance, Betano) se u nadcházejícího zápasu jen zobrazí, šanci na telefonu neposouvají. Zprávy o odhlášení a zranění jdou z ESPN a na telefonu váhy neposouvají. VALUE zůstává z čistého modelu a předzápasového kurzu. Živá procenta na zápas, set, další set a gem telefon ze skóre nepočítá. GitHub ukládá váhy, ne tato čísla, zhruba jednou za dvě minuty.</p>
+  h += `<p class="note">Zdroje: ${Object.entries(sc).map(([k, n]) => `${k === 'snapshot' ? 'snímek z buildu ' + esc(S.live.snapshot || '') : k} (${n})`).join(', ') || '—'}. Živé skóre: ATP/WTA z ESPN (~15 s), body a gemy z 365scores (~8 s)${S.live.sofa ? ', ITF ze Sofascore (~20 s)' : ', ITF jen ze snímku buildu (Sofascore z této sítě neodpovídá)'}. Kurzy (Tipsport, iFortuna, Chance, Betano) se u nadcházejícího zápasu jen zobrazí, šanci na telefonu neposouvají. Zprávy o odhlášení a zranění jdou z ESPN a na telefonu váhy neposouvají. VALUE zůstává z čistého modelu a předzápasového kurzu. Živá procenta na zápas, set, další set a gem zapisuje GitHub zhruba jednou za dvě minuty. Telefon je jen ukáže a ze skóre je nepočítá.</p>
    <p class="note gam">18+ Kurzy slouží jen pro srovnání s modelem. Sázení je riskantní a může vést k závislosti – hrajte zodpovědně, jen s penězi, které si můžete dovolit prohrát.</p>`;
   v.innerHTML = h;
   if (keep) window.scrollTo(0, y);
@@ -2011,7 +2058,7 @@ function renderModel() {
     return `<tr><td>${g === 'M' ? 'Muži' : 'Ženy'} – ${GRP_CS[grp]}</td><td>${Object.entries(by).map(([s, [a, b, n]]) => `${SRC[s] || s}: ${a.slice(0, 4)}–${b.slice(6, 8)}.${b.slice(4, 6)}.${b.slice(0, 4)} (${n.toLocaleString('cs-CZ')})`).join('<br>')}</td></tr>`; }).join('');
   const L = S.live;
   v.innerHTML = `<div class="ph"><h1>MODEL</h1></div><div class="card"><h2>O modelu</h2>
-   <p>Model předpovídá pravděpodobnost výhry ve dvouhře pro <b>všechny úrovně</b>: Grand Slamy, ATP/WTA, Challengery, WTA 125, ITF/Futures i kvalifikace. Příznaky pro každý zápas se počítají jen z předchozích zápasů: Elo celkové a podle povrchu (K-faktor podle úrovně turnaje), žebříček a body, forma, H2H, věk, výška, ruka, únava, úspěšnost na povrchu, klouzavé statistiky podání/příjmu a úroveň turnaje. Pořadí hráčů je náhodné; predikce je symetrizovaná.</p><p><b>Verze 2</b> přidává Elo počítané z podílu vyhraných gemů (zohlední, jak přesvědčivě hráč vyhrál/prohrál), totéž podle povrchu, časově váženou formu (poločas ~1 měsíc), formu za 60 dní, nejistotu ratingu ve stylu Glicko (málo zápasů / dlouhá pauza), neaktivitu a součet bodů na podání+příjmu. Hyperparametry a kalibrace laděny jen na validaci (2. pol. 2025).</p><p>Předzápasová pravděpodobnost se po každém dohraném zápase o kousek posune — jeden online krok, ne nový strom. Starší výsledky zůstávají v nedělním modelu. Dnešní běh už započítal +19. U ATP, WTA, Challengeru a grandslamu se před zápasem zobrazená šance na zápas a na 1. set navíc posouvá podle aktuálních kurzů (jen část rozdílu proti trhu bez marže) a podle zpráv ESPN o odhlášení nebo zranění. Telefon ten posun do vah nezapisuje. Stromy ani krok z dohraného zápasu se tím nemění. Když kurz není, zůstává model. ITF se tak neposouvá. Živá predikce u ATP, WTA a Challengeru vychází z předzápasové šance a skóre (sety, gemy, body, podání, brejk nebo udržení) a posune se po gemu, brejku, setu a po dohrání. Odhad, kdo vezme hraný gem, používá stejné vstupy a po každém dohraném gemu stejný krok. Šance na set je vlastní číslo, ne kopie šance na zápas. Před zápasem vychází z naučených vah setu a po dohraném setu se přenese do dalšího zápasu. Během setu se šance na ten set i na další set posouvají podle gemů, bodů, brejků a síly soupeře. Ten krok běží jen na GitHubu. Telefon váhy neposouvá, jen je stáhne. Živá procenta na zápas, set, další set a gem se na telefonu nepočítají, protože GitHub ukládá váhy a ne tato čtyři čísla, zhruba jednou za dvě minuty.</p>
+   <p>Model předpovídá pravděpodobnost výhry ve dvouhře pro <b>všechny úrovně</b>: Grand Slamy, ATP/WTA, Challengery, WTA 125, ITF/Futures i kvalifikace. Příznaky pro každý zápas se počítají jen z předchozích zápasů: Elo celkové a podle povrchu (K-faktor podle úrovně turnaje), žebříček a body, forma, H2H, věk, výška, ruka, únava, úspěšnost na povrchu, klouzavé statistiky podání/příjmu a úroveň turnaje. Pořadí hráčů je náhodné; predikce je symetrizovaná.</p><p><b>Verze 2</b> přidává Elo počítané z podílu vyhraných gemů (zohlední, jak přesvědčivě hráč vyhrál/prohrál), totéž podle povrchu, časově váženou formu (poločas ~1 měsíc), formu za 60 dní, nejistotu ratingu ve stylu Glicko (málo zápasů / dlouhá pauza), neaktivitu a součet bodů na podání+příjmu. Hyperparametry a kalibrace laděny jen na validaci (2. pol. 2025).</p><p>Předzápasová pravděpodobnost se po každém dohraném zápase o kousek posune — jeden online krok, ne nový strom. Starší výsledky zůstávají v nedělním modelu. Dnešní běh už započítal +19. U ATP, WTA, Challengeru a grandslamu se před zápasem zobrazená šance na zápas a na 1. set navíc posouvá podle aktuálních kurzů (jen část rozdílu proti trhu bez marže) a podle zpráv ESPN o odhlášení nebo zranění. Telefon ten posun do vah nezapisuje. Stromy ani krok z dohraného zápasu se tím nemění. Když kurz není, zůstává model. ITF se tak neposouvá. Živá predikce u ATP, WTA a Challengeru vychází z předzápasové šance a skóre (sety, gemy, body, podání, brejk nebo udržení) a posune se po gemu, brejku, setu a po dohrání. Odhad, kdo vezme hraný gem, používá stejné vstupy a po každém dohraném gemu stejný krok. Šance na set je vlastní číslo, ne kopie šance na zápas. Před zápasem vychází z naučených vah setu a po dohraném setu se přenese do dalšího zápasu. Během setu se šance na ten set i na další set posouvají podle gemů, bodů, brejků a síly soupeře. Ten krok běží jen na GitHubu. Telefon váhy neposouvá, jen je stáhne. Živá procenta na zápas, set, další set a gem zapisuje GitHub zhruba jednou za dvě minuty. Telefon je jen stáhne a ukáže, ze skóre je nepočítá.</p>
    <div class="kv"><div>Poslední datum v datech buildu</div><div><b>${fmtDate(m.day_end)}</b></div><div>Build</div><div>${esc(m.built)}${m.mode === 'daily-incremental' ? ' <small class="note">(automatická denní aktualizace GitHub Actions, ~05:17 a ~17:17)</small>' : ''}</div>${m.update ? `<div>Poslední aktualizace</div><div>+${m.update.applied} zápasů${m.update.new_players ? `, ${m.update.new_players} nových hráčů` : ''}</div>` : ''}${m.full_build ? `<div>Plná přestavba a trénink</div><div>${esc(m.full_build)}</div>` : ''}
    <div>Trénink</div><div>${esc(mt.split.train)} (${mt.split.n_train.toLocaleString('cs-CZ')})</div><div>Validace</div><div>${esc(mt.split.valid)} (${mt.split.n_valid.toLocaleString('cs-CZ')})</div>
    <div>Refit (nasazený model)</div><div>${esc(mt.split.refit || '—')}</div><div>Holdout (mimo vzorek)</div><div>${esc(mt.split.test)} (${mt.split.n_test.toLocaleString('cs-CZ')})</div><div>Stromů LightGBM</div><div>${mt.gbm_trees}</div></div></div>
@@ -2025,7 +2072,7 @@ function renderModel() {
    <div class="card"><h2>Data</h2><table><tr><th>Kategorie</th><th style="text-align:left">Zdroj: rozsah (počet zápasů)</th></tr>${cov}</table>
    <p class="note">Sackmannovy repozitáře tennis_atp/tennis_wta jsou od léta 2026 offline; použit veřejný archiv (snapshot do ${fmtDate(m.gap_start)}). ATP/WTA okruh a Challengery jsou doplněny z TennisMyLife až do buildu. ITF, WTA 125 a kvalifikace Challengerů mají mezeru mezi snapshotem a posledními 7 dny před buildem (u těchto hráčů je neutralizována únava).</p></div>
    <div class="card"><h2>Živá data a aktualizace</h2>
-   <p><b>Při otevření</b> aplikace v prohlížeči (bez klíčů) stáhne rozpis a výsledky (±2 dny, výsledky ~7 dní zpět) a z nových výsledků <b>přepočítá Elo</b>, formu, únavu a H2H. <b>Živé skóre</b> se nejdřív ukáže ze snímku buildu, potom se doplní z feedů. ATP/WTA (ESPN) se obnovuje asi každých 15 s, body a gemy (365scores) asi každých 8 s, ITF (Sofascore, pokud z dané sítě odpovídá) každých 20 s — jen dokud je vidět seznam zápasů nebo detail. Váhy živého zápasu, setu, dalšího setu, gemu i předzápasu posouvá jen GitHub, i když je aplikace otevřená. Telefon je neposouvá a neukládá, jen je stáhne. Procenta na probíhající zápas, hraný set, další set a gem telefon ze skóre nepočítá. GitHub je do souboru nezapisuje, zapisuje jen váhy, zhruba jednou za dvě minuty. Dokončený zápas se v telefonu hned započte do Elo. Předzápasové váhy doladí jen server. Telefon si je stáhne z Gitu a nečeká na sestavení stránky. Denní běh ~05:17 a ~17:17 a nedělní přepočet stromů zůstávají. Stejný zápas se nezapočítá podruhé. Předzápasovou šanci telefon spočítá z modelu a ze stažených vah. Živá procenta v zápasu ne.</p>
+   <p><b>Při otevření</b> aplikace v prohlížeči (bez klíčů) stáhne rozpis a výsledky (±2 dny, výsledky ~7 dní zpět) a z nových výsledků <b>přepočítá Elo</b>, formu, únavu a H2H. <b>Živé skóre</b> se nejdřív ukáže ze snímku buildu, potom se doplní z feedů. ATP/WTA (ESPN) se obnovuje asi každých 15 s, body a gemy (365scores) asi každých 8 s, ITF (Sofascore, pokud z dané sítě odpovídá) každých 20 s — jen dokud je vidět seznam zápasů nebo detail. Váhy živého zápasu, setu, dalšího setu, gemu i předzápasu posouvá jen GitHub, i když je aplikace otevřená. Telefon je neposouvá a neukládá, jen je stáhne. Procenta na probíhající zápas, hraný set, další set a gem zapisuje jen GitHub, zhruba jednou za dvě minuty. Telefon je stáhne a ukáže, ze skóre je nepočítá. Dokončený zápas se v telefonu hned započte do Elo. Předzápasové váhy doladí jen server. Telefon si je stáhne z Gitu a nečeká na sestavení stránky. Denní běh ~05:17 a ~17:17 a nedělní přepočet stromů zůstávají. Stejný zápas se nezapočítá podruhé. Předzápasovou šanci telefon spočítá z modelu a ze stažených vah. Živá procenta v zápasu bere jen ze souboru, který zapsal GitHub.</p>
    <div class="kv"><div>ESPN – živé skóre ATP/WTA (+ část WTA 125)</div><div>${L.espn ? '✅ funguje' : '⚠️ nedostupné'}${L.polls ? ` · ${L.polls}× obnoveno` : ''}</div>
    <div>365scores – živé skóre Challenger/WTA 125</div><div>${S.l365.ok && !S.l365.err ? '✅ funguje' : S.l365.err ? '⚠️ nedostupné' : '…'}${S.l365.polls ? ` · ${S.l365.polls}× obnoveno, ${S.l365.upd} změn skóre` : ''}</div>
    <div>Sofascore (všechny úrovně)</div><div>${L.sofa ? '✅ funguje' : '⚠️ z této sítě blokováno'}</div>
@@ -2094,6 +2141,7 @@ async function init() {
     await showSnapshotFirst();
     try { await pullLiveServer(true); } catch (e) {}
     try { await pullOnlineServer(true); } catch (e) {}
+    try { await pullLivePreds(true); } catch (e) {}
     updateStatus();
     route();
     fillLive();
