@@ -59,7 +59,228 @@ function fixCzTypos(q) {
   for (const [re, to] of CZ_TYPO) s = s.replace(re, to);
   return s;
 }
-const CH_STOP = new Set('kdo ma samci sanci sance vyhrat vyhraje formu forn kurzy kurzi dnes zitra proc jaky jaka ktery ktera model elo h2h chance tip tipy tenis zapas zapasy value favorit favorita proti nebo vs jak co'.split(' '));
+const CH_STOP = new Set(('kdo ma samci sanci sance vyhrat vyhraje formu forn kurzy kurzi dnes zitra proc jaky jaka ktery ktera model elo h2h chance tip tipy tenis zapas zapasy value favorit favorita proti nebo vs jak co ' +
+  'nejvetsi nejvyssi nejistejsi zive zivy skore presny presnost dopadli cesi cechu cesti cesky ceske ceska lisi bilance vzajemna hraji seznam procent procenta drzi').split(' '));
+function chatWindow() {
+  return (S.all || []).filter(e => dayOff(e.ts) >= -1 && dayOff(e.ts) <= 1);
+}
+function nameTokens(i) {
+  if (i < S.N) return (S.norm[i] || '').split(' ').filter(Boolean);
+  return toks(pName(i));
+}
+function surnameOf(i) {
+  const tk = nameTokens(i);
+  return tk.length ? tk[tk.length - 1] : '';
+}
+function windowPlayerIds() {
+  const ids = [];
+  for (const e of chatWindow()) { const r = resolveEv(e); ids.push(r.hi, r.ai); }
+  return [...new Set(ids)];
+}
+/* Příjmení, ne křestní. Kratší než 5 znaků jen když je v dnešním okně jediné. Bez výběru podle Elo. */
+function playerBySurname(w) {
+  if (!w || CH_STOP.has(w)) return -1;
+  const today = windowPlayerIds().filter(i => surnameOf(i) === w);
+  if (w.length < 5) return today.length === 1 ? today[0] : -1;
+  if (today.length === 1) return today[0];
+  if (today.length > 1) return -1;
+  const all = [];
+  for (let i = 0; i < S.N; i++) if (surnameOf(i) === w) all.push(i);
+  for (let k = 0; k < (S.extra || []).length; k++) if (surnameOf(S.N + k) === w) all.push(S.N + k);
+  return all.length === 1 ? all[0] : -1;
+}
+function qFold(q) { return toks(fixCzTypos(q)).join(' '); }
+function globalIntent(q) {
+  const s = qFold(q);
+  if (!s) return '';
+  if (/\bcesi\b|\bcechu\b|\bcesti\b|\bceskych\b|\bcesky\b|\bceske\b|\bceska\b/.test(s)) return 'cesi';
+  if (/presny je model|presnost modelu|jak presny|presnost modelu|holdout/.test(s) || (s.includes('presnost') && s.includes('model'))) return 'acc';
+  if ((s.includes('nejvetsi') && (s.includes('sanc') || s.includes('procent'))) || s.includes('nejistejsi') || s.includes('nejjist') || (s.includes('dnes') && s.includes('nejvetsi'))) return 'biggest';
+  if (s.includes('lisi od kurzu') || (s.includes('model') && s.includes('od kurzu'))) return 'odds';
+  if (!s.includes('skore') && (s.includes('hraji zive') || s.includes('zive zapasy') || s.includes('zivy zapas') || (s.includes('zive') && (s.includes('zapasy') || s.includes('seznam') || s.includes('ktere'))))) return 'live';
+  return '';
+}
+function mentionsOtherPlayer(q, e) {
+  if (!e) return false;
+  const r = resolveEv(e);
+  const words = toks(fixCzTypos(q)).filter(w => w.length >= 2 && !CH_STOP.has(w));
+  for (const w of words) {
+    const id = playerBySurname(w);
+    if (id >= 0 && id !== r.hi && id !== r.ai) return true;
+  }
+  return false;
+}
+function leavesOpenMatch(q, e) {
+  return !!(e && (globalIntent(q) || mentionsOtherPlayer(q, e)));
+}
+function matchIntent(q, e) {
+  if (!e || globalIntent(q) || mentionsOtherPlayer(q, e)) return '';
+  const s = qFold(q);
+  if (!s) return '';
+  if (s.includes('value')) return 'value';
+  if (s.includes('formu') || s.includes('forma') || s.includes('forn')) return 'form';
+  if (s.includes('vzajem') || s.includes('bilance') || s.includes('h2h')) return 'h2h';
+  if (s.includes('zive skore') || s.includes('rika zive') || (s.includes('skore') && !s.includes('zapasy'))) return 'score';
+  if (s.includes('lisi') && s.includes('kurz')) return 'modds';
+  if (s.includes('sanci vyhrat') || s.includes('sance vyhrat') || s.includes('kdo vyhraje') || s.includes('kdo ma vyhrat') || (s.includes('favorit') && !s.includes('dnes'))) return 'win';
+  return '';
+}
+function scoreBits(e) {
+  const sets = (e.sets || []).map(x => x[0] + ':' + x[1]).join(' ');
+  const gem = e.pts ? ' gem ' + e.pts[0] + ':' + e.pts[1] : '';
+  return (sets || 'skóre v datech není') + gem + (e.live ? ' (' + e.live + ')' : '');
+}
+function pairLine(e) {
+  const r = resolveEv(e);
+  return pName(r.hi) + ' vs ' + pName(r.ai);
+}
+async function ansBiggest() {
+  const evs = chatWindow().filter(e => e.st === 1);
+  await probsFor(evs);
+  const ranked = evs.filter(e => e._p != null).sort((a, b) => Math.abs((b._p ?? .5) - .5) - Math.abs((a._p ?? .5) - .5) || a.ts - b.ts);
+  if (!ranked.length) return 'V načteném okně (včera až zítra) teď není zápas, který ještě nezačal a má modelové procento.';
+  const e = ranked[0]; const r = resolveEv(e); const na = pName(r.hi), nb = pName(r.ai);
+  let t = 'Nejvyšší modelové procento mezi zápasy, které ještě nezačaly: ' + na + ' ' + pct(e._p) + ', ' + nb + ' ' + pct(1 - e._p) + ' (' + e.tname + ', ' + dayLabel(dayOff(e.ts), true) + ' ' + hm(e.ts) + ').';
+  if (e.code <= 2 && Math.abs(e._p - .5) >= 0.4) t += ' Na ITF takhle vysoké procento často není jistota.';
+  return t;
+}
+function ansLive() {
+  const live = chatWindow().filter(e => e.st === 2 && !e.stale);
+  if (!live.length) return 'Teď se podle načtených dat nehraje žádný zápas živě.';
+  const shown = live.slice(0, 12);
+  const lines = shown.map(e => '- ' + pairLine(e) + ' ' + scoreBits(e) + ' (' + e.tname + ')');
+  if (live.length > shown.length) lines.push('Dalších živých zápasů v datech: ' + (live.length - shown.length) + '.');
+  return 'Živě právě teď:\n' + lines.join('\n');
+}
+async function ansOdds() {
+  const up = chatWindow().filter(e => e.st === 1);
+  await probsFor(up);
+  const hits = [];
+  for (const e of up) { const v = valueOf(e); if (v && v.side) hits.push([e, v]); }
+  hits.sort((a, b) => Math.abs(b[1].edge) - Math.abs(a[1].edge));
+  if (!hits.length) return 'Model se od kurzů teď výrazně neliší.';
+  const lines = hits.slice(0, 8).map(([e, v]) => {
+    const r = resolveEv(e); const na = pName(r.hi), nb = pName(r.ai);
+    const who = v.side === 1 ? na : nb;
+    const pp = v.side === 1 ? e._p : 1 - e._p;
+    const im = v.side === 1 ? v.im : 1 - v.im;
+    return '- ' + who + ': model ' + pct(pp) + ', trh ' + pct(im) + ', rozdíl ' + (Math.abs(v.edge) * 100).toFixed(1) + ' p. b. (' + na + ' vs ' + nb + ', ' + e.tname + ')';
+  });
+  if (hits.length > 8) lines.push('Dalších zápasů nad stejným prahem: ' + (hits.length - 8) + '.');
+  return 'Předzápasové VALUE (stejný práh jako v aplikaci, ne sázková rada):\n' + lines.join('\n');
+}
+function ansCesi() {
+  const evs = chatWindow().filter(e => { const r = resolveEv(e); return pC(r.hi) === 'CZE' || pC(r.ai) === 'CZE'; });
+  const fin = evs.filter(e => e.st === 3).sort((a, b) => b.ts - a.ts);
+  const rest = evs.filter(e => dayOff(e.ts) === 0 && e.st !== 3).sort((a, b) => a.ts - b.ts);
+  if (!fin.length && !rest.length) return 'V načteném okně (včera až zítra) nemám žádný výsledek ani dnešní zápas hráče s kódem CZE.';
+  const lines = [];
+  if (!fin.length) lines.push('Dohraný výsledek hráče s kódem CZE v načteném okně nemám.');
+  else {
+    lines.push('Výsledky (CZE, načtené okno):');
+    for (const e of fin.slice(0, 12)) {
+      const r = resolveEv(e); const na = pName(r.hi), nb = pName(r.ai);
+      const w = e.win === 1 ? na : e.win === 2 ? nb : 'vítěz v datech není';
+      const sc = (e.sets || []).map(x => x[0] + ':' + x[1]).join(' ');
+      lines.push('- ' + na + ' vs ' + nb + ': vyhrál(a) ' + w + (sc ? ' ' + sc : '') + ' (' + e.tname + ')');
+    }
+    if (fin.length > 12) lines.push('Dalších dohraných: ' + (fin.length - 12) + '.');
+  }
+  if (rest.length) {
+    lines.push('Dnes ještě na programu:');
+    for (const e of rest.slice(0, 12)) {
+      const live = e.st === 2 && !e.stale;
+      lines.push('- ' + pairLine(e) + (live ? ' živě ' + scoreBits(e) : ' ' + hm(e.ts)) + ' (' + e.tname + ')');
+    }
+  }
+  return lines.join('\n');
+}
+function ansAcc() {
+  const mt = S.meta && S.meta.metrics;
+  const ens = mt && mt.metrics && mt.metrics.overall && mt.metrics.overall.ensemble;
+  if (!ens || ens.acc == null) return 'Čísla holdoutu v datech aplikace teď nejsou.';
+  const acc = (ens.acc * 100).toFixed(1);
+  const ll = ens.logloss != null ? ens.logloss.toFixed(3) : null;
+  const br = ens.brier != null ? ens.brier.toFixed(3) : null;
+  const n = mt.split && mt.split.n_test != null ? mt.split.n_test.toLocaleString('cs-CZ') : null;
+  const range = mt.split && mt.split.test ? mt.split.test : '2026';
+  let t = 'Holdout ' + range + (n ? ' (n = ' + n + ')' : '') + ', ensemble jako na záložce Model: přesnost ' + acc + ' %';
+  if (ll != null) t += ', log loss ' + ll;
+  if (br != null) t += ', Brier ' + br;
+  return t + '.';
+}
+async function ansMatch(e, kind) {
+  const r = resolveEv(e); await ensure([r.hi, r.ai]);
+  if (e.st !== 3) await probsFor([e]);
+  const na = pName(r.hi), nb = pName(r.ai);
+  if (kind === 'win') {
+    if (e._p == null) return 'U zápasu ' + na + ' vs ' + nb + ' modelové procento v datech teď není.';
+    return 'Model: ' + na + ' ' + pct(e._p) + ', ' + nb + ' ' + pct(1 - e._p) + '.';
+  }
+  if (kind === 'score') {
+    if (e.st === 2 && !e.stale) return 'Živé skóre ' + na + ' vs ' + nb + ': ' + scoreBits(e) + '.';
+    if (e.st === 3) {
+      const w = e.win === 1 ? na : e.win === 2 ? nb : null;
+      const sc = (e.sets || []).map(x => x[0] + ':' + x[1]).join(' ');
+      return w ? 'Zápas není živý, je dohraný. Vyhrál(a) ' + w + (sc ? ' ' + sc : '') + '.' : 'Zápas je dohraný, vítěz v datech není.';
+    }
+    if (e.st === 1) return 'Zápas ' + na + ' vs ' + nb + ' teď není živý. Začátek ' + dayLabel(dayOff(e.ts), true) + ' ' + hm(e.ts) + '.';
+    return 'Živé skóre zápasu ' + na + ' vs ' + nb + ' v datech není.';
+  }
+  if (kind === 'form') {
+    const bit = (i, name) => {
+      const p = state(i);
+      if (!p) return name + ': forma v datech chybí.';
+      const f10 = p.ring.slice(-10).map(x => x[1] ? 'V' : 'P').join('') || '—';
+      const f = formAt(i, todayDay());
+      if (!f) return name + ': posledních 10 ' + f10 + ', hodnocení formy v datech není.';
+      return name + ': posledních 10 ' + f10 + ', hodnocení formy dnes ' + fpct(f.f || 0) + '.';
+    };
+    return bit(r.hi, na) + '\n' + bit(r.ai, nb);
+  }
+  if (kind === 'h2h') {
+    const hh = h2h(r.hi, r.ai);
+    const ms = meetings(r.hi, r.ai);
+    if (!(hh[0] + hh[1]) && !ms.length) return 'Vzájemná bilance ' + na + ' a ' + nb + ' v databázi není.';
+    let t = 'H2H: ' + na + ' ' + hh[0] + ' : ' + hh[1] + ' ' + nb + '.';
+    if (ms.length) t += ' ' + ms.slice(0, 5).map(m => fmtDate(m[0]) + ' vyhrál(a) ' + (m[1] ? na : nb)).join('; ') + '.';
+    return t;
+  }
+  if (kind === 'value' || kind === 'modds') {
+    const bits = [];
+    if (e._p == null) bits.push('Modelové procento v datech není.');
+    else bits.push('Model: ' + na + ' ' + pct(e._p) + ', ' + nb + ' ' + pct(1 - e._p) + '.');
+    const prem = premOdds(e);
+    if (prem && prem.avg) {
+      const im = implied(prem);
+      bits.push('Předzápasové kurzy ⌀ ' + f2(prem.avg[0]) + '/' + f2(prem.avg[1]) + (im ? ', trh bez marže ' + pct(im.p) + '/' + pct(1 - im.p) : '') + '.');
+    } else bits.push('Předzápasové kurzy v datech tohoto zápasu nejsou.');
+    if (e.st !== 1) bits.push('VALUE se počítá jen před začátkem zápasu.');
+    else {
+      const v = valueOf(e);
+      if (v && v.side) bits.push('VALUE: ' + (v.side === 1 ? na : nb) + ', rozdíl ' + (Math.abs(v.edge) * 100).toFixed(1) + ' p. b. To není sázková rada.');
+      else if (v && v.stale) bits.push('VALUE se u tohoto kurzu nehodnotí.');
+      else if (v) bits.push('VALUE: žádná, práh aplikace se nepřekročil.');
+      else bits.push('VALUE z těchto kurzů nejde spočítat.');
+    }
+    const live = e.oddsV && e.oddsV.inplay && e.oddsV.avg ? e.oddsV : null;
+    if (live) bits.push('Živé kurzy ⌀ ' + f2(live.avg[0]) + '/' + f2(live.avg[1]) + '. Do VALUE se nepočítají.');
+    return bits.join(' ');
+  }
+  return null;
+}
+async function instantAnswer(question) {
+  const g = globalIntent(question);
+  if (g === 'biggest') return ansBiggest();
+  if (g === 'live') return ansLive();
+  if (g === 'odds') return ansOdds();
+  if (g === 'cesi') return ansCesi();
+  if (g === 'acc') return ansAcc();
+  const e = CH.ctxId && S.byId[CH.ctxId];
+  const k = matchIntent(question, e);
+  if (k) return ansMatch(e, k);
+  return null;
+}
 function premOdds(e) {
   if (e.oddsPrem && e.oddsPrem.avg) return e.oddsPrem;
   if (e.oddsV && e.oddsV.avg && !e.oddsV.inplay) return e.oddsV;
@@ -130,13 +351,13 @@ Hráč B: ${nb}
   s += 'HRÁČ A: ' + playerCtx(r.hi, e.surface) + '\nHRÁČ B: ' + playerCtx(r.ai, e.surface) + '\n===== KONEC OTEVŘENÉHO ZÁPASU =====\n';
   return s;
 }
-async function buildCtx(question, compact) {
+async function buildCtx(question, compact, opts) {
   const lines = [];
   lines.push(`Dnes je ${new Date().toLocaleString('cs-CZ', { weekday: 'long', day: 'numeric', month: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })} (Praha). Data výsledků do ${fmtDate(S.meta.day_end)}, živé skóre ATP/WTA z ESPN, Challenger/ITF ze snímku buildu ${S.live.snapshot || ''} + 365scores/Sofascore když jdou.`);
   const mt = S.meta.metrics?.metrics?.overall?.ensemble; if (mt) lines.push(`Model v2: přesnost ${(mt.acc * 100).toFixed(1)} % na holdoutu 2026 (log loss ${mt.logloss}). Pravděpodobnosti jsou odhady, ne jistota.`);
   const evs = (S.all || []).filter(e => dayOff(e.ts) >= -1 && dayOff(e.ts) <= 1);
   await probsFor(evs.filter(e => e.st !== 3));
-  const ctxE = CH.ctxId && S.byId[CH.ctxId];
+  const ctxE = !(opts && opts.leave) && CH.ctxId && S.byId[CH.ctxId];
   if (ctxE) {
     const r = resolveEv(ctxE); await ensure([r.hi, r.ai]);
     if (ctxE.fsid && ctxE.st !== 3) { try { await fetchOdds(ctxE, true, ODDS_TTL); } catch (err) { } }
@@ -144,10 +365,10 @@ async function buildCtx(question, compact) {
   }
   const ctxIds = new Set();
   if (ctxE) { const r = resolveEv(ctxE); ctxIds.add(r.hi); ctxIds.add(r.ai); }
-  const words = toks(fixCzTypos(question)).filter(w => w.length >= 5 && !CH_STOP.has(w));
+  const words = toks(fixCzTypos(question)).filter(w => w.length >= 2 && !CH_STOP.has(w));
   const seen = new Set(ctxIds);
-  for (const w of words) { if (seen.size >= ctxIds.size + 2) break; let best = -1;
-    for (let i = 0; i < S.N; i++) { const tk = (S.norm[i] || '').split(' '); if (tk.includes(w) && (best < 0 || S.E[i] > S.E[best])) best = i; }
+  for (const w of words) { if (seen.size >= ctxIds.size + 2) break;
+    const best = playerBySurname(w);
     if (best >= 0 && !seen.has(best)) { seen.add(best); await ensure([best]); lines.push('ZMÍNĚNÝ HRÁČ (jen pokud uživatel opravdu jmenuje jiný zápas): ' + playerCtx(best, ctxE ? ctxE.surface : 'Hard'));
       const pe = evs.filter(e => { const rr = resolveEv(e); return rr.hi === best || rr.ai === best; }); for (const e of pe.slice(0, 2)) lines.push('  zápas: ' + evLine(e)); } }
   if (ctxE) {
@@ -217,17 +438,20 @@ function groundedIssue(out, e, ctx, question) {
   const facts = (a >= 0 && b > a) ? ctx.slice(0, a) + '\n' + ctx.slice(a, b) : ctx;
   const norm = x => String(x).replace(',', '.');
   const nums = (x, re) => [...String(x).matchAll(re)].map(m => norm(m[1]));
-  const allowedPct = new Set(nums(facts, /(\d{1,3}(?:[.,]\d+)?)\s*%/g));
+  const promptNums = nums(SYS, /(\d{1,3}(?:[.,]\d+)?)/g);
+  const allowedPct = new Set([...nums(facts, /(\d{1,3}(?:[.,]\d+)?)\s*%/g), ...nums(SYS, /(\d{1,3}(?:[.,]\d+)?)\s*%/g)]);
   const usedPct = nums(out, /(\d{1,3}(?:[.,]\d+)?)\s*%/g);
   if (usedPct.some(x => !allowedPct.has(x))) return 'uvedla procento, které není v datech';
-  const allowedNum = new Set(nums(facts, /\d+(?:[.,]\d+)?/g));
+  const allowedNum = new Set([...nums(facts, /\d+(?:[.,]\d+)?/g), ...promptNums]);
   const usedNum = nums(out, /\d+(?:[.,]\d+)?/g);
   if (usedNum.some(x => !allowedNum.has(x))) return 'uvedla číslo, které není v datech';
   if (/předzápasové kurzy ⌀/.test(facts) && /kurz\w{0,6}.{0,30}(nejsou|nemám|chybí)|nemám.{0,24}kurz/i.test(out)) return 'tvrdí, že kurzy chybí, ač jsou v datech';
   if (/\b40\s*[:–-]\s*40\b/.test(out) && !/\b40\s*[:–-]\s*40\b/.test(facts)) return 'přepsala stav gemu';
   if (/šanc|sanc|vyhr|favorit/i.test(question) && e._p != null) {
     const pA = norm(pcUi(e._p).replace(/\s*%/, '')), pB = norm(pcUi(1 - e._p).replace(/\s*%/, ''));
-    if (!usedPct.includes(pA) && !usedPct.includes(pB)) return 'necituje modelovou pravděpodobnost';
+    const prose = norm(out).toLowerCase();
+    const asWord = n => new RegExp('(?:^|\\D)' + n + '\\s*procent').test(prose);
+    if (!usedPct.includes(pA) && !usedPct.includes(pB) && !asWord(pA) && !asWord(pB)) return 'necituje modelovou pravděpodobnost';
   }
   return '';
 }
@@ -246,34 +470,42 @@ async function completeAI(messages, onStatus, validate) {
       const out = await callProv(opt, messages); const issue = validate && validate(out);
       if (issue) throw Object.assign(new Error(issue), { kind: 'invalid' });
       CH.rr = (CH_ROUTES.indexOf(opt) + 1) % n; CH.lastProv = `${label} · ${opt[1]}`; return out;
-    } catch (e) { errs.push(`${label} (${opt[1]}): ${e.message}`); if (e.kind === 'rate') st.cool = Date.now() + CH_PROV[opt[0]].cool; else st.cool = Date.now() + 15000; }
+    } catch (e) { errs.push(`${label} (${opt[1]}): ${e.message}`); if (e.kind === 'invalid') { /* špatné uzemnění není výpadek služby */ } else if (e.kind === 'rate') st.cool = Date.now() + CH_PROV[opt[0]].cool; else st.cool = Date.now() + 15000; }
   }
   throw Object.assign(new Error('Teď neodpověděla žádná bezplatná služba (ch.at, LLM7, OVH, Pollinations). Zkuste to za chvíli, nebo v ⚙︎ zapněte AI v zařízení.'), { details: errs });
 }
 async function askAI(question, onStatus) {
-  const useLocal = CH.set.mode === 'local' || (CH.set.mode === 'auto' && Local.engine);
   const qFix = fixCzTypos(question);
-  const ctx = await buildCtx(qFix, useLocal);
-  const e = CH.ctxId && S.byId[CH.ctxId];
+  const inst = await instantAnswer(qFix);
+  if (inst) { CH.lastProv = 'data aplikace'; return inst; }
+  const useLocal = CH.set.mode === 'local';
+  const e0 = CH.ctxId && S.byId[CH.ctxId];
+  const leave = leavesOpenMatch(qFix, e0);
+  const ctx = await buildCtx(qFix, useLocal, { leave });
+  const e = leave ? null : e0;
   const r = e && resolveEv(e);
   const steer = e ? `\n\nOtevřený zápas: ${pName(r.hi)} vs ${pName(r.ai)} (${e.g === 'W' ? 'ženy' : 'muži'}). Odpověz o něm. Překlepy (samci=šanci, forn=formu) vylož v kontextu. Cituj model % a kurzy přesně z DATA.` : '';
   const userContent = (qFix !== question ? `(překlepy opraveny na: ${qFix})\n` : '') + question + steer;
-  // Staré odpovědi modelu nejsou fakta. U otevřeného zápasu neposíláme ani staré dotazy k jinému kontextu.
-  const hist = (e ? [] : CH.msgs.slice(0, -1).filter(m => m.role === 'user').slice(-4)).map(m => ({ role: 'user', content: m.text.slice(0, 600) }));
+  const hist = CH.msgs.slice(0, -1).filter(m => m.role === 'user' || m.role === 'assistant').slice(-6).map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.text.slice(0, 600) }));
   const messages = [{ role: 'system', content: SYS + '\n\nDATA APLIKACE:\n' + ctx }, ...hist, { role: 'user', content: userContent }];
+  const validate = out => groundedIssue(out, e, ctx, qFix);
   if (useLocal) {
     if (!Local.engine) throw new Error('Model v zařízení není spuštěný – v nastavení chatu zvolte model a klepněte na „Stáhnout a spustit“, nebo přepněte na Online.');
-    onStatus && onStatus('Přemýšlí model v zařízení…'); const out = await Local.chat(messages); CH.lastProv = 'v zařízení (' + (CH_LOCAL.find(m => m.id === Local.id) || {}).name + ')'; return out;
+    onStatus && onStatus('Přemýšlí model v zařízení…');
+    const out = await Local.chat(messages);
+    const issue = validate(out);
+    if (issue) {
+      const again = await instantAnswer(qFix);
+      if (again) { CH.lastProv = 'data aplikace'; return again; }
+      throw new Error('Model v zařízení neudržel data zápasu: ' + issue + '.');
+    }
+    CH.lastProv = 'v zařízení (' + (CH_LOCAL.find(m => m.id === Local.id) || {}).name + ')';
+    return out;
   }
-  const validate = out => groundedIssue(out, e, ctx, qFix);
   try { return await completeAI(messages, onStatus, validate); }
   catch (err) {
-    if (CH.set.mode === 'auto' && Local.engine) {
-      onStatus && onStatus('Online služby selhaly, zkouším model v zařízení…'); CH.lastProv = 'v zařízení';
-      const out = await Local.chat([{ role: 'system', content: SYS + '\n\nDATA APLIKACE:\n' + await buildCtx(qFix, true) }, { role: 'user', content: userContent }]);
-      const issue = validate(out); if (issue) throw Object.assign(new Error('Model v zařízení neudržel data zápasu: ' + issue + '.'), { details: err.details });
-      return out;
-    }
+    const again = await instantAnswer(qFix);
+    if (again) { CH.lastProv = 'data aplikace'; return again; }
     throw err;
   }
 }
@@ -292,6 +524,7 @@ function chips() {
   return ['Kdo má dnes největší šanci?', 'Které zápasy se hrají živě?', 'Kde se model liší od kurzů?', 'Jak dopadli Češi?', 'Jak přesný je model?'];
 }
 function renderChat() {
+  if (CH.busy && $('#c-log')) return;
   const v = $('#v-chat'); const e = CH.ctxId && S.byId[CH.ctxId];
   const ctxBar = e ? (() => { const r = resolveEv(e); return `<div class="cctx on">Kontext zápasu: <b>${esc(dispName(r.hi, e.h))} vs ${esc(dispName(r.ai, e.a))}</b> <small>odpovědi o tomto zápase</small> <button class="cx" id="c-clear" aria-label="Zrušit kontext zápasu">✕</button></div>`; })()
     : '<div class="cctx">Kontext: dnešní a zítřejší zápasy, predikce, kurzy, Elo, forma</div>';
@@ -301,7 +534,7 @@ function renderChat() {
     <div class="cchips">${chips().map(c => `<button class="chip2" data-q="${esc(c)}">${esc(c)}</button>`).join('')}</div>
     <form id="c-form" class="cform"><input id="c-in" placeholder="Zeptejte se…" autocomplete="off" maxlength="500"><button class="csend" id="c-send" aria-label="Odeslat">➤</button></form>
     <p class="note gam">18+ AI nedává sázkové rady. Odpovědi vycházejí z modelu a dat aplikace a mohou být chybné. Sázení je riskantní – hrajte zodpovědně.</p>
-    <p class="note">AI zdarma a bez klíče: ${CH.set.mode === 'local' ? 'model v zařízení (WebLLM)' : 'střídá LLM7.io, ch.at, OVHcloud a Pollinations'}${CH.set.mode === 'auto' ? ' (Automaticky: použije i model v zařízení, pokud je spuštěný)' : ''}. Otázka a výřez dat aplikace se posílají vybrané službě.</p>`;
+    <p class="note">AI zdarma a bez klíče: známé dotazy (šance, živě, VALUE, Češi, přesnost, otevřený zápas) jdou hned z dat. Jinak ${CH.set.mode === 'local' ? 'model v zařízení (WebLLM)' : 'střídá LLM7.io, ch.at, OVHcloud a Pollinations'}. Otázka a výřez dat se modelu pošlou jen když odpověď není hotová z dat.</p>`;
   scrollLog();
 }
 function msgHtml(m) {
@@ -309,7 +542,7 @@ function msgHtml(m) {
   if (m.role === 'error') return `<div class="cmsg err"><div class="bub"><b>⚠️ ${esc(m.text)}</b>${m.details ? `<small>${m.details.map(esc).join('<br>')}</small>` : ''}<small>Zkuste to za chvíli znovu, nebo v ⚙︎ zapněte AI v zařízení.</small></div></div>`;
   return `<div class="cmsg bot"><div class="bub">${mdLite(m.text)}${m.prov ? `<small class="prov">${esc(m.prov)}</small>` : ''}</div></div>`;
 }
-function scrollLog() { const l = $('#c-log'); if (l) l.scrollTop = l.scrollHeight; window.scrollTo(0, document.body.scrollHeight); }
+function scrollLog() { const l = $('#c-log'); if (l) l.scrollTop = l.scrollHeight; }
 async function sendChat(q) {
   q = String(q || '').trim(); if (!q || CH.busy) return;
   CH.busy = true; CH.msgs.push({ role: 'user', text: q }); CH.save();
@@ -319,13 +552,13 @@ async function sendChat(q) {
     const out = await askAI(q, s => { const el = $('#c-st'); if (el) el.textContent = s; });
     CH.msgs.push({ role: 'assistant', text: out, prov: CH.lastProv });
   } catch (e) { CH.msgs.push({ role: 'error', text: e.message, details: e.details }); }
-  CH.busy = false; CH.save();
   $('#c-wait')?.remove(); const last = CH.msgs[CH.msgs.length - 1]; const l2 = $('#c-log'); if (l2) { l2.insertAdjacentHTML('beforeend', msgHtml(last)); scrollLog(); }
+  CH.busy = false; CH.save();
   if (btn) btn.disabled = false;
 }
 function renderChatPanel() {
   const p = $('#c-panel'); const s = CH.set;
-  p.innerHTML = `<h3>Režim AI</h3>${[['auto', 'Automaticky', 'online služby; když je spuštěný model v zařízení, použije ho'], ['online', 'Online (zdarma)', 'LLM7.io, ch.at, OVHcloud, Pollinations – bez klíče'], ['local', 'V zařízení (WebLLM)', 'běží v telefonu přes WebGPU, bez internetu po stažení']].map(([k, t, d]) => `<label class="cmode"><input type="radio" name="cmode" value="${k}" ${s.mode === k ? 'checked' : ''}><span><b>${t}</b><small>${d}</small></span></label>`).join('')}
+  p.innerHTML = `<h3>Režim AI</h3>${[['auto', 'Automaticky', 'známé dotazy z dat, ostatní online služby zdarma'], ['online', 'Online (zdarma)', 'LLM7.io, ch.at, OVHcloud, Pollinations – bez klíče'], ['local', 'V zařízení (WebLLM)', 'jen když je tahle volba zapnutá; běží v telefonu přes WebGPU']].map(([k, t, d]) => `<label class="cmode"><input type="radio" name="cmode" value="${k}" ${s.mode === k ? 'checked' : ''}><span><b>${t}</b><small>${d}</small></span></label>`).join('')}
     <h3>Model v zařízení</h3><select id="c-model">${CH_LOCAL.map(m => `<option value="${m.id}" ${s.local === m.id ? 'selected' : ''}>${esc(m.name)} · ${m.size}</option>`).join('')}</select>
     <button class="btn sec" id="c-load">${Local.engine ? 'Spuštěno: ' + esc((CH_LOCAL.find(m => m.id === Local.id) || {}).name || '') : 'Stáhnout a spustit'}</button><div class="note" id="c-lp">${Local.loading ? esc(Local.prog) : 'Stahuje se jednou (uloží se v prohlížeči). Vyžaduje WebGPU (iPhone: Safari 26+).'}</div>
     <button class="btn sec" id="c-reset">Smazat konverzaci</button>`;

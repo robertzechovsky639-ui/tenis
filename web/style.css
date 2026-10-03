@@ -212,7 +212,7 @@ table.ot td{font-variant-numeric:tabular-nums}
 .cset{background:var(--card);border:1px solid var(--line);color:#fff;width:40px;height:40px;border-radius:12px;font-size:19px;cursor:pointer}
 .cctx{font-size:12px;color:var(--mut);background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:7px 10px;display:flex;align-items:center;gap:6px}
 .cctx b{color:#fff}.cctx.on{border-color:rgba(255,77,162,.45)}.cctx small{color:var(--mut);font-size:10.5px}.cx{margin-left:auto;background:none;border:0;color:var(--mut);font-size:15px;cursor:pointer}
-.clog{display:flex;flex-direction:column;gap:8px;margin:10px 0;min-height:120px}
+.clog{display:flex;flex-direction:column;gap:8px;margin:10px 0;min-height:120px;max-height:min(52vh,520px);overflow-y:auto;-webkit-overflow-scrolling:touch}
 .cmsg{display:flex}.cmsg.me{justify-content:flex-end}
 .bub{max-width:88%;padding:9px 12px;border-radius:16px;font-size:14.5px;line-height:1.42;word-wrap:break-word}
 .me .bub{background:var(--pink);color:#fff;border-bottom-right-radius:5px}
