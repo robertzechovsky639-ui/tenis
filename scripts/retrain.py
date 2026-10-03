@@ -22,6 +22,7 @@ ROOT = trainset.ROOT; D = os.path.join(ROOT, 'data'); WD = os.path.join(ROOT, 'w
 FILES = [os.path.join(D, 'gbm.txt'), os.path.join(WD, 'model.json'), os.path.join(D, 'model_info.json')]
 HIST = os.path.join(D, 'retrain_history.json')
 HOLD_DAYS, VAL_DAYS, TRAIN_YEARS = 84, 84, 15
+HALF_LIFE_DAYS = 6 * 365.25  # novější zápasy váží víc; na holdoutu 9. 7.–30. 9. 2026 lepší přesnost i log loss
 SWAP = {'eloA': 'eloB', 'eloB': 'eloA', 'ageA': 'ageB', 'ageB': 'ageA', 'lrankA': 'lrankB', 'lrankB': 'lrankA'}
 PARAMS = dict(objective='binary', learning_rate=0.04, num_leaves=127, min_data_in_leaf=600, feature_fraction=0.7, bagging_fraction=0.8,
               bagging_freq=1, lambda_l2=5.0, verbose=-1, seed=7, deterministic=True, force_row_wise=True, num_threads=int(os.environ.get('RETRAIN_THREADS', os.cpu_count() or 4)))
@@ -50,13 +51,18 @@ def p_lr(L, X):
 def ens(b, L, a, w, X):
     pg = p_gbm(b, X); pg = sig(a * logit(pg)) if a != 1.0 else pg
     return w * pg + (1 - w) * (p_lr(L, X) if w < 1 else 0)
-def train(X, y, it): return lgb.train(PARAMS, lgb.Dataset(X, y, feature_name=FEATS, params={'feature_pre_filter': False}), it)
+def train(X, y, it, w=None): return lgb.train(PARAMS, lgb.Dataset(X, y, weight=w, feature_name=FEATS, params={'feature_pre_filter': False}), it)
+
+def recency_w(day, end):
+    age = (float(end) - day).astype(np.float64)
+    return np.exp(-np.log(2.0) * np.clip(age, 0, None) / HALF_LIFE_DAYS).astype(np.float32)
 
 def recipe(X, y, day, start, end, val_days=VAL_DAYS):
     """Kalibrace na validaci (end − val_days, end], pak trénink na [start, end]. Vrací model + parametry."""
     vs = end - val_days
     tr = (day >= start) & (day <= vs); va = (day > vs) & (day <= end)
-    dtr = lgb.Dataset(X[tr], y[tr], feature_name=FEATS, free_raw_data=False, params={'feature_pre_filter': False})
+    # váha jen na tréninku; validace zůstává nevážená, ať early stopping měří každý zápas stejně
+    dtr = lgb.Dataset(X[tr], y[tr], weight=recency_w(day, end)[tr], feature_name=FEATS, free_raw_data=False, params={'feature_pre_filter': False})
     b = lgb.train(PARAMS, dtr, 1500, valid_sets=[lgb.Dataset(X[va], y[va], reference=dtr)], callbacks=[lgb.early_stopping(80, verbose=False)])
     it = int(min(900, max(150, b.best_iteration))); pv = p_gbm(b, X[va]); v0 = ll(pv, y[va])
     grid = np.linspace(0.8, 1.25, 46); a = float(min(grid, key=lambda a: ll(sig(a * logit(pv)), y[va])))
@@ -65,7 +71,7 @@ def recipe(X, y, day, start, end, val_days=VAL_DAYS):
     w = float(min(np.linspace(0, 1, 21), key=lambda w: ll(w * pc + (1 - w) * pl, y[va])))
     log(f'  validace {dstr(vs + 1)}..{dstr(end)} n={int(va.sum())}: iterace {b.best_iteration} -> {it}, kalibrace a={a:.3f}, w_gbm={w:.2f}')
     full = (day >= start) & (day <= end)
-    bf = train(X[full], y[full], max(50, int(it * 1.05))); Lf = fit_lr(X[full], y[full], DIFF)
+    bf = train(X[full], y[full], max(50, int(it * 1.05)), recency_w(day, end)[full]); Lf = fit_lr(X[full], y[full], DIFF)
     return dict(b=bf, lr=Lf, a=a, w=w, it=it, trees=bf.num_trees(), start=int(start), end=int(end), n_train=int(full.sum()))
 
 def r6(x, d=6): return float(f'{x:.{d}g}')
@@ -88,7 +94,8 @@ def write_model(R, X, y, day, start, end, holdout_start):
     R['b'].save_model(os.path.join(D, 'gbm.txt'))
     info = dict(version='v2-weekly', trained_at=time.strftime('%Y-%m-%d %H:%M %Z'), train_start=dstr(start), train_end=dstr(end), train_end_day=int(end),
                 twin_end_day=int(holdout_start - 1), n_train=R['n_train'], iterations=R['it'], trees=R['trees'], cal=R['a'], w_gbm=R['w'],
-                params={k: PARAMS[k] for k in ('learning_rate', 'num_leaves', 'min_data_in_leaf', 'feature_fraction', 'lambda_l2')}, train_years=TRAIN_YEARS)
+                params={k: PARAMS[k] for k in ('learning_rate', 'num_leaves', 'min_data_in_leaf', 'feature_fraction', 'lambda_l2')}, train_years=TRAIN_YEARS,
+                weight_halflife_years=6)
     json.dump(info, open(os.path.join(D, 'model_info.json'), 'w'), indent=1, ensure_ascii=False)
 
 def current_model():
@@ -139,7 +146,7 @@ def main():
         log('BRÁNA: kandidát je lepší -> refit na všech datech do', dstr(Dmax))
         startF = Dmax + 1 - int(TRAIN_YEARS * 365.25)
         # refit: stejný počet iterací, kalibrace a váha jako kandidát (odhadnuté poctivě před holdoutem), jen víc dat
-        full = (day >= startF) & (day <= Dmax); bF = train(X[full], y[full], max(50, int(C['it'] * 1.05)))
+        full = (day >= startF) & (day <= Dmax); bF = train(X[full], y[full], max(50, int(C['it'] * 1.05)), recency_w(day, Dmax)[full])
         F = dict(b=bF, lr=fit_lr(X[full], y[full], DIFF), a=C['a'], w=C['w'], it=C['it'], trees=bF.num_trees(), n_train=int(full.sum()))
         write_model(F, X, y, day, startF, Dmax, hs)
         e.update(decision='nasazeno – kandidát lepší v log loss i Brier', deployed=True, final=dict(train=f'{dstr(startF)} – {dstr(Dmax)}', n_train=F['n_train'], trees=F['trees'], cal=F['a'], w_gbm=F['w']))
