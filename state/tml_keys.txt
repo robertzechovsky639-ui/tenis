@@ -879,6 +879,7 @@
 2026-2895|Guido Ivan Justo|Franco Roncadelli|R32
 2026-2895|Guido Ivan Justo|Gonzalo Villanueva|QF
 2026-2895|Guido Ivan Justo|Pedro Sakamoto|R16
+2026-2895|Guido Ivan Justo|Tomas Barrios Vera|SF
 2026-2895|Gustavo Heide|Felipe Meligeni Alves|R16
 2026-2895|Gustavo Heide|Hernan Casanova|R32
 2026-2895|Gustavo Heide|Lautaro Midon|QF
@@ -4576,6 +4577,7 @@
 2026-8281|Darwin Blanch|Daniel Milavsky|R16
 2026-8281|Darwin Blanch|Patrick Maloney|R32
 2026-8281|Dylan Dietrich|Andrew Fenty|R16
+2026-8281|Dylan Dietrich|Andy Andrade|SF
 2026-8281|Dylan Dietrich|Darwin Blanch|QF
 2026-8281|Dylan Dietrich|J.J. Wolf|R32
 2026-8281|Keegan Smith|Bryce Nakashima Nakashima|R16
