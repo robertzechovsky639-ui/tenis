@@ -404,7 +404,7 @@ function ingest(evs, attach) {
   for (const e of evs) { const d = dayOff(e.ts); if (d < -2 || d > 2) continue;
     const r = attach ? attachEvent(e) : addEvent(e); if (!r) continue; if (r.changed) { changed = true; n++; }
     if (r.ex.st === 3 && !S.finSeen.has(r.ex.id)) { S.finSeen.add(r.ex.id); newFin.push(attach ? r.ex : e); }
-    try { learnLive(r.ex); } catch (err) { /* živé doladění nesmí shodit skóre */ } }
+  }
   if (newFin.length) applyLive(newFin).then(() => { S.predCache = {}; onLiveChange(newFin.length); });
   else if (changed) onLiveChange(0);
   return { changed, n, fin: newFin.length };
@@ -585,41 +585,25 @@ function predict(i, j, surface, code, q, bo) {
 }
 
 
-/* Doladění modelu z dohraných zápasů. Váhy z buildu (state/online.json) plus zápasy,
-   které tenhle prohlížeč viděl dřív než poslední build. Stejný krok jako scripts/online.py. */
-function saveOnline() {
-  try { localStorage.setItem('tp:online', JSON.stringify({ base: S.online.base, w: S.online.w, n: S.online.n, seen: S.online.seen, cols: S.online.cols, scale: S.online.scale })); } catch (e) { /* úložiště plné – doladění platí aspoň do zavření */ }
-}
+/* Předzápasové váhy jen z Gitu. Telefon je převezme a sám je neposouvá. */
+function saveOnline() { /* váhy se na telefonu neukládají */ }
+
 function attachOnline(shipped) {
   if (!shipped || !shipped.w || !S.model) return;
-  let local = null;
-  try { local = JSON.parse(localStorage.getItem('tp:online') || 'null'); } catch (e) { local = null; }
-  const same = local && local.base === shipped.base && local.cols && local.cols.length === shipped.cols.length;
-  let use = shipped;
-  if (same) {
-    const ss = new Set(shipped.seen || []), ls = new Set(local.seen || []);
-    const localInShip = [...ls].every(id => ss.has(id));
-    const shipInLocal = [...ss].every(id => ls.has(id));
-    if (!localInShip && shipInLocal) use = local; // telefon je napřed
-  }
-  S.online = { base: use.base, cols: shipped.cols, scale: shipped.scale, w: (use.w || []).slice(), n: use.n || 0, seen: (use.seen || []).slice() };
+  try { localStorage.removeItem('tp:online'); } catch (e) {}
+  S.online = { base: shipped.base, cols: shipped.cols, scale: shipped.scale, w: (shipped.w || []).slice(), n: shipped.n || 0, seen: (shipped.seen || []).slice() };
   S.model.m.online = S.online;
 }
-/* Kurzy a zprávy. Zvlášť od kroku z dohraného zápasu, ať se ten krok (0,008) nespustí podruhé. */
+
+/* Kurzy a zprávy se na telefonu do vah nezapisují. */
 function attachMkt() {
-  const cols = (S.online && S.online.cols) || [];
-  let local = null;
-  try { local = JSON.parse(localStorage.getItem('tp:mkt') || 'null'); } catch (e) { local = null; }
+  try { localStorage.removeItem('tp:mkt'); } catch (e) {}
   S.mkt = (typeof MK !== 'undefined' ? MK.fresh() : { v: 1, w: [], seen: [], ph: {}, n: 0 });
   S.newsArts = [];
-  if (local && local.v === 1 && local.ph) {
-    S.mkt.ph = local.ph;
-    if (local.w && cols.length && local.w.length === cols.length) { S.mkt.w = local.w.slice(); S.mkt.seen = (local.seen || []).slice(); S.mkt.n = local.n || 0; }
-  }
 }
-function saveMkt() {
-  try { const m = S.mkt; if (!m) return; localStorage.setItem('tp:mkt', JSON.stringify({ v: 1, w: m.w, seen: m.seen, ph: m.ph, n: m.n })); } catch (e) {}
-}
+
+function saveMkt() { /* kurz ani zranění na telefonu váhy neposouvají */ }
+
 function marketOn(e) { return !!(e && e.st === 1 && e.code >= 3 && e.det !== 8 && e.det !== 5 && e._p > 0 && e._p < 1); }
 function pidOf(i) { if (i == null || i < 0) return null; if (i < S.N && S.idx && S.idx.id[i]) return 'p' + S.idx.id[i]; return 'x' + i; }
 function preAvg(e) {
@@ -636,23 +620,12 @@ function newsOn(e, side) {
 }
 function syncMarket(e) {
   if (!e || e._p == null) return;
-  if (!S.mkt || typeof MK === 'undefined' || !marketOn(e)) { e._d = 0; e._ps = e._p; return; }
-  const r = resolveEv(e);
-  const rec = { id: e.id, hi: pidOf(r.hi), ai: pidOf(r.ai), p: e._p, pMkt: MK.implied(preAvg(e)), newsH: newsOn(e, 0), newsA: newsOn(e, 1), x: e._x, cols: S.online && S.online.cols, scale: S.online && S.online.scale, F: S.model && S.model.F };
-  const bucket = (rec.pMkt == null ? 'x' : Math.round(rec.pMkt * 100)) + ':' + Math.round(((rec.newsH || 0) - (rec.newsA || 0)) * 100);
-  if (e._mb === bucket && e._ps != null) {
-    const d = MK.displayDelta(S.mkt, rec); e._d = d.d; e._ps = MK.show(e._p, d.d); return;
-  }
-  const n0 = S.mkt.n || 0;
-  const view = MK.sync(S.mkt, rec);
-  if (!view) { e._d = 0; e._ps = e._p; return; }
-  const after = MK.displayDelta(S.mkt, rec);
-  e._d = after.d; e._ps = MK.show(e._p, after.d); e._mb = bucket;
-  if (view.stepped || (S.mkt.n || 0) !== n0 || rec.pMkt != null) saveMkt();
+  e._d = 0; e._ps = e._p;
 }
+
 function shownP(e) { return e && e._ps != null ? e._ps : e._p; }
-const LAB_SHIFT = 'Posouvá se podle kurzu a podle odhlášky nebo zranění a ten posun jde do dalšího zápasu.';
-const LAB_MODEL = 'Učí se jen z dohraných zápasů, kurz ji nehýbe.';
+const LAB_SHIFT = 'Váhy posouvá jen GitHub. Telefon je neposouvá.';
+const LAB_MODEL = 'Váhy z dohraných zápasů posouvá jen GitHub. Telefon je stáhne a jen je ukáže. Kurz je na telefonu neposouvá.';
 const TITLE_MODEL = 'Predikce modelu';
 const TITLE_SHIFT = 'Šance po kurzu';
 function matchLab(e) { return e && e.st === 1 && e.code >= 3 ? LAB_SHIFT : LAB_MODEL; }
@@ -665,8 +638,9 @@ function rawOnlyHtml(e, na, nb) {
   return pctPair(na, nb, e._p, TITLE_MODEL, LAB_MODEL) + setPredHtml(e, na, nb);
 }
 function bothPrematchHtml(e, na, nb) {
-  return pctPair(na, nb, e._p, TITLE_MODEL, LAB_MODEL) + pctPair(na, nb, shownP(e), TITLE_SHIFT, matchLab(e)) + setPredHtml(e, na, nb);
+  return rawOnlyHtml(e, na, nb);
 }
+
 /* ---------- živé výsledky -> Elo ---------- */
 async function applyLive(evs) {
   const fin = evs.filter(e => e.st === 3 && (e.det === 3 || e.det === 8) && (e.win === 1 || e.win === 2)).sort((a, b) => a.ts - b.ts);
@@ -689,23 +663,6 @@ async function applyLive(evs) {
     const dup = (ro[wi] || []).some(([o, d]) => o === li && Math.abs(d - day) <= (d > S.meta.day_end ? 2 : 10));
     if (dup) { S.live.dup++; continue; }
     const s = TM.SURF[e.surface] ?? 0, ret = e.det === 8 ? 1 : 0;
-    if (!ret && wi < S.N && li < S.N && S.idx.id[wi] && S.idx.id[li] && S.online) {
-      delete S.states[wi]; delete S.states[li];
-      const Ws = state(wi), Ls = state(li);
-      if (Ws && Ls) {
-        const mk = day + '|' + S.idx.id[wi] + '|' + S.idx.id[li];
-        const aIsW = TM.crc32(mk) % 2 === 0;
-        const A = aIsW ? Ws : Ls, B = aIsW ? Ls : Ws, ai = aIsW ? wi : li, bi = aIsW ? li : wi;
-        const bo = (e.code === 6 && e.g === 'M' && !e.q) ? 5 : 3;
-        const ctx = { day, dayA: TM.refDay(A, day, S.meta.gap_start), dayB: TM.refDay(B, day, S.meta.gap_start), surface: s, lvl_code: e.code, is_qual: e.q ? 1 : 0, best_of: bo };
-        const hh = h2h(ai, bi);
-        try {
-          const x = TM.feats(A, B, ctx, hh);
-          const p0 = S.model.base(x);
-          if (TM.onlineStep(S.online, x, aIsW ? 1 : 0, p0, S.model.F, mk)) { S.onlineN = (S.onlineN || 0) + 1; saveOnline(); S.predGen++; }
-        } catch (err) { /* příznaky nejdou spočítat – Elo se stejně posune */ }
-      }
-    }
     const W = { elo: S.E[wi], se: S.SE[wi], n: S.K[wi], sn: S.SK[wi], gelo: S.GE[wi], gse: S.GSE[wi] }, L = { elo: S.E[li], se: S.SE[li], n: S.K[li], sn: S.SK[li], gelo: S.GE[li], gse: S.GSE[li] };
     // gemy vítěze/poraženého ze setů (pro Elo z gemů); bez setů -> null
     const ws = e.win === 1 ? 0 : 1; const games = (e.sets || []).length ? e.sets.reduce((a, x) => [a[0] + (+x[ws] || 0), a[1] + (+x[1 - ws] || 0)], [0, 0]) : null;
@@ -1017,7 +974,7 @@ function onlineSig() {
   const o = S.online; if (!o) return '';
   return [o.base, o.n, (o.seen || []).length, o.w && o.w[0]].join('|');
 }
-/* Předzápasové váhy z Gitu, ať telefon nečeká na sestavení stránky v 17:17. */
+/* Předzápasové váhy z Gitu. Telefon je jen stáhne, krok dělá server. */
 async function pullOnlineServer(force) {
   if (!S.online || !S.model) return;
   if (!force && Date.now() - (S.onlinePullAt || 0) < 60000) return;
@@ -1027,22 +984,20 @@ async function pullOnlineServer(force) {
   catch (e) { return; }
   if (!shipped || !shipped.w || !shipped.cols) return;
   const before = onlineSig();
-  saveOnline();
   attachOnline(shipped);
-  saveOnline();
   if (onlineSig() !== before && S.all) {
     S.predGen++;
     try { await probsFor(S.all); onLiveChange(0); } catch (e) {}
   }
 }
+
 function liveWeightSig() {
   const L = S.liveOn; if (!L) return '';
   return [L.n, L.gn, L.sn, L.nn, (L.seen || []).length, (L.gseen || []).length, (L.sseen || []).length, (L.nseen || []).length, L.w && L.w[0], L.gw && L.gw[0], L.sw && L.sw[0], L.nw && L.nw[0]].join('|');
 }
-/* Server je zdroj pravdy. Než se krok započte v telefonu, stáhnou se váhy zapsané jobem,
-   a klíč, který už server má, se v liveStep znovu neaplikuje. */
+/* Živé váhy z Gitu. Telefon je jen stáhne, sám je neposouvá. */
 async function pullLiveServer(force) {
-  if (!S.liveOn) return;
+  if (!S.model) return;
   if (!force && Date.now() - (S.livePullAt || 0) < 60000) return;
   S.livePullAt = Date.now();
   let shipped;
@@ -1050,58 +1005,28 @@ async function pullLiveServer(force) {
   catch (e) { return; }
   if (!shipped || !shipped.w || shipped.base !== 'liveml1') return;
   const before = liveWeightSig();
-  saveLive();
   attachLive(shipped);
-  saveLive();
   if (liveWeightSig() !== before && S.all) { S.predGen++; try { onLiveChange(0); } catch (e) {} }
 }
-function saveLive() {
-  try { localStorage.setItem('tp:liveon', JSON.stringify({ base: S.liveOn.base, w: S.liveOn.w, w0: S.liveOn.w0, n: S.liveOn.n, seen: S.liveOn.seen, gw: S.liveOn.gw, gw0: S.liveOn.gw0, gn: S.liveOn.gn, gseen: S.liveOn.gseen, sw: S.liveOn.sw, sw0: S.liveOn.sw0, sn: S.liveOn.sn, sseen: S.liveOn.sseen, nw: S.liveOn.nw, nw0: S.liveOn.nw0, nn: S.liveOn.nn, nseen: S.liveOn.nseen, score: S.liveOn.score, core: S.liveOn.core, diffs: S.liveOn.diffs, ctx: S.liveOn.ctx, scale: S.liveOn.scale })); } catch (e) {}
-}
+
+function saveLive() { /* váhy se na telefonu neukládají */ }
+
 function attachLive(shipped) {
   const ok = shipped && shipped.base === 'liveml1' && shipped.w && shipped.score && shipped.w.length === (shipped.score.length + shipped.core.length * shipped.diffs.length + shipped.core.length * shipped.ctx.length);
   if (!ok) { S.liveOn = null; return; }
-  let local = null;
-  try { local = JSON.parse(localStorage.getItem('tp:liveon') || 'null'); } catch (e) { local = null; }
-  let use = shipped;
-  if (local && local.base === 'liveml1' && local.w && local.w.length === shipped.w.length) {
-    const ss = new Set(shipped.seen || []), ls = new Set(local.seen || []);
-    const localInShip = [...ls].every(id => ss.has(id));
-    const shipInLocal = [...ss].every(id => ls.has(id));
-    if (!localInShip && shipInLocal) use = local;
-  }
+  try { localStorage.removeItem('tp:liveon'); } catch (e) {}
   const z = () => shipped.w.map(() => 0);
-  const gwShip = shipped.gw && shipped.gw.length === shipped.w.length ? shipped.gw : z();
-  let gw = gwShip.slice(), gw0 = (shipped.gw0 && shipped.gw0.length === shipped.w.length ? shipped.gw0 : gwShip).slice();
-  let gseen = (shipped.gseen || []).slice(), gn = shipped.gn || 0;
-  if (local && local.base === 'liveml1' && local.gw && local.gw.length === shipped.w.length) {
-    const ss = new Set(shipped.gseen || []), ls = new Set(local.gseen || []);
-    const localInShip = [...ls].every(id => ss.has(id));
-    const shipInLocal = [...ss].every(id => ls.has(id));
-    if (!localInShip && shipInLocal) { gw = local.gw.slice(); gseen = (local.gseen || []).slice(); gn = local.gn || 0; }
-  }
+  const gw = shipped.gw && shipped.gw.length === shipped.w.length ? shipped.gw.slice() : z();
+  const gw0 = (shipped.gw0 && shipped.gw0.length === shipped.w.length ? shipped.gw0 : gw).slice();
   const nSet = shipped.w.length + 1 + shipped.ctx.length + 1 + shipped.ctx.length + shipped.diffs.length;
-  const swShip = shipped.sw && shipped.sw.length === nSet ? shipped.sw : Array(nSet).fill(0);
-  let sw = swShip.slice(), sw0 = (shipped.sw0 && shipped.sw0.length === nSet ? shipped.sw0 : swShip).slice();
-  let sseen = (shipped.sseen || []).slice(), sn = shipped.sn || 0;
-  if (local && local.base === 'liveml1' && local.sw && local.sw.length === nSet) {
-    const ss = new Set(shipped.sseen || []), ls = new Set(local.sseen || []);
-    const localInShip = [...ls].every(id => ss.has(id));
-    const shipInLocal = [...ss].every(id => ls.has(id));
-    if (!localInShip && shipInLocal) { sw = local.sw.slice(); sseen = (local.sseen || []).slice(); sn = local.sn || 0; }
-  }
+  const sw = shipped.sw && shipped.sw.length === nSet ? shipped.sw.slice() : Array(nSet).fill(0);
+  const sw0 = (shipped.sw0 && shipped.sw0.length === nSet ? shipped.sw0 : sw).slice();
   const nNext = (shipped.nscore ? shipped.nscore.length : 9) * 2 + 1 + shipped.diffs.length;
-  const nwShip = shipped.nw && shipped.nw.length === nNext ? shipped.nw : Array(nNext).fill(0);
-  let nw = nwShip.slice(), nw0 = (shipped.nw0 && shipped.nw0.length === nNext ? shipped.nw0 : nwShip).slice();
-  let nseen = (shipped.nseen || []).slice(), nn = shipped.nn || 0;
-  if (local && local.base === 'liveml1' && local.nw && local.nw.length === nNext) {
-    const ss = new Set(shipped.nseen || []), ls = new Set(local.nseen || []);
-    const localInShip = [...ls].every(id => ss.has(id));
-    const shipInLocal = [...ss].every(id => ls.has(id));
-    if (!localInShip && shipInLocal) { nw = local.nw.slice(); nseen = (local.nseen || []).slice(); nn = local.nn || 0; }
-  }
-  S.liveOn = { base: 'liveml1', score: shipped.score, core: shipped.core, diffs: shipped.diffs, ctx: shipped.ctx, scale: shipped.scale.slice(), w: use.w.slice(), w0: (shipped.w0 || shipped.w).slice(), n: use.n || 0, seen: (use.seen || []).slice(), gw, gw0, gn, gseen, sw, sw0, sn, sseen, nw, nw0, nn, nseen, nscore: (shipped.nscore || ['ds', 'dg', 'dp', 'dtb', 'srv', 'hold', 'brk', 'bp', 'late']).slice(), pull: 0.04, bound: 0.22, eta: shipped.eta || { G: 0.0012, S: 0.0025, M: 0.0035 } };
+  const nw = shipped.nw && shipped.nw.length === nNext ? shipped.nw.slice() : Array(nNext).fill(0);
+  const nw0 = (shipped.nw0 && shipped.nw0.length === nNext ? shipped.nw0 : nw).slice();
+  S.liveOn = { base: 'liveml1', score: shipped.score, core: shipped.core, diffs: shipped.diffs, ctx: shipped.ctx, scale: shipped.scale.slice(), w: shipped.w.slice(), w0: (shipped.w0 || shipped.w).slice(), n: shipped.n || 0, seen: (shipped.seen || []).slice(), gw, gw0, gn: shipped.gn || 0, gseen: (shipped.gseen || []).slice(), sw, sw0, sn: shipped.sn || 0, sseen: (shipped.sseen || []).slice(), nw, nw0, nn: shipped.nn || 0, nseen: (shipped.nseen || []).slice(), nscore: (shipped.nscore || ['ds', 'dg', 'dp', 'dtb', 'srv', 'hold', 'brk', 'bp', 'late']).slice(), pull: 0.04, bound: 0.22, eta: shipped.eta || { G: 0.0012, S: 0.0025, M: 0.0035 } };
 }
+
 function ensureX(e) {
   if (!e || e._x || e._p == null) return;
   const r = resolveEv(e);
@@ -1402,104 +1327,10 @@ function hbOf(winH, srvH) {
   if ((winH === 1) === !!srvH) return { hold: winH === 1 ? 1 : -1, brk: 0 };
   return { hold: 0, brk: winH === 1 ? 1 : -1 };
 }
-/* ATP, WTA, Challenger: naučený model. Krok jen z gemu, brejku, setu nebo konce zápasu. */
-function learnLive(e) {
-  if (!liveMlOn(e) || e.det === 8) { if (e && e.det === 8) e._trk = null; return; }
-  if (e.st === 3) { closeLive(e); return; }
-  if (e.st !== 2 || e.stale || e._p == null) return;
-  ensureX(e);
-  const st = readLive(e);
-  if (!st || !e._x) return;
-  const sig = st.sa + ':' + st.sb + ':' + st.ga + ':' + st.gb;
-  const tr = e._trk;
-  if (!tr) {
-    e._trk = { sig, st, gameSrv: (st.aPts === 0 && st.bPts === 0 && !st.inTB) ? st.aServes : null, hb: e._hb || { hold: 0, brk: 0 }, trail: [], setGames: [], prevNext: [] };
-    return;
-  }
-  if (tr.sig === sig) {
-    if (tr.gameSrv == null && st.aPts === 0 && st.bPts === 0 && !st.inTB) tr.gameSrv = st.aServes;
-    return;
-  }
-  const prev = tr.st;
-  const setsDelta = (st.sa + st.sb) - (prev.sa + prev.sb);
-  const sameSets = st.sa === prev.sa && st.sb === prev.sb;
-  const gamesDelta = (st.ga + st.gb) - (prev.ga + prev.gb);
-  const fresh = st.ga === 0 && st.gb === 0;
-  const gameUp = sameSets && gamesDelta === 1;
-  const setUp = setsDelta === 1 && fresh;
-  const done = (ga, gb) => (ga >= 6 && ga - gb >= 2) || (gb >= 6 && gb - ga >= 2) || (ga === 7 && gb === 6) || (gb === 7 && ga === 6);
-  const id = liveIds(e);
-  let hb = tr.hb || { hold: 0, brk: 0 };
-  if ((setUp || gameUp) && id) {
-    let stepped = false;
-    let winH = 0, takeGame = gameUp;
-    if (setUp) {
-      winH = st.sa > prev.sa ? 1 : 2;
-      const aWins = winH === 1;
-      takeGame = !done(prev.ga, prev.gb) && done(aWins ? prev.ga + 1 : prev.ga, aWins ? prev.gb : prev.gb + 1);
-    } else winH = st.ga > prev.ga ? 1 : 2;
-    if (takeGame && winH) {
-      const yG = (winH === 1) === id.aIsH ? 1 : 0;
-      const srvH = tr.gameSrv;
-      const sa = id.aIsH ? prev.sa : prev.sb, sb = id.aIsH ? prev.sb : prev.sa;
-      const ga = id.aIsH ? prev.ga : prev.gb, gb = id.aIsH ? prev.gb : prev.ga;
-      const srv = srvH == null ? 0 : (id.aIsH ? (srvH ? 1 : -1) : (srvH ? -1 : 1));
-      const hold = id.aIsH ? hb.hold : -hb.hold, brk = id.aIsH ? hb.brk : -hb.brk;
-      const x = livePhi(sa, sb, ga, gb, 0, 0, 0, 0, false, srv, hold, brk, liveDiffs(e, id.aIsH), liveCtx(e));
-      const pA = id.aIsH ? e._p : 1 - e._p;
-      if (liveStep(x, yG, pA, id.mk + '|G|' + sa + '|' + sb + '|' + ga + '|' + gb, (S.liveOn.eta && S.liveOn.eta.G) || 0.0012)) stepped = true;
-      const xg = liveGamePhi(e, id, sa, sb, ga, gb, 0, 0, 0, 0, false, srv, hold, brk);
-      if (liveGameStep(xg, yG, pA, id.mk + '|g|' + sa + '|' + sb + '|' + ga + '|' + gb)) stepped = true;
-      e._lastGem = { w: winH };
-      tr.trail.push({ x, p: pA, mk: id.mk + '|M|' + sa + '|' + sb + '|' + ga + '|' + gb });
-      tr.setGames = tr.setGames || [];
-      tr.setGames.push({
-        xSet: liveSetPhi(e, id, sa, sb, ga, gb, 0, 0, 0, 0, false, srv, hold, brk),
-        xNext: liveNextPhi(e, id, sa, sb, ga, gb, 0, 0, 0, 0, false, srv, hold, brk, pA),
-        p: pA,
-        mkSet: id.mk + '|sg|' + sa + '|' + sb + '|' + ga + '|' + gb,
-        mkNext: id.mk + '|n|' + sa + '|' + sb + '|' + ga + '|' + gb,
-        start: ga === 0 && gb === 0
-      });
-      hb = hbOf(winH, srvH);
-      e._hb = hb;
-    }
-    if (setUp) {
-      const wH = st.sa > prev.sa ? 1 : 2;
-      const yS = (wH === 1) === id.aIsH ? 1 : 0;
-      const sa = id.aIsH ? prev.sa : prev.sb, sb = id.aIsH ? prev.sb : prev.sa;
-      const xs = livePhi(sa, sb, 0, 0, 0, 0, 0, 0, false, 0, 0, 0, liveDiffs(e, id.aIsH), liveCtx(e));
-      const pA = id.aIsH ? e._p : 1 - e._p;
-      if (liveStep(xs, yS, pA, id.mk + '|S|' + sa + '|' + sb, (S.liveOn.eta && S.liveOn.eta.S) || 0.0025)) stepped = true;
-      const xset = liveSetPhi(e, id, sa, sb, 0, 0, 0, 0, 0, 0, false, 0, 0, 0);
-      if (liveSetStep(xset, yS, pA, id.mk + '|s|' + sa + '|' + sb)) stepped = true;
-      for (const g of (tr.setGames || [])) {
-        if (!g.start && liveSetStep(g.xSet, yS, g.p, g.mkSet)) stepped = true;
-      }
-      for (const g of (tr.prevNext || [])) {
-        if (liveNextStep(g.xNext, yS, g.p, g.mkNext)) stepped = true;
-      }
-      tr.prevNext = tr.setGames || [];
-      tr.setGames = [];
-    }
-    if (stepped) { saveLive(); S.predGen++; }
-  }
-  const atBoundary = st.aPts === 0 && st.bPts === 0 && !st.inTB;
-  e._trk = { sig, st, gameSrv: atBoundary ? st.aServes : null, hb, trail: tr.trail, setGames: tr.setGames || [], prevNext: tr.prevNext || [] };
-}
-function closeLive(e) {
-  if (!e || e._liveClosed || e.det === 8 || (e.win !== 1 && e.win !== 2) || !liveMlOn(e)) return;
-  const id = liveIds(e), tr = e._trk;
-  if (!id || !tr || !tr.trail) { e._liveClosed = true; e._trk = null; return; }
-  if (e._p == null) return;
-  e._liveClosed = true;
-  const y = (e.win === 1) === id.aIsH ? 1 : 0;
-  const eta = (S.liveOn.eta && S.liveOn.eta.M) || 0.0035;
-  let moved = false;
-  for (const row of tr.trail) if (liveStep(row.x, y, row.p, row.mk, eta)) moved = true;
-  if (moved) { saveLive(); S.predGen++; }
-  e._trk = null;
-}
+function learnLive() { /* učení běží jen na GitHubu */ }
+
+function closeLive() { /* dohrání učí jen GitHub */ }
+
 function serveFit(e) {
   const bo = matchBestOf(e), s0 = e.g === 'W' ? 0.57 : 0.64;
   let fit = e._lfit;
@@ -1528,7 +1359,8 @@ function setPredHtml(e, na, nb) {
   if (e._p == null || !(e._p > 0) || !(e._p < 1) || e.st === 3) return '';
   const fit = serveFit(e);
   const verb = e.g === 'W' ? 'vyhrála' : 'vyhrál';
-  const live = e.st === 2 && !e.stale ? readLive(e) : null;
+  if (e.st === 2) return '';
+  const live = null;
   if (!live) {
     const tag = e.st === 2 ? 'bez skóre' : 'z 0:0';
     let base = null;
@@ -1537,7 +1369,7 @@ function setPredHtml(e, na, nb) {
     const d = marketOn(e) && e._d ? e._d : 0;
     const p = (typeof MK !== 'undefined' && d) ? MK.show(base, MK.SET_SCALE * d) : base;
     const note = e.st === 2 ? '' : (setModelOn(e)
-      ? '<p class="note">Šance na 1. set je vlastní číslo, ne šance na zápas. Před zápasem se zápas i set posunou podle kurzů a podle zpráv o odhlášení nebo zranění, jakmile přijdou. Naučený posun jde do dalších zápasů. Bez kurzu zůstává model.</p>'
+      ? '<p class="note">Šance na 1. set je vlastní číslo, ne šance na zápas. Váhy jsou z GitHubu, telefon je neposouvá.</p>'
       : '<p class="note">1. set z 0:0, stejný bodový model jako zápas. Není to zvlášť trénovaný model setů.</p>');
     return `<div class="setpreds"><div class="predlab">Kdo bere set</div>${setRowPct(1, na, nb, p, tag)}${note}</div>`;
   }
@@ -1580,45 +1412,21 @@ function setPredHtml(e, na, nb) {
   const note = setModelOn(e) ? 'Šance na hraný set i na další set se učí z gemů, bodů, brejků a síly soupeře. Po dohraném setu se přenese do dalšího zápasu.' : 'Teď hraný set ze skóre, další z 0:0. Stejný bodový model, ne samostatný model setů.';
   return `<div class="setpreds"><div class="predlab">Kdo bere set</div>${lines.join('')}<p class="note">${note}</p></div>`;
 }
-function gamePredHtml(e, na, nb) {
-  if (!liveMlOn(e) || e.st !== 2 || e.stale || e._p == null) return '';
-  const st = readLive(e);
-  if (!st) return '';
-  const p = liveGameProb(e, st);
-  if (p == null) return '';
-  const lab = st.inTB ? 'Tiebreak teď' : 'Gem teď';
-  const row = `<div class="setrow"><span class="n">${lab}</span><span><b class="a">${pct(p)}</b><small class="nm">${esc(na)}</small></span><span class="r"><b class="b">${pct(1 - p)}</b><small class="nm">${esc(nb)}</small></span></div>`;
-  let w = e._lastGem && e._lastGem.w;
-  if (!w && st.between) {
-    const sets = (e.sets || []).filter(s => s && +s[0] >= 0 && +s[1] >= 0);
-    for (let i = sets.length - 1; i >= 0; i--) { const sw = setWinner(sets[i]); if (sw) { w = sw; break; } }
-  }
-  const verb = e.g === 'W' ? 'vyhrála' : 'vyhrál';
-  const last = w ? `<div class="setrow"><span class="n">Minulý gem</span><span class="win">${verb} ${esc(w === 1 ? na : nb)}</span></div>` : '';
-  const bits = [];
-  if (st.aServes == null) bits.push('Podání neznáme, bereme obě možnosti.');
-  if (!st.pointsKnown && !st.between) bits.push('Body v gemu nemáme, bereme gemy a podání.');
-  return `<div class="setpreds"><div class="predlab">${lab}</div>${row}${last}<p class="note">Stejné vstupy jako živá predikce zápasu (skóre, podání, brejk nebo udržení, předzápasová síla). Po každém dohraném gemu se posune.${bits.length ? ' ' + bits.join(' ') : ''}</p></div>`;
-}
+function gamePredHtml() { return ''; }
+
 
 
 function predInner(e, na, nb) {
-  const pre = `<div class="predlab pre">${TITLE_MODEL}</div><div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div><p class="plab">${LAB_MODEL}</p>`;
-  if (e.st !== 2) return rawOnlyHtml(e, na, nb);
-  const L = liveProb(e);
-  if (!L || !L.ok) return pre + setPredHtml(e, na, nb) + '<p class="note">Živé skóre teď nemáme, platí jen předzápasová predikce.</p>';
-  const bits = [];
-  if (!L.serverKnown) bits.push('Podání neznáme, obě možnosti bereme stejně.');
-  if (!L.pointsKnown) bits.push(L.between ? 'Set skončil, další ještě nemá skóre — bereme jen sety.' : 'Body v gemu nemáme, bereme jen sety a gemy.');
-  return `<div class="predlab now">Predikce teď</div><div class="big2"><div><b class="a">${pct(L.p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - L.p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(L.p * 100).toFixed(1)}%"></i></div>${pre}<p class="note">${L.ml ? 'Z předzápasové šance, síly hráčů a skóre (sety, gemy, body, podání, brejk nebo udržení). Na 0:0 zůstává předzápasová. Po gemu, brejku, setu a po dohrání se posune.' : 'Z předzápasové šance a skóre. Bodový výpočet, na 0:0 je předzápasová.'} ${bits.join(' ')}</p>${gamePredHtml(e, na, nb)}${setPredHtml(e, na, nb)}`;
+  const pre = rawOnlyHtml(e, na, nb);
+  if (e.st !== 2) return pre;
+  return pre + '<p class="note">Zápas, hraný set, další set ani gem se na telefonu nepočítají. Telefon jen ukazuje, co GitHub uložil. V souboru jsou váhy, ne tato čtyři procenta, a váhy se zapisují zhruba jednou za dvě minuty. Dokud tam ta procenta nejsou, telefon je ze skóre nespočítá.</p>';
 }
+
 function predNote(e) {
   if (e.st !== 2 || e._p == null) return '';
-  const L = liveProb(e);
-  if (!L || !L.ok) return '<div class="note" id="d-prednote">Živé skóre teď nemáme, platí jen předzápasová predikce. Podrobný rozpis níže je předzápasový.</div>';
-  const extra = [!L.serverKnown ? 'Podání neznáme, obě možnosti bereme stejně.' : '', !L.pointsKnown ? 'Body v gemu nemáme, bereme jen sety a gemy.' : ''].filter(Boolean).join(' ');
-  return `<div class="note" id="d-prednote"><b>Predikce teď ${pct(L.p)} : ${pct(1 - L.p)}</b> · Před zápasem ${pct(e._p)} : ${pct(1 - e._p)}. ${L.ml ? 'U ATP, WTA a Challengeru vychází z předzápasové šance a skóre a posune se po gemu, brejku, setu a po dohrání. U stejných zápasů je pod tím i odhad, kdo vezme hraný gem, a ten se po každém gemu posune stejně. Na 0:0 je předzápasová.' : 'Bodový výpočet ze skóre. Na 0:0 je předzápasová.'} ${extra}Podrobný rozpis níže je pořád předzápasový.</div>`;
+  return `<div class="note" id="d-prednote">Před zápasem ${pct(e._p)} : ${pct(1 - e._p)}. Živá procenta na zápas, set, další set a gem telefon nepočítá. GitHub ukládá váhy, ne tato čísla, zhruba jednou za dvě minuty.</div>`;
 }
+
 function paintLivePred(e) {
   if (!S.detail || S.byId[S.detail.id] !== e || e._p == null || e.st === 3) return;
   const r = resolveEv(e), na = dispName(r.hi, e.h), nb = dispName(r.ai, e.a);
@@ -1691,7 +1499,7 @@ async function renderMatches(keep) {
   else if (!list.length) h += `<div class="empty">Žádné zápasy pro tento výběr.${F.favOnly ? '<br><small>Přidejte si hráče do oblíbených hvězdičkou v detailu zápasu.</small>' : ''}</div>`;
   else h += groupsHtml(list);
   const sc = S.live.srcCount || {};
-  h += `<p class="note">Zdroje: ${Object.entries(sc).map(([k, n]) => `${k === 'snapshot' ? 'snímek z buildu ' + esc(S.live.snapshot || '') : k} (${n})`).join(', ') || '—'}. Živé skóre: ATP/WTA z ESPN (~15 s), body a gemy z 365scores (~8 s)${S.live.sofa ? ', ITF ze Sofascore (~20 s)' : ', ITF jen ze snímku buildu (Sofascore z této sítě neodpovídá)'}. Kurzy (Tipsport, iFortuna, Chance, Betano) se u nadcházejícího zápasu ATP, WTA, Challengeru a grandslamu berou každých 20 s a posouvají šanci na zápas i na 1. set. Zprávy o odhlášení a zranění jdou z ESPN. VALUE zůstává z čistého modelu a předzápasového kurzu. ITF se podle kurzů neposouvá. U živého zápasu je v detailu i „Predikce teď“ ze skóre.</p>
+  h += `<p class="note">Zdroje: ${Object.entries(sc).map(([k, n]) => `${k === 'snapshot' ? 'snímek z buildu ' + esc(S.live.snapshot || '') : k} (${n})`).join(', ') || '—'}. Živé skóre: ATP/WTA z ESPN (~15 s), body a gemy z 365scores (~8 s)${S.live.sofa ? ', ITF ze Sofascore (~20 s)' : ', ITF jen ze snímku buildu (Sofascore z této sítě neodpovídá)'}. Kurzy (Tipsport, iFortuna, Chance, Betano) se u nadcházejícího zápasu jen zobrazí, šanci na telefonu neposouvají. Zprávy o odhlášení a zranění jdou z ESPN a na telefonu váhy neposouvají. VALUE zůstává z čistého modelu a předzápasového kurzu. Živá procenta na zápas, set, další set a gem telefon ze skóre nepočítá. GitHub ukládá váhy, ne tato čísla, zhruba jednou za dvě minuty.</p>
    <p class="note gam">18+ Kurzy slouží jen pro srovnání s modelem. Sázení je riskantní a může vést k závislosti – hrajte zodpovědně, jen s penězi, které si můžete dovolit prohrát.</p>`;
   v.innerHTML = h;
   if (keep) window.scrollTo(0, y);
@@ -2203,7 +2011,7 @@ function renderModel() {
     return `<tr><td>${g === 'M' ? 'Muži' : 'Ženy'} – ${GRP_CS[grp]}</td><td>${Object.entries(by).map(([s, [a, b, n]]) => `${SRC[s] || s}: ${a.slice(0, 4)}–${b.slice(6, 8)}.${b.slice(4, 6)}.${b.slice(0, 4)} (${n.toLocaleString('cs-CZ')})`).join('<br>')}</td></tr>`; }).join('');
   const L = S.live;
   v.innerHTML = `<div class="ph"><h1>MODEL</h1></div><div class="card"><h2>O modelu</h2>
-   <p>Model předpovídá pravděpodobnost výhry ve dvouhře pro <b>všechny úrovně</b>: Grand Slamy, ATP/WTA, Challengery, WTA 125, ITF/Futures i kvalifikace. Příznaky pro každý zápas se počítají jen z předchozích zápasů: Elo celkové a podle povrchu (K-faktor podle úrovně turnaje), žebříček a body, forma, H2H, věk, výška, ruka, únava, úspěšnost na povrchu, klouzavé statistiky podání/příjmu a úroveň turnaje. Pořadí hráčů je náhodné; predikce je symetrizovaná.</p><p><b>Verze 2</b> přidává Elo počítané z podílu vyhraných gemů (zohlední, jak přesvědčivě hráč vyhrál/prohrál), totéž podle povrchu, časově váženou formu (poločas ~1 měsíc), formu za 60 dní, nejistotu ratingu ve stylu Glicko (málo zápasů / dlouhá pauza), neaktivitu a součet bodů na podání+příjmu. Hyperparametry a kalibrace laděny jen na validaci (2. pol. 2025).</p><p>Předzápasová pravděpodobnost se po každém dohraném zápase o kousek posune — jeden online krok, ne nový strom. Starší výsledky zůstávají v nedělním modelu. Dnešní běh už započítal +19. U ATP, WTA, Challengeru a grandslamu se před zápasem zobrazená šance na zápas a na 1. set navíc posouvá podle aktuálních kurzů (jen část rozdílu proti trhu bez marže) a podle zpráv ESPN o odhlášení nebo zranění. Ten posun se zapíše do vlastních vah a u dalších zápasů těch hráčů zůstane. Stromy ani krok z dohraného zápasu se tím nemění. Když kurz není, zůstává model. ITF se tak neposouvá. Živá predikce u ATP, WTA a Challengeru vychází z předzápasové šance a skóre (sety, gemy, body, podání, brejk nebo udržení) a posune se po gemu, brejku, setu a po dohrání. Odhad, kdo vezme hraný gem, používá stejné vstupy a po každém dohraném gemu stejný krok. Šance na set je vlastní číslo, ne kopie šance na zápas. Před zápasem vychází z naučených vah setu a po dohraném setu se přenese do dalšího zápasu. Během setu se šance na ten set i na další set posouvají podle gemů, bodů, brejků a síly soupeře. Stejný krok běží i na serveru, když je aplikace zavřená, a uložené váhy platí pro další zápasy.</p>
+   <p>Model předpovídá pravděpodobnost výhry ve dvouhře pro <b>všechny úrovně</b>: Grand Slamy, ATP/WTA, Challengery, WTA 125, ITF/Futures i kvalifikace. Příznaky pro každý zápas se počítají jen z předchozích zápasů: Elo celkové a podle povrchu (K-faktor podle úrovně turnaje), žebříček a body, forma, H2H, věk, výška, ruka, únava, úspěšnost na povrchu, klouzavé statistiky podání/příjmu a úroveň turnaje. Pořadí hráčů je náhodné; predikce je symetrizovaná.</p><p><b>Verze 2</b> přidává Elo počítané z podílu vyhraných gemů (zohlední, jak přesvědčivě hráč vyhrál/prohrál), totéž podle povrchu, časově váženou formu (poločas ~1 měsíc), formu za 60 dní, nejistotu ratingu ve stylu Glicko (málo zápasů / dlouhá pauza), neaktivitu a součet bodů na podání+příjmu. Hyperparametry a kalibrace laděny jen na validaci (2. pol. 2025).</p><p>Předzápasová pravděpodobnost se po každém dohraném zápase o kousek posune — jeden online krok, ne nový strom. Starší výsledky zůstávají v nedělním modelu. Dnešní běh už započítal +19. U ATP, WTA, Challengeru a grandslamu se před zápasem zobrazená šance na zápas a na 1. set navíc posouvá podle aktuálních kurzů (jen část rozdílu proti trhu bez marže) a podle zpráv ESPN o odhlášení nebo zranění. Telefon ten posun do vah nezapisuje. Stromy ani krok z dohraného zápasu se tím nemění. Když kurz není, zůstává model. ITF se tak neposouvá. Živá predikce u ATP, WTA a Challengeru vychází z předzápasové šance a skóre (sety, gemy, body, podání, brejk nebo udržení) a posune se po gemu, brejku, setu a po dohrání. Odhad, kdo vezme hraný gem, používá stejné vstupy a po každém dohraném gemu stejný krok. Šance na set je vlastní číslo, ne kopie šance na zápas. Před zápasem vychází z naučených vah setu a po dohraném setu se přenese do dalšího zápasu. Během setu se šance na ten set i na další set posouvají podle gemů, bodů, brejků a síly soupeře. Ten krok běží jen na GitHubu. Telefon váhy neposouvá, jen je stáhne. Živá procenta na zápas, set, další set a gem se na telefonu nepočítají, protože GitHub ukládá váhy a ne tato čtyři čísla, zhruba jednou za dvě minuty.</p>
    <div class="kv"><div>Poslední datum v datech buildu</div><div><b>${fmtDate(m.day_end)}</b></div><div>Build</div><div>${esc(m.built)}${m.mode === 'daily-incremental' ? ' <small class="note">(automatická denní aktualizace GitHub Actions, ~05:17 a ~17:17)</small>' : ''}</div>${m.update ? `<div>Poslední aktualizace</div><div>+${m.update.applied} zápasů${m.update.new_players ? `, ${m.update.new_players} nových hráčů` : ''}</div>` : ''}${m.full_build ? `<div>Plná přestavba a trénink</div><div>${esc(m.full_build)}</div>` : ''}
    <div>Trénink</div><div>${esc(mt.split.train)} (${mt.split.n_train.toLocaleString('cs-CZ')})</div><div>Validace</div><div>${esc(mt.split.valid)} (${mt.split.n_valid.toLocaleString('cs-CZ')})</div>
    <div>Refit (nasazený model)</div><div>${esc(mt.split.refit || '—')}</div><div>Holdout (mimo vzorek)</div><div>${esc(mt.split.test)} (${mt.split.n_test.toLocaleString('cs-CZ')})</div><div>Stromů LightGBM</div><div>${mt.gbm_trees}</div></div></div>
@@ -2217,7 +2025,7 @@ function renderModel() {
    <div class="card"><h2>Data</h2><table><tr><th>Kategorie</th><th style="text-align:left">Zdroj: rozsah (počet zápasů)</th></tr>${cov}</table>
    <p class="note">Sackmannovy repozitáře tennis_atp/tennis_wta jsou od léta 2026 offline; použit veřejný archiv (snapshot do ${fmtDate(m.gap_start)}). ATP/WTA okruh a Challengery jsou doplněny z TennisMyLife až do buildu. ITF, WTA 125 a kvalifikace Challengerů mají mezeru mezi snapshotem a posledními 7 dny před buildem (u těchto hráčů je neutralizována únava).</p></div>
    <div class="card"><h2>Živá data a aktualizace</h2>
-   <p><b>Při otevření</b> aplikace v prohlížeči (bez klíčů) stáhne rozpis a výsledky (±2 dny, výsledky ~7 dní zpět) a z nových výsledků <b>přepočítá Elo</b>, formu, únavu a H2H. <b>Živé skóre</b> se nejdřív ukáže ze snímku buildu, potom se doplní z feedů. ATP/WTA (ESPN) se obnovuje asi každých 15 s, body a gemy (365scores) asi každých 8 s, ITF (Sofascore, pokud z dané sítě odpovídá) každých 20 s — jen dokud je vidět seznam zápasů nebo detail. Váhy živého zápasu, setu, dalšího setu a gemu se na serveru ukládají i při zavřené aplikaci a příští otevření je stáhne. Dokončený zápas se hned započte do Elo. Předzápasový model se z něj doladí jedním krokem i na serveru, do pár minut, i když je aplikace zavřená. Telefon si ty váhy stáhne z Gitu a nečeká na sestavení stránky. Denní běh ~05:17 a ~17:17 a nedělní přepočet stromů zůstávají. Stejný zápas se nezapočítá podruhé. Predikce se počítají přímo v telefonu.</p>
+   <p><b>Při otevření</b> aplikace v prohlížeči (bez klíčů) stáhne rozpis a výsledky (±2 dny, výsledky ~7 dní zpět) a z nových výsledků <b>přepočítá Elo</b>, formu, únavu a H2H. <b>Živé skóre</b> se nejdřív ukáže ze snímku buildu, potom se doplní z feedů. ATP/WTA (ESPN) se obnovuje asi každých 15 s, body a gemy (365scores) asi každých 8 s, ITF (Sofascore, pokud z dané sítě odpovídá) každých 20 s — jen dokud je vidět seznam zápasů nebo detail. Váhy živého zápasu, setu, dalšího setu, gemu i předzápasu posouvá jen GitHub, i když je aplikace otevřená. Telefon je neposouvá a neukládá, jen je stáhne. Procenta na probíhající zápas, hraný set, další set a gem telefon ze skóre nepočítá. GitHub je do souboru nezapisuje, zapisuje jen váhy, zhruba jednou za dvě minuty. Dokončený zápas se v telefonu hned započte do Elo. Předzápasové váhy doladí jen server. Telefon si je stáhne z Gitu a nečeká na sestavení stránky. Denní běh ~05:17 a ~17:17 a nedělní přepočet stromů zůstávají. Stejný zápas se nezapočítá podruhé. Předzápasovou šanci telefon spočítá z modelu a ze stažených vah. Živá procenta v zápasu ne.</p>
    <div class="kv"><div>ESPN – živé skóre ATP/WTA (+ část WTA 125)</div><div>${L.espn ? '✅ funguje' : '⚠️ nedostupné'}${L.polls ? ` · ${L.polls}× obnoveno` : ''}</div>
    <div>365scores – živé skóre Challenger/WTA 125</div><div>${S.l365.ok && !S.l365.err ? '✅ funguje' : S.l365.err ? '⚠️ nedostupné' : '…'}${S.l365.polls ? ` · ${S.l365.polls}× obnoveno, ${S.l365.upd} změn skóre` : ''}</div>
    <div>Sofascore (všechny úrovně)</div><div>${L.sofa ? '✅ funguje' : '⚠️ z této sítě blokováno'}</div>
@@ -2225,7 +2033,7 @@ function renderModel() {
    <div>Kurzy Flashscore (předzápas oce + v průběhu ole, CORS)</div><div>${L.oddsOk ? `✅ načteno ${L.oddsOk}×${L.oddsLive ? `, z toho ${L.oddsLive}× v průběhu` : ''}` : L.oddsErr ? '⚠️ nedostupné – použit snímek' : 'načítají se u zobrazených zápasů'}</div>
    <div>Dokončené zápasy z živých zdrojů</div><div>${L.finished}</div><div>Už obsaženo v buildu / duplicity</div><div>${L.dup}</div>
    <div>Nově započteno do Elo</div><div>${L.applied}</div><div>Doladění modelu z výsledků od nedělního přepočtu</div><div>${(S.online && S.online.n) || 0}</div><div>Neznámí hráči v živých datech</div><div>${L.unknown}</div></div>
-   <p class="note">Flashscore feed pokrývá všechny úrovně, ale vyžaduje hlavičku x-fsign a CORS preflight povoluje jen vlastním doménám Flashscore – z prohlížeče proto nejde. Živé Challenger/WTA 125 bere aplikace z 365scores (CORS *), ITF ze Sofascore (funguje z běžných sítí, z datacenter ne); jinak ITF jen ze snímku buildu. Kurzy Flashscore CORS povolují, ale potřebují ID zápasu ze snímku; zápasy ESPN se se snímkem párují podle dvojice hráčů. Bez nového buildu se neaktualizuje žebříček a statistiky podání/příjmu. Předzápasový model se z dohraného zápasu doladí na serveru do pár minut, i při zavřené aplikaci, a telefon si váhy stáhne z Gitu. Denní běh stejný zápas nepočítá podruhé. Stromy LightGBM se přepočítají až v neděli.</p></div>
+   <p class="note">Flashscore feed pokrývá všechny úrovně, ale vyžaduje hlavičku x-fsign a CORS preflight povoluje jen vlastním doménám Flashscore – z prohlížeče proto nejde. Živé Challenger/WTA 125 bere aplikace z 365scores (CORS *), ITF ze Sofascore (funguje z běžných sítí, z datacenter ne); jinak ITF jen ze snímku buildu. Kurzy Flashscore CORS povolují, ale potřebují ID zápasu ze snímku; zápasy ESPN se se snímkem párují podle dvojice hráčů. Bez nového buildu se neaktualizuje žebříček a statistiky podání/příjmu. Předzápasové váhy doladí jen GitHub, do pár minut, a telefon si je stáhne. Sám je neposouvá. Denní běh stejný zápas nepočítá podruhé. Stromy LightGBM se přepočítají až v neděli.</p></div>
    <div class="card"><h2>Kurzy a zodpovědné hraní</h2><p>„Value“ se zvýrazní jen před začátkem zápasu a jen z předzápasových kurzů (živý kurz v průběhu se nepočítá). Model musí být nad trhem (průměrný kurz bez marže) aspoň o ${VALUE_TH * 100} procentních bodů, očekávaná návratnost při nejlepším kurzu aspoň ${VALUE_EV * 100} % a průměr musí být aspoň ze ${VALUE_N} kanceláří. Práh je přísný schválně: model se od trhu liší v průměru o ~8 p. b. Na testu 2025–26 má přesnost ~70 %; trh bývá přesnější, protože vidí informace, které model nemá.</p>
    <p class="note gam">18+ Aplikace není sázková kancelář ani sázkové poradenství. Sázení je riskantní a může vést k závislosti. Sázejte jen částky, které si můžete dovolit prohrát, stanovte si limity a při potížích vyhledejte odbornou pomoc.</p></div>
    <div class="card"><p class="note">Zdroje: Jeff Sackmann – tennis_atp / tennis_wta (CC BY-NC-SA 4.0, archiv Aneeshers/tennis-sackmann-archive), TennisMyLife (stats.tennismylife.org), veřejný feed a kurzové srovnání Flashscore, ESPN (živé skóre, fotky hráčů), vlajky flagcdn.com. Aplikace je nekomerční. Predikce jsou odhady, ne záruky.</p></div>`;
