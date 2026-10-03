@@ -4,7 +4,7 @@
 "flashscore": [
 "20260922",
 "20261003",
-150
+151
 ],
 "sackmann": [
 "20000124",
@@ -415,6 +415,7 @@
 "8KsFuFg5": 20721,
 "8MQ0yhvm": 20719,
 "8MQWcMCa": 20727,
+"8MYkuYXI": 20729,
 "8MYl3k3d": 20723,
 "8MlTZnZ0": 20720,
 "8Oc3YsNE": 20727,
@@ -7480,6 +7481,11 @@
 "a148679",
 "a206750",
 20725
+],
+[
+"a148679",
+"a206889",
+20729
 ],
 [
 "a148679",
@@ -20511,21 +20517,6 @@
 "updates": [
 {
 "applied": 0,
-"at": "2026-09-29 03:07 CEST",
-"by_level": {},
-"dup_skipped": 0,
-"enriched": 0,
-"fs_new_events": 0,
-"new_players": 0,
-"tml_rows": {
-"M_chall": 5,
-"M_main": 6,
-"M_quali": 3,
-"W_main": 9
-}
-},
-{
-"applied": 0,
 "at": "2026-09-29 03:09 CEST",
 "by_level": {},
 "dup_skipped": 0,
@@ -21134,6 +21125,19 @@
 "M_main": 4,
 "W_main": 7
 }
+},
+{
+"applied": 1,
+"at": "2026-10-03 17:45 CEST",
+"by_level": {
+"M_chall": 1
+},
+"dup_skipped": 0,
+"enriched": 0,
+"fs_new_events": 1,
+"live_steps": 1,
+"new_players": 0,
+"tml_rows": {}
 }
 ]
 }
