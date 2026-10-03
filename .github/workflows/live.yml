@@ -2,9 +2,9 @@ name: Živé učení během zápasu
 
 on:
   schedule:
-    # Každou hodinu v :07, celý den. Veřejný repozitář minuty Actions nespálí.
-    # Běh trvá asi 48 minut a sahá na skóre každou minutu, takže pokryje i noční zápasy.
-    - cron: '7 * * * *'
+    # Každou hodinu v :02, celý den. Veřejný repozitář minuty Actions nespálí.
+    # Běh trvá 58 minut a sahá na skóre každou minutu. Než naběhne další, zbývají asi dvě minuty.
+    - cron: '2 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -20,7 +20,7 @@ concurrency:
 jobs:
   learn:
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 65
     env:
       TZ: Europe/Prague
       PYTHONUNBUFFERED: '1'
@@ -43,7 +43,7 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             python scripts/live_tick.py --minutes 4 --interval 45
           else
-            python scripts/live_tick.py --minutes 48 --interval 60
+            python scripts/live_tick.py --minutes 58 --interval 60
           fi
 
   deploy:
