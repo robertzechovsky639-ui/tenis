@@ -94,6 +94,7 @@
 2026-1017|Xiyu Wang|Maria Timofeeva|R128
 2026-1017|Zeynep Sonmez|Daria Kasatkina|R128
 2026-1020|Aliaksandra Sasnovich|Talia Gibson|R128
+2026-1020|Alina Charaeva|Elena Rybakina|R64
 2026-1020|Alina Charaeva|Yuliia Starodubtseva|R128
 2026-1020|Anastasia Zakharova|Yushan Shao|R128
 2026-1020|Ann Li|Ashlyn Krueger|R64
@@ -3717,6 +3718,7 @@
 2026-6795|Thiago Seyboth Wild|Andrej Martin|R32
 2026-6857|Clement Chidekh|David Goffin|R32
 2026-6857|Clement Chidekh|Harold Mayot|QF
+2026-6857|Clement Chidekh|Henry Bernet|SF
 2026-6857|Clement Chidekh|Ugo Blanchet|R16
 2026-6857|Clement Tabur|Matteo Martineau|R32
 2026-6857|Clement Tabur|Thomas Faurel|R16

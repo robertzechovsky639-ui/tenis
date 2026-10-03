@@ -20517,21 +20517,6 @@
 "updates": [
 {
 "applied": 0,
-"at": "2026-09-29 03:09 CEST",
-"by_level": {},
-"dup_skipped": 0,
-"enriched": 0,
-"fs_new_events": 0,
-"new_players": 0,
-"tml_rows": {
-"M_chall": 5,
-"M_main": 6,
-"M_quali": 3,
-"W_main": 9
-}
-},
-{
-"applied": 0,
 "at": "2026-09-29 03:37 CEST",
 "by_level": {},
 "dup_skipped": 0,
@@ -21138,6 +21123,19 @@
 "live_steps": 1,
 "new_players": 0,
 "tml_rows": {}
+},
+{
+"applied": 0,
+"at": "2026-10-03 18:30 CEST",
+"by_level": {},
+"dup_skipped": 0,
+"enriched": 2,
+"fs_new_events": 0,
+"new_players": 0,
+"tml_rows": {
+"M_chall": 1,
+"W_main": 1
+}
 }
 ]
 }
