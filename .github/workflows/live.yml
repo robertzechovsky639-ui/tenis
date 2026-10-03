@@ -41,7 +41,7 @@ jobs:
       - name: Učení z rozehraných zápasů (365scores, bez klíče)
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            python scripts/live_tick.py --minutes 4 --interval 45
+            python scripts/live_tick.py --minutes 58 --interval 60
           else
             python scripts/live_tick.py --minutes 58 --interval 60
           fi
