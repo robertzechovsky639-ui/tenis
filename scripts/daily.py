@@ -135,7 +135,9 @@ def main():
         return p
     train_rows = []
     online_pred = None
-    live_on = live_ml.load(os.path.join(ROOT, 'state', 'live_online.json'))
+    live_path = os.path.join(ROOT, 'state', 'live_online.json')
+    live_on = live_ml.load(live_path)
+    live_replay = []
     for r in df.to_dict('records'):
         wid, lid, day, g = r['winner_id'], r['loser_id'], int(r['day']), r['gender']
         key = (wid, lid) if wid < lid else (lid, wid)
@@ -181,9 +183,10 @@ def main():
             p_win = p0 if yrow == 1 else 1.0 - p0
             if int(r['lvl_code']) >= 3:
                 dw = x[:len(engine.DIFF)] if a_is_w else [-v for v in x[:len(engine.DIFF)]]
-                st['live_steps'] = st.get('live_steps', 0) + live_ml.from_sets(
-                    live_on, wid, lid, str(r.get('score') or ''), day, int(r['best_of']), r['gender'], r.get('surface'),
-                    int(r['is_qual']), int(r['lvl_code']), p_win, dw)
+                live_args = (wid, lid, str(r.get('score') or ''), day, int(r['best_of']), r['gender'], r.get('surface'),
+                             int(r['is_qual']), int(r['lvl_code']), p_win, dw)
+                st['live_steps'] = st.get('live_steps', 0) + live_ml.from_sets(live_on, *live_args)
+                live_replay.append(live_args)
         engine.update(W, L, dict(surface=engine.SURF.get(r['surface'], 0), lvl_code=int(r['lvl_code']), is_qual=int(r['is_qual']), ret=int(r['ret']), day=day,
                                  minutes=r['minutes'], best_of=int(r['best_of']), stats=stats, wid=wid, lid=lid, games=engine.games_of(r['score'])))
         hh = H.get(key, [0, 0]); hh[0 if wid == key[0] else 1] += 1; H[key] = hh
@@ -202,7 +205,14 @@ def main():
     now = time.strftime('%Y-%m-%d %H:%M %Z')
     meta['updates'] = (meta.get('updates', []) + [dict(at=now, **{k: v for k, v in st.items()})])[-40:]
     trainset.append_rows(train_rows); st['train_rows'] = len(train_rows)
-    live_ml.save(os.path.join(ROOT, 'state', 'live_online.json'), live_on)
+    # znovu načíst soubor: živý job mohl mezitím zapsat gemy. from_sets je idempotentní (stejné klíče se neaplikují podruhé).
+    disk = live_ml.load(live_path)
+    for live_args in live_replay:
+        live_ml.from_sets(disk, *live_args)
+    if not disk.get('tracks') and live_on.get('tracks'): disk['tracks'] = live_on['tracks']
+    if not disk.get('elog') and live_on.get('elog'): disk['elog'] = live_on['elog']
+    if not disk.get('bases') and live_on.get('bases'): disk['bases'] = live_on['bases']
+    live_ml.save(live_path, disk)
     if online_pred is not None:
         online.save(os.path.join(ROOT, 'state', 'online.json'), online_pred.online)
     else:

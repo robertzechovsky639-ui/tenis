@@ -56,7 +56,7 @@ def empty(scales=None):
                 gw=list(z), gw0=list(z), gn=0, gseen=[],
                 sw=[0.0] * n_set_weights(), sw0=[0.0] * n_set_weights(), sn=0, sseen=[],
                 nw=[0.0] * n_next_weights(), nw0=[0.0] * n_next_weights(), nn=0, nseen=[], nscore=list(NEXT_SCORE),
-                eta=dict(ETA), pull=PULL, bound=BOUND)
+                eta=dict(ETA), pull=PULL, bound=BOUND, tracks={}, elog=[], bases={})
 
 def load(path):
     st = None
@@ -105,11 +105,17 @@ def load(path):
     st['eta'] = dict(ETA)
     st['pull'] = PULL
     st['bound'] = BOUND
+    st['tracks'] = st.get('tracks') if isinstance(st.get('tracks'), dict) else {}
+    st['elog'] = st.get('elog') if isinstance(st.get('elog'), list) else []
+    st['bases'] = st.get('bases') if isinstance(st.get('bases'), dict) else {}
     return st
 
 def save(path, st):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     out = {k: st[k] for k in ('base', 'score', 'core', 'diffs', 'ctx', 'scale', 'w', 'w0', 'n', 'seen', 'gw', 'gw0', 'gn', 'gseen', 'sw', 'sw0', 'sn', 'sseen', 'nw', 'nw0', 'nn', 'nseen', 'nscore') if k in st}
+    out['tracks'] = st.get('tracks') if isinstance(st.get('tracks'), dict) else {}
+    out['elog'] = st.get('elog') if isinstance(st.get('elog'), list) else []
+    out['bases'] = st.get('bases') if isinstance(st.get('bases'), dict) else {}
     out['eta'] = dict(ETA); out['pull'] = PULL; out['bound'] = BOUND
     json.dump(out, open(path, 'w'), ensure_ascii=False, separators=(',', ':'))
 

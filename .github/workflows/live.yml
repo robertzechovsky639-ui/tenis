@@ -1,0 +1,81 @@
+name: Živé učení během zápasu
+
+on:
+  schedule:
+    # 08:07–20:07 UTC = v létě 10:07–22:07 Praha, v zimě 09:07–21:07.
+    # Každý běh pak smyčkou sahá na skóre asi minutu, takže pokryje den zhruba do 23:00.
+    # V noci se nespouští, ať se nespálí minuty Actions, když se nehraje.
+    - cron: '7 8-20 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# vlastní skupina, ať denní běh (05:17 a 17:17) nezruší. Když se potkají, počkají.
+concurrency:
+  group: live-learn
+  cancel-in-progress: false
+
+jobs:
+  learn:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      TZ: Europe/Prague
+      PYTHONUNBUFFERED: '1'
+      LIVE_COMMIT: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+      - name: Instalace závislostí
+        run: pip install -r requirements-ci.txt
+      - name: Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Učení z rozehraných zápasů (365scores, bez klíče)
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            python scripts/live_tick.py --minutes 4 --interval 45
+          else
+            python scripts/live_tick.py --minutes 48 --interval 60
+          fi
+
+  deploy:
+    if: github.event_name == 'workflow_dispatch'
+    needs: learn
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Sestavení webu se stavem z Pages a čerstvými živými vahami
+        run: |
+          set -euo pipefail
+          base=https://robertzechovsky639-ui.github.io/tenis/data
+          mkdir -p web/data/st
+          for f in meta.json players.json online.json upcoming.json tournaments.json; do
+            curl -fsSL "$base/$f" -o "web/data/$f"
+          done
+          for i in $(seq 0 15); do
+            curl -fsSL "$base/st/$i.json" -o "web/data/st/$i.json"
+          done
+          cp state/live_online.json web/data/live_online.json
+          bash scripts/make_dist.sh
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v4
