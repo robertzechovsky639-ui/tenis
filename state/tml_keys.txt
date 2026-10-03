@@ -99,6 +99,7 @@
 2026-1020|Ann Li|Ashlyn Krueger|R64
 2026-1020|Aryna Sabalenka|Renata Zarazua|R64
 2026-1020|Ashlyn Krueger|Sofia Kenin|R128
+2026-1020|Belinda Bencic|Anastasia Zakharova|R64
 2026-1020|Camila Osorio|Lanlana Tararudee|R128
 2026-1020|Coco Gauff|Camila Osorio|R64
 2026-1020|Daria Snigur|Jasmine Paolini|R64
@@ -113,8 +114,10 @@
 2026-1020|Elise Mertens|Katie Volynets|R64
 2026-1020|Harriet Dart|Yihan Qu|R128
 2026-1020|Iga Swiatek|Xinyu Gao|R64
+2026-1020|Iva Jovic|Harriet Dart|R64
 2026-1020|Janice Tjen|Anhelina Kalinina|R128
 2026-1020|Jelena Ostapenko|Paula Badosa|R64
+2026-1020|Kamilla Rakhimova|Leylah Fernandez|R64
 2026-1020|Kamilla Rakhimova|Marina Bassols Ribera|R128
 2026-1020|Karolina Muchova|Katie Boulter|R64
 2026-1020|Katerina Siniakova|Magda Linette|R128
@@ -129,23 +132,27 @@
 2026-1020|Magdalena Frech|Elsa Jacquemot|R128
 2026-1020|Maria Sakkari|Storm Hunter|R64
 2026-1020|Maria Timofeeva|Darja Vidmanova|R128
+2026-1020|Marie Bouzkova|Kimberly Birrell|R64
 2026-1020|Mirra Andreeva|Yue Yuan|R64
 2026-1020|Naomi Osaka|Maria Timofeeva|R64
 2026-1020|Nikola Bartunkova|Magdalena Frech|R64
 2026-1020|Paula Badosa|Daria Kasatkina|R128
 2026-1020|Polina Kudermetova|Clara Tauson|R64
 2026-1020|Polina Kudermetova|Yexin Ma|R128
+2026-1020|Qinwen Zheng|Anna Kalinskaya|R64
 2026-1020|Qinwen Zheng|Han Shi|R128
 2026-1020|Renata Zarazua|Anna Bondar|R128
 2026-1020|Sara Bejlek|Maddison Inglis|R64
 2026-1020|Sinja Kraus|Anastasia Potapova|R64
 2026-1020|Sinja Kraus|Maya Joint|R128
 2026-1020|Sonay Kartal|Andrea Lazaro Garcia|R128
+2026-1020|Sonay Kartal|Xinyu Wang|R64
 2026-1020|Storm Hunter|Yu Jun Lin|R128
 2026-1020|Taylah Preston|Diane Parry|R64
 2026-1020|Taylah Preston|Tamara Korpatsch|R128
 2026-1020|Viktorija Golubic|Elvina Kalieva|R128
 2026-1020|Viktorija Golubic|Peyton Stearns|R64
+2026-1020|Xinran Sun|Cristina Bucsa|R64
 2026-1020|Xinran Sun|Eva Lys|R128
 2026-1020|Xinyu Gao|Panna Udvardy|R128
 2026-1020|Yue Yuan|Oleksandra Oliynykova|R128
@@ -1832,6 +1839,7 @@
 2026-3151|Juan Cruz Martin Manzano|Enrico Dalla Valle|QF
 2026-3151|Juan Cruz Martin Manzano|Jay Clarke|R16
 2026-3151|Juan Cruz Martin Manzano|Matteo Sciahbasi|R32
+2026-3151|Juan Cruz Martin Manzano|Matthew William Donald|SF
 2026-3151|Laurent Lokoli|Pol Martin Tiffon|R32
 2026-3151|Lorenzo Angelini|Garrett Johns|R32
 2026-3151|Lorenzo Giustino|John Sperle|R32
@@ -1845,6 +1853,7 @@
 2026-3151|Samuele Pieri|Andrej Martin|R32
 2026-3151|Samuele Pieri|Carlos Taberner|QF
 2026-3151|Samuele Pieri|Laurent Lokoli|R16
+2026-3151|Samuele Pieri|Vitaliy Sachko|SF
 2026-3151|Vitaliy Sachko|Dimitar Kuzmanov|R16
 2026-3151|Vitaliy Sachko|Gianluca Cadenasso|QF
 2026-3151|Vitaliy Sachko|Mika Petkovic|R32
@@ -2155,6 +2164,7 @@
 2026-329|Jaume Munar|Jaime Faria|R16
 2026-329|Jaume Munar|Marcos Giron|Q1
 2026-329|Jaume Munar|Taylor Fritz|R32
+2026-329|Jiri Lehecka|Ugo Humbert|R16
 2026-329|Jiri Lehecka|Zizou Bergs|R32
 2026-329|Kamil Majchrzak|Lorenzo Sonego|Q1
 2026-329|Kyrian Jacquet|Holger Rune|R32
@@ -3729,6 +3739,7 @@
 2026-6857|Remy Bertola|Alexandre Reco|R32
 2026-6857|Sascha Gueymard Wayenburg|Clement Tabur|QF
 2026-6857|Sascha Gueymard Wayenburg|Gauthier Onclin|R16
+2026-6857|Sascha Gueymard Wayenburg|Joel Schwaerzler|SF
 2026-6857|Sascha Gueymard Wayenburg|Pierre-Hugues Herbert|R32
 2026-6857|Thomas Faurel|Jack Pinnington Jones|R32
 2026-6857|Tristan Schoolkate|Philip Henning|R32
@@ -4004,6 +4015,7 @@
 2026-747|Alex Molcan|Tomas Machac|R32
 2026-747|Alex Molcan|Vit Kopriva|Q1
 2026-747|Alexander Zverev|Cameron Norrie|R32
+2026-747|Alexander Zverev|Juncheng Shang|R16
 2026-747|Andrey Rublev|Roman Safiullin|R16
 2026-747|Andrey Rublev|Tallon Griekspoor|R32
 2026-747|Arthur Gea|Rigele Te|Q1
@@ -4011,8 +4023,10 @@
 2026-747|Arthur Gea|Zhizhen Zhang|R32
 2026-747|Botic van de Zandschulp|Jie Cui|Q2
 2026-747|Botic van de Zandschulp|Valentin Royer|Q1
+2026-747|Daniil Medvedev|Jan-Lennard Struff|R16
 2026-747|Daniil Medvedev|Pablo Carreno Busta|R32
 2026-747|Francisco Cerundolo|Botic van de Zandschulp|R32
+2026-747|Francisco Cerundolo|Jakub Mensik|R16
 2026-747|Hubert Hurkacz|Arthur Gea|R16
 2026-747|Hubert Hurkacz|Learner Tien|R32
 2026-747|Jakub Mensik|Alexander Bublik|R32
@@ -5165,6 +5179,7 @@
 2026-9526|Henrique Rocha|Mili Poljicak|R16
 2026-9526|Hugo Grenier|Carl Emil Overbeck|R32
 2026-9526|Hugo Grenier|Tiago Pereira|R16
+2026-9526|Inaki Montes-De La Torre|David Jorda Sanchis|SF
 2026-9526|Inaki Montes-De La Torre|Hugo Grenier|QF
 2026-9526|Inaki Montes-De La Torre|Jacob Fearnley|R16
 2026-9526|Inaki Montes-De La Torre|Luca Potenza|R32
