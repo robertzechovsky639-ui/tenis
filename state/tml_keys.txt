@@ -883,6 +883,7 @@
 2026-2895|Gustavo Heide|Felipe Meligeni Alves|R16
 2026-2895|Gustavo Heide|Hernan Casanova|R32
 2026-2895|Gustavo Heide|Lautaro Midon|QF
+2026-2895|Gustavo Heide|Pedro Boscardin Dias|SF
 2026-2895|Joao Eduardo Schiessl|Samuel Heredia|R32
 2026-2895|Joao Lucas Reis Da Silva|Murkel Dellien|R32
 2026-2895|Juan Bautista Torres|Miguel Tobon|R32
@@ -2164,6 +2165,7 @@
 2026-329|Jaime Faria|Shintaro Mochizuki|Q1
 2026-329|Jaume Munar|Aleksandar Kovacevic|Q2
 2026-329|Jaume Munar|Jaime Faria|R16
+2026-329|Jaume Munar|Kyrian Jacquet|QF
 2026-329|Jaume Munar|Marcos Giron|Q1
 2026-329|Jaume Munar|Taylor Fritz|R32
 2026-329|Jiri Lehecka|Ugo Humbert|R16
@@ -4563,6 +4565,7 @@
 2026-8281|Abdullah Shelbayh|Aidan Mayo|QF
 2026-8281|Abdullah Shelbayh|Daniil Ostapenkov|R16
 2026-8281|Abdullah Shelbayh|Li Tu|R32
+2026-8281|Abdullah Shelbayh|Mitchell Krueger|SF
 2026-8281|Aidan Mayo|Colton Smith|R16
 2026-8281|Aidan Mayo|Nikita Samuel Filin|R32
 2026-8281|Andrew Fenty|Igor Marcondes|R32
