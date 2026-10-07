@@ -35,6 +35,10 @@
 "Clay",
 3
 ],
+"M|antofagasta": [
+"Clay",
+3
+],
 "M|antofagasta ch": [
 "Clay",
 3
@@ -188,6 +192,10 @@
 3
 ],
 "M|bordeaux ch": [
+"Clay",
+3
+],
+"M|braga": [
 "Clay",
 3
 ],
@@ -353,6 +361,10 @@
 ],
 "M|cesenatico ch": [
 "Hard",
+3
+],
+"M|challenger dove men care antofagasta": [
+"Clay",
 3
 ],
 "M|champaign ch": [
@@ -1779,6 +1791,10 @@
 "Hard",
 3
 ],
+"M|ferrero challenger": [
+"Hard",
+3
+],
 "M|florianopolis ch": [
 "Clay",
 3
@@ -2387,6 +2403,10 @@
 "Clay",
 0
 ],
+"M|m burgas": [
+"Clay",
+0
+],
 "M|m burnie": [
 "Hard",
 1
@@ -2821,7 +2841,7 @@
 ],
 "M|m h rodez": [
 "Hard",
-1
+0
 ],
 "M|m h tauste": [
 "Hard",
@@ -3189,7 +3209,7 @@
 ],
 "M|m luan": [
 "Hard",
-0
+1
 ],
 "M|m luanda": [
 "Hard",
@@ -4535,6 +4555,10 @@
 "Hard",
 3
 ],
+"M|palermo": [
+"Clay",
+3
+],
 "M|palmas del mar ch": [
 "Hard",
 3
@@ -5095,6 +5119,10 @@
 "Clay",
 3
 ],
+"M|villena": [
+"Hard",
+3
+],
 "M|villena ch": [
 "Hard",
 3
@@ -5132,6 +5160,10 @@
 5
 ],
 "M|winston salem ch": [
+"Hard",
+3
+],
+"M|wuning": [
 "Hard",
 3
 ],
@@ -6395,6 +6427,10 @@
 "Clay",
 2
 ],
+"W|w burgas": [
+"Clay",
+2
+],
 "W|w burnie": [
 "Hard",
 1
@@ -6530,6 +6566,14 @@
 "W|w chihuahua chi": [
 "Clay",
 2
+],
+"W|w chisinau": [
+"Clay",
+0
+],
+"W|w cipolletti": [
+"Hard",
+0
 ],
 "W|w clemson sc": [
 "Hard",
@@ -7063,6 +7107,10 @@
 "Hard",
 0
 ],
+"W|w islamabad": [
+"Hard",
+0
+],
 "W|w ismaning": [
 "Carpet",
 2
@@ -7231,6 +7279,10 @@
 "Hard",
 2
 ],
+"W|w lagos": [
+"Hard",
+1
+],
 "W|w lakewood": [
 "Hard",
 0
@@ -7308,6 +7360,10 @@
 2
 ],
 "W|w lexington ky": [
+"Hard",
+2
+],
+"W|w lexington sc": [
 "Hard",
 2
 ],
@@ -7489,7 +7545,7 @@
 ],
 "W|w monastir": [
 "Hard",
-0
+1
 ],
 "W|w montemor o novo": [
 "Hard",
@@ -8069,7 +8125,7 @@
 ],
 "W|w szekesfehervar": [
 "Clay",
-2
+0
 ],
 "W|w szentendre": [
 "Clay",
