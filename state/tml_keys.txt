@@ -897,19 +897,23 @@
 2026-2883|Tristan Boyer|Bernard Tomic|R32
 2026-2889|Eduardo Ribeiro|Samuel Heredia|R32
 2026-2889|Felipe Meligeni Alves|Juan Pablo Varillas|R32
+2026-2889|Felipe Meligeni Alves|Nick Hardt|R16
 2026-2889|Genaro Alberto Olivieri|Valerio Aboian|R32
 2026-2889|Guido Ivan Justo|Francisco Comesana|R32
 2026-2889|Gustavo Heide|Maximo Zeitune|R32
 2026-2889|Joao Lucas Reis Da Silva|Bernardo Munk Mesa|R32
+2026-2889|Joao Lucas Reis Da Silva|Guido Ivan Justo|R16
 2026-2889|Joaquin Aguilar Cardozo|Nicolas Villalon|R32
 2026-2889|Juan Carlos Prado Angelo|Joao Eduardo Schiessl|R32
 2026-2889|Lautaro Midon|Jose Pereira|R32
 2026-2889|Matheus Pucinelli De Almeida|Alex Barrena|R32
+2026-2889|Matheus Pucinelli De Almeida|Genaro Alberto Olivieri|R16
 2026-2889|Miguel Tobon|Thiago Cigarran|R32
 2026-2889|Murkel Dellien|Juan Estevez|R32
 2026-2889|Nick Hardt|Gonzalo Villanueva|R32
 2026-2889|Pedro Boscardin Dias|Juan Bautista Torres|R32
 2026-2889|Thiago Seyboth Wild|Matias Soto|R32
+2026-2889|Thiago Seyboth Wild|Murkel Dellien|R16
 2026-2889|Tomas Barrios Vera|Franco Roncadelli|R32
 2026-2895|Bruno Fernandez|Wilson Leite|R32
 2026-2895|Felipe Meligeni Alves|Carlos Maria Zarate|R32
@@ -1928,6 +1932,7 @@
 2026-3153|Jonas Forejtek|Sandro Kopp|R32
 2026-3153|Lorenzo Giustino|Christian Langmo|R32
 2026-3153|Martin Krumich|Samuele Pieri|R32
+2026-3153|Massimo Giunta|Gianluca Cadenasso|R16
 2026-3153|Massimo Giunta|Pierluigi Basile|R32
 2026-3153|Michele Ribecai|Benito Sanchez Martinez|R32
 2026-3153|Michele Ribecai|Zdenek Kolar|R16
@@ -4528,11 +4533,17 @@
 2026-7909|Philip Henning|Maks Kasnikowski|R32
 2026-7913|Duje Ajdukovic|Filip Cristian Jianu|R32
 2026-7913|Elmer Moller|Thiago Monteiro|R32
+2026-7913|Luka Mikrut|Sumit Nagal|R32
+2026-7913|Lukas Neumayer|Florian Broska|R32
+2026-7913|Marvin Moeller|Tiago Torres|R32
 2026-7913|Matej Dodig|Andrea Pellegrino|R32
 2026-7913|Max Alcala Gurri|Dali Blanch|R32
 2026-7913|Miguel Damas|Johan Nikles|R32
 2026-7913|Nikolas Sanchez Izquierdo|Goncalo Marques|R32
+2026-7913|Oleksii Krutykh|Javier Barranco Cosano|R32
 2026-7913|Olle Wallin|Marco Cecchinato|R32
+2026-7913|Patrick Schoen|Andrej Nedic|R32
+2026-7913|Ryan Nijboer|Mackenzie McDonald|R32
 2026-7913|Tiago Pereira|Pol Martin Tiffon|R32
 2026-7913|Vilius Gaubas|Joao Domingues|R32
 2026-7913|Zsombor Piros|Tristan Boyer|R32
