@@ -121,6 +121,7 @@
 2026-1020|Elina Svitolina|Katerina Siniakova|R64
 2026-1020|Elina Svitolina|Maria Sakkari|R32
 2026-1020|Elise Mertens|Coco Gauff|R16
+2026-1020|Elise Mertens|Iga Swiatek|QF
 2026-1020|Elise Mertens|Jelena Ostapenko|R32
 2026-1020|Elise Mertens|Katie Volynets|R64
 2026-1020|Harriet Dart|Yihan Qu|R128
@@ -165,6 +166,7 @@
 2026-1020|Polina Kudermetova|Yexin Ma|R128
 2026-1020|Qinwen Zheng|Alina Charaeva|R16
 2026-1020|Qinwen Zheng|Anna Kalinskaya|R64
+2026-1020|Qinwen Zheng|Elina Svitolina|QF
 2026-1020|Qinwen Zheng|Han Shi|R128
 2026-1020|Qinwen Zheng|Marie Bouzkova|R32
 2026-1020|Renata Zarazua|Anna Bondar|R128
@@ -2925,16 +2927,24 @@
 2026-500|Tom Gentzsch|Tiago Pereira|Q1
 2026-500|Yannick Hanfmann|Joao Fonseca|R32
 2026-5014|Adolfo Daniel Vallejo|Valentin Royer|R128
+2026-5014|Adrian Mannarino|Flavio Cobolli|R64
 2026-5014|Adrian Mannarino|Nikoloz Basilashvili|R128
+2026-5014|Alejandro Davidovich Fokina|Jenson Brooksby|R64
 2026-5014|Aleksandar Vukic|Jie Cui|Q1
+2026-5014|Alex De Minaur|Alex Molcan|R64
 2026-5014|Alex Molcan|Federico Cina|R128
+2026-5014|Alexander Bublik|Tomas Machac|R64
+2026-5014|Alexander Zverev|Yibing Wu|R64
 2026-5014|Alexandre Muller|Rio Noguchi|Q1
 2026-5014|Arthur Fery|Marin Cilic|R128
 2026-5014|Arthur Gea|Jaime Faria|R128
+2026-5014|Arthur Gea|Ugo Humbert|R64
 2026-5014|Aziz Dougaz|Lorenzo Sonego|Q1
+2026-5014|Ben Shelton|Daniel Altmaier|R64
 2026-5014|Bernard Tomic|Terence Atmane|Q1
 2026-5014|Bernard Tomic|Timofey Skatov|Q2
 2026-5014|Botic van de Zandschulp|Daniel Merida|R128
+2026-5014|Brandon Nakashima|Matteo Berrettini|R64
 2026-5014|Camilo Ugo Carabelli|Ilia Simakin|R128
 2026-5014|Coleman Wong|Cruz Hewitt|Q1
 2026-5014|Coleman Wong|Lloyd Harris|Q2
@@ -2945,12 +2955,17 @@
 2026-5014|Daniel Altmaier|Holger Rune|R128
 2026-5014|Federico Cina|Aziz Dougaz|Q2
 2026-5014|Federico Cina|Linang Xiao|Q1
+2026-5014|Frances Tiafoe|Yannick Hanfmann|R64
+2026-5014|Francisco Cerundolo|Roman Safiullin|R64
 2026-5014|Hubert Hurkacz|James Duckworth|R128
+2026-5014|Hubert Hurkacz|Novak Djokovic|R64
 2026-5014|Ilia Simakin|Luka Pavlovic|Q1
 2026-5014|Ilia Simakin|Rigele Te|Q2
+2026-5014|Jakub Mensik|Miomir Kecmanovic|R64
 2026-5014|Jan-Lennard Struff|Martin Landaluce|R128
 2026-5014|Jenson Brooksby|Jaume Munar|R128
 2026-5014|Juan Manuel Cerundolo|Nicolas Mejia|R128
+2026-5014|Karen Khachanov|Arthur Fery|R64
 2026-5014|Kimmer Coppejans|Dane Sweeny|Q2
 2026-5014|Kimmer Coppejans|Nishesh Basavareddy|Q1
 2026-5014|Kyrian Jacquet|Tianhui Zhang|Q1
@@ -2971,7 +2986,9 @@
 2026-5014|Pavel Kotov|Aleksandar Vukic|Q2
 2026-5014|Pavel Kotov|Martin Damm|Q1
 2026-5014|Pavel Kotov|Tallon Griekspoor|R128
+2026-5014|Quentin Halys|Alexander Blockx|R64
 2026-5014|Quentin Halys|Coleman Wong|R128
+2026-5014|Rei Sakamoto|Andrey Rublev|R64
 2026-5014|Rei Sakamoto|Kyrian Jacquet|Q2
 2026-5014|Rei Sakamoto|Marco Trungelliti|R128
 2026-5014|Rei Sakamoto|Seongchan Hong|Q1
@@ -2986,6 +3003,7 @@
 2026-5014|Timofey Skatov|Stefanos Sakellaridis|Q1
 2026-5014|Tomas Machac|Zhizhen Zhang|R128
 2026-5014|Yannick Hanfmann|Kamil Majchrzak|R128
+2026-5014|Yi Zhou|Lorenzo Musetti|R64
 2026-5014|Yi Zhou|Mattia Bellucci|R128
 2026-5014|Yibing Wu|Michael Zheng|R128
 2026-5014|Yoshihito Nishioka|Alexander Shevchenko|Q1
@@ -4549,10 +4567,12 @@
 2026-7909|Borna Gojo|Philip Henning|R16
 2026-7909|Damir Dzumhur|Georgii Kravchenko|R32
 2026-7909|Daniel Rincon|Alejo Sanchez Quilez|R32
+2026-7909|Daniil Glinka|Abdullah Shelbayh|QF
 2026-7909|Daniil Glinka|Gauthier Onclin|R32
 2026-7909|Daniil Glinka|Moez Echargui|R16
 2026-7909|Hynek Barton|Max Hans Rehberg|R16
 2026-7909|Hynek Barton|Toby Samuel|R32
+2026-7909|Jack Pinnington Jones|Borna Gojo|QF
 2026-7909|Jack Pinnington Jones|Diego Dedura-Palomero|R32
 2026-7909|Jack Pinnington Jones|Joel Schwaerzler|R16
 2026-7909|Joel Schwaerzler|Felix Balshaw|R32
@@ -4573,10 +4593,12 @@
 2026-7913|Luka Mikrut|Oleksii Krutykh|R16
 2026-7913|Luka Mikrut|Sumit Nagal|R32
 2026-7913|Lukas Neumayer|Florian Broska|R32
+2026-7913|Lukas Neumayer|Max Alcala Gurri|QF
 2026-7913|Lukas Neumayer|Olle Wallin|R16
 2026-7913|Marvin Moeller|Ryan Nijboer|R16
 2026-7913|Marvin Moeller|Tiago Torres|R32
 2026-7913|Matej Dodig|Andrea Pellegrino|R32
+2026-7913|Matej Dodig|Marvin Moeller|QF
 2026-7913|Matej Dodig|Miguel Damas|R16
 2026-7913|Max Alcala Gurri|Dali Blanch|R32
 2026-7913|Max Alcala Gurri|Patrick Schoen|R16
