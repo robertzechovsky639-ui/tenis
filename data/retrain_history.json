@@ -197,5 +197,80 @@
    "w_gbm": 1.0
   },
   "runtime_s": 180
+ },
+ {
+  "date": "2026-10-11 03:29 CEST",
+  "holdout": "2026-07-19 – 2026-10-10",
+  "n_holdout": 6134,
+  "old": {
+   "n": 6134,
+   "acc": 0.6836,
+   "logloss": 0.5892,
+   "brier": 0.2025
+  },
+  "new": {
+   "n": 6134,
+   "acc": 0.6842,
+   "logloss": 0.5897,
+   "brier": 0.2026
+  },
+  "compared": "dvojče současného modelu (data do 2026-07-11)",
+  "by_group": {
+   "tour": {
+    "n": 1798,
+    "old": {
+     "n": 1798,
+     "acc": 0.6763,
+     "logloss": 0.5916,
+     "brier": 0.2037
+    },
+    "new": {
+     "n": 1798,
+     "acc": 0.6791,
+     "logloss": 0.5915,
+     "brier": 0.2036
+    }
+   },
+   "chall": {
+    "n": 2247,
+    "old": {
+     "n": 2247,
+     "acc": 0.6564,
+     "logloss": 0.6212,
+     "brier": 0.2162
+    },
+    "new": {
+     "n": 2247,
+     "acc": 0.6547,
+     "logloss": 0.6221,
+     "brier": 0.2165
+    }
+   },
+   "itf": {
+    "n": 2089,
+    "old": {
+     "n": 2089,
+     "acc": 0.719,
+     "logloss": 0.5526,
+     "brier": 0.1867
+    },
+    "new": {
+     "n": 2089,
+     "acc": 0.7204,
+     "logloss": 0.5531,
+     "brier": 0.1869
+    }
+   }
+  },
+  "candidate": {
+   "train": "2011-07-20 – 2026-07-18",
+   "n_train": 770748,
+   "iterations": 214,
+   "cal": 0.91,
+   "w_gbm": 1.0
+  },
+  "decision": "ponechán současný model – kandidát není lepší",
+  "deployed": false,
+  "runtime_s": 125
  }
 ]
