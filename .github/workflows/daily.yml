@@ -47,14 +47,69 @@ jobs:
       - name: Sestavení webu
         run: bash scripts/make_dist.sh
       - name: Commit aktualizovaného stavu
+        id: commit_state
+        continue-on-error: true
         run: |
+          # Živé učení commituje state/live_*.json každých pár minut.
+          # Rebase konflikt dřív shodil celý job, takže se nenasadil ani dist.
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add state
-          if git diff --cached --quiet; then echo "Stav beze změn"; else
-            git commit -q -m "Denní aktualizace dat $(date '+%Y-%m-%d %H:%M %Z')"
-            git pull --rebase -q && git push -q
+          if git diff --cached --quiet; then
+            echo "Stav beze změn"
+            exit 0
           fi
+          git commit -q -m "Denní aktualizace dat $(date '+%Y-%m-%d %H:%M %Z')"
+          resolve_conflicts() {
+            local f
+            for f in $(git diff --name-only --diff-filter=U); do
+              case "$f" in
+                state/live_online.json|state/online.json|state/live_preds.json)
+                  # průběžné živé váhy necháme z main
+                  git checkout --ours -- "$f"
+                  ;;
+                *)
+                  # denní export (hráči, turnaje, train_new, …) bereme z denního commitu
+                  git checkout --theirs -- "$f"
+                  ;;
+              esac
+              git add -- "$f"
+            done
+          }
+          for i in 1 2 3 4 5 6 7 8; do
+            git fetch origin main
+            if git rebase origin/main; then
+              if git push origin HEAD:main; then
+                echo "push ok (pokus $i)"
+                exit 0
+              fi
+              echo "push race, pokus $i"
+            else
+              echo "rebase konflikt, řeším (pokus $i)"
+              resolve_conflicts
+              while [ -d .git/rebase-merge ] || [ -d .git/rebase-apply ]; do
+                resolve_conflicts
+                if ! GIT_EDITOR=true git rebase --continue; then
+                  if [ -d .git/rebase-merge ] || [ -d .git/rebase-apply ]; then
+                    if [ -z "$(git diff --name-only --diff-filter=U)" ]; then
+                      echo "rebase continue selhal bez konfliktů"
+                      git rebase --abort || true
+                      break
+                    fi
+                    continue
+                  fi
+                  break
+                fi
+              done
+              if git push origin HEAD:main; then
+                echo "push ok po resolve (pokus $i)"
+                exit 0
+              fi
+            fi
+            sleep $((i * 2))
+          done
+          echo "commit/push stavu selhal, dist se i tak nasadí" >&2
+          exit 1
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
