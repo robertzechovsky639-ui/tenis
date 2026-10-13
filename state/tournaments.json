@@ -351,6 +351,10 @@
 "Hard",
 3
 ],
+"M|catania": [
+"Clay",
+3
+],
 "M|cattolica": [
 "Clay",
 3
@@ -1971,7 +1975,15 @@
 "Clay",
 3
 ],
+"M|jinan": [
+"Hard",
+3
+],
 "M|jinan ch": [
+"Hard",
+3
+],
+"M|jinan open": [
 "Hard",
 3
 ],
@@ -2025,6 +2037,10 @@
 ],
 "M|kosice ch": [
 "Clay",
+3
+],
+"M|l open auvergne rhone alpes de roanne": [
+"Hard",
 3
 ],
 "M|las vegas ch": [
@@ -2349,7 +2365,7 @@
 ],
 "M|m bol": [
 "Clay",
-1
+0
 ],
 "M|m bologna": [
 "Clay",
@@ -3903,6 +3919,10 @@
 "Clay",
 0
 ],
+"M|m solapur": [
+"Hard",
+1
+],
 "M|m south bend": [
 "Hard",
 0
@@ -4335,7 +4355,15 @@
 "Clay",
 5
 ],
+"M|maia": [
+"Clay",
+3
+],
 "M|maia ch": [
+"Clay",
+3
+],
+"M|maia open": [
 "Clay",
 3
 ],
@@ -4531,7 +4559,15 @@
 "Clay",
 3
 ],
+"M|olbia": [
+"Hard",
+3
+],
 "M|olbia ch": [
+"Hard",
+3
+],
+"M|olbia challenger": [
 "Hard",
 3
 ],
@@ -4707,6 +4743,10 @@
 "Hard",
 3
 ],
+"M|roanne": [
+"Hard",
+3
+],
 "M|roanne ch": [
 "Hard",
 3
@@ -4816,6 +4856,10 @@
 3
 ],
 "M|sanremo ch": [
+"Clay",
+3
+],
+"M|santa cruz de la sierra": [
 "Clay",
 3
 ],
@@ -5895,6 +5939,10 @@
 "Clay",
 4
 ],
+"W|lisbon": [
+"Clay",
+3
+],
 "W|ljubljana": [
 "Clay",
 3
@@ -6365,7 +6413,7 @@
 ],
 "W|w bol": [
 "Clay",
-1
+0
 ],
 "W|w bolszewo": [
 "Hard",
@@ -7029,7 +7077,7 @@
 ],
 "W|w heraklion": [
 "Clay",
-2
+1
 ],
 "W|w herrenschwanden": [
 "Carpet",
@@ -8045,7 +8093,7 @@
 ],
 "W|w shenzhen": [
 "Hard",
-2
+0
 ],
 "W|w shrewsbury": [
 "Hard",
@@ -8098,6 +8146,10 @@
 "W|w spring tx": [
 "Hard",
 1
+],
+"W|w stara zagora": [
+"Clay",
+2
 ],
 "W|w stellenbosch": [
 "Hard",
