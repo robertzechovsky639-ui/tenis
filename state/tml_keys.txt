@@ -294,6 +294,7 @@
 2026-1075|Maria Sakkari|Marta Kostyuk|R32
 2026-1075|Marie Bouzkova|Clara Tauson|R64
 2026-1075|Mia Pohankova|Anna Bondar|R64
+2026-1075|Mia Pohankova|Xiyu Wang|R32
 2026-1075|Nikola Bartunkova|Lilli Tagger|R64
 2026-1075|Sonay Kartal|Anhelina Kalinina|R64
 2026-1075|Xiyu Wang|Xinyu Wang|R64
@@ -962,10 +963,14 @@
 2026-2893|Damir Dzumhur|Aziz Dougaz|R32
 2026-2893|Daniel Rincon|Samuele Pieri|R32
 2026-2893|Dimitar Kuzmanov|Simone Massellani|R32
+2026-2893|Francesco Maestrelli|Mili Poljicak|R32
 2026-2893|Georgii Kravchenko|Laurent Lokoli|R32
 2026-2893|Jacob Fearnley|George Loffhagen|R32
+2026-2893|Jan Kumstat|Edas Butvilas|R32
 2026-2893|Lorenzo Carboni|Mackenzie McDonald|R32
+2026-2893|Luca Nardi|August Holmgren|R32
 2026-2893|Maks Kasnikowski|Cezar Cretu|R32
+2026-2893|Maxim Mrva|Hynek Barton|R32
 2026-2893|Michael Mmoh|Laslo Djere|R32
 2026-2893|Stefano Travaglia|Viktor Durasovic|R32
 2026-2893|Tom Gentzsch|Niels Visker|R32
@@ -1875,7 +1880,12 @@
 2026-3143|Alex Barrena|Juan Bautista Torres|R32
 2026-3143|Felipe Meligeni Alves|Joaquin Aguilar Cardozo|R32
 2026-3143|Francisco Comesana|Nick Hardt|R32
+2026-3143|Franco Roncadelli|Valerio Aboian|R32
+2026-3143|Genaro Alberto Olivieri|Lucio Ratti|R32
 2026-3143|Hugo Dellien|Bernardo Munk Mesa|R32
+2026-3143|Juan Manuel La Serna|Hernan Casanova|R32
+2026-3143|Luis Guto Miguel|Murkel Dellien|R32
+2026-3143|Maximo Zeitune|Gonzalo Bueno|R32
 2026-3143|Rodrigo Pacheco Mendez|Juan Estevez|R32
 2026-3149|Alexander Vasilev|Niels Visker|R32
 2026-3149|Andres Santamarta Roig|Enrico Dalla Valle|R16
@@ -2010,6 +2020,7 @@
 2026-3153|Yanaki Milev|Ivan Gakhov|R32
 2026-3153|Zdenek Kolar|Dimitris Sakellaridis|R32
 2026-3155|Buvaysar Gadamauri|Sandro Kopp|R32
+2026-3155|Carlo Alberto Caniato|Daniel Siniakov|R32
 2026-3155|Enrico Dalla Valle|Federico Bondioli|R32
 2026-3155|Felix Gill|Gabriele Piraino|R32
 2026-3155|Filip Cristian Jianu|Federico Iannaccone|R32
@@ -2018,7 +2029,9 @@
 2026-3155|Luca Potenza|Oriol Roca Batalla|R32
 2026-3155|Marvin Moeller|Carlos Sanchez Jover|R32
 2026-3155|Massimo Giunta|Henry Searle|R32
+2026-3155|Max Wiskandt|Miguel Damas|R32
 2026-3155|Pavel Lagutin|Michael Geerts|R32
+2026-3155|Pedro Vives Marcos|Marco Cecchinato|R32
 2026-3155|Radu Mihai Papoe|Michele Ribecai|R32
 2026-3155|Svyatoslav Gulin|Franco Agamenone|R32
 2026-3155|Zdenek Kolar|Francesco Forti|R32
@@ -4995,8 +5008,14 @@
 2026-8312|Alejo Sanchez Quilez|Max Alcala Gurri|R32
 2026-8312|Andrej Nedic|Filippo Romano|R32
 2026-8312|Lorenzo Giustino|Andrea Pellegrino|R32
+2026-8312|Luka Mikrut|Tiago Pereira|R32
+2026-8312|Marco Trungelliti|Thiago Monteiro|R32
+2026-8312|Michael Vrbensky|Raul Brancaccio|R32
+2026-8312|Milos Karol|Florian Broska|R32
+2026-8312|Nikolas Sanchez Izquierdo|Andrej Martin|R32
 2026-8312|Pol Martin Tiffon|Francisco Rocha|R32
 2026-8312|Sumit Nagal|Henrique Rocha|R32
+2026-8312|Tristan Boyer|Alejandro Moro Canas|R32
 2026-8312|Vilius Gaubas|Kimmer Coppejans|R32
 2026-8312|Zsombor Piros|Benjamin Hassan|R32
 2026-8392|Alex Barrena|Georgii Kravchenko|R32
@@ -5734,11 +5753,15 @@
 2026-9556|Zdenek Kolar|Olle Wallin|R32
 2026-9625|Benjamin Bonzi|Hugo Grenier|R32
 2026-9625|Clement Tabur|Henry Bernet|R32
+2026-9625|Etienne Donnet|Giovanni Mpetshi Perricard|R32
 2026-9625|Felix Balshaw|Gauthier Onclin|R32
 2026-9625|Hugo Gaston|Daniel Jade|R32
 2026-9625|Matteo Martineau|Max Schoenhaus|R32
 2026-9625|Mika Brunold|Mathys Domenc|R32
+2026-9625|Moise Kouame|Diego Dedura-Palomero|R32
+2026-9625|Moise Kouame|Diego Dedura|R32
 2026-9625|Nicolai Budkov Kjaer|Jakub Paul|R32
+2026-9625|Pierre-Hugues Herbert|Norbert Gombos|R32
 2026-9625|Sascha Gueymard Wayenburg|Liam Broady|R32
 2026-9625|Ugo Blanchet|Tom Paris|R32
 2026-9835|Buvaysar Gadamauri|Damir Dzumhur|R32
