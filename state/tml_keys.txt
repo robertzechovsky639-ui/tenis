@@ -289,6 +289,7 @@
 2026-1075|Han Shi|Alexandra Eala|R64
 2026-1075|Hanyu Guo|Katie Volynets|R32
 2026-1075|Hanyu Guo|Sorana Cirstea|R64
+2026-1075|Iga Swiatek|Ann Li|QF
 2026-1075|Iga Swiatek|Ashlyn Krueger|R16
 2026-1075|Iga Swiatek|Magdalena Frech|R32
 2026-1075|Iva Jovic|Dayana Yastremska|R32
@@ -297,6 +298,7 @@
 2026-1075|Jasmine Paolini|Nikola Bartunkova|R32
 2026-1075|Jasmine Paolini|Sara Bejlek|R64
 2026-1075|Jelena Ostapenko|Daria Kasatkina|R64
+2026-1075|Jelena Ostapenko|Diana Shnaider|QF
 2026-1075|Jelena Ostapenko|Jessica Pegula|R32
 2026-1075|Jelena Ostapenko|Leylah Fernandez|R16
 2026-1075|Karolina Muchova|Caty McNally|R32
@@ -307,6 +309,7 @@
 2026-1075|Liudmila Samsonova|Katerina Siniakova|R64
 2026-1075|Magdalena Frech|Mananchaya Sawangkaew|R64
 2026-1075|Maja Chwalinska|Iva Jovic|R16
+2026-1075|Maja Chwalinska|Maria Sakkari|QF
 2026-1075|Maja Chwalinska|Marie Bouzkova|R32
 2026-1075|Maja Chwalinska|Mayar Sherif|R64
 2026-1075|Maria Sakkari|Donna Vekic|R64
@@ -318,6 +321,7 @@
 2026-1075|Nikola Bartunkova|Lilli Tagger|R64
 2026-1075|Sonay Kartal|Anhelina Kalinina|R64
 2026-1075|Sonay Kartal|Belinda Bencic|R32
+2026-1075|Sonay Kartal|Elina Svitolina|QF
 2026-1075|Sonay Kartal|Jasmine Paolini|R16
 2026-1075|Xiyu Wang|Xinyu Wang|R64
 2026-1075|Yulia Putintseva|Zeynep Sonmez|R64
@@ -984,18 +988,21 @@
 2026-2893|Andrea Guerrieri|Abdullah Shelbayh|R32
 2026-2893|Damir Dzumhur|Aziz Dougaz|R32
 2026-2893|Damir Dzumhur|Dimitar Kuzmanov|R16
+2026-2893|Damir Dzumhur|Tom Gentzsch|QF
 2026-2893|Daniel Rincon|Samuele Pieri|R32
 2026-2893|Dimitar Kuzmanov|Simone Massellani|R32
 2026-2893|Francesco Maestrelli|Mili Poljicak|R32
 2026-2893|Georgii Kravchenko|Laurent Lokoli|R32
 2026-2893|Jacob Fearnley|George Loffhagen|R32
 2026-2893|Jacob Fearnley|Jan Kumstat|R16
+2026-2893|Jacob Fearnley|Maxim Mrva|QF
 2026-2893|Jan Kumstat|Edas Butvilas|R32
 2026-2893|Lorenzo Carboni|Mackenzie McDonald|R32
 2026-2893|Luca Nardi|August Holmgren|R32
 2026-2893|Luca Nardi|Lorenzo Carboni|R16
 2026-2893|Maks Kasnikowski|Andrea Guerrieri|R16
 2026-2893|Maks Kasnikowski|Cezar Cretu|R32
+2026-2893|Maks Kasnikowski|Stefano Travaglia|QF
 2026-2893|Maxim Mrva|Francesco Maestrelli|R16
 2026-2893|Maxim Mrva|Hynek Barton|R32
 2026-2893|Michael Mmoh|Daniel Rincon|R16
@@ -2067,6 +2074,7 @@
 2026-3155|Buvaysar Gadamauri|Sandro Kopp|R32
 2026-3155|Carlo Alberto Caniato|Daniel Siniakov|R32
 2026-3155|Enrico Dalla Valle|Federico Bondioli|R32
+2026-3155|Felix Gill|Buvaysar Gadamauri|QF
 2026-3155|Felix Gill|Gabriele Piraino|R32
 2026-3155|Felix Gill|Izan Almazan Valiente|R16
 2026-3155|Filip Cristian Jianu|Federico Iannaccone|R32
@@ -2077,6 +2085,7 @@
 2026-3155|Marvin Moeller|Carlo Alberto Caniato|R16
 2026-3155|Marvin Moeller|Carlos Sanchez Jover|R32
 2026-3155|Massimo Giunta|Henry Searle|R32
+2026-3155|Massimo Giunta|Max Wiskandt|QF
 2026-3155|Massimo Giunta|Pavel Lagutin|R16
 2026-3155|Max Wiskandt|Miguel Damas|R32
 2026-3155|Max Wiskandt|Pedro Vives Marcos|R16
@@ -2084,6 +2093,7 @@
 2026-3155|Pedro Vives Marcos|Marco Cecchinato|R32
 2026-3155|Radu Mihai Papoe|Luca Potenza|R16
 2026-3155|Radu Mihai Papoe|Michele Ribecai|R32
+2026-3155|Radu Mihai Papoe|Zdenek Kolar|QF
 2026-3155|Svyatoslav Gulin|Franco Agamenone|R32
 2026-3155|Zdenek Kolar|Filip Cristian Jianu|R16
 2026-3155|Zdenek Kolar|Francesco Forti|R32
@@ -3112,6 +3122,7 @@
 2026-5014|Daniil Medvedev|Dalibor Svrcina|R32
 2026-5014|Daniil Medvedev|Jan-Lennard Struff|R64
 2026-5014|Daniil Medvedev|Stefanos Tsitsipas|R16
+2026-5014|Daniil Medvedev|Tommy Paul|QF
 2026-5014|Federico Cina|Aziz Dougaz|Q2
 2026-5014|Federico Cina|Linang Xiao|Q1
 2026-5014|Felix Auger-Aliassime|Camilo Ugo Carabelli|R64
@@ -3156,6 +3167,7 @@
 2026-5014|Quentin Halys|Alexander Blockx|R64
 2026-5014|Quentin Halys|Coleman Wong|R128
 2026-5014|Rafael Jodar|Botic van de Zandschulp|R16
+2026-5014|Rafael Jodar|Casper Ruud|QF
 2026-5014|Rafael Jodar|Jiri Lehecka|R32
 2026-5014|Rafael Jodar|Thiago Agustin Tirante|R64
 2026-5014|Rei Sakamoto|Andrey Rublev|R64
@@ -4597,14 +4609,18 @@
 2026-7746|Keegan Smith|Vit Kopriva|R16
 2026-7746|Liam Draxl|Ilya Ivashka|R16
 2026-7746|Liam Draxl|James Duckworth|R32
+2026-7746|Liam Draxl|Tomas Machac|QF
 2026-7746|Luka Pavlovic|Tristan Schoolkate|R32
 2026-7746|Marin Cilic|Adam Walton|R32
 2026-7746|Martin Landaluce|Ilia Simakin|R32
 2026-7746|Martin Landaluce|Jie Cui|R16
+2026-7746|Martin Landaluce|Keegan Smith|QF
+2026-7746|Mattia Bellucci|Aleksandr Shevchenko|QF
 2026-7746|Mattia Bellucci|Elias Ymer|R32
 2026-7746|Mattia Bellucci|Luka Pavlovic|R16
 2026-7746|Shintaro Mochizuki|Dane Sweeny|R16
 2026-7746|Shintaro Mochizuki|Facundo Diaz Acosta|R32
+2026-7746|Shintaro Mochizuki|Yosuke Watanuki|QF
 2026-7746|Tomas Machac|Aleksandar Vukic|R16
 2026-7746|Tomas Machac|Alexandre Muller|R32
 2026-7746|Vit Kopriva|Pavel Kotov|R32
@@ -5077,6 +5093,7 @@
 2026-8297|Saba Purtseladze|Max Hans Rehberg|R16
 2026-8297|Vitaliy Sachko|Chun-Hsin Tseng|R32
 2026-8312|Alejo Sanchez Quilez|Andrej Nedic|R16
+2026-8312|Alejo Sanchez Quilez|Luka Mikrut|QF
 2026-8312|Alejo Sanchez Quilez|Max Alcala Gurri|R32
 2026-8312|Andrej Nedic|Filippo Romano|R32
 2026-8312|Francesco Passaro|Nikolas Sanchez Izquierdo|R16
@@ -5099,6 +5116,7 @@
 2026-8312|Tristan Boyer|Vilius Gaubas|R16
 2026-8312|Vilius Gaubas|Kimmer Coppejans|R32
 2026-8312|Zsombor Piros|Benjamin Hassan|R32
+2026-8312|Zsombor Piros|Lorenzo Giustino|QF
 2026-8312|Zsombor Piros|Pol Martin Tiffon|R16
 2026-8392|Alex Barrena|Georgii Kravchenko|R32
 2026-8392|Alex Barrena|Luciano Emanuel Ambrogi|R16
@@ -5990,16 +6008,30 @@
 2026-M-DC-2026-WG2-R1-URU-EST-01|Franco Roncadelli|Kristjan Tamm|RR
 2026-M-DC-2026-WG2-R1-URU-EST-01|Joaquin Aguilar Cardozo|Markus Molder|RR
 2026-W-FC-2026-FLS|Anhelina Kalinina|Jana Otzipka|QF
+2026-W-FC-2026-FLS|Anhelina Kalinina|Jana Otzipka|RR
+2026-W-FC-2026-FLS|Anhelina Kalinina|Tyra Caterina Grant|RR
 2026-W-FC-2026-FLS|Anhelina Kalinina|Tyra Caterina Grant|SF
+2026-W-FC-2026-FLS|Elina Svitolina|Jasmine Paolini|RR
 2026-W-FC-2026-FLS|Elina Svitolina|Jasmine Paolini|SF
 2026-W-FC-2026-FLS|Greet Minnen|Elina Svitolina|QF
+2026-W-FC-2026-FLS|Greet Minnen|Elina Svitolina|RR
 2026-W-FC-2026-FLS|Jasmine Paolini|Qinwen Zheng|QF
+2026-W-FC-2026-FLS|Jasmine Paolini|Qinwen Zheng|RR
 2026-W-FC-2026-FLS|Jessica Bouzas Maneiro|Sonja Zhiyenbayeva|QF
+2026-W-FC-2026-FLS|Jessica Bouzas Maneiro|Sonja Zhiyenbayeva|RR
 2026-W-FC-2026-FLS|Karolina Muchova|Anhelina Kalinina|F
+2026-W-FC-2026-FLS|Karolina Muchova|Anhelina Kalinina|RR
+2026-W-FC-2026-FLS|Karolina Muchova|Jessica Bouzas Maneiro|RR
 2026-W-FC-2026-FLS|Karolina Muchova|Jessica Bouzas Maneiro|SF
+2026-W-FC-2026-FLS|Linda Noskova|Cristina Bucsa|RR
 2026-W-FC-2026-FLS|Linda Noskova|Cristina Bucsa|SF
 2026-W-FC-2026-FLS|Linda Noskova|Elina Svitolina|F
+2026-W-FC-2026-FLS|Linda Noskova|Elina Svitolina|RR
 2026-W-FC-2026-FLS|Linda Noskova|Katie Boulter|QF
+2026-W-FC-2026-FLS|Linda Noskova|Katie Boulter|RR
 2026-W-FC-2026-FLS|Marie Bouzkova|Sonay Kartal|QF
+2026-W-FC-2026-FLS|Marie Bouzkova|Sonay Kartal|RR
 2026-W-FC-2026-FLS|Shuai Zhang|Elisabetta Cocciaretto|QF
+2026-W-FC-2026-FLS|Shuai Zhang|Elisabetta Cocciaretto|RR
 2026-W-FC-2026-FLS|Yulia Putintseva|Cristina Bucsa|QF
+2026-W-FC-2026-FLS|Yulia Putintseva|Cristina Bucsa|RR
