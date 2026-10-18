@@ -5907,6 +5907,7 @@
 2026-9625|Mika Brunold|Felix Balshaw|QF
 2026-9625|Mika Brunold|Jerome Kym|SF
 2026-9625|Mika Brunold|Mathys Domenc|R32
+2026-9625|Mika Brunold|Matteo Martineau|F
 2026-9625|Moise Kouame|Diego Dedura-Palomero|R32
 2026-9625|Moise Kouame|Diego Dedura|R32
 2026-9625|Nicolai Budkov Kjaer|Hugo Gaston|QF
