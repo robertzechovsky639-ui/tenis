@@ -62,7 +62,7 @@
 "flashscore": [
 "20260922",
 "20261018",
-1534
+1535
 ],
 "sackmann": [
 "19991227",
@@ -73,8 +73,8 @@
 "W_tour": {
 "flashscore": [
 "20260922",
-"20261017",
-101
+"20261018",
+102
 ],
 "sackmann": [
 "20000103",
@@ -174,6 +174,7 @@
 "0bIo5sEk": 20727,
 "0bOwRgJM": 20739,
 "0bUquCi2": 20737,
+"0dDiDudc": 20744,
 "0dNOarrm": 20727,
 "0dkvt2aC": 20726,
 "0fIeqzWb": 20729,
@@ -2238,6 +2239,7 @@
 "WvzO9L9e": 20732,
 "WxLPTETk": 20738,
 "WxVLodXQ": 20734,
+"WxXVXndU": 20744,
 "Wxq7MfdJ": 20727,
 "Wxy40Caf": 20734,
 "Wzd5aZm4": 20726,
@@ -3162,6 +3164,7 @@
 "nBl5cmNj": 20727,
 "nBvPmR4c": 20743,
 "nBz8vNhB": 20727,
+"nDPkWCEk": 20744,
 "nDRpu8Zh": 20725,
 "nDVDQl1f": 20736,
 "nDeWgCy1": 20734,
@@ -29872,6 +29875,11 @@
 20721
 ],
 [
+"w223194",
+"w263644",
+20744
+],
+[
 "w223214",
 "w260638",
 20725
@@ -32392,6 +32400,11 @@
 20731
 ],
 [
+"w265628",
+"w266379",
+20744
+],
+[
 "w265638",
 "w270220",
 20740
@@ -32914,16 +32927,6 @@
 "2026_wta.csv+wta_ongoing_tourneys.csv": 20260525
 },
 "updates": [
-{
-"applied": 0,
-"at": "2026-10-02 21:53 CEST",
-"by_level": {},
-"dup_skipped": 0,
-"enriched": 0,
-"fs_new_events": 0,
-"new_players": 0,
-"tml_rows": {}
-},
 {
 "applied": 0,
 "at": "2026-10-02 21:58 CEST",
@@ -33647,6 +33650,20 @@
 "M_chall": 8,
 "M_quali": 12
 }
+},
+{
+"applied": 2,
+"at": "2026-10-18 05:40 CEST",
+"by_level": {
+"W_itf": 1,
+"W_tour": 1
+},
+"dup_skipped": 0,
+"enriched": 0,
+"fs_new_events": 3,
+"new_players": 0,
+"online_steps": 1,
+"tml_rows": {}
 }
 ]
 }
