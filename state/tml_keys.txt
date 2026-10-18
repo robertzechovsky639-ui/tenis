@@ -313,6 +313,7 @@
 2026-1075|Maja Chwalinska|Maria Sakkari|QF
 2026-1075|Maja Chwalinska|Marie Bouzkova|R32
 2026-1075|Maja Chwalinska|Mayar Sherif|R64
+2026-1075|Maja Chwalinska|Sonay Kartal|F
 2026-1075|Maria Sakkari|Donna Vekic|R64
 2026-1075|Maria Sakkari|Marta Kostyuk|R32
 2026-1075|Maria Sakkari|Mia Pohankova|R16
@@ -990,6 +991,7 @@
 2026-2893|Andrea Guerrieri|Abdullah Shelbayh|R32
 2026-2893|Damir Dzumhur|Aziz Dougaz|R32
 2026-2893|Damir Dzumhur|Dimitar Kuzmanov|R16
+2026-2893|Damir Dzumhur|Jacob Fearnley|F
 2026-2893|Damir Dzumhur|Maks Kasnikowski|SF
 2026-2893|Damir Dzumhur|Tom Gentzsch|QF
 2026-2893|Daniel Rincon|Samuele Pieri|R32
@@ -2091,6 +2093,7 @@
 2026-3155|Gianluca Cadenasso|Kai Wehnelt|R32
 2026-3155|Gianluca Cadenasso|Marvin Moeller|QF
 2026-3155|Gianluca Cadenasso|Massimo Giunta|SF
+2026-3155|Gianluca Cadenasso|Radu Mihai Papoe|F
 2026-3155|Gianluca Cadenasso|Svyatoslav Gulin|R16
 2026-3155|Izan Almazan Valiente|Sean Cuenin|R32
 2026-3155|Luca Potenza|Oriol Roca Batalla|R32
@@ -3094,6 +3097,7 @@
 2026-5014|Alejandro Davidovich Fokina|Frances Tiafoe|R32
 2026-5014|Alejandro Davidovich Fokina|Hubert Hurkacz|R16
 2026-5014|Alejandro Davidovich Fokina|Jenson Brooksby|R64
+2026-5014|Alejandro Davidovich Fokina|Rafael Jodar|F
 2026-5014|Aleksandar Vukic|Jie Cui|Q1
 2026-5014|Alex De Minaur|Alex Molcan|R64
 2026-5014|Alex Molcan|Federico Cina|R128
@@ -5119,6 +5123,7 @@
 2026-8312|Francesco Passaro|Matej Dodig|SF
 2026-8312|Francesco Passaro|Nikolas Sanchez Izquierdo|R16
 2026-8312|Francesco Passaro|Tiago Torres|R32
+2026-8312|Francesco Passaro|Zsombor Piros|F
 2026-8312|Lorenzo Giustino|Andrea Pellegrino|R32
 2026-8312|Lorenzo Giustino|Michael Vrbensky|R16
 2026-8312|Luka Mikrut|Sumit Nagal|R16
