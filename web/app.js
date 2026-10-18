@@ -493,7 +493,7 @@ function ensurePrem(e) {
   if (e._premP) return e._premP;
   e._premP = getJSON(ODDS_URL(e.fsid, false), 12000).then(j => { const o = parseOdds(j, e);
     if (o && o.n) e.oddsPrem = { avg: o.avg.slice(), max: o.max.slice(), n: o.n, books: o.books.map(b => ({ ...b })), snap: false };
-    if (e.oddsV && e.oddsV.inplay) withPrem(e.oddsV, e); return e.oddsPrem; }).catch(() => null);
+    if (e.oddsV && e.oddsV.inplay) withPrem(e.oddsV, e); try { paintBestOdds(e); } catch (err) { } return e.oddsPrem; }).catch(() => null);
   return e._premP;
 }
 const sgn = (a, b) => (a == null || b == null || Math.abs(a - b) < 0.005) ? 0 : (a > b ? 1 : -1);
@@ -628,17 +628,43 @@ function syncMarket(e) {
 
 function shownP(e) { return e && e._ps != null ? e._ps : e._p; }
 const LAB_SHIFT = 'Váhy posouvá jen GitHub. Telefon je neposouvá.';
-const LAB_MODEL = 'Váhy z dohraných zápasů posouvá jen GitHub. Telefon je stáhne a jen je ukáže. Kurz je na telefonu neposouvá.';
+/* Místo dlouhé poznámky pod predikcí: nejlepší předzápasový kurz každého hráče a „hodnota“,
+   když model čeká kladnou návratnost p × kurz − 1 > 3 %. Bez kurzů se neukazuje nic.
+   Hodnota jen před zápasem (st 1); během zápasu je to už jen informace, za kolik šel před začátkem. */
+const EDGE_MIN = 0.03;
+function preOdds(e) {
+  const ok = o => o && !o.inplay && Array.isArray(o.avg) && o.avg[0] > 1 && o.avg[1] > 1;
+  return ok(e.oddsPrem) ? e.oddsPrem : ok(e.oddsV) ? e.oddsV : null;
+}
+function bestOdds(e) {
+  if (!e || (e.st !== 1 && e.st !== 2) || e._p == null || !(e._p > 0 && e._p < 1)) return null;
+  const o = preOdds(e); if (!o) return null;
+  const mx = Array.isArray(o.max) && o.max[0] > 1 && o.max[1] > 1 ? o.max : o.avg;
+  const stale = Math.min(o.avg[0], o.avg[1]) < 1.05; // kurz < 1.05 = zastaralý nebo zápas už běží
+  const ev = [e._p * mx[0] - 1, (1 - e._p) * mx[1] - 1];
+  const val = e.st === 1 && !stale ? ev.map(x => x > EDGE_MIN) : [false, false];
+  return { odds: mx, ev, val, books: o.n || (o.books && o.books.length) || 0 };
+}
+function bestOddsInner(e) {
+  const b = bestOdds(e); if (!b) return '';
+  const side = k => `<b class="${k ? 'b' : 'a'}">${b.odds[k].toFixed(2)}</b>${b.val[k] ? `<em class="hv">hodnota +${Math.round(b.ev[k] * 100)} %</em>` : ''}`;
+  return `<span class="bl">${e.st === 2 ? 'kurz před zápasem' : 'nejlepší kurz'}</span>${side(0)}<span class="bs">:</span>${side(1)}`;
+}
+function bestOddsHtml(e) { return `<p class="bo" data-bo>${bestOddsInner(e)}</p>`; }
+function paintBestOdds(e) {
+  const inner = bestOddsInner(e);
+  for (const el of document.querySelectorAll(`.mr[data-ev="${CSS.escape(e.id)}"] [data-bo]`)) if (el.innerHTML !== inner) el.innerHTML = inner;
+  if (S.detail && S.byId[S.detail.id] === e) for (const el of document.querySelectorAll('#detail [data-bo]')) if (el.innerHTML !== inner) el.innerHTML = inner;
+}
 const TITLE_MODEL = 'Predikce modelu';
 const TITLE_SHIFT = 'Šance po kurzu';
-function matchLab(e) { return e && e.st === 1 && e.code >= 3 ? LAB_SHIFT : LAB_MODEL; }
 function pctPair(na, nb, p, title, lab) {
   if (p == null || !(p >= 0) || !(p <= 1)) return '';
-  return `<h3>${title}</h3><div class="big2"><div><b class="a">${pct(p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(p * 100).toFixed(1)}%"></i></div><p class="plab">${lab}</p>`;
+  return `<h3>${title}</h3><div class="big2"><div><b class="a">${pct(p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(p * 100).toFixed(1)}%"></i></div>${lab || ''}`;
 }
 /* Přehled: jen čistý model, bez kurzu. Záložka Predikce přidá i šanci po kurzu. */
 function rawOnlyHtml(e, na, nb) {
-  return pctPair(na, nb, e._p, TITLE_MODEL, LAB_MODEL) + setPredHtml(e, na, nb);
+  return pctPair(na, nb, e._p, TITLE_MODEL, bestOddsHtml(e)) + setPredHtml(e, na, nb);
 }
 function bothPrematchHtml(e, na, nb) {
   return rawOnlyHtml(e, na, nb);
@@ -1482,7 +1508,7 @@ function serverPredHtml(e, na, nb) {
 }
 
 function predInner(e, na, nb) {
-  const pre = `<div class="predlab pre">${TITLE_MODEL}</div><div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div><p class="plab">${LAB_MODEL}</p>`;
+  const pre = `<div class="predlab pre">${TITLE_MODEL}</div><div class="big2"><div><b class="a">${pct(e._p)}</b><small>${esc(na)}</small></div><div><b class="b">${pct(1 - e._p)}</b><small>${esc(nb)}</small></div></div><div class="bar lg"><i style="width:${(e._p * 100).toFixed(1)}%"></i></div>${bestOddsHtml(e)}`;
   if (e.st !== 2) return rawOnlyHtml(e, na, nb);
   const L = liveProb(e);
   if (!L || !L.ok) return pre + setPredHtml(e, na, nb) + '<p class="note">Živé skóre teď nemáme, platí jen předzápasová predikce.</p>';
@@ -1514,7 +1540,7 @@ function paintLivePred(e) {
 function probHtml(e) {
   if (e.st === 3 || e._p == null) return '';
   const p = e._p;
-  return `<div class="predlab">${TITLE_MODEL}</div><div class="pb"><span class="pa ${p >= 0.5 ? 'fv' : ''}">${pct(p)}</span><div class="bar"><i style="width:${(p * 100).toFixed(1)}%"></i></div><span class="pc ${p < 0.5 ? 'fv' : ''}">${pct(1 - p)}</span></div><p class="plab">${LAB_MODEL}</p>`;
+  return `<div class="predlab">${TITLE_MODEL}</div><div class="pb"><span class="pa ${p >= 0.5 ? 'fv' : ''}">${pct(p)}</span><div class="bar"><i style="width:${(p * 100).toFixed(1)}%"></i></div><span class="pc ${p < 0.5 ? 'fv' : ''}">${pct(1 - p)}</span></div>${bestOddsHtml(e)}`;
 }
 function mrowHtml(e) {
   const r = resolveEv(e);
@@ -1615,6 +1641,7 @@ function tweenNum(el, to) {
 function flash(el, dir) { if (!dir || !el) return; el.classList.remove('fl-up', 'fl-dn'); void el.offsetWidth; el.classList.add(dir > 0 ? 'fl-up' : 'fl-dn'); }
 function updateRowProb(e) {
   if (!e) return;
+  paintBestOdds(e);
   const p = e._p;
   for (const el of document.querySelectorAll(`.mr[data-ev="${CSS.escape(e.id)}"]`)) {
     const pb = el.querySelector('.pb');
@@ -1627,6 +1654,7 @@ function updateRowProb(e) {
 }
 function updateRowOdds(e) {
   const o = e.oddsV;
+  paintBestOdds(e);
   for (const el of document.querySelectorAll(`.mr[data-ev="${CSS.escape(e.id)}"]`)) {
     const box = el.querySelector('.odds'); const nh = oddsHtml(e);
     if (!box) { if (nh) el.insertAdjacentHTML('beforeend', nh); continue; }
@@ -1921,8 +1949,7 @@ function resultHtml(i, j, surface, code, q, noBig) {
   if (pG(i) !== pG(j)) warn += `<div class="warn">Pozor: porovnáváte muže a ženu – model na to není stavěný.</div>`;
   const big = noBig ? '' : `<h3>${TITLE_MODEL}</h3>
    <div class="big"><div><div class="p a">${pct(r.p)}</div><div class="nm">${esc(na)}</div></div><div><div class="p b">${pct(1 - r.p)}</div><div class="nm">${esc(nb)}</div></div></div>
-   <div class="bar lg"><i style="width:${(r.p * 100).toFixed(1)}%"></i></div>
-   <p class="plab">${LAB_MODEL}</p>`;
+   <div class="bar lg"><i style="width:${(r.p * 100).toFixed(1)}%"></i></div>`;
   return `${warn}<div class="card"><div class="note">${esc(LVL_CS[code])} · ${SURF_CS[surface]}${q ? ' · kvalifikace' : ''} · na ${r.ctx.best_of} sety</div>
    ${big}
    <h3>Hlavní faktory</h3>${factorsHtml(r, na, nb)}
@@ -2192,5 +2219,15 @@ async function init() {
     setInterval(() => sofaTick(), SOFA_MS);
   } catch (e) { st.textContent = 'Chyba načítání: ' + e.message; console.error(e); }
 }
-if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => { }));
+if ('serviceWorker' in navigator) {
+  // Nový service worker (po nasazení) převezme stránku. Když se to stane hned po otevření,
+  // stránka se jednou obnoví, ať neběží se starými daty ze staré mezipaměti.
+  const hadCtl = !!navigator.serviceWorker.controller, t0 = Date.now();
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!hadCtl || Date.now() - t0 > 20000) return;
+    try { if (sessionStorage.getItem('tp:swr')) return; sessionStorage.setItem('tp:swr', '1'); } catch (e) { return; }
+    location.reload();
+  });
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => { }));
+}
 init();

@@ -60,6 +60,9 @@ span.fl{background:transparent}
 .play{width:22px;height:22px;border-radius:6px;background:rgba(47,224,137,.14);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:10px;color:var(--live)}
 .pb{display:flex;align-items:center;gap:8px;margin-top:6px}
 .plab{font-size:11px;line-height:1.35;color:var(--mut);margin:4px 0 0}
+.bo{display:flex;align-items:center;flex-wrap:wrap;gap:3px 6px;font-size:11px;line-height:1.35;color:var(--mut);margin:5px 0 0;font-variant-numeric:tabular-nums}.bo:empty{display:none}
+.bo .bl{color:var(--mut2)}.bo b{font-weight:800}.bo b.a{color:var(--a)}.bo b.b{color:var(--b)}.bo .bs{color:var(--mut2)}
+.bo em.hv{font-style:normal;font-size:9.5px;font-weight:900;color:#fff;background:var(--pink);border-radius:4px;padding:0 5px;line-height:15px;letter-spacing:.3px}
 .pb span{font-size:11.5px;font-weight:700;color:var(--mut);width:34px;font-variant-numeric:tabular-nums}.pb .pc{text-align:right}
 .pb .fv{color:#fff}
 .bar{flex:1;height:4px;border-radius:4px;background:var(--b);overflow:hidden}
