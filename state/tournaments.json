@@ -95,6 +95,10 @@
 "Clay",
 3
 ],
+"M|banca mediolanum florence open": [
+"Clay",
+3
+],
 "M|banja luka": [
 "Clay",
 4
@@ -1755,6 +1759,10 @@
 "Hard",
 4
 ],
+"M|del monte lisboa belem open": [
+"Clay",
+3
+],
 "M|delray beach": [
 "Hard",
 4
@@ -1801,6 +1809,10 @@
 ],
 "M|ferrero challenger": [
 "Hard",
+3
+],
+"M|florence": [
+"Clay",
 3
 ],
 "M|florianopolis ch": [
@@ -1851,6 +1863,10 @@
 "Clay",
 4
 ],
+"M|guangzhou": [
+"Hard",
+3
+],
 "M|guangzhou ch": [
 "Hard",
 3
@@ -1860,6 +1876,10 @@
 3
 ],
 "M|guangzhou huangpu international tennis open": [
+"Hard",
+3
+],
+"M|guangzhou nansha international challenger": [
 "Hard",
 3
 ],
@@ -2099,6 +2119,10 @@
 "Hard",
 3
 ],
+"M|lisbon": [
+"Clay",
+3
+],
 "M|lisbon ch": [
 "Clay",
 3
@@ -2120,8 +2144,8 @@
 3
 ],
 "M|lyon": [
-"Clay",
-3
+"Hard",
+4
 ],
 "M|lyon ch": [
 "Hard",
@@ -7232,6 +7256,10 @@
 0
 ],
 "W|w karaganda": [
+"Hard",
+0
+],
+"W|w karlovy vary": [
 "Hard",
 0
 ],
