@@ -1935,6 +1935,7 @@
 2026-3143|Guido Ivan Justo|Arklon Huertas Del Pino Cordova|R32
 2026-3143|Hugo Dellien|Bernardo Munk Mesa|R32
 2026-3143|Hugo Dellien|Juan Manuel La Serna|SF
+2026-3143|Hugo Dellien|Luis Guto Miguel|QF
 2026-3143|Hugo Dellien|Rodrigo Pacheco Mendez|R16
 2026-3143|Juan Carlos Prado Angelo|Eduardo Ribeiro|R32
 2026-3143|Juan Manuel La Serna|Franco Roncadelli|QF
@@ -1948,6 +1949,7 @@
 2026-3143|Rodrigo Pacheco Mendez|Juan Estevez|R32
 2026-3143|Thiago Seyboth Wild|Carlos Maria Zarate|R16
 2026-3143|Thiago Seyboth Wild|Francisco Comesana|SF
+2026-3143|Thiago Seyboth Wild|Hugo Dellien|F
 2026-3143|Thiago Seyboth Wild|Mateus Alves|R32
 2026-3143|Thiago Seyboth Wild|Nicolas Kicker|QF
 2026-3149|Alexander Vasilev|Niels Visker|R32
@@ -3046,6 +3048,14 @@
 2026-4942|Ryo Tabata|Yanki Erel|R32
 2026-4942|Svyatoslav Gulin|Pierre Delage|R32
 2026-4942|Thomas Faurel|Ognjen Milic|R32
+2026-496|Borna Gojo|Francesco Maestrelli|Q1
+2026-496|Clement Tabur|Valentin Royer|Q1
+2026-496|Kyrian Jacquet|Sascha Gueymard Wayenburg|Q1
+2026-496|Maxim Mrva|Dusan Lajovic|Q1
+2026-496|Michael Mmoh|Jan Kumstat|Q1
+2026-496|Nicolai Budkov Kjaer|Ugo Blanchet|Q1
+2026-496|Pierre-Hugues Herbert|Jurij Rodionov|Q1
+2026-496|Vitaliy Sachko|Otto Virtanen|Q1
 2026-500|Alex Bolt|Jamie Mackenzie|Q1
 2026-500|Alexander Zverev|Raphael Collignon|QF
 2026-500|Alexander Zverev|Vit Kopriva|R32
@@ -4485,9 +4495,17 @@
 2026-7480|Tristan Boyer|Bernard Tomic|Q2
 2026-7480|Tristan Boyer|Gabriel Diallo|R32
 2026-7480|Tristan Boyer|Lorenzo Claverie|Q1
+2026-7485|Andrea Guerrieri|Kimmer Coppejans|Q1
+2026-7485|Andrea Guerrieri|Martin Damm|Q2
+2026-7485|Aziz Dougaz|Tom Gentzsch|Q1
+2026-7485|Clement Chidekh|Gauthier Onclin|Q2
 2026-7485|Clement Chidekh|Gilles Arnaud Bailly|Q1
 2026-7485|Federico Cina|Joel Schwaerzler|Q1
+2026-7485|Federico Cina|Remy Bertola|Q2
 2026-7485|Gauthier Onclin|Harry Wendelken|Q1
+2026-7485|Martin Damm|Buvaysar Gadamauri|Q1
+2026-7485|Nishesh Basavareddy|Aziz Dougaz|Q2
+2026-7485|Nishesh Basavareddy|Edas Butvilas|Q1
 2026-7485|Remy Bertola|Giovanni Mpetshi Perricard|Q1
 2026-7536|Alejandro Moro Canas|Calvin Hemery|R32
 2026-7536|Clement Tabur|Sascha Gueymard Wayenburg|R32
@@ -4638,9 +4656,12 @@
 2026-7746|Martin Landaluce|Ilia Simakin|R32
 2026-7746|Martin Landaluce|Jie Cui|R16
 2026-7746|Martin Landaluce|Keegan Smith|QF
+2026-7746|Martin Landaluce|Liam Draxl|SF
 2026-7746|Mattia Bellucci|Aleksandr Shevchenko|QF
 2026-7746|Mattia Bellucci|Elias Ymer|R32
 2026-7746|Mattia Bellucci|Luka Pavlovic|R16
+2026-7746|Mattia Bellucci|Martin Landaluce|F
+2026-7746|Mattia Bellucci|Shintaro Mochizuki|SF
 2026-7746|Shintaro Mochizuki|Dane Sweeny|R16
 2026-7746|Shintaro Mochizuki|Facundo Diaz Acosta|R32
 2026-7746|Shintaro Mochizuki|Yosuke Watanuki|QF
@@ -5697,9 +5718,13 @@
 2026-9410|Alexander Shevchenko|Daniil Glinka|Q1
 2026-9410|Gabriel Diallo|Harold Mayot|Q1
 2026-9410|Ilia Simakin|Luka Pavlovic|Q1
+2026-9410|Nikoloz Basilashvili|Adam Walton|Q2
 2026-9410|Nikoloz Basilashvili|Taro Daniel|Q1
 2026-9410|Rei Sakamoto|Amir Omarkhanov|Q1
+2026-9410|Rei Sakamoto|Gabriel Diallo|Q2
+2026-9410|Roman Safiullin|Ilia Simakin|Q2
 2026-9410|Roman Safiullin|Ilya Ivashka|Q1
+2026-9410|Stefanos Sakellaridis|Alexander Shevchenko|Q2
 2026-9410|Stefanos Sakellaridis|Petr Bar Biryukov|Q1
 2026-9526|Andrea Guerrieri|Anton Matusevich|R32
 2026-9526|August Holmgren|Andrea Guerrieri|R16
@@ -5897,6 +5922,7 @@
 2026-9625|Hugo Gaston|Daniel Jade|R32
 2026-9625|Hugo Gaston|Pierre-Hugues Herbert|R16
 2026-9625|Jerome Kym|Clement Chidekh|R32
+2026-9625|Jerome Kym|Dominic Stricker|QF
 2026-9625|Jerome Kym|Ugo Blanchet|R16
 2026-9625|Matisse Bobichon|Billy Harris|R32
 2026-9625|Matteo Martineau|Etienne Donnet|R16
