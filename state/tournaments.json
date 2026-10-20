@@ -3297,7 +3297,7 @@
 ],
 "M|m maceio": [
 "Clay",
-1
+0
 ],
 "M|m madrid": [
 "Hard",
@@ -3715,6 +3715,10 @@
 "Clay",
 0
 ],
+"M|m redbridge": [
+"Hard",
+1
+],
 "M|m reggio emilia": [
 "Clay",
 1
@@ -3880,7 +3884,7 @@
 1
 ],
 "M|m sarreguemines": [
-"Carpet",
+"Hard",
 1
 ],
 "M|m satu mare": [
@@ -3913,7 +3917,7 @@
 ],
 "M|m shenzhen": [
 "Hard",
-1
+0
 ],
 "M|m sherbrooke": [
 "Hard",
@@ -6567,6 +6571,10 @@
 "Clay",
 0
 ],
+"W|w campina grande": [
+"Clay",
+0
+],
 "W|w campinas": [
 "Clay",
 0
@@ -8229,7 +8237,7 @@
 ],
 "W|w sydney": [
 "Hard",
-2
+1
 ],
 "W|w szabolcsveresmart": [
 "Hard",
@@ -8506,6 +8514,10 @@
 "W|w wodonga": [
 "Grass",
 0
+],
+"W|w wrexham": [
+"Hard",
+2
 ],
 "W|w wroclaw": [
 "Clay",
