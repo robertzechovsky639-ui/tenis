@@ -3,8 +3,8 @@
 "M_chall": {
 "flashscore": [
 "20260922",
-"20261020",
-565
+"20261021",
+567
 ],
 "sackmann": [
 "20000124",
@@ -14,14 +14,14 @@
 "tml": [
 "20260608",
 "20261019",
-3011
+3018
 ]
 },
 "M_itf": {
 "flashscore": [
 "20260922",
 "20261021",
-1615
+1731
 ],
 "sackmann": [
 "20000101",
@@ -42,8 +42,8 @@
 ],
 "tml": [
 "20260518",
-"20261021",
-1903
+"20261022",
+1914
 ]
 },
 "W_chall": {
@@ -62,7 +62,7 @@
 "flashscore": [
 "20260922",
 "20261021",
-1666
+1775
 ],
 "sackmann": [
 "19991227",
@@ -84,7 +84,7 @@
 "tml": [
 "20260608",
 "20261019",
-1107
+1114
 ]
 }
 },
@@ -94,6 +94,7 @@
 "00LFcdl1": 20730,
 "00chd6XI": 20744,
 "00eSOpeE": 20728,
+"02GaB1El": 20747,
 "02lhxjal": 20729,
 "02zYwRqL": 20740,
 "04HcATlR": 20740,
@@ -111,12 +112,14 @@
 "08DSkKZ9": 20739,
 "08Z0ZVZo": 20740,
 "08axzc43": 20746,
+"08cmUqSj": 20747,
 "08w7i4hC": 20733,
 "0AOTRGyH": 20732,
 "0AWUuN6r": 20734,
 "0ApYXdA5": 20746,
 "0AxR0D2D": 20733,
 "0CDfCPBl": 20733,
+"0CPM7NIs": 20747,
 "0CqeKGic": 20741,
 "0Cqhs6K6": 20746,
 "0Cs2vls2": 20740,
@@ -135,11 +138,15 @@
 "0IAkTodT": 20728,
 "0II24HHi": 20739,
 "0IIHJ44c": 20728,
+"0IOrGlrK": 20747,
 "0IUFgZsA": 20743,
+"0IrDSV86": 20747,
+"0ItWvhAb": 20747,
 "0IxRuTxH": 20734,
 "0K1STWxB": 20728,
 "0KFtxLi2": 20744,
 "0KRbO8gl": 20742,
+"0KRxBlQr": 20747,
 "0Ka1b7qe": 20740,
 "0KoNaKED": 20736,
 "0KolcZ66": 20732,
@@ -158,8 +165,10 @@
 "0QGL3Ypf": 20741,
 "0QWNfzx1": 20735,
 "0QhSWI3N": 20732,
+"0QpTVdG7": 20747,
 "0S3EgSIO": 20739,
 "0SFfSUs1": 20729,
+"0SZOr4bs": 20747,
 "0SoAk9AF": 20727,
 "0UQgiVVG": 20746,
 "0UxRxzOi": 20732,
@@ -168,6 +177,7 @@
 "0Wu7nPbS": 20729,
 "0Ww2Emx1": 20740,
 "0Y2DRXwJ": 20746,
+"0YOWaoB5": 20747,
 "0YYRCTyB": 20733,
 "0YjFyX3k": 20733,
 "0YvYQoAj": 20730,
@@ -191,6 +201,7 @@
 "0jvXjScn": 20734,
 "0jvYSAS8": 20746,
 "0l1i97op": 20739,
+"0lBUOljB": 20747,
 "0lX6nIAF": 20733,
 "0lui2lIi": 20746,
 "0n4qW6vA": 20734,
@@ -202,6 +213,7 @@
 "0pR3lnS7": 20740,
 "0pVxgf0f": 20739,
 "0peMJWSg": 20740,
+"0pyNivwR": 20747,
 "0r6wv80t": 20740,
 "0rANrMk1": 20741,
 "0rGWkLil": 20733,
@@ -234,6 +246,7 @@
 "23SC6LpQ": 20734,
 "23fsw9o2": 20746,
 "25PZ74Ws": 20739,
+"25Zca3dR": 20747,
 "25o2MgHD": 20731,
 "27Ev1mS0": 20732,
 "27tGDU8l": 20739,
@@ -243,6 +256,7 @@
 "29geNswQ": 20731,
 "2B4xV6nB": 20734,
 "2B6gVwI8": 20741,
+"2BCVLdLH": 20747,
 "2BG3lMOs": 20734,
 "2BOClpDN": 20737,
 "2BOfgUKs": 20740,
@@ -270,6 +284,7 @@
 "2NM7OFFE": 20739,
 "2NSXyGam": 20735,
 "2NYhR3wp": 20746,
+"2Npyaj8L": 20747,
 "2NrC8DVi": 20727,
 "2NtwDxvf": 20741,
 "2P7ttyX7": 20732,
@@ -291,6 +306,7 @@
 "2X7aqWi3": 20739,
 "2XkcWmBd": 20743,
 "2XyyZghm": 20736,
+"2ZAyORHU": 20747,
 "2ZI0LSgA": 20732,
 "2Zn8miPN": 20740,
 "2ZrHp6g3": 20734,
@@ -314,6 +330,7 @@
 "2iAScPUG": 20740,
 "2iICqbVQ": 20739,
 "2iOAejjd": 20731,
+"2iUtEXyg": 20747,
 "2itihVXF": 20743,
 "2kHueHSE": 20733,
 "2mCO0FZO": 20732,
@@ -365,6 +382,7 @@
 "4C6tuv5C": 20742,
 "4CEQQC5M": 20744,
 "4CYRsghn": 20732,
+"4ClsYM35": 20747,
 "4ClxyLd3": 20735,
 "4E9mWByP": 20744,
 "4EFdwBwC": 20737,
@@ -404,7 +422,9 @@
 "4bXjgPS7": 20733,
 "4baBbyfU": 20740,
 "4dCvM1k5": 20733,
+"4dOaWZcD": 20747,
 "4ddZikR7": 20740,
+"4dlglQzK": 20747,
 "4f1JqsYq": 20727,
 "4fNZSIgn": 20741,
 "4fy9sBat": 20739,
@@ -416,10 +436,13 @@
 "4joVif8e": 20737,
 "4jw5p14l": 20733,
 "4lnBrobf": 20737,
+"4lt7GA2L": 20747,
 "4lzD8GKs": 20727,
 "4ngPHLQE": 20741,
 "4nkKjqKF": 20732,
+"4p08H6ro": 20747,
 "4pE8eRFk": 20741,
+"4pGPBUs4": 20747,
 "4pKT0OJt": 20746,
 "4pMpuz3k": 20733,
 "4rPZ8hS7": 20735,
@@ -444,18 +467,23 @@
 "6108Hpdf": 20740,
 "614ea9I5": 20736,
 "616HOqbs": 20731,
+"61OyhLl1": 20747,
 "61QBMPiJ": 20739,
 "61f23SNE": 20740,
+"63BeW555": 20747,
 "63LM5I4N": 20742,
 "63mrm1UQ": 20739,
 "63y1xGzS": 20737,
 "658KPOYr": 20733,
 "658KueVa": 20729,
 "65CtbfcU": 20734,
+"65pZimKc": 20747,
 "65r5h00T": 20740,
 "65vKB3tn": 20728,
 "673SV6Ed": 20741,
 "673V8Hom": 20737,
+"679ESWjn": 20747,
+"67a7kjHl": 20747,
 "67w4weBT": 20739,
 "6905lIiR": 20739,
 "696B2zQ6": 20737,
@@ -469,7 +497,9 @@
 "6BgTxy6c": 20740,
 "6Bm0VDld": 20728,
 "6DWHmL7j": 20732,
+"6DphCr9k": 20747,
 "6DpzerbJ": 20734,
+"6Dznd3AU": 20747,
 "6F3I1Cqg": 20727,
 "6FNJC3to": 20739,
 "6Fwbq1Ck": 20732,
@@ -481,6 +511,7 @@
 "6JJVIx5F": 20734,
 "6JLvTpad": 20733,
 "6JXsijM0": 20727,
+"6JZEi80e": 20747,
 "6JiIATnD": 20734,
 "6JykMC3D": 20737,
 "6L0ekuAL": 20732,
@@ -492,6 +523,7 @@
 "6NBiUA77": 20731,
 "6NJT1CF6": 20740,
 "6NLJ4UhB": 20745,
+"6NPhsPit": 20747,
 "6NVYT1DO": 20731,
 "6NkAPBxI": 20731,
 "6NyPYtH8": 20738,
@@ -505,9 +537,11 @@
 "6TAHC10S": 20728,
 "6V51Q6QF": 20743,
 "6V5V3xh3": 20733,
+"6VR4f4Us": 20747,
 "6VRr3vjT": 20736,
 "6VXQahKk": 20744,
 "6ViNnMAO": 20741,
+"6VoPejMO": 20747,
 "6VwQDPqS": 20739,
 "6XYnJOFU": 20738,
 "6Xn7CHCO": 20728,
@@ -530,9 +564,11 @@
 "6cIymWZ0": 20747,
 "6cMGZu3T": 20731,
 "6eHBNgqo": 20727,
+"6eNEsX3b": 20747,
 "6eRvzdaB": 20746,
 "6eX61Y0d": 20738,
 "6eg6wTzh": 20735,
+"6egRR0aM": 20747,
 "6g6NIwcL": 20737,
 "6glkqRs2": 20733,
 "6gntZImL": 20734,
@@ -540,6 +576,7 @@
 "6iLI5dug": 20729,
 "6iP98sBD": 20733,
 "6iPwnDx1": 20727,
+"6iaJ5gl3": 20747,
 "6k0BclrA": 20739,
 "6k65A2Cs": 20747,
 "6kC1Vh8C": 20746,
@@ -567,6 +604,7 @@
 "6u3dRUNF": 20732,
 "6ua9q614": 20733,
 "6uqajvcm": 20729,
+"6wCj6SWo": 20747,
 "6wIxa0Js": 20733,
 "6wMARygm": 20741,
 "6wOyDXrK": 20727,
@@ -602,6 +640,7 @@
 "88ywb1RF": 20736,
 "8Ad17vlB": 20727,
 "8AfSB3dD": 20741,
+"8Av33l5j": 20747,
 "8CPNiJBl": 20738,
 "8CclRJ77": 20739,
 "8CirD1ZR": 20740,
@@ -643,6 +682,7 @@
 "8SkiAkw3": 20733,
 "8UIbZUit": 20734,
 "8UUBvJEF": 20735,
+"8UUdPVR9": 20747,
 "8Ur9cqqe": 20741,
 "8UrcFHw8": 20729,
 "8UzIhyme": 20734,
@@ -651,6 +691,7 @@
 "8WREXOd2": 20731,
 "8Waws323": 20743,
 "8Wibb1P1": 20733,
+"8Y25ViJt": 20747,
 "8YQTHIQq": 20727,
 "8Yjf88Tj": 20731,
 "8Ylob0Z9": 20732,
@@ -672,6 +713,7 @@
 "8hV612b4": 20740,
 "8hZtc6rI": 20728,
 "8hmiINoC": 20739,
+"8hwXtrTg": 20747,
 "8j0n2L9k": 20740,
 "8jWACc95": 20741,
 "8lLdY9Yq": 20734,
@@ -685,13 +727,16 @@
 "8pDRkMat": 20745,
 "8pDt59nn": 20734,
 "8pVfvLID": 20729,
+"8pVp9Sfe": 20747,
 "8pXBvhlB": 20734,
 "8pslXXHa": 20741,
 "8r68Bgec": 20742,
 "8rMA2en4": 20739,
+"8rpvwWvB": 20747,
 "8rtIxxrH": 20738,
 "8tTaCFkD": 20727,
 "8v653Rz9": 20732,
+"8xTU51mf": 20747,
 "8xm0upkJ": 20745,
 "8xoP0Ajd": 20740,
 "8zO6Q3Qp": 20727,
@@ -706,6 +751,7 @@
 "A3Afk7wI": 20746,
 "A3MclIfn": 20746,
 "A51IUhBa": 20730,
+"A53J0RSQ": 20747,
 "A5DQZFCU": 20729,
 "A5NW5R76": 20728,
 "A5VHSDio": 20746,
@@ -720,6 +766,10 @@
 "A7nfty0L": 20742,
 "A934PW3F": 20729,
 "A9eXPIu3": 20743,
+"A9w7Lnn3": 20747,
+"ABSNCTqQ": 20747,
+"ABYTQoI5": 20747,
+"ABnhPAAC": 20747,
 "ABz9DOBs": 20732,
 "ADLEUb0K": 20744,
 "ADNDDfim": 20732,
@@ -745,6 +795,8 @@
 "ALmOGOI5": 20740,
 "ALmhffpg": 20730,
 "AN44MleC": 20739,
+"ANz5IbbK": 20747,
+"APHodWIi": 20747,
 "APqqm5bs": 20727,
 "ARAiTlMi": 20733,
 "ARIMKxkn": 20745,
@@ -769,6 +821,7 @@
 "Ac9q1PBD": 20740,
 "AcBxcOIP": 20740,
 "AcZxJFlK": 20738,
+"AcaPPqge": 20747,
 "Acc0kwDr": 20727,
 "AcuqXXMa": 20736,
 "Ae6xAiu1": 20737,
@@ -778,6 +831,7 @@
 "Ag149RX2": 20733,
 "Ag7YslRp": 20735,
 "AgVK8Hw1": 20744,
+"Agi9dq7c": 20747,
 "AgoQxU1b": 20737,
 "AgyLrk53": 20731,
 "AiIFzvGU": 20741,
@@ -804,6 +858,7 @@
 "AuYWZSVs": 20730,
 "AubO2VBi": 20736,
 "Aubzu8R6": 20729,
+"AwT8rz0D": 20747,
 "AwolFwhB": 20733,
 "Ay8pTpHN": 20734,
 "AyKBn0gf": 20734,
@@ -829,6 +884,7 @@
 "C67vE5V8": 20732,
 "C69J0EfJ": 20737,
 "C69mvpM6": 20728,
+"C6VhkPXQ": 20747,
 "C6mNhZHO": 20730,
 "C6qGeZbf": 20739,
 "C804RAZr": 20733,
@@ -836,7 +892,9 @@
 "C8fMCf7F": 20734,
 "CAFyNSH8": 20733,
 "CAHGg5p2": 20741,
+"CAJX98CG": 20747,
 "CAPhwEX1": 20733,
+"CAg37EOb": 20747,
 "CAgIM1B4": 20734,
 "CCQ8LghS": 20738,
 "CCd1gVME": 20733,
@@ -844,10 +902,12 @@
 "CCrqn8Wo": 20733,
 "CCvpsWkJ": 20746,
 "CE5RYkSi": 20728,
+"CEitGU3m": 20747,
 "CEkJtPS6": 20737,
 "CEw6i72l": 20732,
 "CG2ji6Fd": 20744,
 "CG4HMV8C": 20733,
+"CGACvqGF": 20747,
 "CGGbXG2B": 20734,
 "CGbqMqYq": 20734,
 "CGn3ms97": 20742,
@@ -856,9 +916,11 @@
 "CI3lYViS": 20742,
 "CIq6ddHl": 20732,
 "CIw0rvq9": 20733,
+"CKAU1bN9": 20747,
 "CKEG7snS": 20740,
 "CKST8FOG": 20742,
 "CKnd2VK5": 20734,
+"CKp0a4Zi": 20747,
 "CKvHukUh": 20739,
 "CM7vd00b": 20741,
 "CMH9LbUF": 20739,
@@ -877,6 +939,8 @@
 "CSI9tpHj": 20735,
 "CSddiVSG": 20733,
 "CShThILs": 20730,
+"CSn1vm2B": 20747,
+"CUBtFWYa": 20747,
 "CUXY7bAl": 20743,
 "CUmDvdtg": 20741,
 "CW0by6fo": 20727,
@@ -893,6 +957,7 @@
 "Cbi8S3Nr": 20732,
 "Cd6n9XgA": 20744,
 "CdCkF7mJ": 20741,
+"CdKII1gd": 20747,
 "CdnYQBDG": 20741,
 "CfNMTc8F": 20730,
 "Cfe99sBC": 20743,
@@ -906,7 +971,9 @@
 "ClYOUX6T": 20727,
 "Cljh3RQs": 20744,
 "CltiLjFc": 20727,
+"Clz2Mim2": 20747,
 "CnDUtODE": 20739,
+"CnF9TWxP": 20747,
 "CnRt6DLt": 20734,
 "CnVm0U8T": 20739,
 "CnmOQrmm": 20732,
@@ -935,6 +1002,7 @@
 "E18qYhO9": 20744,
 "E1MZhnCk": 20745,
 "E3D0B5mp": 20733,
+"E3Fb461b": 20747,
 "E3LVsi1l": 20744,
 "E3Lpcvlf": 20733,
 "E3VRKzKF": 20742,
@@ -960,6 +1028,7 @@
 "E9h7g7t0": 20730,
 "E9vF4SAD": 20741,
 "EB36I7UF": 20746,
+"EBRe62jS": 20747,
 "EBgvrlqC": 20732,
 "EDAbzfhD": 20739,
 "EDlOTR3N": 20740,
@@ -975,9 +1044,12 @@
 "EHSopi7D": 20728,
 "EHj2GHjg": 20736,
 "EHvEukE6": 20735,
+"EHvp2JnJ": 20747,
+"EJFnl3Uq": 20747,
 "EJHvaRoR": 20730,
 "EJwjsdr4": 20727,
 "EJyeY0N0": 20743,
+"ELQMuBYA": 20747,
 "ELfAZ1i5": 20727,
 "ELpHwLdE": 20729,
 "ELpLVNQp": 20734,
@@ -995,7 +1067,9 @@
 "EPp7Xl3m": 20741,
 "ER9PMNSg": 20731,
 "ERN0r0Qp": 20741,
+"ERRqjaJD": 20747,
 "ERTmbZmJ": 20728,
+"ERX4N9dM": 20747,
 "ERZwJplK": 20732,
 "ERwBySU1": 20746,
 "ETIeyh7E": 20734,
@@ -1004,6 +1078,7 @@
 "ETWhfIyf": 20739,
 "EV9JDf9E": 20733,
 "EVRieqqB": 20735,
+"EVmsjRlA": 20747,
 "EVsQ8F8U": 20741,
 "EX8CUKqd": 20739,
 "EXOaYqjo": 20740,
@@ -1041,6 +1116,7 @@
 "EkreVNXb": 20740,
 "Ekt88YaU": 20742,
 "EktLSW3b": 20746,
+"EktuuMc6": 20747,
 "EmPR28NN": 20745,
 "EmR2Ragl": 20732,
 "EmgINk7U": 20731,
@@ -1076,16 +1152,20 @@
 "G0qWdPp4": 20733,
 "G0yuhHl4": 20727,
 "G24QSWuC": 20730,
+"G2KsGwzq": 20747,
 "G2W1cGK6": 20728,
 "G2WXJpgJ": 20737,
 "G2fsrWiI": 20742,
 "G2hXeuTE": 20734,
 "G47kLKfJ": 20733,
 "G4B5htxq": 20746,
+"G4NmQS6K": 20747,
 "G6UyHflB": 20747,
 "G6l3VGtR": 20737,
 "G8irzLAj": 20740,
 "G8q1MQOc": 20732,
+"G8yim8Ra": 20747,
+"G8yxPPnI": 20747,
 "GA0LnMVA": 20746,
 "GA48UYLt": 20727,
 "GA4PyG7m": 20744,
@@ -1125,6 +1205,7 @@
 "GOcHfYEk": 20733,
 "GOe2q1CU": 20740,
 "GOozpmLj": 20733,
+"GOyuX4fo": 20747,
 "GS3axh2D": 20743,
 "GSFmDKv0": 20743,
 "GSVk4MV6": 20740,
@@ -1141,10 +1222,12 @@
 "GY25nnod": 20733,
 "GYdflZmT": 20727,
 "Gb2sUoME": 20741,
+"Gb6DTVmg": 20747,
 "Gbhgdv4M": 20732,
 "Gbp9fZ6e": 20738,
 "Gdo120cJ": 20727,
 "GdsuIjT0": 20727,
+"GfENNIj5": 20747,
 "Gffm4uQh": 20740,
 "Gh1PFMBM": 20737,
 "GhJV25Oh": 20746,
@@ -1153,6 +1236,7 @@
 "Gj61YvBc": 20727,
 "GjMBR6FE": 20731,
 "GjUtJfr9": 20743,
+"Gjf13iKs": 20747,
 "GjzmmqD5": 20741,
 "GlNFx2QF": 20733,
 "GlRGYEYp": 20736,
@@ -1162,6 +1246,7 @@
 "Gnb99ZJ7": 20737,
 "GnxdAXLs": 20734,
 "GpJlexuC": 20734,
+"GpXg4op1": 20747,
 "Gpa1wMdK": 20743,
 "Gr2RcLjt": 20741,
 "GrWRRCuf": 20744,
@@ -1176,6 +1261,7 @@
 "GvEhttMM": 20733,
 "GxJVzsjK": 20733,
 "GxTVkct1": 20738,
+"GzQP3OnK": 20747,
 "GzUNcOWO": 20728,
 "GzY57mw8": 20740,
 "GzlBy015": 20733,
@@ -1202,17 +1288,20 @@
 "IBWUWNKO": 20730,
 "IBb9MFY2": 20733,
 "IBdrijum": 20746,
+"IBf3xiDs": 20747,
 "IBnizSWG": 20739,
 "IBzNqusn": 20736,
 "IDFnkVwJ": 20734,
 "IDJZWg0U": 20732,
 "IDi0Cfn2": 20739,
+"IDi5dkBk": 20747,
 "IDiFRsZ7": 20728,
 "IDm999Gs": 20733,
 "IDuZ8lzQ": 20729,
 "IF2LSWpC": 20728,
 "IF8sACJP": 20740,
 "IFWLIqME": 20746,
+"IFjLcqfd": 20747,
 "IFvSPEA7": 20734,
 "IHD2dHtn": 20746,
 "IHuXWLVQ": 20732,
@@ -1253,6 +1342,7 @@
 "IZAGC4A4": 20727,
 "IZfwIk9M": 20746,
 "IZngWG8C": 20744,
+"Ia4NYuFj": 20747,
 "IabhOwOF": 20740,
 "IalZKoDd": 20731,
 "Icaz1CjL": 20746,
@@ -1262,6 +1352,7 @@
 "IcuhPxGs": 20735,
 "Ie6pQPZ1": 20746,
 "Ieh94mxB": 20737,
+"Iep2OB8K": 20747,
 "Ig1wNyiJ": 20746,
 "Ig544Hd5": 20735,
 "Ig5ktZHN": 20735,
@@ -1302,8 +1393,10 @@
 "IybaX5KG": 20743,
 "Iyj6tGoA": 20732,
 "K0AfISKa": 20727,
+"K0CRIpaf": 20747,
 "K0E13LbT": 20734,
 "K0E1mk2C": 20739,
+"K0I62pWA": 20747,
 "K0Injex3": 20746,
 "K0drpF3E": 20733,
 "K0hot5PF": 20734,
@@ -1340,6 +1433,7 @@
 "KCxt9ang": 20740,
 "KE5Imgct": 20740,
 "KE7gSSe3": 20743,
+"KGIzzh5l": 20747,
 "KGK15Hb4": 20733,
 "KGMAFPho": 20733,
 "KGSkaPP1": 20733,
@@ -1357,6 +1451,7 @@
 "KKIuBnzo": 20728,
 "KKQURywS": 20730,
 "KKU7Onuo": 20735,
+"KKll9Mj3": 20747,
 "KMNLJwH6": 20735,
 "KMZfuJ6m": 20746,
 "KMklR3Pc": 20727,
@@ -1413,6 +1508,7 @@
 "KhCo0fiS": 20733,
 "KhQrJKL7": 20739,
 "Khhl9XTr": 20733,
+"Khj9xRWN": 20747,
 "KhnreFe3": 20736,
 "KhvdKhbd": 20746,
 "Khvij7a3": 20729,
@@ -1445,6 +1541,7 @@
 "Kt8PK9wP": 20733,
 "KtI1Dk7D": 20739,
 "KtKiG7pI": 20743,
+"KtQ8DkNE": 20747,
 "KthG3Q3U": 20738,
 "KtrZHLGE": 20744,
 "Kv9KHtAb": 20741,
@@ -1454,6 +1551,7 @@
 "KvRwym5D": 20740,
 "KvyBqBwh": 20734,
 "Kvyzb0RN": 20740,
+"Kx0R892c": 20747,
 "Kx87CYho": 20740,
 "KxA08Xac": 20739,
 "KxfMyzUh": 20743,
@@ -1462,9 +1560,11 @@
 "KzJqL6nL": 20733,
 "KzJtSPID": 20739,
 "KzZoC8wS": 20728,
+"KzcB5hgB": 20747,
 "KzoLXmT8": 20739,
 "M33xmAmA": 20740,
 "M3XDxYmf": 20739,
+"M3okbAoo": 20747,
 "M56b2Qb4": 20741,
 "M5EO9J2B": 20746,
 "M5ErlaaE": 20739,
@@ -1527,6 +1627,7 @@
 "MaHyN07b": 20741,
 "MaRUYDb6": 20733,
 "MaZ9efkJ": 20729,
+"MaZaQ1R0": 20747,
 "MaZft72D": 20739,
 "Mc4raai3": 20740,
 "McCxpOMc": 20733,
@@ -1573,6 +1674,7 @@
 "MuVXObto": 20727,
 "MuiF5kft": 20746,
 "Muux48CM": 20733,
+"MwAUJ28E": 20747,
 "MwArcAcR": 20729,
 "MwOebrzG": 20734,
 "Mwft686K": 20734,
@@ -1606,12 +1708,15 @@
 "OAtVqFgm": 20746,
 "OCB3vK1t": 20732,
 "OCV0VtPP": 20732,
+"OEYbt0EF": 20747,
 "OEjPpW7F": 20745,
 "OEloDFuo": 20746,
 "OGPJPppR": 20731,
 "OGweoNsI": 20741,
 "OI2SeeGO": 20742,
+"OIdbQhe5": 20747,
 "OIzf7SAO": 20734,
+"OK5fppX1": 20747,
 "OKLb4Raf": 20727,
 "OKce2Jf5": 20740,
 "OKyEslTb": 20740,
@@ -1630,6 +1735,7 @@
 "OQvmjeJG": 20727,
 "OS5WfB9t": 20746,
 "OSRpWq6m": 20738,
+"OSg2bo0J": 20747,
 "OUIvYaCs": 20733,
 "OUSXqD3k": 20728,
 "OW7NDOve": 20733,
@@ -1640,6 +1746,7 @@
 "OY4QrM5m": 20742,
 "OYCAUf6c": 20744,
 "OYhaP6TG": 20741,
+"OYvaondC": 20747,
 "OYz1aYRp": 20741,
 "Ob00JYyh": 20731,
 "Ob6a79Rq": 20735,
@@ -1658,6 +1765,7 @@
 "OheH2R6N": 20737,
 "OheotcYA": 20729,
 "OjWSjO84": 20740,
+"OjjNMjTO": 20747,
 "OjzKg9vP": 20741,
 "OlJcSObL": 20738,
 "Ols7jAcK": 20746,
@@ -1668,6 +1776,7 @@
 "OnztAHuR": 20733,
 "OpBZtkZI": 20739,
 "OpBqY2qQ": 20736,
+"OpD7liKs": 20747,
 "OpT0zxwh": 20727,
 "OpyuLoVN": 20733,
 "OrWDzwTq": 20727,
@@ -1697,6 +1806,7 @@
 "Q1P1AYNE": 20727,
 "Q1Vt8a5t": 20746,
 "Q1ZnQXN6": 20739,
+"Q1cG08GD": 20747,
 "Q1kRdVgB": 20733,
 "Q32AtqfC": 20738,
 "Q3EF8YiU": 20733,
@@ -1710,6 +1820,7 @@
 "Q5N2Z34k": 20740,
 "Q5qcgQmR": 20743,
 "Q74S569e": 20740,
+"Q7E5LmEM": 20747,
 "Q7QGjJJk": 20736,
 "Q7tKJ3uJ": 20742,
 "Q7xb14Dl": 20738,
@@ -1735,6 +1846,7 @@
 "QHHgnjXi": 20734,
 "QHLRER6c": 20742,
 "QHi5dAfE": 20746,
+"QHqfDM1B": 20747,
 "QJ8C2eRH": 20735,
 "QJSLL1Ri": 20727,
 "QJlxqI05": 20728,
@@ -1758,6 +1870,7 @@
 "QRneA0Zq": 20737,
 "QRt4KQun": 20740,
 "QRtkdr14": 20740,
+"QRzi5CC4": 20747,
 "QTD9Y59F": 20732,
 "QTkP2F9e": 20747,
 "QV658un2": 20743,
@@ -1765,6 +1878,7 @@
 "QVlnkZjm": 20742,
 "QVp12aDD": 20731,
 "QVxKgypf": 20732,
+"QXaJ3WNN": 20747,
 "QZAP4LZR": 20746,
 "QZEcXpwh": 20734,
 "QZU7QCs9": 20739,
@@ -1790,6 +1904,7 @@
 "QidJwWIM": 20743,
 "QifTzEuI": 20740,
 "QinlEXl5": 20746,
+"Qip9aYMa": 20747,
 "QixAH7p3": 20738,
 "Qk7OKB3e": 20740,
 "Qk9n1dEc": 20739,
@@ -1830,13 +1945,16 @@
 "QyOPD6m1": 20746,
 "QyvVsJBb": 20736,
 "S02fSNgl": 20733,
+"S0CxfDdK": 20747,
 "S0Y6SNoT": 20730,
 "S0hfIwMt": 20734,
 "S0n5ksmJ": 20740,
+"S23Z6mX9": 20747,
 "S2DRtLQO": 20735,
 "S2N3JUcd": 20744,
 "S2PpX1aL": 20733,
 "S2kRKTfU": 20735,
+"S4OovBAC": 20747,
 "S4QvlYed": 20732,
 "S61g0TEr": 20740,
 "S6H3geJa": 20745,
@@ -1847,6 +1965,7 @@
 "S8nGztbm": 20739,
 "SA3dt6zf": 20736,
 "SA7FIxcl": 20733,
+"SANxZH6k": 20747,
 "SAXINHhD": 20732,
 "SAcmkwVN": 20741,
 "SAu3wl0k": 20746,
@@ -1860,6 +1979,7 @@
 "SEXRxXDF": 20734,
 "SG03urft": 20727,
 "SG84g0em": 20746,
+"SGMcKsek": 20747,
 "SGQqQQJ7": 20740,
 "SGSG85cE": 20746,
 "SGSlrWqI": 20734,
@@ -1872,6 +1992,7 @@
 "SKISXny3": 20734,
 "SKK74P3d": 20743,
 "SKQa5NNc": 20740,
+"SKpPj4vS": 20747,
 "SM38Fkyp": 20728,
 "SMDcuCKF": 20744,
 "SMF65jBD": 20741,
@@ -1892,10 +2013,12 @@
 "SSlHCVBs": 20737,
 "SU7mypO9": 20737,
 "SUVUlS5T": 20731,
+"SWIi6bd5": 20747,
 "SWSQ5Mg5": 20740,
 "SWW01QwJ": 20727,
 "SWdELhbs": 20740,
 "SWjK8vU9": 20731,
+"SWxFg08E": 20747,
 "SY3Dirae": 20731,
 "SYFIJXdD": 20729,
 "SYRpFV36": 20740,
@@ -1903,6 +2026,7 @@
 "SYkPN26e": 20746,
 "Sb1OFPLb": 20740,
 "SbF2ECjt": 20746,
+"SbXLXIoe": 20747,
 "SbizrI36": 20730,
 "SbkJmzOt": 20746,
 "SbopqSkf": 20746,
@@ -1947,7 +2071,9 @@
 "SruFdpnT": 20746,
 "SruUe1xI": 20739,
 "StAVrE9r": 20741,
+"StK3JW7e": 20747,
 "StKYV8Et": 20740,
+"StMrYVZ0": 20747,
 "StO93eTG": 20733,
 "StdfNyCi": 20733,
 "SvFHy7Lj": 20739,
@@ -1971,6 +2097,7 @@
 "U5OnBPJk": 20733,
 "U5WH2Dnp": 20745,
 "U738HyQO": 20745,
+"U7FZzi2e": 20747,
 "U7JMIFO6": 20742,
 "U7Vv53Qh": 20741,
 "U7Z0kDfB": 20740,
@@ -1987,6 +2114,7 @@
 "UBZjBKx2": 20732,
 "UBuKIsf3": 20743,
 "UBwdxcq1": 20746,
+"UDASp5Kb": 20747,
 "UDAZ4wEL": 20727,
 "UDGavMG5": 20741,
 "UDM5hvko": 20740,
@@ -2014,6 +2142,7 @@
 "UPb209A4": 20738,
 "UPvLGl14": 20734,
 "UR3VyKyq": 20734,
+"UR5TdYOE": 20747,
 "UR9q8YJk": 20740,
 "URe1MEwB": 20732,
 "UT2RQOQs": 20733,
@@ -2027,6 +2156,8 @@
 "UViyaWSE": 20728,
 "UXCaELB4": 20740,
 "UXULAxvA": 20737,
+"UXWDUTIt": 20747,
+"UXYqpB76": 20747,
 "UXdcNJKc": 20744,
 "UZ3iUguh": 20730,
 "UZHzhdjg": 20746,
@@ -2050,6 +2181,7 @@
 "UiPg2OG6": 20732,
 "UikeCETg": 20745,
 "Uk0qsgtS": 20732,
+"UkE3EpQb": 20747,
 "UkOq3pCM": 20733,
 "UkWfkv7T": 20727,
 "UkdFSuNs": 20746,
@@ -2059,6 +2191,7 @@
 "UmByQe9L": 20742,
 "UmRFdguQ": 20739,
 "UmoYbeR7": 20727,
+"UmuiIVxH": 20747,
 "Uo0wUFt9": 20740,
 "Uo8KsAS1": 20742,
 "UoUBgg4F": 20743,
@@ -2071,6 +2204,7 @@
 "Uqq9pdN0": 20732,
 "UsEiJgm3": 20727,
 "UsGW52CD": 20732,
+"UsbfpdIl": 20747,
 "Usn8K6Jt": 20740,
 "UuTRk0zi": 20733,
 "UuV5NG2L": 20732,
@@ -2114,6 +2248,7 @@
 "WKwOZLEd": 20733,
 "WMAYtiak": 20746,
 "WMAaZZY8": 20741,
+"WMr9755F": 20747,
 "WOJIAvBL": 20736,
 "WORASN4U": 20747,
 "WQAZc5Oc": 20742,
@@ -2123,6 +2258,7 @@
 "WQrHLXwP": 20733,
 "WS7XsSMs": 20728,
 "WSJ164AO": 20734,
+"WSRhnI0l": 20747,
 "WSZlATGD": 20736,
 "WSeFTTI7": 20739,
 "WSidicdD": 20744,
@@ -2131,6 +2267,7 @@
 "WSuDxSR0": 20741,
 "WUQelpPr": 20727,
 "WUxo1eWi": 20731,
+"WW1VYtAr": 20747,
 "WWJHo1EE": 20732,
 "WWg4k88r": 20734,
 "WWosLn8l": 20733,
@@ -2180,6 +2317,7 @@
 "WvEF41p9": 20739,
 "WvYX63Wj": 20728,
 "WvfXrAxS": 20746,
+"Wvx7vvqS": 20747,
 "WvzO9L9e": 20732,
 "WxLPTETk": 20738,
 "WxVLodXQ": 20734,
@@ -2191,6 +2329,7 @@
 "Y17KkPwp": 20735,
 "Y17jCgCd": 20745,
 "Y19q8hJ8": 20743,
+"Y19xNSKN": 20747,
 "Y1PhPyg3": 20738,
 "Y1VEpduS": 20733,
 "Y1aa7oGd": 20739,
@@ -2235,6 +2374,8 @@
 "YFrHxWGr": 20740,
 "YFxBODr3": 20740,
 "YHednqoK": 20733,
+"YHmHcCiC": 20747,
+"YHo1Z0KE": 20747,
 "YHoh7ZEr": 20728,
 "YHungHt3": 20728,
 "YHwvrVno": 20739,
@@ -2292,6 +2433,7 @@
 "YZpn8ZOM": 20745,
 "YZxHGodS": 20733,
 "Ya4qLLup": 20742,
+"Ya6dT9t4": 20747,
 "YaGskvc2": 20734,
 "YaIgLn0T": 20729,
 "YaYFOjCL": 20740,
@@ -2317,6 +2459,7 @@
 "Yij38v4d": 20737,
 "YipCI4Ab": 20740,
 "YitgkpRs": 20727,
+"Yiva3jsH": 20747,
 "Yk122N4E": 20744,
 "YkJBvo0b": 20737,
 "YkNPMUG6": 20728,
@@ -2342,6 +2485,7 @@
 "Ys5hDEVh": 20742,
 "Ys9qWVcU": 20743,
 "YsJknBdk": 20743,
+"Ysm2B0WN": 20747,
 "YuA0h13t": 20741,
 "YuE2Q8CD": 20730,
 "YujsomDk": 20733,
@@ -2412,7 +2556,9 @@
 "bV1gTjl3": 20735,
 "bVJ6qgZo": 20746,
 "bVZYNvNt": 20729,
+"bVkDflPQ": 20747,
 "bX0npHOp": 20740,
+"bXETlh5l": 20747,
 "bXQTJud4": 20727,
 "bXbxbQas": 20730,
 "bXzvwzZI": 20745,
@@ -2421,6 +2567,7 @@
 "bZFSC0se": 20746,
 "bZHGTzrg": 20741,
 "bZLSnY8c": 20732,
+"ba7OkIfR": 20747,
 "ba93MOin": 20733,
 "baJSf6H6": 20737,
 "baJdYyqf": 20729,
@@ -2460,11 +2607,13 @@
 "bs0KXSqp": 20741,
 "bs0vC8tm": 20734,
 "bsSvwuB6": 20746,
+"buHUTzY7": 20747,
 "buucfMVG": 20740,
 "bw8mYRzg": 20747,
 "bwAUaNGk": 20727,
 "by7gVJIk": 20733,
 "byFpzSEk": 20739,
+"byLTgsKl": 20747,
 "d02fr5ED": 20733,
 "d0CoaTMq": 20739,
 "d0M9jSnT": 20746,
@@ -2475,6 +2624,7 @@
 "d6eTtSWN": 20727,
 "d6wF7wXI": 20732,
 "d8GIgW76": 20735,
+"d8Wk1PRE": 20747,
 "d8drzgsf": 20728,
 "d8hWGeGk": 20740,
 "dA1HPASP": 20728,
@@ -2492,17 +2642,21 @@
 "dEoj0Vof": 20739,
 "dGEDGtIa": 20738,
 "dGO14KW8": 20744,
+"dI1TK15L": 20747,
 "dIBOXqWQ": 20733,
 "dIJgPXbL": 20745,
 "dIkomFzp": 20744,
 "dKAmRm5F": 20741,
+"dKCHDjDi": 20747,
 "dKn1lDDb": 20743,
 "dMJSgILt": 20746,
 "dMVXL7Jb": 20738,
 "dMgspgIc": 20745,
 "dMmiuEED": 20739,
 "dMoCh5k3": 20732,
+"dO2cGZm2": 20747,
 "dOr3p7Ts": 20737,
+"dOxaIWX8": 20747,
 "dQ7idAR0": 20737,
 "dQZB1AMs": 20727,
 "dQept2zQ": 20739,
@@ -2510,12 +2664,14 @@
 "dSKoU5zK": 20731,
 "dSWrAko3": 20742,
 "dU99LXtp": 20739,
+"dUeHa9J6": 20747,
 "dUuYV9t0": 20741,
 "dW8WNNKh": 20733,
 "dWKoaNNH": 20746,
 "dWOklHaf": 20746,
 "dWSQL3EU": 20739,
 "dWSfaZuI": 20730,
+"dWbyBufm": 20747,
 "dWhRgBde": 20740,
 "dWz8z51t": 20739,
 "dY9CqWck": 20742,
@@ -2529,6 +2685,7 @@
 "ddjiXu64": 20733,
 "df50JceC": 20745,
 "dfDB5ijJ": 20736,
+"dfRYFg7t": 20747,
 "dfujeq4c": 20739,
 "dfwKMbJE": 20727,
 "dfygiZPb": 20740,
@@ -2556,11 +2713,13 @@
 "drgrhm7r": 20735,
 "driq9iGF": 20743,
 "dtIM33Q7": 20745,
+"dtbhiMaL": 20747,
 "dv5CDI9F": 20727,
 "dv5cbVM9": 20734,
 "dvDxLBDM": 20728,
 "dvimEzas": 20746,
 "dvsBLfVh": 20737,
+"dxGeG6en": 20747,
 "dxfictB5": 20736,
 "dxfxrgOa": 20746,
 "dxjfYTHG": 20730,
@@ -2570,6 +2729,7 @@
 "dzPAPxve": 20739,
 "dzXknJU7": 20734,
 "dzmkY9tp": 20743,
+"dzsqKi84": 20747,
 "f17HUdAM": 20727,
 "f1wh7UI8": 20742,
 "f34y6eJ0": 20741,
@@ -2583,6 +2743,7 @@
 "f7EwHiZg": 20740,
 "f7UnYz9l": 20734,
 "f7rp7XZp": 20734,
+"f97TPmmI": 20747,
 "f9CE9IIl": 20740,
 "f9FhNlPc": 20732,
 "f9qCak2n": 20743,
@@ -2615,6 +2776,7 @@
 "fNfVRxtK": 20740,
 "fNnoQXrg": 20746,
 "fP5W3ZsR": 20736,
+"fPZktzLF": 20747,
 "fTJFvcoQ": 20746,
 "fTkKYvZA": 20732,
 "fTouEru0": 20745,
@@ -2623,6 +2785,7 @@
 "fVYDipng": 20736,
 "fVt7b6HG": 20746,
 "fVtMcN75": 20739,
+"fXHrdaG7": 20747,
 "fXP7g0hm": 20734,
 "fXeKg0pS": 20731,
 "fXw5SdJq": 20733,
@@ -2633,6 +2796,7 @@
 "favVKAyH": 20746,
 "fazwEWYo": 20736,
 "fc1uUuK7": 20733,
+"fcHT9meJ": 20747,
 "fccZB71s": 20741,
 "fcsT0Cw9": 20747,
 "fcwka2bK": 20732,
@@ -2670,6 +2834,7 @@
 "fqza1hS1": 20739,
 "fsN0gdmJ": 20733,
 "fsZRCBPk": 20734,
+"fsc2oJbd": 20747,
 "fsg0uyeM": 20728,
 "fuI7K5Gl": 20729,
 "fuQEikOt": 20737,
@@ -2691,14 +2856,17 @@
 "h2CnUjDl": 20730,
 "h2GKdSnf": 20738,
 "h2Wq5svH": 20733,
+"h2Yo6cJP": 20747,
 "h45ZWbFj": 20735,
 "h4Nogi14": 20746,
+"h4onFrXb": 20747,
 "h6Ew9PUi": 20734,
 "h6QryFS9": 20727,
 "h6WSl0bJ": 20746,
 "h6fqkzL6": 20731,
 "h6pjggQF": 20735,
 "h890EO0f": 20734,
+"h8LO17tg": 20747,
 "h8VJEk7b": 20732,
 "h8Zl4G9D": 20743,
 "hAIkFts1": 20728,
@@ -2713,6 +2881,7 @@
 "hCgJbrll": 20732,
 "hE2SaOq9": 20746,
 "hE82G6kC": 20727,
+"hEGE0O0N": 20747,
 "hEGPYKA5": 20746,
 "hEMp2QVj": 20733,
 "hEQIU15d": 20741,
@@ -2737,12 +2906,15 @@
 "hKNej8ce": 20740,
 "hKglOqSs": 20733,
 "hMOR26Vp": 20733,
+"hMSeBlYO": 20747,
 "hMnyRiUq": 20739,
 "hMrbUtSQ": 20735,
 "hMtsEw0C": 20731,
+"hO7MQALb": 20747,
 "hOVwLG8d": 20742,
 "hQCvqhI6": 20732,
 "hQO6vjPa": 20744,
+"hQW11fhm": 20747,
 "hQjRqjKt": 20729,
 "hQlAqVKO": 20742,
 "hQzl7wH5": 20740,
@@ -2761,6 +2933,7 @@
 "hYQjCi6C": 20727,
 "hYQyc4J6": 20734,
 "hYQysYMk": 20737,
+"hYUtdTjl": 20747,
 "hYdiKrnL": 20733,
 "hYhd2GpT": 20740,
 "hYnd70LF": 20747,
@@ -2768,6 +2941,7 @@
 "hbMdIT25": 20733,
 "hbhLCZ54": 20738,
 "hbjcWle2": 20740,
+"hbjorV2n": 20747,
 "hblCbmKU": 20734,
 "hbtXy7TH": 20737,
 "hbzmwNjo": 20733,
@@ -2776,15 +2950,18 @@
 "hdZ44Iac": 20746,
 "hdk7eKj4": 20742,
 "hdoPoepL": 20728,
+"hfOGBTiR": 20747,
 "hfrCLPA6": 20742,
 "hfrtaexf": 20732,
 "hftsGaoR": 20744,
 "hh5xD216": 20734,
 "hhNAnFGP": 20737,
 "hhR7eeDc": 20743,
+"hhgdCn3C": 20747,
 "hhq7zaum": 20742,
 "hhuMmP1D": 20732,
 "hhuy3ClJ": 20727,
+"hhwOtEun": 20747,
 "hjWPTXPG": 20735,
 "hjhUZDb5": 20743,
 "hjpV4f4N": 20741,
@@ -2801,6 +2978,7 @@
 "hpoWiibJ": 20739,
 "hr6BwfJN": 20735,
 "hrAKit5c": 20739,
+"hrEMVd3e": 20747,
 "hrMXtbVF": 20742,
 "hrzagQNa": 20733,
 "ht77aqQ6": 20744,
@@ -2809,6 +2987,7 @@
 "htq7whfC": 20746,
 "hv2d66ue": 20740,
 "hvEkCkKE": 20740,
+"hvO0u3Mh": 20747,
 "hvSnonoB": 20740,
 "hvWZSA7M": 20739,
 "hvfCKXvo": 20741,
@@ -2820,6 +2999,7 @@
 "hxyDNByK": 20739,
 "hzCnGt2n": 20745,
 "hzI7aIJl": 20730,
+"hzYMknV7": 20747,
 "hzYTzCTh": 20743,
 "hzjmfIO7": 20744,
 "j16W0MTr": 20727,
@@ -2827,14 +3007,17 @@
 "j1OTWLYQ": 20746,
 "j1QxsUS7": 20744,
 "j3B2ANuK": 20738,
+"j3J1hlIG": 20747,
 "j3VgyWLc": 20746,
 "j3eRJtqA": 20734,
 "j3gFLNwe": 20743,
 "j3oaqNc6": 20727,
 "j5IVJr8L": 20727,
+"j5bjSEQh": 20747,
 "j79n79Lc": 20730,
 "j7w6qAbn": 20740,
 "j90hJO5k": 20733,
+"j9CKEMCr": 20747,
 "j9O1sA4l": 20741,
 "jBLVm1yo": 20735,
 "jBepvxY1": 20734,
@@ -2846,6 +3029,8 @@
 "jDlbZS9N": 20735,
 "jFL0rcbM": 20741,
 "jFLRrIhJ": 20734,
+"jFPWssQ0": 20747,
+"jFef07V6": 20747,
 "jFy3ZbkT": 20739,
 "jH8q3nxg": 20740,
 "jHC4q3Z0": 20735,
@@ -2865,6 +3050,7 @@
 "jPpswj9m": 20737,
 "jRHPZHx1": 20734,
 "jRgwcsop": 20738,
+"jRkDfTu2": 20747,
 "jT4qbWdl": 20737,
 "jTGQOmm4": 20736,
 "jTbwpEO8": 20740,
@@ -2879,6 +3065,7 @@
 "jVaCKQXo": 20729,
 "jXrvTv0U": 20739,
 "jXvXYNCs": 20734,
+"jZ3GivQE": 20747,
 "jZ56Ojv8": 20735,
 "jZJuwqp2": 20731,
 "jZk4Xlm1": 20740,
@@ -2890,6 +3077,7 @@
 "jeThzS6k": 20730,
 "jeVCT2xH": 20734,
 "jeVOwuph": 20736,
+"jeZ48T5U": 20747,
 "jeyORFZq": 20742,
 "jgAZbQ6L": 20731,
 "jgCCU1Ur": 20731,
@@ -2907,6 +3095,7 @@
 "jm9OAruH": 20728,
 "jmo1UfwP": 20744,
 "jmoL8zzS": 20739,
+"jmqdCSth": 20747,
 "jmy57Kph": 20741,
 "jo8Oh16M": 20747,
 "joMhAi5E": 20731,
@@ -2915,6 +3104,7 @@
 "jorEH23F": 20741,
 "jq1W1nEL": 20730,
 "jq5XcaMj": 20734,
+"jqD1m2zK": 20747,
 "jqLsiRQ7": 20740,
 "jsI1c8nl": 20740,
 "jsK6FDCb": 20734,
@@ -2937,6 +3127,7 @@
 "l2o9p5bB": 20733,
 "l446j26F": 20739,
 "l4IsCv46": 20746,
+"l4h91Vlf": 20747,
 "l4l1MkrI": 20746,
 "l65OPqjt": 20733,
 "l6HhGWuB": 20734,
@@ -2951,6 +3142,7 @@
 "l8taTkMO": 20736,
 "lAH5NlVq": 20739,
 "lAuh0PM0": 20734,
+"lAwyMDwh": 20747,
 "lCM7g8qh": 20741,
 "lCniKpCi": 20740,
 "lCnnzjm4": 20730,
@@ -2972,9 +3164,11 @@
 "lK4uyrqC": 20746,
 "lKONdZjg": 20740,
 "lMRUm7N5": 20737,
+"lMZqN3HU": 20747,
 "lMs9K4gA": 20732,
 "lMsL2Wbc": 20744,
 "lOCnaRdD": 20732,
+"lOdoYQcS": 20747,
 "lOrY6LrC": 20730,
 "lOtO4bNi": 20728,
 "lQPm0453": 20734,
@@ -2992,6 +3186,7 @@
 "lY7zseeC": 20733,
 "lYFURJQ6": 20728,
 "lbHWNdx2": 20741,
+"lbV12PED": 20747,
 "lbmKBwr1": 20727,
 "ldKCnbTN": 20728,
 "ldSPNTln": 20739,
@@ -3023,6 +3218,7 @@
 "lp0tdqDd": 20730,
 "lpvJyx14": 20742,
 "lr3EYvHq": 20731,
+"lr7rsNJN": 20747,
 "lriTzNBm": 20733,
 "ltA34K6s": 20733,
 "ltEeBb9C": 20743,
@@ -3033,6 +3229,7 @@
 "lv7FFI4D": 20743,
 "lvJQ3ZPa": 20734,
 "lvak8P06": 20741,
+"lxEOcmlJ": 20747,
 "lxKPE3Fd": 20733,
 "lxUInxgg": 20744,
 "lxfMiHlI": 20742,
@@ -3056,6 +3253,7 @@
 "n5wa0Sn4": 20746,
 "n7IM34AD": 20740,
 "n7Q5Dft1": 20727,
+"n7QT34QE": 20747,
 "n7UmNJnp": 20741,
 "n7lFytu0": 20733,
 "n7loEtAT": 20742,
@@ -3079,8 +3277,10 @@
 "nFpT0kpo": 20746,
 "nH3EOKn2": 20739,
 "nHDWkUSb": 20735,
+"nHDiv2iT": 20747,
 "nHPqNqeA": 20746,
 "nHT7tBP8": 20737,
+"nHgfmuUq": 20747,
 "nHkhscQ9": 20728,
 "nHoRaHKN": 20739,
 "nJ0PuO0T": 20733,
@@ -3091,6 +3291,7 @@
 "nJpFnddC": 20730,
 "nJpo9QUO": 20739,
 "nLDNmKuC": 20740,
+"nLVerZ9L": 20747,
 "nLZ71WzQ": 20735,
 "nLZhnqlK": 20746,
 "nLq1cDVG": 20731,
@@ -3116,6 +3317,7 @@
 "nTs3IfM9": 20741,
 "nTwXE5x8": 20736,
 "nTyOlRoA": 20739,
+"nV0Z1BmS": 20747,
 "nVGrJfNM": 20741,
 "nVYYK8Mi": 20737,
 "nVYaLTGl": 20730,
@@ -3158,6 +3360,7 @@
 "nkeqZh5M": 20740,
 "nkiZAkf2": 20734,
 "nm8HXuMH": 20727,
+"nmEJK6Us": 20747,
 "nmGgkBXa": 20738,
 "nmSkOv6t": 20740,
 "nml3Nt46": 20741,
@@ -3188,6 +3391,7 @@
 "nwiNy6gC": 20743,
 "nwmQXeFD": 20746,
 "nwqUpGK5": 20731,
+"ny601gA7": 20747,
 "nyOrEDy0": 20727,
 "nyjzIQZF": 20730,
 "nypQYr36": 20727,
@@ -3199,10 +3403,12 @@
 "p2dIxyuP": 20728,
 "p4D5dsOP": 20727,
 "p4J4YAYG": 20739,
+"p4m5KIid": 20747,
 "p6pFEKUp": 20741,
 "p6xO9CYp": 20735,
 "p6zovyBN": 20736,
 "p830hMTI": 20730,
+"p83V8DdK": 20747,
 "p8HNUyKc": 20739,
 "p8ZwBABa": 20734,
 "p8eJOeo9": 20727,
@@ -3225,6 +3431,7 @@
 "pG3a15ef": 20744,
 "pG7nqUH5": 20742,
 "pGsVfYs3": 20741,
+"pIAEXIYr": 20747,
 "pIGCOlNr": 20739,
 "pIGUJ4FO": 20742,
 "pIIPrK03": 20742,
@@ -3245,6 +3452,7 @@
 "pSBeMNdf": 20733,
 "pSmRv3cJ": 20737,
 "pSyT4YJ6": 20727,
+"pUCkPVEc": 20747,
 "pUGUBurQ": 20732,
 "pUKzhmFr": 20746,
 "pUvLtJ3D": 20733,
@@ -3252,6 +3460,7 @@
 "pWDIQ9Ii": 20736,
 "pWmoMw9j": 20729,
 "pWy8tIDL": 20733,
+"pY8x0xhM": 20747,
 "pYMy2Ef4": 20731,
 "pYOkPzgB": 20741,
 "pYY3cC1c": 20742,
@@ -3272,6 +3481,7 @@
 "pfWc4Ekl": 20740,
 "pfdB07eK": 20740,
 "pfjCnzWs": 20742,
+"pfrHS4Lk": 20747,
 "pfxY8kGj": 20738,
 "phJadIA5": 20734,
 "phXdVEy2": 20736,
@@ -3293,6 +3503,7 @@
 "ppZ2CcbJ": 20736,
 "ppmNB2H7": 20741,
 "pr6hGpWs": 20734,
+"prIG3TBt": 20747,
 "prSBGBxn": 20732,
 "prWRsf0J": 20742,
 "prWt6xu1": 20743,
@@ -3304,6 +3515,7 @@
 "pvA8i9iR": 20734,
 "pvMgfcFd": 20740,
 "pvnRbTOc": 20743,
+"pvrvH42n": 20747,
 "pvvcqOQP": 20741,
 "pxDCblIs": 20738,
 "pxJQR8UP": 20727,
@@ -3319,6 +3531,7 @@
 "r5GedELN": 20739,
 "r5hwu7cm": 20741,
 "r5r1nRTb": 20733,
+"r73qE56d": 20747,
 "r79JpXZg": 20739,
 "r7TS6e8D": 20744,
 "r9G4BTtQ": 20740,
@@ -3330,6 +3543,7 @@
 "rBJgoQY7": 20727,
 "rBRw1dtp": 20735,
 "rBayqOnQ": 20733,
+"rDKJA2PN": 20747,
 "rDdb0wVb": 20736,
 "rF7YyFx9": 20738,
 "rFDv6375": 20733,
@@ -3340,6 +3554,7 @@
 "rFc0Z5y1": 20739,
 "rFgVquZo": 20728,
 "rFmy1OBt": 20735,
+"rHAc0JG8": 20747,
 "rHEtuWD7": 20736,
 "rHIw4r7d": 20741,
 "rHbsF0lK": 20744,
@@ -3349,6 +3564,7 @@
 "rJV3b8lS": 20745,
 "rJXvNaKh": 20733,
 "rJgW8skD": 20741,
+"rJwIujHD": 20747,
 "rLEzW2fS": 20739,
 "rLI55oUp": 20732,
 "rLMUGRPM": 20733,
@@ -3362,11 +3578,13 @@
 "rP6NVRuf": 20738,
 "rPUkUMz8": 20741,
 "rPhqXvBC": 20734,
+"rPp0NluP": 20747,
 "rRLLBYLa": 20732,
 "rTfzCDSF": 20739,
 "rTxmNDQj": 20746,
 "rTzvD5W9": 20746,
 "rVTXJCbl": 20727,
+"rVVdAkyI": 20747,
 "rVwM7jDc": 20733,
 "rX6toiCC": 20735,
 "rXE1TUZa": 20729,
@@ -3384,17 +3602,20 @@
 "rcI6zTJ8": 20727,
 "reDO4XKE": 20744,
 "regC5bF4": 20741,
+"rewqkUdm": 20747,
 "rgC3xcy1": 20731,
 "rgjeXxCE": 20737,
 "ri1WwW0s": 20727,
 "ri9doP4l": 20735,
 "ri9sNtQ6": 20733,
+"riHRxDXr": 20747,
 "riLwdAbm": 20735,
 "risieCdD": 20738,
 "rkQAknK6": 20740,
 "rkUJ3Y5t": 20742,
 "rkYfyLKG": 20739,
 "rkdZqhN5": 20745,
+"rkhn2T0f": 20747,
 "rm1ahYE5": 20730,
 "rmBhlF9d": 20728,
 "rmVmpml4": 20740,
@@ -3409,6 +3630,7 @@
 "rqaGz5gt": 20729,
 "rqsYzH7L": 20740,
 "rs2DMJSP": 20733,
+"rsGFPvMh": 20747,
 "rsdu61et": 20740,
 "rsn3DLRi": 20731,
 "rspum7D6": 20729,
@@ -3416,8 +3638,10 @@
 "ru9aRSj4": 20732,
 "ruH7X5CG": 20734,
 "ruHUIGJb": 20745,
+"ruerUzdt": 20747,
 "ruqSrITi": 20743,
 "ruyF7n8T": 20733,
+"rwGgfAm4": 20747,
 "rwYkFbgM": 20731,
 "rwhJL2Ec": 20734,
 "rwrioqTg": 20727,
@@ -3454,6 +3678,7 @@
 "tC2JLSHN": 20739,
 "tCCPivDa": 20735,
 "tCILCU8U": 20734,
+"tCMQBgtC": 20747,
 "tCQAlbOt": 20744,
 "tCUwRSC4": 20727,
 "tCp0IhJP": 20734,
@@ -3477,6 +3702,7 @@
 "tKdYc5rp": 20730,
 "tKfeSTKM": 20731,
 "tM7gzQa5": 20742,
+"tMD3ifcc": 20747,
 "tMHnnwiD": 20733,
 "tMwXqJkA": 20733,
 "tO2ydyRi": 20728,
@@ -3493,6 +3719,7 @@
 "tUiFrr44": 20746,
 "tUiyd2X9": 20740,
 "tUummpcB": 20734,
+"tW0ALjtQ": 20747,
 "tWM7xhfD": 20734,
 "tWSiLg4m": 20727,
 "tWr7bGXi": 20735,
@@ -3506,6 +3733,7 @@
 "tb9qoril": 20740,
 "tbD4Rbld": 20734,
 "tbawFWeC": 20743,
+"tbigTce2": 20747,
 "tbsKBdcE": 20740,
 "tbudVBnC": 20742,
 "td4G9XP9": 20742,
@@ -3519,6 +3747,7 @@
 "tj7Ged7k": 20727,
 "tjBlOXte": 20733,
 "tjHjYu63": 20743,
+"tjRx4uI6": 20747,
 "tjg47Cgm": 20734,
 "tjkwQWm1": 20746,
 "tjszaIY2": 20744,
@@ -3542,6 +3771,7 @@
 "ttnPzAoe": 20740,
 "tv1nAdWF": 20727,
 "tv37I2S0": 20734,
+"tv3h3Fue": 20747,
 "tvFZD0Zg": 20746,
 "tvHodmrh": 20740,
 "tvwTGI9b": 20740,
@@ -3552,16 +3782,20 @@
 "txvccXiM": 20735,
 "tzB53jfT": 20746,
 "tzPvd0sC": 20727,
+"tzRlKrkL": 20747,
 "tzayiLom": 20728,
 "tzgunDIE": 20741,
 "v1RlAfa4": 20728,
 "v1ZJ1rSb": 20740,
 "v1ew29Y2": 20738,
 "v369Oiv0": 20733,
+"v3C4t5o3": 20747,
 "v3IjZxYb": 20733,
+"v3QWtfEt": 20747,
 "v3dLjpM7": 20727,
 "v3lek3ve": 20742,
 "v3zPGR7e": 20736,
+"v5cR3XIF": 20747,
 "v5sHfZHs": 20743,
 "v5uTwaHq": 20746,
 "v5wW7av8": 20732,
@@ -3574,6 +3808,7 @@
 "v9JL9xHq": 20730,
 "v9XEOhxh": 20746,
 "v9eR6jRp": 20736,
+"v9i4AQXO": 20747,
 "v9sFYxAa": 20742,
 "vB0hfra6": 20730,
 "vBGqoA4D": 20747,
@@ -3589,8 +3824,10 @@
 "vFl05Dqe": 20727,
 "vFr6MdMk": 20733,
 "vFx08vlA": 20735,
+"vFxWU8MM": 20747,
 "vH7HJARj": 20743,
 "vH92H8x9": 20741,
+"vHDYGh4m": 20747,
 "vHeRo61l": 20737,
 "vHk5tIBt": 20740,
 "vJAMJU2N": 20730,
@@ -3608,6 +3845,7 @@
 "vNvnYZTN": 20746,
 "vPHWNcM7": 20731,
 "vPiyyFzA": 20741,
+"vPyc4H45": 20747,
 "vR4o5HYj": 20740,
 "vRnbtE6C": 20740,
 "vTNJUcmm": 20728,
@@ -3615,6 +3853,7 @@
 "vTiRdMI0": 20732,
 "vTk5XowP": 20737,
 "vToLSXm4": 20736,
+"vV6BKNOq": 20747,
 "vVSpF6kR": 20733,
 "vVWsJGTP": 20732,
 "vVfeZ4de": 20743,
@@ -3623,6 +3862,7 @@
 "vXL83P3c": 20733,
 "vXL8mg7t": 20736,
 "vXVkkUjD": 20727,
+"vXZBea7K": 20747,
 "vXaw50ek": 20727,
 "va8LsukT": 20732,
 "vaCyF0Wh": 20742,
@@ -3631,9 +3871,11 @@
 "vcNPquqR": 20731,
 "vcNbid97": 20736,
 "vccCmnwe": 20734,
+"vcee9zfn": 20747,
 "vcs1uk8K": 20730,
 "veEQi9hD": 20741,
 "veKX7faK": 20728,
+"veSmpeu9": 20747,
 "veW3eezp": 20740,
 "veY8D00f": 20734,
 "vebJGCxJ": 20736,
@@ -3658,6 +3900,7 @@
 "vo7ScY0n": 20733,
 "voXV2DdB": 20732,
 "vowQFRQr": 20741,
+"vq6k5tmo": 20747,
 "vqIkj0zI": 20727,
 "vqQChraf": 20746,
 "vqnfDDQ0": 20744,
@@ -3685,6 +3928,7 @@
 "x0LrjzL5": 20746,
 "x0X0xOMi": 20741,
 "x0XmIPIN": 20738,
+"x22Fzt3S": 20747,
 "x2K5hQbE": 20740,
 "x2YK6fkf": 20727,
 "x2x2vmcd": 20745,
@@ -3715,6 +3959,7 @@
 "xEp6H18N": 20742,
 "xG3l8act": 20735,
 "xG7Ah9Rb": 20731,
+"xGHBCOfB": 20747,
 "xGVBjqSF": 20741,
 "xGiWLBef": 20741,
 "xGskW4Np": 20738,
@@ -3733,6 +3978,7 @@
 "xQ8RgUhM": 20733,
 "xQGe9Zjf": 20735,
 "xQSNhxkS": 20727,
+"xQU0pdV0": 20747,
 "xQW521eB": 20740,
 "xQWZuXMb": 20731,
 "xSF6DRSb": 20727,
@@ -3747,6 +3993,7 @@
 "xWqRn8mo": 20733,
 "xY078sjn": 20727,
 "xYG2nM7c": 20740,
+"xYIsZUW7": 20747,
 "xYO5uoPq": 20730,
 "xYYn3se5": 20741,
 "xYt6i13M": 20739,
@@ -3754,11 +4001,13 @@
 "xbG7CatH": 20740,
 "xbIya2lg": 20745,
 "xbdqylLi": 20743,
+"xbzirMq3": 20747,
 "xf6ZO2ef": 20733,
 "xfGTCbHO": 20738,
 "xfOPtmit": 20728,
 "xfl97nj2": 20733,
 "xfvUYkmJ": 20738,
+"xh9yeCgR": 20747,
 "xhDi6Cl2": 20740,
 "xha9Kh8N": 20732,
 "xjK0GXz3": 20731,
@@ -3769,12 +4018,14 @@
 "xlZzmvOj": 20740,
 "xla37F84": 20741,
 "xlm69TaE": 20734,
+"xlqfjWY9": 20747,
 "xlyPbr6F": 20733,
 "xnIWM9Qs": 20741,
 "xnKc85GE": 20727,
 "xnYYDBHl": 20736,
 "xnhHkohS": 20746,
 "xnvEsuhl": 20739,
+"xp1HR5Or": 20747,
 "xpFRbGzJ": 20733,
 "xpNgkZrm": 20733,
 "xpR0KeQa": 20744,
@@ -3785,12 +4036,14 @@
 "xrWGll25": 20734,
 "xrWVCWtm": 20734,
 "xrjnOW3U": 20734,
+"xt3EMAfU": 20747,
 "xt9E1rio": 20727,
 "xtRHj92E": 20728,
 "xtZnrcV8": 20740,
 "xtcm4l13": 20741,
 "xv8WSw0c": 20735,
 "xvC4eFZ2": 20743,
+"xvpcMvNq": 20747,
 "xxPEf0pn": 20733,
 "xxTKCY2C": 20728,
 "xxcz58W7": 20730,
@@ -3800,6 +4053,7 @@
 "z10BQ8pR": 20732,
 "z1EG9pDl": 20733,
 "z1EnWEo1": 20742,
+"z1jVy9b3": 20747,
 "z1rOy9r2": 20739,
 "z1zbUFve": 20735,
 "z3Nvb3gR": 20740,
@@ -3807,10 +4061,13 @@
 "z3iSDZc3": 20739,
 "z3w5LmB7": 20732,
 "z588JazA": 20737,
+"z5SlCB65": 20747,
 "z7F4CHXA": 20728,
 "z7NBq1u3": 20740,
+"z7PjW94D": 20747,
 "z7a2LFt4": 20733,
 "z7aP6Qmn": 20742,
+"z92xXWPs": 20747,
 "z98xSnke": 20740,
 "z9KujhCa": 20734,
 "z9bqGZcm": 20742,
@@ -3829,6 +4086,8 @@
 "zFP4MJfC": 20730,
 "zFa9J4Cc": 20737,
 "zH4GMhet": 20742,
+"zHC7R0it": 20747,
+"zHfvs0hR": 20747,
 "zJLi3QNk": 20734,
 "zJXXyuJ7": 20745,
 "zJahsuEl": 20733,
@@ -3838,8 +4097,10 @@
 "zL8d3d3e": 20736,
 "zLIwRhZG": 20743,
 "zLQijc1E": 20735,
+"zLSxd8Zj": 20747,
 "zLjOpZHi": 20742,
 "zN1AbmuH": 20738,
+"zN99tEHD": 20747,
 "zNHlVpBL": 20733,
 "zNgaFxGi": 20735,
 "zP4WD3jB": 20740,
@@ -3892,6 +4153,7 @@
 "zqidaC7e": 20729,
 "zqmyJeAm": 20737,
 "zqymrTX0": 20739,
+"zs0yGRyp": 20747,
 "zsC77q1C": 20737,
 "zsWGQk1n": 20733,
 "zuDmbziB": 20739,
@@ -3903,6 +4165,7 @@
 "zwvvrj9r": 20740,
 "zy5KSrWb": 20727,
 "zyJelLTk": 20733,
+"zyRpXey2": 20747,
 "zyX0Ps8d": 20746,
 "zyupZXwp": 20731
 },
@@ -4056,6 +4319,11 @@
 ],
 [
 "a102093",
+"a202103",
+20747
+],
+[
+"a102093",
 "a207527",
 20743
 ],
@@ -4130,6 +4398,11 @@
 20716
 ],
 [
+"a104527",
+"a212021",
+20747
+],
+[
 "a104792",
 "a210530",
 20702
@@ -4191,6 +4464,11 @@
 ],
 [
 "a105062",
+"a126774",
+20747
+],
+[
+"a105062",
 "a208852",
 20745
 ],
@@ -4223,6 +4501,11 @@
 "a105173",
 "a111575",
 20737
+],
+[
+"a105173",
+"a126094",
+20747
 ],
 [
 "a105173",
@@ -4900,6 +5183,11 @@
 20739
 ],
 [
+"a105902",
+"a209260",
+20747
+],
+[
 "a105932",
 "a106121",
 20743
@@ -4928,6 +5216,11 @@
 "a105932",
 "a202385",
 20725
+],
+[
+"a105932",
+"a207680",
+20747
 ],
 [
 "a105932",
@@ -4996,6 +5289,11 @@
 ],
 [
 "a105948",
+"a200711",
+20746
+],
+[
+"a105948",
 "a211636",
 20718
 ],
@@ -5048,6 +5346,11 @@
 "a106000",
 "a209874",
 20743
+],
+[
+"a106000",
+"a209976",
+20747
 ],
 [
 "a106000",
@@ -5406,6 +5709,11 @@
 ],
 [
 "a106168",
+"a209956",
+20747
+],
+[
+"a106168",
 "a209979",
 20741
 ],
@@ -5626,6 +5934,11 @@
 ],
 [
 "a106203",
+"a211761",
+20747
+],
+[
+"a106203",
 "a214226",
 20741
 ],
@@ -5826,6 +6139,11 @@
 ],
 [
 "a106290",
+"a207780",
+20747
+],
+[
+"a106290",
 "a208233",
 20724
 ],
@@ -6016,6 +6334,11 @@
 ],
 [
 "a106329",
+"a210012",
+20747
+],
+[
+"a106329",
 "a212309",
 20714
 ],
@@ -6128,6 +6451,11 @@
 "a106397",
 "a208277",
 20733
+],
+[
+"a106397",
+"aFzhang-shao",
+20747
 ],
 [
 "a106415",
@@ -6260,6 +6588,11 @@
 20737
 ],
 [
+"a109054",
+"a213174",
+20747
+],
+[
 "a109303",
 "a207704",
 20711
@@ -6330,6 +6663,11 @@
 20726
 ],
 [
+"a111190",
+"a212044",
+20747
+],
+[
 "a111200",
 "a129911",
 20714
@@ -6378,6 +6716,11 @@
 "a111202",
 "a111576",
 20716
+],
+[
+"a111454",
+"a125804",
+20747
 ],
 [
 "a111454",
@@ -7631,6 +7974,11 @@
 ],
 [
 "a124045",
+"a211504",
+20747
+],
+[
+"a124045",
 "a212753",
 20725
 ],
@@ -7638,6 +7986,11 @@
 "a124045",
 "a213637",
 20740
+],
+[
+"a124074",
+"a213189",
+20747
 ],
 [
 "a124079",
@@ -7703,6 +8056,11 @@
 "a124154",
 "a200197",
 20733
+],
+[
+"a124154",
+"a207987",
+20747
 ],
 [
 "a124154",
@@ -7813,6 +8171,11 @@
 "a125833",
 "aFmakhlouf-nazim",
 20726
+],
+[
+"a125843",
+"a207383",
+20747
 ],
 [
 "a125847",
@@ -7948,6 +8311,11 @@
 "a126125",
 "a211901",
 20704
+],
+[
+"a126125",
+"a213216",
+20747
 ],
 [
 "a126127",
@@ -8235,6 +8603,11 @@
 20719
 ],
 [
+"a126335",
+"a202113",
+20747
+],
+[
 "a126340",
 "a132052",
 20738
@@ -8263,6 +8636,16 @@
 "a126340",
 "a212969",
 20723
+],
+[
+"a126340",
+"a214219",
+20747
+],
+[
+"a126409",
+"a126971",
+20747
 ],
 [
 "a126409",
@@ -8318,6 +8701,11 @@
 "a126504",
 "a213001",
 20704
+],
+[
+"a126505",
+"a212840",
+20747
 ],
 [
 "a126535",
@@ -8658,6 +9046,11 @@
 "a126774",
 "a210097",
 20709
+],
+[
+"a126792",
+"a149272",
+20747
 ],
 [
 "a126845",
@@ -9751,6 +10144,11 @@
 ],
 [
 "a134405",
+"a144970",
+20747
+],
+[
+"a134405",
 "a212094",
 20720
 ],
@@ -9868,6 +10266,11 @@
 "a134868",
 "a200711",
 20716
+],
+[
+"a134868",
+"a208363",
+20747
 ],
 [
 "a134868",
@@ -10111,6 +10514,11 @@
 ],
 [
 "a144730",
+"a209171",
+20747
+],
+[
+"a144730",
 "a209510",
 20726
 ],
@@ -10130,6 +10538,11 @@
 20740
 ],
 [
+"a144747",
+"aTZ0BL",
+20747
+],
+[
 "a144748",
 "a207676",
 20733
@@ -10143,6 +10556,11 @@
 "a144748",
 "a209385",
 20720
+],
+[
+"a144748",
+"a209863",
+20747
 ],
 [
 "a144748",
@@ -10271,6 +10689,11 @@
 ],
 [
 "a144788",
+"a210076",
+20747
+],
+[
+"a144788",
 "a212598",
 20726
 ],
@@ -10303,6 +10726,11 @@
 "a144814",
 "a211749",
 20719
+],
+[
+"a144814",
+"a214124",
+20747
 ],
 [
 "a144814",
@@ -10395,6 +10823,11 @@
 20719
 ],
 [
+"a144844",
+"a212308",
+20747
+],
+[
 "a144848",
 "a210126",
 20734
@@ -10418,6 +10851,11 @@
 "a144869",
 "a208021",
 20724
+],
+[
+"a144869",
+"a208233",
+20747
 ],
 [
 "a144869",
@@ -10481,6 +10919,11 @@
 ],
 [
 "a144907",
+"a214078",
+20747
+],
+[
+"a144907",
 "aFtrione-riccardo",
 20723
 ],
@@ -10493,6 +10936,11 @@
 "a144923",
 "a202065",
 20726
+],
+[
+"a144923",
+"a214189",
+20747
 ],
 [
 "a144925",
@@ -10528,6 +10976,11 @@
 "a144932",
 "a211897",
 20730
+],
+[
+"a144932",
+"a212157",
+20747
 ],
 [
 "a144932",
@@ -10610,9 +11063,19 @@
 20718
 ],
 [
+"a144985",
+"a202323",
+20747
+],
+[
 "a145008",
 "a200276",
 20719
+],
+[
+"a145008",
+"a207676",
+20747
 ],
 [
 "a145008",
@@ -10901,6 +11364,11 @@
 ],
 [
 "a149843",
+"a207785",
+20747
+],
+[
+"a149843",
 "a212825",
 20746
 ],
@@ -10918,6 +11386,11 @@
 "a200003",
 "a210613",
 20727
+],
+[
+"a200003",
+"a212174",
+20747
 ],
 [
 "a200005",
@@ -11101,6 +11574,11 @@
 ],
 [
 "a200166",
+"a206921",
+20747
+],
+[
+"a200166",
 "a210340",
 20736
 ],
@@ -11168,6 +11646,11 @@
 "a200184",
 "a202148",
 20733
+],
+[
+"a200184",
+"a207601",
+20747
 ],
 [
 "a200184",
@@ -11243,6 +11726,11 @@
 "a200188",
 "a212268",
 20739
+],
+[
+"a200197",
+"a209043",
+20747
 ],
 [
 "a200205",
@@ -11605,6 +12093,11 @@
 20711
 ],
 [
+"a200309",
+"aFguzmicky-dominik",
+20747
+],
+[
 "a200318",
 "a200666",
 20746
@@ -11735,6 +12228,11 @@
 20740
 ],
 [
+"a200385",
+"a213637",
+20747
+],
+[
 "a200389",
 "a211330",
 20744
@@ -11793,6 +12291,11 @@
 "a200436",
 "a211639",
 20743
+],
+[
+"a200441",
+"a202290",
+20747
 ],
 [
 "a200441",
@@ -12061,6 +12564,11 @@
 ],
 [
 "a200538",
+"a207495",
+20747
+],
+[
+"a200538",
 "a212521",
 20740
 ],
@@ -12265,6 +12773,11 @@
 20739
 ],
 [
+"a200681",
+"a211467",
+20747
+],
+[
 "a200711",
 "a202358",
 20729
@@ -12421,6 +12934,11 @@
 ],
 [
 "a202065",
+"a211707",
+20747
+],
+[
+"a202065",
 "a212286",
 20740
 ],
@@ -12438,6 +12956,11 @@
 "a202075",
 "a212309",
 20744
+],
+[
+"a202077",
+"a207404",
+20747
 ],
 [
 "a202077",
@@ -12598,6 +13121,11 @@
 "a202124",
 "a212471",
 20726
+],
+[
+"a202124",
+"a213397",
+20747
 ],
 [
 "a202125",
@@ -12855,6 +13383,11 @@
 20740
 ],
 [
+"a202220",
+"a213969",
+20747
+],
+[
 "a202230",
 "a209099",
 20741
@@ -12898,6 +13431,11 @@
 "a202239",
 "a212888",
 20727
+],
+[
+"a202244",
+"a209258",
+20747
 ],
 [
 "a202244",
@@ -13063,6 +13601,11 @@
 "a202307",
 "aFcervantes-tomas-luca",
 20734
+],
+[
+"a202314",
+"a209046",
+20747
 ],
 [
 "a202314",
@@ -13436,6 +13979,11 @@
 ],
 [
 "a202475",
+"a210714",
+20747
+],
+[
+"a202475",
 "a212275",
 20730
 ],
@@ -13725,6 +14273,11 @@
 20724
 ],
 [
+"a206600",
+"a214243",
+20747
+],
+[
 "a206645",
 "a214222",
 20733
@@ -13808,6 +14361,11 @@
 "a206703",
 "a210159",
 20719
+],
+[
+"a206703",
+"a210422",
+20747
 ],
 [
 "a206703",
@@ -13956,6 +14514,11 @@
 ],
 [
 "a206889",
+"a207985",
+20747
+],
+[
+"a206889",
 "a208004",
 20714
 ],
@@ -14048,6 +14611,11 @@
 "a206921",
 "a210613",
 20733
+],
+[
+"a206923",
+"a213114",
+20747
 ],
 [
 "a207129",
@@ -14350,6 +14918,11 @@
 20717
 ],
 [
+"a207412",
+"a212498",
+20747
+],
+[
 "a207415",
 "a208322",
 20721
@@ -14393,6 +14966,11 @@
 "a207431",
 "aFhammes-tim",
 20739
+],
+[
+"a207452",
+"a209354",
+20747
 ],
 [
 "a207452",
@@ -14443,6 +15021,11 @@
 "a207463",
 "a213884",
 20719
+],
+[
+"a207478",
+"a214106",
+20747
 ],
 [
 "a207491",
@@ -14708,6 +15291,11 @@
 "a207664",
 "a210478",
 20711
+],
+[
+"a207664",
+"aFhe-haolong",
+20747
 ],
 [
 "a207664",
@@ -15055,6 +15643,11 @@
 20711
 ],
 [
+"a207761",
+"aFgao-ruochen",
+20747
+],
+[
 "a207764",
 "a208265",
 20727
@@ -15078,6 +15671,11 @@
 "a207764",
 "a212552",
 20728
+],
+[
+"a207772",
+"a210047",
+20747
 ],
 [
 "a207780",
@@ -15140,6 +15738,11 @@
 20741
 ],
 [
+"a207788",
+"a212069",
+20747
+],
+[
 "a207793",
 "a208540",
 20723
@@ -15153,6 +15756,11 @@
 "a207793",
 "a212654",
 20720
+],
+[
+"a207793",
+"aFadamson-joshua",
+20747
 ],
 [
 "a207797",
@@ -15255,6 +15863,11 @@
 20725
 ],
 [
+"a207830",
+"a213930",
+20747
+],
+[
 "a207864",
 "a210686",
 20739
@@ -15263,6 +15876,11 @@
 "a207881",
 "a212104",
 20740
+],
+[
+"a207884",
+"a208253",
+20747
 ],
 [
 "a207887",
@@ -15278,6 +15896,11 @@
 "a207893",
 "a208581",
 20719
+],
+[
+"a207907",
+"a209247",
+20747
 ],
 [
 "a207907",
@@ -15568,6 +16191,11 @@
 "a208024",
 "a209131",
 20718
+],
+[
+"a208024",
+"a209284",
+20747
 ],
 [
 "a208024",
@@ -15898,6 +16526,11 @@
 "a208144",
 "aFtahirovic-amar",
 20739
+],
+[
+"a208147",
+"a210409",
+20747
 ],
 [
 "a208147",
@@ -16630,6 +17263,11 @@
 20725
 ],
 [
+"a208382",
+"aFstewart-archie",
+20747
+],
+[
 "a208386",
 "a209852",
 20725
@@ -16861,6 +17499,11 @@
 ],
 [
 "a208597",
+"a208937",
+20747
+],
+[
+"a208597",
 "a213178",
 20731
 ],
@@ -16983,6 +17626,11 @@
 "a208818",
 "a209937",
 20720
+],
+[
+"a208818",
+"a210285",
+20747
 ],
 [
 "a208818",
@@ -17226,6 +17874,11 @@
 ],
 [
 "a208937",
+"a209409",
+20747
+],
+[
+"a208937",
 "a209899",
 20702
 ],
@@ -17298,6 +17951,11 @@
 "a209067",
 "aTSR81",
 20711
+],
+[
+"a209075",
+"a209391",
+20747
 ],
 [
 "a209079",
@@ -17498,6 +18156,11 @@
 "a209131",
 "aFmakhlouf-nazim",
 20735
+],
+[
+"a209131",
+"aFrasgado-joao",
+20747
 ],
 [
 "a209140",
@@ -17885,6 +18548,11 @@
 20714
 ],
 [
+"a209271",
+"aFho-luke-jie-xi",
+20747
+],
+[
 "a209274",
 "aTA09P",
 20704
@@ -18211,6 +18879,11 @@
 ],
 [
 "a209360",
+"a214436",
+20747
+],
+[
+"a209360",
 "aFpatel-darsh-sachin",
 20719
 ],
@@ -18365,6 +19038,11 @@
 20737
 ],
 [
+"a209514",
+"a213121",
+20747
+],
+[
 "a209516",
 "a210114",
 20733
@@ -18373,6 +19051,11 @@
 "a209847",
 "a211558",
 20741
+],
+[
+"a209847",
+"a212225",
+20747
 ],
 [
 "a209847",
@@ -18413,6 +19096,11 @@
 "a209850",
 "a212222",
 20706
+],
+[
+"a209850",
+"a213535",
+20747
 ],
 [
 "a209850",
@@ -18688,6 +19376,11 @@
 "a209920",
 "a210460",
 20746
+],
+[
+"a209921",
+"a214183",
+20747
 ],
 [
 "a209928",
@@ -19026,6 +19719,11 @@
 ],
 [
 "a210025",
+"a212972",
+20747
+],
+[
+"a210025",
 "a213356",
 20746
 ],
@@ -19196,6 +19894,11 @@
 ],
 [
 "a210086",
+"a213004",
+20747
+],
+[
+"a210086",
 "a213772",
 20718
 ],
@@ -19360,6 +20063,11 @@
 20746
 ],
 [
+"a210121",
+"a212092",
+20747
+],
+[
 "a210126",
 "a212192",
 20736
@@ -19388,6 +20096,11 @@
 "a210129",
 "a212305",
 20730
+],
+[
+"a210132",
+"a211651",
+20747
 ],
 [
 "a210132",
@@ -19493,6 +20206,11 @@
 "a210157",
 "aTS0NV",
 20730
+],
+[
+"a210159",
+"a210456",
+20747
 ],
 [
 "a210163",
@@ -19711,6 +20429,11 @@
 ],
 [
 "a210221",
+"a210317",
+20747
+],
+[
+"a210221",
 "a211324",
 20734
 ],
@@ -19885,6 +20608,11 @@
 20738
 ],
 [
+"a210317",
+"aTH0JL",
+20747
+],
+[
 "a210318",
 "a210416",
 20711
@@ -19895,6 +20623,11 @@
 20711
 ],
 [
+"a210318",
+"aTSR81",
+20747
+],
+[
 "a210323",
 "a212738",
 20719
@@ -19903,6 +20636,11 @@
 "a210328",
 "a212683",
 20746
+],
+[
+"a210339",
+"a213011",
+20747
 ],
 [
 "a210339",
@@ -19990,6 +20728,11 @@
 20740
 ],
 [
+"a210394",
+"a213135",
+20747
+],
+[
 "a210396",
 "a211467",
 20720
@@ -20028,6 +20771,11 @@
 "a210403",
 "aTH0CD",
 20742
+],
+[
+"a210405",
+"a212307",
+20747
 ],
 [
 "a210409",
@@ -20073,6 +20821,11 @@
 "a210422",
 "a214450",
 20746
+],
+[
+"a210424",
+"a210595",
+20747
 ],
 [
 "a210424",
@@ -20200,9 +20953,19 @@
 20731
 ],
 [
+"a210472",
+"aFevans-jake",
+20747
+],
+[
 "a210473",
 "a211594",
 20740
+],
+[
+"a210473",
+"a213759",
+20747
 ],
 [
 "a210477",
@@ -20223,6 +20986,11 @@
 "a210477",
 "a213356",
 20719
+],
+[
+"a210477",
+"a213692",
+20747
 ],
 [
 "a210478",
@@ -20283,6 +21051,11 @@
 "a210498",
 "aFcarbajal-alejandro-garcia",
 20720
+],
+[
+"a210504",
+"a213001",
+20747
 ],
 [
 "a210504",
@@ -20365,6 +21138,11 @@
 20725
 ],
 [
+"a210535",
+"a213828",
+20747
+],
+[
 "a210536",
 "a212788",
 20743
@@ -20408,6 +21186,11 @@
 "a210575",
 "a212932",
 20718
+],
+[
+"a210590",
+"a213098",
+20747
 ],
 [
 "a210595",
@@ -20468,6 +21251,11 @@
 "a210623",
 "a211707",
 20736
+],
+[
+"a210623",
+"a212482",
+20747
 ],
 [
 "a210623",
@@ -20546,8 +21334,18 @@
 ],
 [
 "a210723",
+"a211394",
+20747
+],
+[
+"a210723",
 "a214558",
 20746
+],
+[
+"a210726",
+"a213923",
+20747
 ],
 [
 "a210731",
@@ -20680,6 +21478,11 @@
 20727
 ],
 [
+"a211317",
+"a213802",
+20747
+],
+[
 "a211323",
 "a211898",
 20719
@@ -20698,6 +21501,11 @@
 "a211329",
 "a213279",
 20726
+],
+[
+"a211329",
+"a213566",
+20747
 ],
 [
 "a211330",
@@ -20856,6 +21664,11 @@
 ],
 [
 "a211490",
+"a212630",
+20747
+],
+[
+"a211490",
 "a212949",
 20734
 ],
@@ -20863,6 +21676,11 @@
 "a211491",
 "a212029",
 20730
+],
+[
+"a211497",
+"a212262",
+20747
 ],
 [
 "a211497",
@@ -21003,6 +21821,11 @@
 "a211621",
 "a214112",
 20719
+],
+[
+"a211621",
+"a214201",
+20747
 ],
 [
 "a211621",
@@ -21156,6 +21979,11 @@
 ],
 [
 "a211676",
+"a212246",
+20747
+],
+[
+"a211676",
 "a213996",
 20734
 ],
@@ -21178,6 +22006,11 @@
 "a211700",
 "a212311",
 20724
+],
+[
+"a211700",
+"a212903",
+20747
 ],
 [
 "a211700",
@@ -21285,6 +22118,11 @@
 20732
 ],
 [
+"a212022",
+"aFrichards-lleyton",
+20747
+],
+[
 "a212024",
 "a213137",
 20726
@@ -21358,6 +22196,11 @@
 "a212071",
 "aFmajoli-maggioli-taentawan-taddeo",
 20739
+],
+[
+"a212071",
+"aFschneider-vaclav",
+20747
 ],
 [
 "a212077",
@@ -21455,6 +22298,11 @@
 20721
 ],
 [
+"a212134",
+"a212711",
+20747
+],
+[
 "a212137",
 "a212846",
 20726
@@ -21493,6 +22341,11 @@
 "a212171",
 "a212250",
 20727
+],
+[
+"a212171",
+"aFbernardo-martim",
+20747
 ],
 [
 "a212174",
@@ -21590,6 +22443,11 @@
 20742
 ],
 [
+"a212235",
+"a213653",
+20747
+],
+[
 "a212241",
 "a212978",
 20713
@@ -21616,6 +22474,11 @@
 ],
 [
 "a212250",
+"a213213",
+20747
+],
+[
+"a212250",
 "a213361",
 20725
 ],
@@ -21628,6 +22491,11 @@
 "a212258",
 "a213210",
 20741
+],
+[
+"a212263",
+"a212472",
+20747
 ],
 [
 "a212269",
@@ -21723,6 +22591,11 @@
 "a212460",
 "a213769",
 20733
+],
+[
+"a212460",
+"a214341",
+20747
 ],
 [
 "a212461",
@@ -22045,6 +22918,16 @@
 20732
 ],
 [
+"a212929",
+"aFhammes-tim",
+20747
+],
+[
+"a212935",
+"a213026",
+20747
+],
+[
 "a212935",
 "a214395",
 20726
@@ -22098,6 +22981,16 @@
 "a213042",
 "a213653",
 20726
+],
+[
+"a213043",
+"a213785",
+20747
+],
+[
+"a213046",
+"aFclarijs-raul",
+20747
 ],
 [
 "a213058",
@@ -22181,6 +23074,11 @@
 ],
 [
 "a213196",
+"a213619",
+20747
+],
+[
+"a213196",
 "a213996",
 20741
 ],
@@ -22193,6 +23091,11 @@
 "a213201",
 "aFsalazar-daniel",
 20733
+],
+[
+"a213210",
+"aTSY71",
+20747
 ],
 [
 "a213228",
@@ -22218,6 +23121,11 @@
 "a213535",
 "aFcervantes-tomas-luca",
 20732
+],
+[
+"a213557",
+"a213958",
+20747
 ],
 [
 "a213557",
@@ -22248,6 +23156,11 @@
 "a213608",
 "aTD0LJ",
 20739
+],
+[
+"a213610",
+"a213872",
+20747
 ],
 [
 "a213614",
@@ -22285,6 +23198,11 @@
 20742
 ],
 [
+"a213658",
+"aFgoncalves-franca-lucas",
+20747
+],
+[
 "a213743",
 "a214377",
 20719
@@ -22313,6 +23231,11 @@
 "a213805",
 "a214587",
 20746
+],
+[
+"a213815",
+"a214324",
+20747
 ],
 [
 "a213819",
@@ -22360,6 +23283,11 @@
 20726
 ],
 [
+"a213944",
+"aFmakhlouf-nazim",
+20747
+],
+[
 "a213952",
 "a214014",
 20719
@@ -22385,6 +23313,11 @@
 20726
 ],
 [
+"a214007",
+"a214016",
+20747
+],
+[
 "a214014",
 "aFabe-hirai-rodrigo-kenichi",
 20739
@@ -22393,6 +23326,11 @@
 "a214015",
 "aFesteban-torres-diego",
 20726
+],
+[
+"a214067",
+"a214431",
+20747
 ],
 [
 "a214077",
@@ -22540,6 +23478,11 @@
 20719
 ],
 [
+"aFyamamoto-shotaro",
+"aFyanagi-koyu",
+20747
+],
+[
 "aTA0G8",
 "aTCF88",
 20716
@@ -22665,6 +23608,11 @@
 20745
 ],
 [
+"w201514",
+"w239383",
+20747
+],
+[
 "w201524",
 "w220489",
 20725
@@ -22763,6 +23711,11 @@
 "w201582",
 "w215707",
 20720
+],
+[
+"w201582",
+"w217643",
+20747
 ],
 [
 "w201582",
@@ -22905,6 +23858,16 @@
 20719
 ],
 [
+"w202430",
+"w270125",
+20747
+],
+[
+"w202440",
+"w270266",
+20747
+],
+[
 "w202443",
 "w203514",
 20725
@@ -22923,6 +23886,11 @@
 "w202443",
 "w239160",
 20734
+],
+[
+"w202454",
+"w270195",
+20747
 ],
 [
 "w202464",
@@ -23066,6 +24034,11 @@
 ],
 [
 "w202604",
+"w220343",
+20747
+],
+[
+"w202604",
 "w221542",
 20733
 ],
@@ -23121,6 +24094,11 @@
 ],
 [
 "w202688",
+"w266467",
+20747
+],
+[
+"w202688",
 "wFkucmova-aneta",
 20737
 ],
@@ -23158,6 +24136,11 @@
 "w202916",
 "w222239",
 20721
+],
+[
+"w203281",
+"w216055",
+20747
 ],
 [
 "w203281",
@@ -23276,6 +24259,11 @@
 ],
 [
 "w203530",
+"w211107",
+20747
+],
+[
+"w203530",
 "w214082",
 20736
 ],
@@ -23328,6 +24316,11 @@
 "w204394",
 "w239453",
 20739
+],
+[
+"w204394",
+"w264971",
+20747
 ],
 [
 "w204411",
@@ -23430,6 +24423,11 @@
 20737
 ],
 [
+"w204419",
+"wFsigrist-isadora",
+20747
+],
+[
 "w204427",
 "w213666",
 20743
@@ -23521,6 +24519,11 @@
 ],
 [
 "w205925",
+"w220367",
+20747
+],
+[
+"w205925",
 "w220722",
 20735
 ],
@@ -23596,6 +24599,11 @@
 ],
 [
 "w206102",
+"w215077",
+20747
+],
+[
+"w206102",
 "w222017",
 20737
 ],
@@ -23613,6 +24621,11 @@
 "w206194",
 "w221062",
 20732
+],
+[
+"w206205",
+"w223415",
+20747
 ],
 [
 "w206219",
@@ -23633,6 +24646,11 @@
 "w206219",
 "w223399",
 20734
+],
+[
+"w206219",
+"w225858",
+20747
 ],
 [
 "w206219",
@@ -23801,6 +24819,11 @@
 ],
 [
 "w206362",
+"w214398",
+20747
+],
+[
+"w206362",
 "w222034",
 20720
 ],
@@ -23883,6 +24906,11 @@
 "w206420",
 "w215250",
 20746
+],
+[
+"w206420",
+"w216146",
+20747
 ],
 [
 "w206420",
@@ -24281,6 +25309,11 @@
 ],
 [
 "w211316",
+"w246493",
+20747
+],
+[
+"w211316",
 "w266393",
 20739
 ],
@@ -24318,6 +25351,11 @@
 "w211329",
 "w214319",
 20720
+],
+[
+"w211329",
+"w215398",
+20747
 ],
 [
 "w211329",
@@ -24363,6 +25401,11 @@
 "w211529",
 "w269870",
 20721
+],
+[
+"w211529",
+"w270152",
+20747
 ],
 [
 "w211533",
@@ -24468,6 +25511,11 @@
 "w211552",
 "w223325",
 20738
+],
+[
+"w211552",
+"w252493",
+20747
 ],
 [
 "w211552",
@@ -25000,6 +26048,11 @@
 20743
 ],
 [
+"w211903",
+"w266781",
+20747
+],
+[
 "w211920",
 "w266381",
 20739
@@ -25203,6 +26256,11 @@
 "w213631",
 "w216081",
 20739
+],
+[
+"w213631",
+"w220435",
+20747
 ],
 [
 "w213631",
@@ -25426,6 +26484,11 @@
 ],
 [
 "w213767",
+"w220550",
+20747
+],
+[
+"w213767",
 "w220680",
 20735
 ],
@@ -25498,6 +26561,11 @@
 "w213821",
 "w221181",
 20723
+],
+[
+"w213821",
+"w263764",
+20747
 ],
 [
 "w213887",
@@ -25628,6 +26696,11 @@
 "w213974",
 "w270104",
 20741
+],
+[
+"w213974",
+"w270168",
+20747
 ],
 [
 "w213974",
@@ -25835,6 +26908,11 @@
 20721
 ],
 [
+"w214181",
+"w266722",
+20747
+],
+[
 "w214189",
 "w214862",
 20742
@@ -25943,6 +27021,11 @@
 "w214319",
 "w216173",
 20737
+],
+[
+"w214319",
+"w220560",
+20747
 ],
 [
 "w214319",
@@ -26106,6 +27189,11 @@
 ],
 [
 "w214507",
+"w221157",
+20747
+],
+[
+"w214507",
 "w221243",
 20718
 ],
@@ -26183,6 +27271,11 @@
 "w214540",
 "w221463",
 20726
+],
+[
+"w214540",
+"w252494",
+20747
 ],
 [
 "w214540",
@@ -26401,6 +27494,11 @@
 ],
 [
 "w214826",
+"w216116",
+20747
+],
+[
+"w214826",
 "w221191",
 20728
 ],
@@ -26438,6 +27536,11 @@
 "w214839",
 "w216340",
 20739
+],
+[
+"w214839",
+"w220770",
+20747
 ],
 [
 "w214862",
@@ -26758,6 +27861,11 @@
 "w215134",
 "w222559",
 20730
+],
+[
+"w215134",
+"w263941",
+20747
 ],
 [
 "w215144",
@@ -27116,6 +28224,11 @@
 ],
 [
 "w215707",
+"w269870",
+20747
+],
+[
+"w215707",
 "w270205",
 20719
 ],
@@ -27148,6 +28261,11 @@
 "w215721",
 "w259588",
 20740
+],
+[
+"w215721",
+"wFmaia-citolino-manuela",
+20747
 ],
 [
 "w215733",
@@ -27216,6 +28334,11 @@
 ],
 [
 "w215807",
+"w220305",
+20747
+],
+[
+"w215807",
 "w220613",
 20739
 ],
@@ -27258,6 +28381,11 @@
 "w215820",
 "w222559",
 20731
+],
+[
+"w215820",
+"w264205",
+20747
 ],
 [
 "w215872",
@@ -27626,6 +28754,11 @@
 ],
 [
 "w216074",
+"w221406",
+20747
+],
+[
+"w216074",
 "w222045",
 20739
 ],
@@ -27648,6 +28781,11 @@
 "w216078",
 "w220563",
 20725
+],
+[
+"w216078",
+"w221153",
+20747
 ],
 [
 "w216078",
@@ -27776,6 +28914,11 @@
 ],
 [
 "w216107",
+"w239126",
+20747
+],
+[
+"w216107",
 "w270129",
 20734
 ],
@@ -27831,6 +28974,11 @@
 ],
 [
 "w216139",
+"w221039",
+20747
+],
+[
+"w216139",
 "w222601",
 20728
 ],
@@ -27871,6 +29019,11 @@
 ],
 [
 "w216162",
+"w222330",
+20747
+],
+[
+"w216162",
 "w260006",
 20723
 ],
@@ -27903,6 +29056,11 @@
 "w216186",
 "w265197",
 20718
+],
+[
+"w216198",
+"w267462",
+20747
 ],
 [
 "w216198",
@@ -28071,6 +29229,11 @@
 ],
 [
 "w216385",
+"w239453",
+20747
+],
+[
+"w216385",
 "w244087",
 20721
 ],
@@ -28126,6 +29289,11 @@
 ],
 [
 "w216579",
+"w260066",
+20747
+],
+[
+"w216579",
 "wFwerner-caroline",
 20731
 ],
@@ -28176,6 +29344,11 @@
 ],
 [
 "w219331",
+"w260766",
+20747
+],
+[
+"w219331",
 "w263928",
 20746
 ],
@@ -28193,6 +29366,11 @@
 "w219331",
 "wFdotsenko-ekaterina",
 20728
+],
+[
+"w219625",
+"w259599",
+20747
 ],
 [
 "w219625",
@@ -28378,6 +29556,11 @@
 "w220164",
 "w264959",
 20738
+],
+[
+"w220164",
+"w267435",
+20747
 ],
 [
 "w220289",
@@ -28616,6 +29799,11 @@
 ],
 [
 "w220429",
+"w270129",
+20747
+],
+[
+"w220429",
 "w270159",
 20740
 ],
@@ -28778,6 +29966,11 @@
 "w220493",
 "w260503",
 20745
+],
+[
+"w220496",
+"w220827",
+20747
 ],
 [
 "w220496",
@@ -29088,6 +30281,11 @@
 "w220722",
 "wT322417.0",
 20731
+],
+[
+"w220733",
+"w222980",
+20747
 ],
 [
 "w220733",
@@ -29466,6 +30664,11 @@
 ],
 [
 "w221096",
+"w252587",
+20747
+],
+[
+"w221096",
 "w259690",
 20730
 ],
@@ -29503,6 +30706,11 @@
 "w221103",
 "w270082",
 20727
+],
+[
+"w221106",
+"w222215",
+20747
 ],
 [
 "w221116",
@@ -29755,6 +30963,11 @@
 20723
 ],
 [
+"w221187",
+"w270132",
+20747
+],
+[
 "w221191",
 "w222239",
 20720
@@ -29798,6 +31011,11 @@
 "w221192",
 "wFdotsenko-ekaterina",
 20730
+],
+[
+"w221195",
+"w260003",
+20747
 ],
 [
 "w221197",
@@ -29991,6 +31209,11 @@
 ],
 [
 "w221257",
+"w221883",
+20747
+],
+[
+"w221257",
 "w222034",
 20722
 ],
@@ -30003,6 +31226,11 @@
 "w221257",
 "w233741",
 20726
+],
+[
+"w221258",
+"w222602",
+20747
 ],
 [
 "w221258",
@@ -30038,6 +31266,11 @@
 "w221265",
 "w259690",
 20718
+],
+[
+"w221265",
+"w263881",
+20747
 ],
 [
 "w221278",
@@ -30128,6 +31361,11 @@
 "w221382",
 "w259105",
 20733
+],
+[
+"w221382",
+"w263853",
+20747
 ],
 [
 "w221382",
@@ -30330,6 +31568,11 @@
 20732
 ],
 [
+"w221474",
+"w270265",
+20747
+],
+[
 "w221486",
 "w221585",
 20733
@@ -30373,6 +31616,11 @@
 "w221515",
 "w239476",
 20734
+],
+[
+"w221515",
+"w240161",
+20747
 ],
 [
 "w221515",
@@ -30420,6 +31668,16 @@
 20740
 ],
 [
+"w221621",
+"w264278",
+20747
+],
+[
+"w221624",
+"w259996",
+20747
+],
+[
 "w221626",
 "w222980",
 20738
@@ -30435,9 +31693,19 @@
 20733
 ],
 [
+"w221657",
+"w263948",
+20747
+],
+[
 "w221741",
 "w265628",
 20740
+],
+[
+"w221746",
+"w223286",
+20747
 ],
 [
 "w221746",
@@ -30463,6 +31731,11 @@
 "w221863",
 "w264278",
 20733
+],
+[
+"w221864",
+"w241745",
+20747
 ],
 [
 "w221864",
@@ -30503,6 +31776,11 @@
 "w221886",
 "w266642",
 20741
+],
+[
+"w221886",
+"w267540",
+20747
 ],
 [
 "w221886",
@@ -30666,6 +31944,11 @@
 ],
 [
 "w221994",
+"w260966",
+20747
+],
+[
+"w221994",
 "w264971",
 20733
 ],
@@ -30713,6 +31996,11 @@
 "w222034",
 "w230882",
 20740
+],
+[
+"w222034",
+"w258199",
+20747
 ],
 [
 "w222034",
@@ -30768,6 +32056,11 @@
 "w222092",
 "w264962",
 20727
+],
+[
+"w222092",
+"w270104",
+20747
 ],
 [
 "w222145",
@@ -30896,6 +32189,11 @@
 ],
 [
 "w222294",
+"w264069",
+20747
+],
+[
+"w222294",
 "w264207",
 20739
 ],
@@ -30920,9 +32218,19 @@
 20725
 ],
 [
+"w222296",
+"w267420",
+20747
+],
+[
 "w222346",
 "w222891",
 20733
+],
+[
+"w222346",
+"w270133",
+20747
 ],
 [
 "w222347",
@@ -30973,6 +32281,11 @@
 "w222391",
 "wFozdemir-piraye",
 20722
+],
+[
+"w222396",
+"w237481",
+20747
 ],
 [
 "w222396",
@@ -31110,6 +32423,11 @@
 20728
 ],
 [
+"w222554",
+"w270336",
+20747
+],
+[
 "w222558",
 "w238205",
 20741
@@ -31213,6 +32531,11 @@
 "w222667",
 "w223163",
 20733
+],
+[
+"w222667",
+"w259623",
+20747
 ],
 [
 "w222667",
@@ -31361,6 +32684,11 @@
 ],
 [
 "w222918",
+"w260433",
+20747
+],
+[
+"w222918",
 "w261098",
 20740
 ],
@@ -31368,6 +32696,16 @@
 "w222918",
 "w267845",
 20733
+],
+[
+"w222919",
+"w223333",
+20747
+],
+[
+"w222944",
+"w260528",
+20747
 ],
 [
 "w222944",
@@ -31825,9 +33163,24 @@
 20746
 ],
 [
+"w223399",
+"wFsviglerova-pavla",
+20747
+],
+[
+"w223404",
+"w239454",
+20747
+],
+[
 "w223404",
 "w267616",
 20732
+],
+[
+"w223410",
+"w260032",
+20747
 ],
 [
 "w223411",
@@ -31838,6 +33191,11 @@
 "w223411",
 "w268778",
 20732
+],
+[
+"w223411",
+"wFtsai-chen-yun",
+20747
 ],
 [
 "w223415",
@@ -31858,6 +33216,11 @@
 "w223418",
 "w264228",
 20727
+],
+[
+"w223418",
+"w266448",
+20747
 ],
 [
 "w223421",
@@ -31911,6 +33274,11 @@
 ],
 [
 "w225850",
+"w266569",
+20747
+],
+[
+"w225850",
 "wFkucmova-aneta",
 20738
 ],
@@ -31918,6 +33286,11 @@
 "w225854",
 "w264962",
 20726
+],
+[
+"w225854",
+"w270379",
+20747
 ],
 [
 "w225858",
@@ -32305,6 +33678,11 @@
 20733
 ],
 [
+"w238184",
+"w260172",
+20747
+],
+[
 "w238205",
 "w246493",
 20742
@@ -32318,6 +33696,11 @@
 "w239158",
 "w242450",
 20727
+],
+[
+"w239158",
+"w260951",
+20747
 ],
 [
 "w239158",
@@ -32550,6 +33933,11 @@
 20740
 ],
 [
+"w245077",
+"w266849",
+20747
+],
+[
 "w245079",
 "w260510",
 20720
@@ -32586,6 +33974,11 @@
 ],
 [
 "w247669",
+"w260847",
+20747
+],
+[
+"w247669",
 "w266376",
 20720
 ],
@@ -32593,6 +33986,11 @@
 "w247669",
 "w270133",
 20718
+],
+[
+"w248662",
+"w252582",
+20747
 ],
 [
 "w248665",
@@ -32676,6 +34074,11 @@
 ],
 [
 "w252519",
+"w267932",
+20747
+],
+[
+"w252519",
 "w270148",
 20734
 ],
@@ -32750,6 +34153,11 @@
 20718
 ],
 [
+"w253679",
+"w260762",
+20747
+],
+[
 "w253681",
 "w256682",
 20719
@@ -32815,6 +34223,11 @@
 20740
 ],
 [
+"w255662",
+"w267885",
+20747
+],
+[
 "w255666",
 "w264998",
 20734
@@ -32858,6 +34271,11 @@
 "w257881",
 "w260865",
 20740
+],
+[
+"w257881",
+"w266574",
+20747
 ],
 [
 "w257901",
@@ -33065,6 +34483,11 @@
 20734
 ],
 [
+"w259946",
+"w263633",
+20747
+],
+[
 "w259964",
 "w267400",
 20719
@@ -33196,6 +34619,11 @@
 ],
 [
 "w260159",
+"w260226",
+20747
+],
+[
+"w260159",
 "w264252",
 20726
 ],
@@ -33213,6 +34641,11 @@
 "w260170",
 "w264064",
 20724
+],
+[
+"w260206",
+"w260598",
+20747
 ],
 [
 "w260206",
@@ -33340,6 +34773,11 @@
 20731
 ],
 [
+"w260503",
+"w270208",
+20747
+],
+[
 "w260510",
 "w266800",
 20722
@@ -33423,6 +34861,11 @@
 "w260613",
 "w264064",
 20742
+],
+[
+"w260613",
+"w267739",
+20747
 ],
 [
 "w260613",
@@ -33695,6 +35138,11 @@
 20733
 ],
 [
+"w260839",
+"w270313",
+20747
+],
+[
 "w260847",
 "w266467",
 20732
@@ -33773,6 +35221,11 @@
 "w261038",
 "w270065",
 20743
+],
+[
+"w261049",
+"w266729",
+20747
 ],
 [
 "w261049",
@@ -33871,6 +35324,11 @@
 ],
 [
 "w261964",
+"w267927",
+20747
+],
+[
+"w261964",
 "w269754",
 20726
 ],
@@ -33913,6 +35371,11 @@
 "w263697",
 "w269753",
 20726
+],
+[
+"w263701",
+"w264130",
+20747
 ],
 [
 "w263701",
@@ -34185,6 +35648,11 @@
 20719
 ],
 [
+"w264207",
+"w265692",
+20747
+],
+[
 "w264208",
 "w267412",
 20726
@@ -34248,6 +35716,11 @@
 "w264961",
 "w270109",
 20732
+],
+[
+"w264962",
+"w266464",
+20747
 ],
 [
 "w264962",
@@ -34570,6 +36043,11 @@
 20720
 ],
 [
+"w267429",
+"w270317",
+20747
+],
+[
 "w267431",
 "wFnikolaieva-anastasiia",
 20740
@@ -34595,9 +36073,24 @@
 20726
 ],
 [
+"w267630",
+"wFzajickova-katerina",
+20747
+],
+[
 "w267633",
 "w269923",
 20740
+],
+[
+"w267633",
+"wFlongpre-marylee",
+20747
+],
+[
+"w267651",
+"w269270",
+20747
 ],
 [
 "w267841",
@@ -34608,6 +36101,11 @@
 "w267841",
 "wFilieva-ilina",
 20739
+],
+[
+"w267841",
+"wFlopatetska-daria",
+20747
 ],
 [
 "w267841",
@@ -34646,6 +36144,11 @@
 ],
 [
 "w269717",
+"w270560",
+20747
+],
+[
+"w269717",
 "wFborderia-yaiza",
 20745
 ],
@@ -34663,6 +36166,11 @@
 "w269811",
 "w270329",
 20731
+],
+[
+"w269835",
+"wFgravenor-romy",
+20747
 ],
 [
 "w269866",
@@ -34700,6 +36208,11 @@
 20736
 ],
 [
+"w270171",
+"wFxu-baotong",
+20747
+],
+[
 "w270182",
 "w270262",
 20741
@@ -34735,6 +36248,11 @@
 20733
 ],
 [
+"w270220",
+"wFbarsukov-daria",
+20747
+],
+[
 "w270258",
 "w270330",
 20719
@@ -34763,6 +36281,11 @@
 "w270315",
 "w270320",
 20719
+],
+[
+"w270401",
+"wFreusch-gloria",
+20747
 ],
 [
 "w270551",
@@ -34852,16 +36375,6 @@
 "2026_wta.csv+wta_ongoing_tourneys.csv": 20260525
 },
 "updates": [
-{
-"applied": 0,
-"at": "2026-10-03 03:10 CEST",
-"by_level": {},
-"dup_skipped": 0,
-"enriched": 0,
-"fs_new_events": 0,
-"new_players": 0,
-"tml_rows": {}
-},
 {
 "applied": 1,
 "at": "2026-10-03 05:34 CEST",
@@ -35639,6 +37152,28 @@
 "tml_rows": {
 "M_chall": 27,
 "M_main": 9
+}
+},
+{
+"applied": 252,
+"at": "2026-10-21 17:50 CEST",
+"by_level": {
+"M_chall": 9,
+"M_itf": 116,
+"M_tour": 11,
+"W_itf": 109,
+"W_tour": 7
+},
+"dup_skipped": 29,
+"enriched": 1,
+"fs_new_events": 263,
+"live_steps": 28,
+"new_players": 16,
+"online_steps": 210,
+"tml_rows": {
+"M_chall": 7,
+"M_main": 11,
+"W_main": 8
 }
 }
 ]
