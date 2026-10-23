@@ -778,18 +778,22 @@
 2026-2092|Aliaksandra Sasnovich|Daria Kasatkina|R32
 2026-2092|Belinda Bencic|Jelena Ostapenko|R32
 2026-2092|Diana Shnaider|Alexandra Eala|R16
+2026-2092|Diana Shnaider|Iva Jovic|QF
 2026-2092|Diana Shnaider|Yulia Putintseva|R32
 2026-2092|Ekaterina Alexandrova|Hanyu Guo|R32
 2026-2092|Ekaterina Alexandrova|Marta Kostyuk|R16
+2026-2092|Elena Rybakina|Katarzyna Kawa|QF
 2026-2092|Elena Rybakina|Polina Kudermetova|R16
 2026-2092|Iva Jovic|Jasmine Paolini|R16
 2026-2092|Jasmine Paolini|Anhelina Kalinina|R32
 2026-2092|Katarzyna Kawa|Belinda Bencic|R16
 2026-2092|Katarzyna Kawa|Daria Snigur|R32
 2026-2092|Leylah Fernandez|Aliaksandra Sasnovich|R16
+2026-2092|Leylah Fernandez|Ekaterina Alexandrova|QF
 2026-2092|Leylah Fernandez|Elise Mertens|R32
 2026-2092|Marie Bouzkova|Anastasia Zakharova|R16
 2026-2092|Marie Bouzkova|Kamilla Rakhimova|R32
+2026-2092|Marie Bouzkova|Sara Bejlek|QF
 2026-2092|Polina Kudermetova|Cristina Bucsa|R32
 2026-2092|Sara Bejlek|Alycia Parks|R32
 2026-2092|Sara Bejlek|Sorana Cirstea|R16
@@ -2398,6 +2402,7 @@
 2026-3185|Filip Misolic|Felix Gill|R32
 2026-3185|Filip Misolic|Izan Almazan Valiente|R16
 2026-3185|Filippo Romano|Filip Cristian Jianu|R32
+2026-3185|Filippo Romano|Matthew William Donald|QF
 2026-3185|Filippo Romano|Yanaki Milev|R16
 2026-3185|Francesco Forti|Federico Bondioli|R16
 2026-3185|Francesco Forti|Jonas Forejtek|R32
@@ -2406,11 +2411,13 @@
 2026-3185|Matthew William Donald|Carlos Sanchez Jover|R32
 2026-3185|Matthew William Donald|Henry Searle|R16
 2026-3185|Max Houkes|Franco Agamenone|R32
+2026-3185|Michele Ribecai|Filip Misolic|QF
 2026-3185|Michele Ribecai|Jacopo Vasami|R32
 2026-3185|Michele Ribecai|Max Houkes|R16
 2026-3185|Oriol Roca Batalla|Dimitris Sakellaridis|R16
 2026-3185|Oriol Roca Batalla|Radu Mihai Papoe|R32
 2026-3185|Samuele Pieri|Miguel Damas|R32
+2026-3185|Sandro Kopp|Alex Marti Pujolras|QF
 2026-3185|Sandro Kopp|Gianluca Cadenasso|R32
 2026-3185|Sandro Kopp|Samuele Pieri|R16
 2026-3185|Yanaki Milev|Lorenzo Giustino|R32
@@ -2666,13 +2673,17 @@
 2026-3503|Ugo Blanchet|Billy Harris|R32
 2026-3503|Yanis Ghazouani Durand|Leo Raquillet|R32
 2026-405|Ann Li|Emerson Jones|R32
+2026-405|Ann Li|Lilli Tagger|QF
 2026-405|Ann Li|Zeynep Sonmez|R16
 2026-405|Antonia Ruzic|Kayla Day|R16
 2026-405|Antonia Ruzic|Paula Badosa|R32
 2026-405|Ashlyn Krueger|Janice Tjen|R32
 2026-405|Ashlyn Krueger|Lanlana Tararudee|R16
+2026-405|Ashlyn Krueger|Talia Gibson|QF
 2026-405|Katerina Siniakova|Magda Linette|R16
+2026-405|Katerina Siniakova|Mary Stoiana|QF
 2026-405|Katerina Siniakova|Peyton Stearns|R32
+2026-405|Katie Boulter|Antonia Ruzic|QF
 2026-405|Katie Boulter|Himeno Sakatsume|R32
 2026-405|Katie Boulter|Viktorija Golubic|R16
 2026-405|Kayla Day|Sofia Kenin|R32
@@ -3236,6 +3247,7 @@
 2026-496|Stan Wawrinka|Martin Landaluce|R32
 2026-496|Taylor Fritz|Pierre-Hugues Herbert|R16
 2026-496|Tommy Paul|Benjamin Bonzi|R16
+2026-496|Tommy Paul|Corentin Moutet|QF
 2026-496|Vitaliy Sachko|Otto Virtanen|Q1
 2026-500|Alex Bolt|Jamie Mackenzie|Q1
 2026-500|Alexander Zverev|Raphael Collignon|QF
@@ -4337,12 +4349,14 @@
 2026-6965|Andre Ilagan|Khumoyun Sultanov|R16
 2026-6965|Andre Ilagan|Mert Alkaya|R32
 2026-6965|Coleman Wong|Jake Delaney|R32
+2026-6965|Coleman Wong|Jay Friend|QF
 2026-6965|Coleman Wong|Kasidit Samrej|R16
 2026-6965|Cruz Hewitt|Rigele Te|R32
 2026-6965|Fajing Sun|Qian Sun|R32
 2026-6965|James McCabe|Elias Ymer|R32
 2026-6965|Jay Friend|James McCabe|R16
 2026-6965|Jay Friend|Ognjen Milic|R32
+2026-6965|Jie Cui|Akira Santillan|QF
 2026-6965|Jie Cui|Yibing Wu|R16
 2026-6965|Jie Cui|Yu Hsiou Hsu|R32
 2026-6965|Kasidit Samrej|Rio Noguchi|R32
@@ -4350,7 +4364,9 @@
 2026-6965|Keegan Smith|Max Purcell|R32
 2026-6965|Khumoyun Sultanov|Luca Castelnuovo|R32
 2026-6965|Liam Broady|Dominik Palan|R32
+2026-6965|Tristan Schoolkate|Keegan Smith|QF
 2026-6965|Tristan Schoolkate|Sergey Fomin|R32
+2026-6965|Yi Zhou|Andre Ilagan|QF
 2026-6965|Yi Zhou|Koki Matsuda|R32
 2026-6965|Yi Zhou|Zhizhen Zhang|R16
 2026-6965|Yibing Wu|Hayato Matsuoka|R32
@@ -4715,6 +4731,7 @@
 2026-7485|David Goffin|Remy Bertola|R32
 2026-7485|Federico Cina|Joel Schwaerzler|Q1
 2026-7485|Federico Cina|Remy Bertola|Q2
+2026-7485|Francisco Cerundolo|Clement Chidekh|QF
 2026-7485|Francisco Cerundolo|Martin Damm|R16
 2026-7485|Gauthier Onclin|Harry Wendelken|Q1
 2026-7485|Jacob Fearnley|Hugo Gaston|R32
@@ -4867,6 +4884,7 @@
 2026-7740|Zhizhen Zhang|Roman Safiullin|QF
 2026-7742|Alexander Ritschard|Carlos Taberner|R32
 2026-7742|Alexander Ritschard|Raul Brancaccio|R16
+2026-7742|Alexander Ritschard|Sumit Nagal|QF
 2026-7742|Andrea Pellegrino|Pol Martin Tiffon|R32
 2026-7742|Andrej Martin|Tiago Torres|R32
 2026-7742|Benjamin Hassan|Nikolas Sanchez Izquierdo|R32
@@ -4878,6 +4896,7 @@
 2026-7742|Henrique Rocha|Thiago Monteiro|R16
 2026-7742|Marco Cecchinato|Vilius Gaubas|R32
 2026-7742|Marco Trungelliti|Carlo Alberto Caniato|R16
+2026-7742|Marco Trungelliti|Matej Dodig|QF
 2026-7742|Marco Trungelliti|Tiago Pereira|R32
 2026-7742|Matej Dodig|Joao Domingues|R32
 2026-7742|Matej Dodig|Marco Cecchinato|R16
@@ -5982,6 +6001,7 @@
 2026-9410|Alexander Bublik|Fabian Marozsan|R16
 2026-9410|Alexander Shevchenko|Daniil Glinka|Q1
 2026-9410|Daniil Medvedev|Sho Shimabukuro|R16
+2026-9410|Daniil Medvedev|Terence Atmane|QF
 2026-9410|Fabian Marozsan|Timofey Skatov|R32
 2026-9410|Facundo Diaz Acosta|Thiago Agustin Tirante|R32
 2026-9410|Gabriel Diallo|Harold Mayot|Q1
@@ -5993,6 +6013,7 @@
 2026-9410|Mattia Bellucci|Tomas Martin Etcheverry|R32
 2026-9410|Mikhail Kukushkin|Stefanos Sakellaridis|R32
 2026-9410|Nikoloz Basilashvili|Adam Walton|Q2
+2026-9410|Nikoloz Basilashvili|Adrian Mannarino|QF
 2026-9410|Nikoloz Basilashvili|Facundo Diaz Acosta|R16
 2026-9410|Nikoloz Basilashvili|Marin Cilic|R32
 2026-9410|Nikoloz Basilashvili|Taro Daniel|Q1
@@ -6004,6 +6025,7 @@
 2026-9410|Stefanos Sakellaridis|Alexander Shevchenko|Q2
 2026-9410|Stefanos Sakellaridis|Petr Bar Biryukov|Q1
 2026-9410|Stefanos Tsitsipas|Aleksandar Kovacevic|R32
+2026-9410|Stefanos Tsitsipas|James Duckworth|QF
 2026-9410|Stefanos Tsitsipas|Mikhail Kukushkin|R16
 2026-9410|Terence Atmane|Mattia Bellucci|R16
 2026-9410|Terence Atmane|Rinky Hijikata|R32
