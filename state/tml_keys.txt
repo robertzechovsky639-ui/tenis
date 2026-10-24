@@ -782,6 +782,7 @@
 2026-2092|Diana Shnaider|Yulia Putintseva|R32
 2026-2092|Ekaterina Alexandrova|Hanyu Guo|R32
 2026-2092|Ekaterina Alexandrova|Marta Kostyuk|R16
+2026-2092|Elena Rybakina|Diana Shnaider|SF
 2026-2092|Elena Rybakina|Katarzyna Kawa|QF
 2026-2092|Elena Rybakina|Polina Kudermetova|R16
 2026-2092|Iva Jovic|Jasmine Paolini|R16
@@ -791,6 +792,7 @@
 2026-2092|Leylah Fernandez|Aliaksandra Sasnovich|R16
 2026-2092|Leylah Fernandez|Ekaterina Alexandrova|QF
 2026-2092|Leylah Fernandez|Elise Mertens|R32
+2026-2092|Leylah Fernandez|Marie Bouzkova|SF
 2026-2092|Marie Bouzkova|Anastasia Zakharova|R16
 2026-2092|Marie Bouzkova|Kamilla Rakhimova|R32
 2026-2092|Marie Bouzkova|Sara Bejlek|QF
@@ -2403,6 +2405,7 @@
 2026-3185|Filip Misolic|Izan Almazan Valiente|R16
 2026-3185|Filippo Romano|Filip Cristian Jianu|R32
 2026-3185|Filippo Romano|Matthew William Donald|QF
+2026-3185|Filippo Romano|Sandro Kopp|SF
 2026-3185|Filippo Romano|Yanaki Milev|R16
 2026-3185|Francesco Forti|Federico Bondioli|R16
 2026-3185|Francesco Forti|Jonas Forejtek|R32
@@ -2415,6 +2418,7 @@
 2026-3185|Michele Ribecai|Jacopo Vasami|R32
 2026-3185|Michele Ribecai|Max Houkes|R16
 2026-3185|Oriol Roca Batalla|Dimitris Sakellaridis|R16
+2026-3185|Oriol Roca Batalla|Francesco Forti|QF
 2026-3185|Oriol Roca Batalla|Radu Mihai Papoe|R32
 2026-3185|Samuele Pieri|Miguel Damas|R32
 2026-3185|Sandro Kopp|Alex Marti Pujolras|QF
@@ -2681,9 +2685,11 @@
 2026-405|Ann Li|Zeynep Sonmez|R16
 2026-405|Antonia Ruzic|Kayla Day|R16
 2026-405|Antonia Ruzic|Paula Badosa|R32
+2026-405|Ashlyn Krueger|Ann Li|SF
 2026-405|Ashlyn Krueger|Janice Tjen|R32
 2026-405|Ashlyn Krueger|Lanlana Tararudee|R16
 2026-405|Ashlyn Krueger|Talia Gibson|QF
+2026-405|Katerina Siniakova|Katie Boulter|SF
 2026-405|Katerina Siniakova|Magda Linette|R16
 2026-405|Katerina Siniakova|Mary Stoiana|QF
 2026-405|Katerina Siniakova|Peyton Stearns|R32
@@ -3253,6 +3259,7 @@
 2026-496|Stan Wawrinka|Martin Landaluce|R32
 2026-496|Taylor Fritz|Daniel Altmaier|QF
 2026-496|Taylor Fritz|Pierre-Hugues Herbert|R16
+2026-496|Taylor Fritz|Tommy Paul|SF
 2026-496|Tommy Paul|Benjamin Bonzi|R16
 2026-496|Tommy Paul|Corentin Moutet|QF
 2026-496|Vitaliy Sachko|Otto Virtanen|Q1
@@ -4358,6 +4365,7 @@
 2026-6965|Coleman Wong|Jake Delaney|R32
 2026-6965|Coleman Wong|Jay Friend|QF
 2026-6965|Coleman Wong|Kasidit Samrej|R16
+2026-6965|Coleman Wong|Yi Zhou|SF
 2026-6965|Cruz Hewitt|Rigele Te|R32
 2026-6965|Fajing Sun|Qian Sun|R32
 2026-6965|James McCabe|Elias Ymer|R32
@@ -4371,6 +4379,7 @@
 2026-6965|Keegan Smith|Max Purcell|R32
 2026-6965|Khumoyun Sultanov|Luca Castelnuovo|R32
 2026-6965|Liam Broady|Dominik Palan|R32
+2026-6965|Tristan Schoolkate|Jie Cui|SF
 2026-6965|Tristan Schoolkate|Keegan Smith|QF
 2026-6965|Tristan Schoolkate|Sergey Fomin|R32
 2026-6965|Yi Zhou|Andre Ilagan|QF
@@ -4893,6 +4902,7 @@
 2026-7740|Zhizhen Zhang|Jaime Faria|R16
 2026-7740|Zhizhen Zhang|Roman Safiullin|QF
 2026-7742|Alexander Ritschard|Carlos Taberner|R32
+2026-7742|Alexander Ritschard|Marco Trungelliti|SF
 2026-7742|Alexander Ritschard|Raul Brancaccio|R16
 2026-7742|Alexander Ritschard|Sumit Nagal|QF
 2026-7742|Andrea Pellegrino|Pol Martin Tiffon|R32
@@ -4917,6 +4927,7 @@
 2026-7742|Sumit Nagal|Benjamin Hassan|R16
 2026-7742|Svyatoslav Gulin|Andrea Pellegrino|QF
 2026-7742|Svyatoslav Gulin|Andrej Martin|R16
+2026-7742|Svyatoslav Gulin|Elmer Moller|SF
 2026-7742|Svyatoslav Gulin|Patrick Schoen|R32
 2026-7742|Thiago Monteiro|Alejandro Moro Canas|R32
 2026-7746|Aleksandar Vukic|Hayato Matsuoka|R32
@@ -6013,6 +6024,7 @@
 2026-9410|Alexander Bublik|Fabian Marozsan|R16
 2026-9410|Alexander Bublik|Karen Khachanov|QF
 2026-9410|Alexander Shevchenko|Daniil Glinka|Q1
+2026-9410|Daniil Medvedev|Alexander Bublik|SF
 2026-9410|Daniil Medvedev|Sho Shimabukuro|R16
 2026-9410|Daniil Medvedev|Terence Atmane|QF
 2026-9410|Fabian Marozsan|Timofey Skatov|R32
@@ -6029,6 +6041,7 @@
 2026-9410|Nikoloz Basilashvili|Adrian Mannarino|QF
 2026-9410|Nikoloz Basilashvili|Facundo Diaz Acosta|R16
 2026-9410|Nikoloz Basilashvili|Marin Cilic|R32
+2026-9410|Nikoloz Basilashvili|Stefanos Tsitsipas|SF
 2026-9410|Nikoloz Basilashvili|Taro Daniel|Q1
 2026-9410|Rei Sakamoto|Amir Omarkhanov|Q1
 2026-9410|Rei Sakamoto|Gabriel Diallo|Q2
