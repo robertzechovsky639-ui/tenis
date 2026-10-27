@@ -251,6 +251,10 @@
 "Hard",
 3
 ],
+"M|brest open groupe vert": [
+"Hard",
+3
+],
 "M|brisbane": [
 "Hard",
 4
@@ -2775,6 +2779,10 @@
 "Hard",
 1
 ],
+"M|m fergana": [
+"Hard",
+0
+],
 "M|m figueira da foz": [
 "Hard",
 1
@@ -3036,6 +3044,10 @@
 1
 ],
 "M|m javea": [
+"Clay",
+0
+],
+"M|m joao pessoa": [
 "Clay",
 0
 ],
@@ -3317,7 +3329,7 @@
 ],
 "M|m malta": [
 "Hard",
-0
+1
 ],
 "M|m manacor": [
 "Hard",
@@ -7697,7 +7709,7 @@
 ],
 "W|w monastir": [
 "Hard",
-1
+0
 ],
 "W|w montemor o novo": [
 "Hard",
