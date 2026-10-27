@@ -292,6 +292,7 @@
 2026-1056|Alexandra Eala|Mika Stojsavljevic|R32
 2026-1056|Alycia Parks|Xinyu Wang|R32
 2026-1056|Elise Mertens|Moyuka Uchijima|R32
+2026-1056|Maya Joint|Sorana Cirstea|R32
 2026-1056|Talia Gibson|Daria Kasatkina|R32
 2026-1075|Ann Li|Aryna Sabalenka|R32
 2026-1075|Ann Li|Camila Osorio|R64
@@ -1308,6 +1309,8 @@
 2026-2941|Yunchaokete Bu|Colton Smith|QF
 2026-2941|Yunchaokete Bu|Evan Zhu|R32
 2026-2941|Yunchaokete Bu|Yibing Wu|R16
+2026-2951|Daniel Milavsky|Harry Wendelken|R32
+2026-2951|Mees Rottgering|Alexis Galarneau|R32
 2026-2971|Andres Andrade|Abdullah Shelbayh|R32
 2026-2971|Andres Andrade|Darwin Blanch|R16
 2026-2971|Colton Smith|Stefan Kozlov|R32
@@ -2595,9 +2598,12 @@
 2026-322|Nishesh Basavareddy|Kilian Feldbausch|Q2
 2026-322|Raul Brancaccio|Tyler Zink|Q1
 2026-328|Aleksandar Kovacevic|James Duckworth|Q1
+2026-328|Casper Ruud|Dominic Stricker|R32
 2026-328|Daniel Altmaier|Henry Bernet|Q1
+2026-328|Daniel Altmaier|Juan Manuel Cerundolo|R32
 2026-328|Giovanni Mpetshi Perricard|Aleksandar Kovacevic|Q2
 2026-328|Giovanni Mpetshi Perricard|Sebastian Baez|Q1
+2026-328|Holger Rune|Quentin Halys|R32
 2026-328|Juan Manuel Cerundolo|Daniel Altmaier|Q2
 2026-328|Juan Manuel Cerundolo|Zachary Svajda|Q1
 2026-328|Mika Brunold|Jaime Faria|Q1
@@ -2654,10 +2660,15 @@
 2026-337|Adrian Mannarino|Alex Molcan|Q2
 2026-337|Adrian Mannarino|Thiago Agustin Tirante|Q1
 2026-337|Alex Molcan|Hamad Medjedovic|Q1
+2026-337|Alex de Minaur|Tomas Machac|R32
+2026-337|Arthur Fery|Jacob Fearnley|R32
 2026-337|Fabian Marozsan|Sebastian Sorger|Q1
 2026-337|Jacob Fearnley|Lorenzo Sonego|Q2
 2026-337|Jacob Fearnley|Pablo Carreno Busta|Q1
+2026-337|Jakub Mensik|Lukas Neumayer|R32
+2026-337|Learner Tien|Luca Van Assche|R32
 2026-337|Lorenzo Sonego|Adolfo Daniel Vallejo|Q1
+2026-337|Luciano Darderi|Matteo Arnaldi|R32
 2026-337|Lukas Neumayer|Titouan Droguet|Q2
 2026-337|Lukas Neumayer|Vit Kopriva|Q1
 2026-337|Matteo Berrettini|Tomas Martin Etcheverry|R32
@@ -4647,6 +4658,9 @@
 2026-7316|Yosuke Watanuki|Andre Ilagan|R32
 2026-7316|Yosuke Watanuki|Jack Kennedy|QF
 2026-7316|Yosuke Watanuki|Tung-Lin Wu|R16
+2026-7341|Federico Cina|Shintaro Mochizuki|R32
+2026-7341|Gabriel Diallo|Nishesh Basavareddy|R32
+2026-7341|Otto Virtanen|Matteo Martineau|R32
 2026-7343|Kaichi Uchida|Ognjen Milic|R32
 2026-7343|Mert Alkaya|Rigele Te|R32
 2026-7343|Yuta Shimizu|Mili Poljicak|R32

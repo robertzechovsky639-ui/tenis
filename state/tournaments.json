@@ -243,6 +243,10 @@
 "Clay",
 3
 ],
+"M|brest": [
+"Hard",
+3
+],
 "M|brest ch": [
 "Hard",
 3
@@ -3359,6 +3363,10 @@
 "Clay",
 1
 ],
+"M|m mazatlan": [
+"Hard",
+0
+],
 "M|m mbombela": [
 "Hard",
 0
@@ -4443,6 +4451,10 @@
 "Hard",
 3
 ],
+"M|marketbeat open": [
+"Hard",
+3
+],
 "M|marrakech": [
 "Clay",
 4
@@ -5021,6 +5033,10 @@
 ],
 "M|sion": [
 "Clay",
+3
+],
+"M|sioux falls": [
+"Hard",
 3
 ],
 "M|sioux falls ch": [
@@ -5885,6 +5901,10 @@
 ],
 "W|cosenza": [
 "Clay",
+3
+],
+"W|courmayeur": [
+"Hard",
 3
 ],
 "W|curitiba": [
