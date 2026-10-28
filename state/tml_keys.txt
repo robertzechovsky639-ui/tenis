@@ -197,14 +197,18 @@
 2026-1023|Claire Liu|Antonia Ruzic|R32
 2026-1023|Dayana Yastremska|Katie Volynets|R32
 2026-1023|Han Shi|Alevtina Ibragimova|R32
+2026-1023|Han Shi|Dayana Yastremska|R16
+2026-1023|Harriet Dart|Janice Tjen|R16
 2026-1023|Harriet Dart|Tatiana Prozorova|R32
 2026-1023|Janice Tjen|Polina Kudermetova|R32
 2026-1023|Jil Teichmann|Simona Waltert|R32
 2026-1023|Kaitlin Quevedo|Sofia Kenin|R32
+2026-1023|Katerina Siniakova|Lanlana Tararudee|R32
 2026-1023|Lilli Tagger|Venus Williams|R32
 2026-1023|Magda Linette|Anastasia Zakharova|R32
 2026-1023|Maria Timofeeva|Teodora Kostovic|R32
 2026-1023|Paula Badosa|Carol Young Suh Lee|R32
+2026-1023|Paula Badosa|Sinja Kraus|R16
 2026-1023|Sinja Kraus|Panna Udvardy|R32
 2026-1023|Xinran Sun|Mananchaya Sawangkaew|R32
 2026-1023|Zeynep Sonmez|Sara Sorribes Tormo|R32
@@ -299,12 +303,16 @@
 2026-1045|Xin Yu Wang|Julieta Pareja|R32
 2026-1045|Xinyu Wang|Julieta Pareja|R32
 2026-1056|Alexandra Eala|Mika Stojsavljevic|R32
+2026-1056|Alexandra Eala|Talia Gibson|R16
 2026-1056|Aliaksandra Sasnovich|Nikola Bartunkova|R32
 2026-1056|Alycia Parks|Xinyu Wang|R32
 2026-1056|Cristina Bucsa|Diane Parry|R32
+2026-1056|Diana Shnaider|Aliaksandra Sasnovich|R16
 2026-1056|Ekaterina Alexandrova|Ann Li|R32
 2026-1056|Elise Mertens|Moyuka Uchijima|R32
+2026-1056|Kamilla Rakhimova|Ekaterina Alexandrova|R16
 2026-1056|Leylah Fernandez|Himeno Sakatsume|R32
+2026-1056|Maya Joint|Cristina Bucsa|R16
 2026-1056|Maya Joint|Sorana Cirstea|R32
 2026-1056|Mia Pohankova|Tereza Valentova|R32
 2026-1056|Naomi Osaka|Jasmine Paolini|R32
@@ -2634,15 +2642,18 @@
 2026-328|Casper Ruud|Dominic Stricker|R32
 2026-328|Daniel Altmaier|Henry Bernet|Q1
 2026-328|Daniel Altmaier|Juan Manuel Cerundolo|R32
+2026-328|Denis Shapovalov|Remy Bertola|R32
 2026-328|Giovanni Mpetshi Perricard|Aleksandar Kovacevic|Q2
 2026-328|Giovanni Mpetshi Perricard|Sebastian Baez|Q1
 2026-328|Holger Rune|Quentin Halys|R32
 2026-328|Hubert Hurkacz|Zizou Bergs|R32
+2026-328|Jan-Lennard Struff|Yannick Hanfmann|R32
 2026-328|Jerome Kym|Arthur Rinderknech|R32
 2026-328|Jiri Lehecka|Stan Wawrinka|R32
 2026-328|Juan Manuel Cerundolo|Daniel Altmaier|Q2
 2026-328|Juan Manuel Cerundolo|Zachary Svajda|Q1
 2026-328|Mika Brunold|Jaime Faria|Q1
+2026-328|Nuno Borges|Casper Ruud|R16
 2026-328|Nuno Borges|Mika Brunold|R32
 2026-328|Rafael Jodar|Alejandro Tabilo|R32
 2026-328|Remy Bertola|Jakub Paul|Q1
@@ -2703,6 +2714,7 @@
 2026-337|Arthur Fery|Jacob Fearnley|R32
 2026-337|Cameron Norrie|Francisco Cerundolo|R32
 2026-337|Carlos Alcaraz|Karen Khachanov|R32
+2026-337|Daniil Medvedev|Daniel Merida|R32
 2026-337|Fabian Marozsan|Sebastian Sorger|Q1
 2026-337|Flavio Cobolli|Grigor Dimitrov|R32
 2026-337|Jacob Fearnley|Lorenzo Sonego|Q2
@@ -2714,6 +2726,7 @@
 2026-337|Lukas Neumayer|Titouan Droguet|Q2
 2026-337|Lukas Neumayer|Vit Kopriva|Q1
 2026-337|Matteo Berrettini|Tomas Martin Etcheverry|R32
+2026-337|Tallon Griekspoor|Brandon Nakashima|R32
 2026-337|Titouan Droguet|Joel Schwaerzler|Q1
 2026-337|Tomas Machac|Corentin Moutet|Q1
 2026-337|Tomas Machac|Fabian Marozsan|Q2
@@ -4627,18 +4640,22 @@
 2026-710|Zeynep Sonmez|Sara Bejlek|R16
 2026-7288|Aleksandar Vukic|Christian Langmo|R32
 2026-7288|Alibek Kachmazov|Rio Noguchi|R32
+2026-7288|Billy Harris|Aleksandar Vukic|R16
 2026-7288|Billy Harris|Jangjun Kim|R32
 2026-7288|Coleman Wong|Sanhui Shin|R32
 2026-7288|Jay Friend|August Holmgren|R32
 2026-7288|Lloyd Harris|Juncheng Shang|R32
 2026-7288|Omar Jasika|Alexandre Muller|R32
+2026-7288|Omar Jasika|Lloyd Harris|R16
 2026-7288|Rei Sakamoto|Kasidit Samrej|R32
+2026-7288|Rei Sakamoto|Zhizhen Zhang|R16
 2026-7288|Seongchan Hong|Yibing Wu|R32
 2026-7288|Sho Shimabukuro|Jan Kumstat|R32
 2026-7288|Stefanos Sakellaridis|Timofey Skatov|R32
 2026-7288|Taro Daniel|Andre Ilagan|R32
 2026-7288|Terence Atmane|Koki Matsuda|R32
 2026-7288|Yun seong Chung|Shintaro Imai|R32
+2026-7288|Yun seong Chung|Yunchaokete Bu|R16
 2026-7288|Yunchaokete Bu|Min Hyuk Cho|R32
 2026-7288|Zhizhen Zhang|Marin Cilic|R32
 2026-7290|Alexander Blockx|Kyrian Jacquet|R16
@@ -4713,7 +4730,9 @@
 2026-7316|Yosuke Watanuki|Jack Kennedy|QF
 2026-7316|Yosuke Watanuki|Tung-Lin Wu|R16
 2026-7341|Borna Gojo|Tom Paris|R32
+2026-7341|Dino Prizmic|Borna Gojo|R16
 2026-7341|Dino Prizmic|Robin Catry|R32
+2026-7341|Federico Cina|Nicolai Budkov Kjaer|R16
 2026-7341|Federico Cina|Shintaro Mochizuki|R32
 2026-7341|Francesco Maestrelli|Moez Echargui|R32
 2026-7341|Gabriel Diallo|Nishesh Basavareddy|R32
@@ -4724,22 +4743,27 @@
 2026-7341|Nicolai Budkov Kjaer|Kilian Feldbausch|R32
 2026-7341|Otto Virtanen|Matteo Martineau|R32
 2026-7341|Stefano Travaglia|Pierre-Hugues Herbert|R32
+2026-7341|Toby Samuel|Inaki Montes-De La Torre|R32
 2026-7341|Ugo Blanchet|Felix Balshaw|R32
 2026-7343|Charles Broom|Akira Santillan|R32
 2026-7343|Fajing Sun|Hayato Matsuoka|R32
+2026-7343|Harold Mayot|Kaichi Uchida|R16
 2026-7343|Harold Mayot|Tianhui Zhang|R32
 2026-7343|Hiroki Moriya|James McCabe|R32
 2026-7343|Jake Delaney|Alexander Binda|R32
 2026-7343|Jie Cui|Linang Xiao|R32
 2026-7343|Kaichi Uchida|Ognjen Milic|R32
 2026-7343|Liam Broady|Sergey Fomin|R32
+2026-7343|Mert Alkaya|Hiroki Moriya|R16
 2026-7343|Mert Alkaya|Rigele Te|R32
 2026-7343|Naoya Honda|Filip Peliwo|R32
 2026-7343|Petr Bar Biryukov|Semen Pankin|R32
 2026-7343|Tristan Schoolkate|Masamichi Imamura|R32
 2026-7343|Yaroslav Demin|Carl Emil Overbeck|R32
+2026-7343|Yaroslav Demin|Charles Broom|R16
 2026-7343|Yi Zhou|Elias Ymer|R32
 2026-7343|Yu Hsiou Hsu|Keegan Smith|R32
+2026-7343|Yu Hsiou Hsu|Yuta Shimizu|R16
 2026-7343|Yuta Shimizu|Mili Poljicak|R32
 2026-7389|Alan Magadan|Johan Alexander Rodriguez|R32
 2026-7389|Eduardo Ribeiro|Juan Sebastian Gomez|R32
@@ -4774,6 +4798,7 @@
 2026-7389|Tristan McCormick|Pedro Sakamoto|R32
 2026-7391|Camilo Ugo Carabelli|Federico Coria|R32
 2026-7391|Diego Dedura-Palomero|Genaro Alberto Olivieri|R32
+2026-7391|Emilio Camacho|Angel Veliz|R32
 2026-7391|Gonzalo Bueno|Alex Barrena|R32
 2026-7391|Hugo Dellien|Nicolas Jarry|R32
 2026-7391|Juan Carlos Prado Angelo|Pedro Boscardin Dias|R32
