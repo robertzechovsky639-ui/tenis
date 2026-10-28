@@ -387,6 +387,10 @@
 "Hard",
 3
 ],
+"M|challenger ciudad de guayaquil": [
+"Clay",
+3
+],
 "M|challenger dove men care antofagasta": [
 "Clay",
 3
@@ -1905,6 +1909,10 @@
 ],
 "M|guangzhou nansha international challenger": [
 "Hard",
+3
+],
+"M|guayaquil": [
+"Clay",
 3
 ],
 "M|guayaquil ch": [
@@ -3509,7 +3517,7 @@
 ],
 "M|m norman ok": [
 "Hard",
-0
+1
 ],
 "M|m norwich": [
 "Hard",
@@ -3622,6 +3630,10 @@
 "M|m pazardzhik": [
 "Clay",
 1
+],
+"M|m pembroke": [
+"Hard",
+0
 ],
 "M|m pensacola fl": [
 "Clay",
@@ -7633,7 +7645,7 @@
 ],
 "W|w malta": [
 "Hard",
-0
+1
 ],
 "W|w manacor": [
 "Hard",
@@ -7798,6 +7810,10 @@
 "W|w neuquen": [
 "Clay",
 0
+],
+"W|w new braunfels tx": [
+"Hard",
+2
 ],
 "W|w new delhi": [
 "Hard",
@@ -8268,8 +8284,8 @@
 1
 ],
 "W|w sumter sc": [
-"Hard",
-2
+"Clay",
+0
 ],
 "W|w sunderland": [
 "Hard",
