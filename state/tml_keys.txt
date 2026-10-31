@@ -319,6 +319,7 @@
 2026-1056|Cristina Bucsa|Diane Parry|R32
 2026-1056|Diana Shnaider|Alexandra Eala|QF
 2026-1056|Diana Shnaider|Aliaksandra Sasnovich|R16
+2026-1056|Diana Shnaider|Mia Pohankova|SF
 2026-1056|Ekaterina Alexandrova|Ann Li|R32
 2026-1056|Elena Rybakina|Yulia Putintseva|R16
 2026-1056|Elise Mertens|Moyuka Uchijima|R32
@@ -327,6 +328,7 @@
 2026-1056|Leylah Fernandez|Elena Rybakina|QF
 2026-1056|Leylah Fernandez|Elise Mertens|R16
 2026-1056|Leylah Fernandez|Himeno Sakatsume|R32
+2026-1056|Leylah Fernandez|Kamilla Rakhimova|SF
 2026-1056|Maya Joint|Cristina Bucsa|R16
 2026-1056|Maya Joint|Sorana Cirstea|R32
 2026-1056|Mia Pohankova|Alycia Parks|QF
@@ -2676,6 +2678,7 @@
 2026-328|Holger Rune|Quentin Halys|R32
 2026-328|Hubert Hurkacz|Zizou Bergs|R32
 2026-328|Jan-Lennard Struff|Novak Djokovic|R16
+2026-328|Jan-Lennard Struff|Nuno Borges|QF
 2026-328|Jan-Lennard Struff|Yannick Hanfmann|R32
 2026-328|Jerome Kym|Arthur Rinderknech|R32
 2026-328|Jerome Kym|Ben Shelton|R16
@@ -2749,6 +2752,7 @@
 2026-337|Adrian Mannarino|Thiago Agustin Tirante|Q1
 2026-337|Alex Molcan|Hamad Medjedovic|Q1
 2026-337|Alex de Minaur|Learner Tien|R16
+2026-337|Alex de Minaur|Matteo Berrettini|QF
 2026-337|Alex de Minaur|Tomas Machac|R32
 2026-337|Alexander Zverev|Arthur Fery|QF
 2026-337|Alexander Zverev|Martin Landaluce|R32
@@ -4810,6 +4814,7 @@
 2026-7341|Nicolai Budkov Kjaer|Kilian Feldbausch|R32
 2026-7341|Otto Virtanen|Matisse Bobichon|R16
 2026-7341|Otto Virtanen|Matteo Martineau|R32
+2026-7341|Otto Virtanen|Stefano Travaglia|QF
 2026-7341|Stefano Travaglia|Laslo Djere|R16
 2026-7341|Stefano Travaglia|Pierre-Hugues Herbert|R32
 2026-7341|Toby Samuel|Inaki Montes-De La Torre|R32
@@ -4885,6 +4890,8 @@
 2026-7391|Gonzalo Bueno|Alex Barrena|R32
 2026-7391|Hugo Dellien|Nicolas Jarry|R32
 2026-7391|Hugo Dellien|Rodrigo Pacheco Mendez|R16
+2026-7391|Joao Lucas Reis Da Silva|Camilo Ugo Carabelli|QF
+2026-7391|Joao Lucas Reis Da Silva|Emilio Camacho|R16
 2026-7391|Joao Lucas Reis Da Silva|Lorenzo Claverie|R32
 2026-7391|Joaquin Aguilar Cardozo|Miguel Tobon|R32
 2026-7391|Joaquin Aguilar Cardozo|Tomas Barrios Vera|R16
