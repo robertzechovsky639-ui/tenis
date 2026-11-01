@@ -321,6 +321,7 @@
 2026-1056|Cristina Bucsa|Diane Parry|R32
 2026-1056|Diana Shnaider|Alexandra Eala|QF
 2026-1056|Diana Shnaider|Aliaksandra Sasnovich|R16
+2026-1056|Diana Shnaider|Leylah Fernandez|F
 2026-1056|Diana Shnaider|Mia Pohankova|SF
 2026-1056|Ekaterina Alexandrova|Ann Li|R32
 2026-1056|Elena Rybakina|Yulia Putintseva|R16
@@ -1361,6 +1362,7 @@
 2026-2951|Daniil Ostapenkov|Ozan Baris|R32
 2026-2951|Darwin Blanch|Mitchell Krueger|R16
 2026-2951|Darwin Blanch|Sebastian Gorzny|R32
+2026-2951|Dylan Dietrich|Aidan Mayo|SF
 2026-2951|Dylan Dietrich|Colton Smith|R32
 2026-2951|Dylan Dietrich|J.J. Wolf|QF
 2026-2951|Dylan Dietrich|Jenson Brooksby|R16
@@ -1370,6 +1372,7 @@
 2026-2951|Kaylan Bigun|Andres Martin|R32
 2026-2951|Liam Draxl|Daniil Ostapenkov|R16
 2026-2951|Liam Draxl|Darwin Blanch|QF
+2026-2951|Liam Draxl|Sebastian Dominko|SF
 2026-2951|Liam Draxl|Tomasz Berkieta|R32
 2026-2951|Maks Kasnikowski|James Trotter|R32
 2026-2951|Max Hans Rehberg|Braden Shick|R32
@@ -2888,6 +2891,20 @@
 2026-3503|Tristan Schoolkate|Matisse Bobichon|QF
 2026-3503|Ugo Blanchet|Billy Harris|R32
 2026-3503|Yanis Ghazouani Durand|Leo Raquillet|R32
+2026-352|Adolfo Daniel Vallejo|Grigor Dimitrov|Q1
+2026-352|Alex Molcan|Daniel Altmaier|Q1
+2026-352|Benjamin Bonzi|Tallon Griekspoor|Q1
+2026-352|Juan Manuel Cerundolo|Aleksandar Kovacevic|Q1
+2026-352|Lorenzo Sonego|Jaume Munar|Q1
+2026-352|Mattia Bellucci|Pablo Carreno Busta|Q1
+2026-352|Miomir Kecmanovic|James Duckworth|Q1
+2026-352|Nuno Borges|Adrian Mannarino|Q1
+2026-352|Rinky Hijikata|Jaime Faria|Q1
+2026-352|Sebastian Baez|Damir Dzumhur|Q1
+2026-352|Thiago Agustin Tirante|Zachary Svajda|Q1
+2026-352|Tomas Machac|Martin Landaluce|Q1
+2026-352|Vit Kopriva|Hugo Gaston|Q1
+2026-352|Yannick Hanfmann|Felix Balshaw|Q1
 2026-405|Ann Li|Emerson Jones|R32
 2026-405|Ann Li|Lilli Tagger|QF
 2026-405|Ann Li|Zeynep Sonmez|R16
@@ -4725,6 +4742,7 @@
 2026-7288|Stefanos Sakellaridis|Timofey Skatov|R32
 2026-7288|Taro Daniel|Andre Ilagan|R32
 2026-7288|Terence Atmane|Billy Harris|SF
+2026-7288|Terence Atmane|Coleman Wong|F
 2026-7288|Terence Atmane|Koki Matsuda|R32
 2026-7288|Terence Atmane|Seongchan Hong|QF
 2026-7288|Terence Atmane|Taro Daniel|R16
@@ -4907,9 +4925,12 @@
 2026-7391|Hugo Dellien|Carlos Maria Zarate|QF
 2026-7391|Hugo Dellien|Nicolas Jarry|R32
 2026-7391|Hugo Dellien|Rodrigo Pacheco Mendez|R16
+2026-7391|Hugo Dellien|Valerio Aboian|SF
 2026-7391|Joao Lucas Reis Da Silva|Camilo Ugo Carabelli|QF
 2026-7391|Joao Lucas Reis Da Silva|Emilio Camacho|R16
 2026-7391|Joao Lucas Reis Da Silva|Lorenzo Claverie|R32
+2026-7391|Joaquin Aguilar Cardozo|Joao Lucas Reis Da Silva|SF
+2026-7391|Joaquin Aguilar Cardozo|Lautaro Midon|QF
 2026-7391|Joaquin Aguilar Cardozo|Miguel Tobon|R32
 2026-7391|Joaquin Aguilar Cardozo|Tomas Barrios Vera|R16
 2026-7391|Juan Carlos Prado Angelo|Pedro Boscardin Dias|R32
