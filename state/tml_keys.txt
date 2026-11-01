@@ -200,6 +200,7 @@
 2026-1023|Han Shi|Alevtina Ibragimova|R32
 2026-1023|Han Shi|Dayana Yastremska|R16
 2026-1023|Harriet Dart|Janice Tjen|R16
+2026-1023|Harriet Dart|Lilli Tagger|F
 2026-1023|Harriet Dart|Paula Badosa|QF
 2026-1023|Harriet Dart|Tatiana Prozorova|R32
 2026-1023|Harriet Dart|Xinran Sun|SF
@@ -2708,6 +2709,7 @@
 2026-328|Taylor Fritz|Denis Shapovalov|R16
 2026-328|Taylor Fritz|Rinky Hijikata|R32
 2026-328|Valentin Vacherot|Holger Rune|QF
+2026-328|Valentin Vacherot|Jiri Lehecka|F
 2026-328|Valentin Vacherot|Mariano Navone|R32
 2026-328|Valentin Vacherot|Rafael Jodar|R16
 2026-328|Valentin Vacherot|Taylor Fritz|SF
@@ -2771,6 +2773,7 @@
 2026-337|Arthur Fery|Jacob Fearnley|R32
 2026-337|Arthur Fery|Lorenzo Musetti|R16
 2026-337|Cameron Norrie|Francisco Cerundolo|R32
+2026-337|Carlos Alcaraz|Alex de Minaur|F
 2026-337|Carlos Alcaraz|Daniil Medvedev|SF
 2026-337|Carlos Alcaraz|Karen Khachanov|R32
 2026-337|Carlos Alcaraz|Nikoloz Basilashvili|R16
@@ -4875,6 +4878,7 @@
 2026-7343|Yaroslav Demin|Carl Emil Overbeck|R32
 2026-7343|Yaroslav Demin|Charles Broom|R16
 2026-7343|Yaroslav Demin|Harold Mayot|QF
+2026-7343|Yaroslav Demin|Petr Bar Biryukov|F
 2026-7343|Yaroslav Demin|Yu Hsiou Hsu|SF
 2026-7343|Yi Zhou|Elias Ymer|R32
 2026-7343|Yu Hsiou Hsu|Keegan Smith|R32
