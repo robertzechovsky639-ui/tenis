@@ -224,7 +224,7 @@
 3
 ],
 "M|bratislava": [
-"Clay",
+"Hard",
 3
 ],
 "M|bratislava ch": [
@@ -484,6 +484,10 @@
 4
 ],
 "M|cordoba ch": [
+"Clay",
+3
+],
+"M|costa do sauipe": [
 "Clay",
 3
 ],
@@ -4695,6 +4699,10 @@
 "Hard",
 3
 ],
+"M|paris": [
+"Hard",
+5
+],
 "M|paris masters": [
 "Hard",
 5
@@ -5071,6 +5079,10 @@
 "Clay",
 3
 ],
+"M|slovak open": [
+"Hard",
+3
+],
 "M|sofia": [
 "Hard",
 4
@@ -5270,6 +5282,10 @@
 "M|vienna": [
 "Hard",
 4
+],
+"M|villa maria": [
+"Clay",
+3
 ],
 "M|villa maria ch": [
 "Clay",
@@ -6061,6 +6077,10 @@
 ],
 "W|lleida": [
 "Clay",
+3
+],
+"W|luanda": [
+"Hard",
 3
 ],
 "W|lyon": [
@@ -7193,7 +7213,7 @@
 ],
 "W|w heraklion": [
 "Clay",
-1
+2
 ],
 "W|w herrenschwanden": [
 "Carpet",
