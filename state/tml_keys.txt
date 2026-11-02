@@ -341,6 +341,10 @@
 2026-1056|Naomi Osaka|Jasmine Paolini|R32
 2026-1056|Talia Gibson|Daria Kasatkina|R32
 2026-1056|Yulia Putintseva|Maria Sakkari|R32
+2026-1074|Aliaksandra Sasnovich|Katie Volynets|R32
+2026-1074|Claire Liu|Tatiana Prozorova|R32
+2026-1074|Katie Boulter|Viktorija Golubic|R32
+2026-1074|Maria Sakkari|Carol Young Suh Lee|R32
 2026-1075|Ann Li|Aryna Sabalenka|R32
 2026-1075|Ann Li|Camila Osorio|R64
 2026-1075|Ann Li|Janice Tjen|R16
@@ -2896,16 +2900,23 @@
 2026-3503|Yanis Ghazouani Durand|Leo Raquillet|R32
 2026-352|Adolfo Daniel Vallejo|Grigor Dimitrov|Q1
 2026-352|Alex Molcan|Daniel Altmaier|Q1
+2026-352|Alex Molcan|Nuno Borges|Q2
 2026-352|Benjamin Bonzi|Tallon Griekspoor|Q1
+2026-352|Benjamin Bonzi|Yannick Hanfmann|Q2
 2026-352|Juan Manuel Cerundolo|Aleksandar Kovacevic|Q1
+2026-352|Juan Manuel Cerundolo|Miomir Kecmanovic|Q2
+2026-352|Lorenzo Sonego|Adolfo Daniel Vallejo|Q2
 2026-352|Lorenzo Sonego|Jaume Munar|Q1
 2026-352|Mattia Bellucci|Pablo Carreno Busta|Q1
+2026-352|Mattia Bellucci|Thiago Agustin Tirante|Q2
 2026-352|Miomir Kecmanovic|James Duckworth|Q1
 2026-352|Nuno Borges|Adrian Mannarino|Q1
 2026-352|Rinky Hijikata|Jaime Faria|Q1
+2026-352|Rinky Hijikata|Vit Kopriva|Q2
 2026-352|Sebastian Baez|Damir Dzumhur|Q1
 2026-352|Thiago Agustin Tirante|Zachary Svajda|Q1
 2026-352|Tomas Machac|Martin Landaluce|Q1
+2026-352|Tomas Machac|Sebastian Baez|Q2
 2026-352|Vit Kopriva|Hugo Gaston|Q1
 2026-352|Yannick Hanfmann|Felix Balshaw|Q1
 2026-405|Ann Li|Emerson Jones|R32
@@ -4845,6 +4856,7 @@
 2026-7341|Moise Kouame|Francesco Maestrelli|QF
 2026-7341|Moise Kouame|Hugo Gaston|R16
 2026-7341|Moise Kouame|Hugo Grenier|R32
+2026-7341|Moise Kouame|Martin Damm|F
 2026-7341|Moise Kouame|Otto Virtanen|SF
 2026-7341|Nicolai Budkov Kjaer|Kilian Feldbausch|R32
 2026-7341|Otto Virtanen|Matisse Bobichon|R16
