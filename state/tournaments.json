@@ -403,6 +403,10 @@
 "Hard",
 3
 ],
+"M|charlottesville": [
+"Hard",
+3
+],
 "M|charlottesville ch": [
 "Hard",
 3
@@ -492,6 +496,10 @@
 3
 ],
 "M|costa do sauipe ch": [
+"Clay",
+3
+],
+"M|costa do sauipe open": [
 "Clay",
 3
 ],
@@ -2059,6 +2067,10 @@
 "Hard",
 3
 ],
+"M|jonathan fried men s pro challenger": [
+"Hard",
+3
+],
 "M|kachreti ch": [
 "Hard",
 3
@@ -3325,7 +3337,7 @@
 ],
 "M|m maanshan": [
 "Hard",
-1
+0
 ],
 "M|m maceio": [
 "Clay",
@@ -5144,6 +5156,10 @@
 3
 ],
 "M|taipei ch": [
+"Hard",
+3
+],
+"M|taiwan santaizi challenger": [
 "Hard",
 3
 ],
@@ -7180,7 +7196,7 @@
 0
 ],
 "W|w hamamatsu": [
-"Carpet",
+"Hard",
 1
 ],
 "W|w hamburg": [
